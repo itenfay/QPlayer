@@ -1,0 +1,1 @@
+../../../ZFPlayer/ZFPlayer/Classes/Core/ZFPlayerGestureControl.h

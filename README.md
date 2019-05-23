@@ -4,7 +4,7 @@
 
 ## 致谢
 
-感谢QVPlayer提供图片资源和灵感。感谢[cocoa-web-resource](https://github.com/robin/cocoa-web-resource)开源作者robin、[ZFPlayer](https://github.com/renzifeng/ZFPlayer)的作者renzifeng和其他开源作者。
+感谢QVPlayer提供图片资源和灵感。感谢[cocoa-web-resource](https://github.com/robin/cocoa-web-resource)的开源作者(robin)、[ZFPlayer](https://github.com/renzifeng/ZFPlayer)的作者(renzifeng)和其他开源作者。
 
 
 ## Pods for QPlayer

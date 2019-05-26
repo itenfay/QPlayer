@@ -2,10 +2,10 @@
 
 播放同一WIFI网络中电脑共享的视频文件，支持wifi协议的视频文件传输，支持网页观看视频。
 
-## QQ技术群交流
+## 技术交流群
 
-欢迎加入QQ技术群(155353383) ，一起探讨技术问题。<br>
-![QQ技术群：155353383](https://github.com/dgynfi/QPlayer/raw/master/images/qq155353383.jpg)
+欢迎加入技术交流群(群号:155353383) ，一起探讨技术问题。<br>
+![群号:155353383](https://github.com/dgynfi/QPlayer/raw/master/images/qq155353383.jpg)
 
 ## 致谢
 

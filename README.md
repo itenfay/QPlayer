@@ -1,11 +1,15 @@
-# QPlayer
+[如果你觉得能帮助到你，请给一颗小星星。谢谢！(If you think it can help you, please give it a star. Thanks!)](https://github.com/dgynfi/QPlayer)
+
+[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
+
+## QPlayer
 
 播放同一WIFI网络中电脑共享的视频文件，支持wifi协议的视频文件传输，支持网页观看视频。
 
 ## 技术交流群(群号:155353383)
 
-欢迎加入技术交流群，一起探讨技术问题。<br>
-![群号:155353383](https://github.com/dgynfi/QPlayer/raw/master/images/qq155353383.jpg)
+欢迎加入技术交流群，一起探讨技术问题。<br />
+![](https://github.com/dgynfi/QPlayer/raw/master/images/qq155353383.jpg)
 
 ## 致谢
 
@@ -27,5 +31,4 @@ pod 'ZFPlayer/KSYMediaPlayer'
 
 ## 使用
 
-在app设置中打开Wi-Fi文件传输的开关，在电脑浏览器中访问：如 http://192.168.1.34:63425 <br>
-网页打开后，选择文件点击上传，确保上传中不要关闭本应用并在同一wifi环境下使用本软件。
+在app设置中打开Wi-Fi文件传输的开关，在电脑浏览器中访问：如 http://192.168.1.34:63425 &nbsp; 网页打开后，选择文件点击上传，确保上传中不要关闭本应用并在同一wifi环境下使用本软件。

@@ -38,7 +38,7 @@
 #define QPViewSafeBottomMargin (QPIsIdiomIPhoneX ? 34.f : 0.f)
 
 // View safe insets.
-#define QPViewSafeAreInsets(view) ({UIEdgeInsets insets; if(@available(iOS 11.0, *)) {insets = view.safeAreaInsets;} else {insets = UIEdgeInsetsZero;} insets;})
+#define QPViewSafeAreaInsets(view) ({UIEdgeInsets insets; if(@available(iOS 11.0, *)) {insets = view.safeAreaInsets;} else {insets = UIEdgeInsetsZero;} insets;})
 
 // NSFileManager's singleton
 #define QPFileMgr [NSFileManager defaultManager]

@@ -8,6 +8,6 @@
 #import "BaseController.h"
 
 @interface VideoPlayerController : BaseController
-@property (nonnull, copy) NSString *v_url_str;
-@property (nonnull, copy) NSString *v_name;
+@property (nonnull, copy) NSString *video_urlstr;
+@property (nonnull, copy) NSString *video_name;
 @end

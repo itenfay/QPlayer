@@ -9,7 +9,7 @@ target 'QPlayer' do
     pod 'FDFullscreenPopGesture', '~> 1.1'
     pod 'PYSearch', '~> 0.8.8'
     pod 'MBProgressHUD+JDragon', '~> 0.0.3'
-    pod 'ZFPlayer', '~> 3.1.5'
+    pod 'ZFPlayer'
     pod 'ZFPlayer/ControlView'
     pod 'ZFPlayer/AVPlayer'
     # pod 'ZFPlayer/ijkplayer'

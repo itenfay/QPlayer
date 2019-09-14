@@ -23,12 +23,12 @@
 }
 
 - (void)waitForLaunching {
-    // sleep 1 seconds.
-    [NSThread sleepForTimeInterval:1];
+    // sleep 2 seconds.
+    [NSThread sleepForTimeInterval:2];
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    return UIInterfaceOrientationMaskAllButUpsideDown;
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

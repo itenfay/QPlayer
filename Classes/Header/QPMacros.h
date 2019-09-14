@@ -8,103 +8,121 @@
 #ifndef QPMacros_h
 #define QPMacros_h
 
-// iPhone
-#define QPIsIdiomPhone (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-// iPad
-#define QPIsIdiomPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+// Return screen width.
+#define QPScreenWidth  UIScreen.mainScreen.bounds.size.width
 
-// UIScreen width.
-#define QPScreenWidth [UIScreen mainScreen].bounds.size.width
+// Return screen height.
+#define QPScreenHeight UIScreen.mainScreen.bounds.size.height
 
-// UIScreen height.
-#define QPScreenHeight [UIScreen mainScreen].bounds.size.height
 
-// iPhone X
-#define QPIsIdiomIPhoneX (QPScreenWidth == 375.f && QPScreenHeight == 812.f ? YES : NO)
+// Judge iPhone.
+#define QPIsPhone      (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+
+// Judge iPad.
+#define QPIsPad        (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+
+// Judge iPhoneX，XS
+#define QPIsPhoneX     ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), UIScreen.mainScreen.currentMode.size) && !QPIsPad : NO)
+
+// Judge iPhoneXR
+#define QPIsPhoneXR    ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(828, 1792), UIScreen.mainScreen.currentMode.size) && !QPIsPad : NO)
+
+// Judge iPhoneXS Max
+#define QPIsPhoneXSMax ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2688), UIScreen.mainScreen.currentMode.size) && !QPIsPad : NO)
+
+// Judge iPhone X series.
+#define QPIsPhoneXAll  ({BOOL isPhoneXAll = NO; if (@available(iOS 11.0, *)) { isPhoneXAll = UIApplication.sharedApplication.delegate.window.safeAreaInsets.bottom > 0.0; } isPhoneXAll;})
+
 
 // Status bar height.
-#define QPStatusBarHeight (QPIsIdiomIPhoneX ? 44.f : 20.f)
+#define QPStatusBarHeight                 (QPIsPhoneXAll ? 44.f : 20.f)
 
 // Navigation bar height.
-#define QPNavigationBarHeight 44.f
+#define QPNavigationBarHeight              44.f
 
 // Status bar & navigation bar height.
-#define QPStatusBarAndNavigationBarHeight (QPIsIdiomIPhoneX ? 88.f : 64.f)
+#define QPStatusBarAndNavigationBarHeight (QPIsPhoneXAll ? 88.f : 64.f)
 
-// Tabbar height.
-#define QPTabbarHeight (QPIsIdiomIPhoneX ? (49.f+34.f) : 49.f)
+// TabBar height.
+#define QPTabBarHeight                    (QPIsPhoneXAll ? (49.f+34.f) : 49.f)
 
 // View safe bottom margin.
-#define QPViewSafeBottomMargin (QPIsIdiomIPhoneX ? 34.f : 0.f)
+#define QPViewSafeBottomMargin            (QPIsPhoneXAll ? 34.f : 0.f)
 
 // View safe insets.
-#define QPViewSafeAreaInsets(view) ({UIEdgeInsets insets; if(@available(iOS 11.0, *)) {insets = view.safeAreaInsets;} else {insets = UIEdgeInsetsZero;} insets;})
+#define QPViewSafeAreaInsets(view)        ({UIEdgeInsets insets; if(@available(iOS 11.0, *)) {insets = view.safeAreaInsets;} else {insets = UIEdgeInsetsZero;} insets;})
 
-// NSFileManager's singleton
-#define QPFileMgr [NSFileManager defaultManager]
 
-// UIApplication's singleton
-#define QPSharedApp [UIApplication sharedApplication]
+// NSFileManager's singleton.
+#define QPFileMgr                         [NSFileManager defaultManager]
 
-// AppDelegate
-#define QPAppDelegate ((AppDelegate *)QPSharedApp.delegate)
+// UIApplication's singleton.
+#define QPSharedApp                       [UIApplication sharedApplication]
 
-// NSNotificationCenter's singleton
-#define QPNotiDefaultCenter [NSNotificationCenter defaultCenter]
+// App delegate.
+#define QPAppDelegate                     ((AppDelegate *)QPSharedApp.delegate)
 
-// NSUserDefaults's singleton
-#define QPStdUserDefaults [NSUserDefaults standardUserDefaults]
+// NSNotificationCenter's singleton.
+#define QPNotiDefaultCenter               [NSNotificationCenter defaultCenter]
 
-// System Versioning Preprocessor Macros
-#define SYSTEM_VERSION_EQUAL_TO(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
-#define SYSTEM_VERSION_GREATER_THAN(v)             ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
-#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
-#define SYSTEM_VERSION_LESS_THAN(v)				   ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
-#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)    ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+// NSUserDefaults's singleton.
+#define QPUserDefaults                    [NSUserDefaults standardUserDefaults]
 
-// App configuration information
-#define QPInfoDictionary [[NSBundle mainBundle] infoDictionary]
 
-// App version
-#define QPAppVersion [QPInfoDictionary objectForKey:@"CFBundleShortVersionString"]
-// App build version
-#define QPBuildVersion [QPInfoDictionary objectForKey:kCFBundleVersionKey]
-// App bundle identifier
-#define QPBundleID [QPInfoDictionary objectForKey:@"CFBundleIdentifier"]
+// System Versioning Preprocessor Macros.
+#define QP_SYSTEM_VERSION_EQUAL_TO(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define QP_SYSTEM_VERSION_GREATER_THAN(v)             ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define QP_SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define QP_SYSTEM_VERSION_LESS_THAN(v)				  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define QP_SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)    ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 
-// Judge iOS8+
-#define IOS8OrNewerSDK ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0)
 
-// App document path in sandbox
+// Judge iOS8+.
+#define QPIOS8OrLater           QP_SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")
+
+// App configuration information.
+#define QPInfoDictionary        [[NSBundle mainBundle] infoDictionary]
+
+// App version.
+#define QPAppVersion            [QPInfoDictionary objectForKey:@"CFBundleShortVersionString"]
+// App build version.
+#define QPBuildVersion          [QPInfoDictionary objectForKey:kCFBundleVersionKey]
+// App bundle identifier.
+#define QPBundleID              [QPInfoDictionary objectForKey:@"CFBundleIdentifier"]
+
+// App document path in sandbox.
 #define QPDocumentDirectoryPath NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]
 
-// App caches path in sandbox
-#define QPCachesDirectoryPath NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0]
+// App caches path in sandbox.
+#define QPCachesDirectoryPath   NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0]
 
-// Appending string
-#define QPAppendingString(s1, s2) [(s1) stringByAppendingString:(s2)]
-// Appending path
+
+// Appending string.
+#define QPAppendingString(s1, s2)        [(s1) stringByAppendingString:(s2)]
+// Appending path.
 #define QPAppendingPathComponent(s1, s2) [(s1) stringByAppendingPathComponent:(s2)]
 
-// Resource path
-#define QPPathForResource(name, ext) [[NSBundle mainBundle] pathForResource:(name) ofType:(ext)]
-// Get image with contents Of file
-#define QPLoadImage(name) [UIImage imageWithContentsOfFile:QPPathForResource(name, nil)]
-// Get image from memory
-#define QPImageNamed(name) [UIImage imageNamed:(name)]
+// Resource path.
+#define QPPathForResource(name, ext)     [[NSBundle mainBundle] pathForResource:(name) ofType:(ext)]
+
+// Get image with contents Of file.
+#define QPLoadImage(name)                [UIImage imageWithContentsOfFile:QPPathForResource(name, nil)]
+// Get image from memory.
+#define QPImageNamed(name)               [UIImage imageNamed:(name)]
+
+// RGB and alpha
+#define QPColorFromRGBAlp(r, g, b, a)    [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
 
 // RGB
-#define QPColorRGB(r, g, b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1.0]
-
-// RGB and set alpha
-#define QPColorRGBAlp(r, g, b, a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+#define QPColorFromRGB(r, g, b)          QPColorFromRGBAlp(r, g, b, 1.0)
 
 // Sets rgb by hexadecimal value
-#define QPColorHex(hex) [UIColor colorWithRed:((float)((hex & 0xFF0000) >> 16))/255.0 \
-                         green:((float)((hex & 0xFF00) >> 8))/255.0 \
-                         blue:((float)(hex & 0xFF))/255.0 alpha:1.0]
+#define QPColorFromHex(hex)              [UIColor colorWithRed:((float)((hex & 0xFF0000) >> 16))/255.0 \
+                                          green:((float)((hex & 0xFF00) >> 8))/255.0                   \
+                                          blue:((float)(hex & 0xFF))/255.0 alpha:1.0]
 
-// Resolving block circular reference
+
+// Resolving block circular reference - __weak(arc)/__block
 #ifndef QPWeakObject
     #if __has_feature(objc_arc)
         #define QPWeakObject(o) try {} @finally {} __weak __typeof(o) weak##_##o = o;
@@ -113,6 +131,7 @@
     #endif
 #endif
 
+// Resolving block circular reference - __strong(arc)/
 #ifndef QPStrongObject
     #if __has_feature(objc_arc)
         #define QPStrongObject(o) try {} @finally {} __strong __typeof(o) strong##_##o = weak##_##o;
@@ -120,6 +139,7 @@
         #define QPStrongObject(o) try {} @finally {} __typeof(o) strong##_##o = weak##_##o;
     #endif
 #endif
+
 
 // Logs
 #ifdef DEBUG

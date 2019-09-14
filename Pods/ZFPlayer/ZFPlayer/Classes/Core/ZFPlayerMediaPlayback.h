@@ -28,7 +28,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, ZFPlayerPlaybackState) {
-    ZFPlayerPlayStateUnknown = 0,
+    ZFPlayerPlayStateUnknown,
     ZFPlayerPlayStatePlaying,
     ZFPlayerPlayStatePaused,
     ZFPlayerPlayStatePlayFailed,
@@ -57,7 +57,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 @property (nonatomic) ZFPlayerView *view;
 
 @optional
-/// The player volume, 0...1.0
+/// The player volume.
 /// Only affects audio volume for the player instance and not for the device.
 /// You can change device volume or player volume as needed,change the player volume you can folllow the `ZFPlayerMediaPlayback` protocol.
 @property (nonatomic) float volume;
@@ -98,6 +98,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
  */
 @property (nonatomic, readonly) BOOL isPreparedToPlay;
 
+/// The player should auto player, default is YES.
+@property (nonatomic) BOOL shouldAutoPlay;
+
 /// The play asset URL.
 @property (nonatomic) NSURL *assetURL;
 
@@ -111,12 +114,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 @property (nonatomic, readonly) ZFPlayerLoadState loadState;
 
 ///------------------------------------
-/// If you don't point the controlView, you can called the following block.
-/// If you point the controlView, The following block cannot be called outside, only for `ZFPlayerController` calls.
+/// If you don't appoint the controlView, you can called the following blocks.
+/// If you appoint the controlView, The following block cannot be called outside, only for `ZFPlayerController` calls.
 ///------------------------------------
 
-/// The block invoked when the player is Ready to play.
+/// The block invoked when the player is Prepare to play.
 @property (nonatomic, copy, nullable) void(^playerPrepareToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
+
+/// The block invoked when the player is Ready to play.
+@property (nonatomic, copy, nullable) void(^playerReadyToPlay)(id<ZFPlayerMediaPlayback> asset, NSURL *assetURL);
 
 /// The block invoked when the player play progress changed.
 @property (nonatomic, copy, nullable) void(^playerPlayTimeChanged)(id<ZFPlayerMediaPlayback> asset, NSTimeInterval currentTime, NSTimeInterval duration);
@@ -135,6 +141,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 
 /// The block invoked when the player play end.
 @property (nonatomic, copy, nullable) void(^playerDidToEnd)(id<ZFPlayerMediaPlayback> asset);
+
+// The block invoked when video size changed.
+@property (nonatomic, copy, nullable) void(^presentationSizeChanged)(id<ZFPlayerMediaPlayback> asset, CGSize size);
 
 ///------------------------------------
 /// end
@@ -164,11 +173,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
 /// Use this method to seek to a specified time for the current player and to be notified when the seek operation is complete.
 - (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^ __nullable)(BOOL finished))completionHandler;
 
-/// Replace the current playback URL.
-- (void)replaceCurrentAssetURL:(NSURL *)assetURL __attribute__((deprecated("use the property `assetURL` instead.")));;
-
 @end
-
-
 
 NS_ASSUME_NONNULL_END

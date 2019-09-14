@@ -21,15 +21,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
     [self setLeftBarButtonItem];
     [self setNavigationItemTitle];
+    
     [self setPlayerControlView];
-    [self play];
+    [self attemptToPlay];
 }
 
 - (NSString *)getVideoName {
-    return [self.v_name stringByDeletingPathExtension];
+    return [self.video_name stringByDeletingPathExtension];
 }
 
 - (void)setNavigationItemTitle {
@@ -37,9 +38,13 @@
 }
 
 - (void)setLeftBarButtonItem {
-    UIButton *button = [self backButtonWithTarget:self selector:@selector(back)];
-    UIBarButtonItem *lbbItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-    self.navigationItem.leftBarButtonItem = lbbItem;
+    UIButton *backButton = [self backButtonWithTarget:self selector:@selector(back)];
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
+    UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spaceItem.width = -15;
+    
+    self.navigationItem.leftBarButtonItems = @[spaceItem, leftBarButtonItem];
 }
 
 - (void)back {
@@ -50,14 +55,13 @@
     [self.controlView showTitle:[self getVideoName] coverImage:nil fullScreenMode:ZFFullScreenModePortrait];
 }
 
-- (void)play {
-    // playerManager
+- (void)attemptToPlay {
     // KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
-    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+    ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init]; // playerManager
     
     // player
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.view];
-    self.player.assetURL = [NSURL fileURLWithPath:self.v_url_str];
+    self.player.assetURL = [NSURL fileURLWithPath:self.video_urlstr];
     self.player.controlView = self.controlView;
     self.player.shouldAutoPlay = NO;
     self.player.playerDisapperaPercent = 1.0;

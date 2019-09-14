@@ -28,8 +28,4 @@
 
 @property (nonatomic, copy, nullable) void(^closeClickCallback)(void);
 
-- (void)showControlView;
-
-- (void)hideControlView;
-
 @end

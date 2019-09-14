@@ -30,13 +30,9 @@ static const CGFloat kSliderBtnWH = 19.0;
 /** 间距 */
 static const CGFloat kProgressMargin = 2.0;
 /** 进度的高度 */
-static const CGFloat kProgressH = 2.0;
+static const CGFloat kProgressH = 1.0;
 /** 拖动slider动画的时间*/
 static const CGFloat kAnimate = 0.3;
-
-@interface ZFSliderButton : UIButton
-
-@end
 
 @implementation ZFSliderButton
 
@@ -62,7 +58,9 @@ static const CGFloat kAnimate = 0.3;
 /** 滑块 */
 @property (nonatomic, strong) ZFSliderButton *sliderBtn;
 
-@property (nonatomic, assign) CGPoint lastPoint;
+@property (nonatomic, strong) UIView *loadingBarView;
+
+@property (nonatomic, assign) BOOL isLoading;
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
@@ -88,42 +86,66 @@ static const CGFloat kAnimate = 0.3;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    CGFloat min_x = 0;
+    CGFloat min_y = 0;
+    CGFloat min_w = 0;
+    CGFloat min_h = 0;
+    CGFloat min_view_w = self.bounds.size.width;
+    CGFloat min_view_h = self.bounds.size.height;
     
-    // 初始化frame
+    min_x = 0;
+    min_w = min_view_w;
+    min_y = 0;
+    min_h = self.sliderHeight;
+    self.bgProgressView.frame = CGRectMake(min_x, min_y, min_w, min_h);
+    
+    min_x = 0;
+    min_y = 0;
+    min_w = self.thumbSize.width;
+    min_h = self.thumbSize.height;
+    self.sliderBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
+    self.sliderBtn.zf_centerX = self.bgProgressView.zf_width * self.value;
+    
+    min_x = 0;
+    min_y = 0;
     if (self.sliderBtn.hidden) {
-        self.bgProgressView.width   = self.width;
+        min_w = self.bgProgressView.zf_width * self.value;
     } else {
-        self.bgProgressView.width   = self.width - kProgressMargin * 2;
+        min_w = self.sliderBtn.zf_centerX;
     }
+    min_h = self.sliderHeight;
+    self.sliderProgressView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
-    self.bgProgressView.centerY     = self.height * 0.5;
-    self.bufferProgressView.centerY = self.height * 0.5;
-    self.sliderProgressView.centerY = self.height * 0.5;
-    self.sliderBtn.centerY          = self.height * 0.5;
+    min_x = 0;
+    min_y = 0;
+    min_w = self.bgProgressView.zf_width * self.bufferValue;
+    min_h = self.sliderHeight;
+    self.bufferProgressView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
-    /// 修复slider  bufferProgressP错位问题
-    CGFloat finishValue = self.bgProgressView.width * self.bufferValue;
-    self.bufferProgressView.width = finishValue;
+    min_w = 0.1;
+    min_h = self.sliderHeight;
+    min_x = (min_view_w - min_w)/2;
+    min_y = (min_view_h - min_h)/2;
+    self.loadingBarView.frame = CGRectMake(min_x, min_y, min_w, min_h);
     
-    CGFloat progressValue  = self.bgProgressView.width * self.value;
-    self.sliderProgressView.width = progressValue;
-    self.sliderBtn.left = (self.width - self.sliderBtn.width) * self.value;
+    self.bgProgressView.zf_centerY     = min_view_h * 0.5;
+    self.bufferProgressView.zf_centerY = min_view_h * 0.5;
+    self.sliderProgressView.zf_centerY = min_view_h * 0.5;
+    self.sliderBtn.zf_centerY          = min_view_h * 0.5;
 }
 
 /**
  添加子视图
  */
 - (void)addSubViews {
+    self.thumbSize = CGSizeMake(kSliderBtnWH, kSliderBtnWH);
+    self.sliderHeight = kProgressH;
     self.backgroundColor = [UIColor clearColor];
     [self addSubview:self.bgProgressView];
     [self addSubview:self.bufferProgressView];
     [self addSubview:self.sliderProgressView];
     [self addSubview:self.sliderBtn];
-    // 初始化frame
-    self.bgProgressView.frame     = CGRectMake(kProgressMargin, 0, 0, kProgressH);
-    self.bufferProgressView.frame = self.bgProgressView.frame;
-    self.sliderProgressView.frame = self.bgProgressView.frame;
-    self.sliderBtn.frame          = CGRectMake(0, 0, kSliderBtnWH, kSliderBtnWH);
+    [self addSubview:self.loadingBarView];
     
     // 添加点击手势
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
@@ -151,6 +173,11 @@ static const CGFloat kAnimate = 0.3;
     self.bufferProgressView.backgroundColor = bufferTrackTintColor;
 }
 
+- (void)setLoadingTintColor:(UIColor *)loadingTintColor {
+    _loadingTintColor = loadingTintColor;
+    self.loadingBarView.backgroundColor = loadingTintColor;
+}
+
 - (void)setMaximumTrackImage:(UIImage *)maximumTrackImage {
     _maximumTrackImage = maximumTrackImage;
     self.bgProgressView.image = maximumTrackImage;
@@ -169,28 +196,31 @@ static const CGFloat kAnimate = 0.3;
     self.bufferTrackTintColor = [UIColor clearColor];
 }
 
-- (void)setValue:(float)value {
-    _value = value;
-    CGFloat finishValue  = self.bgProgressView.width * value;
-    self.sliderProgressView.width = finishValue;
-    self.sliderBtn.left = (self.width - self.sliderBtn.width) * value;
-    self.lastPoint = self.sliderBtn.center;
-}
-
-- (void)setBufferValue:(float)bufferValue {
-    _bufferValue = bufferValue;
-    CGFloat finishValue = self.bgProgressView.width * bufferValue;
-    self.bufferProgressView.width = finishValue;
-}
-
 - (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state {
     [self.sliderBtn setBackgroundImage:image forState:state];
-    [self.sliderBtn sizeToFit];
 }
 
 - (void)setThumbImage:(UIImage *)image forState:(UIControlState)state {
     [self.sliderBtn setImage:image forState:state];
-    [self.sliderBtn sizeToFit];
+}
+
+- (void)setValue:(float)value {
+    if (isnan(value)) return;
+    value = MIN(1.0, value);
+    _value = value;
+    if (self.sliderBtn.hidden) {
+        self.sliderProgressView.zf_width = self.bgProgressView.zf_width * value;
+    } else {
+        self.sliderBtn.zf_centerX = self.bgProgressView.zf_width * value;
+        self.sliderProgressView.zf_width = self.sliderBtn.zf_centerX;
+    }
+}
+
+- (void)setBufferValue:(float)bufferValue {
+    if (isnan(bufferValue)) return;
+    bufferValue = MIN(1.0, bufferValue);
+    _bufferValue = bufferValue;
+    self.bufferProgressView.zf_width = self.bgProgressView.zf_width * bufferValue;
 }
 
 - (void)setAllowTapped:(BOOL)allowTapped {
@@ -201,10 +231,11 @@ static const CGFloat kAnimate = 0.3;
 }
 
 - (void)setSliderHeight:(CGFloat)sliderHeight {
+    if (isnan(sliderHeight)) return;
     _sliderHeight = sliderHeight;
-    self.bgProgressView.height     = sliderHeight;
-    self.bufferProgressView.height = sliderHeight;
-    self.sliderProgressView.height = sliderHeight;
+    self.bgProgressView.zf_height     = sliderHeight;
+    self.bufferProgressView.zf_height = sliderHeight;
+    self.sliderProgressView.zf_height = sliderHeight;
 }
 
 - (void)setIsHideSliderBlock:(BOOL)isHideSliderBlock {
@@ -212,11 +243,55 @@ static const CGFloat kAnimate = 0.3;
     // 隐藏滑块，滑杆不可点击
     if (isHideSliderBlock) {
         self.sliderBtn.hidden = YES;
-        self.bgProgressView.left     = 0;
-        self.bufferProgressView.left = 0;
-        self.sliderProgressView.left = 0;
+        self.bgProgressView.zf_left     = 0;
+        self.bufferProgressView.zf_left = 0;
+        self.sliderProgressView.zf_left = 0;
         self.allowTapped = NO;
     }
+}
+
+/**
+ *  Starts animation of the spinner.
+ */
+- (void)startAnimating {
+    if (self.isLoading) return;
+    self.isLoading = YES;
+    self.bufferProgressView.hidden = YES;
+    self.sliderProgressView.hidden = YES;
+    self.sliderBtn.hidden = YES;
+    self.loadingBarView.hidden = NO;
+    
+    [self.loadingBarView.layer removeAllAnimations];
+    CAAnimationGroup *animationGroup = [[CAAnimationGroup alloc] init];
+    animationGroup.duration = 0.4;
+    animationGroup.beginTime = CACurrentMediaTime() + 0.4;
+    animationGroup.repeatCount = MAXFLOAT;
+    animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    
+    CABasicAnimation *scaleAnimation = [CABasicAnimation animation];
+    scaleAnimation.keyPath = @"transform.scale.x";
+    scaleAnimation.fromValue = @(1000.0f);
+    scaleAnimation.toValue = @(self.zf_width * 10);
+    
+    CABasicAnimation *alphaAnimation = [CABasicAnimation animation];
+    alphaAnimation.keyPath = @"opacity";
+    alphaAnimation.fromValue = @(1.0f);
+    alphaAnimation.toValue = @(0.0f);
+    
+    [animationGroup setAnimations:@[scaleAnimation, alphaAnimation]];
+    [self.loadingBarView.layer addAnimation:animationGroup forKey:@"loading"];
+}
+
+/**
+ *  Stops animation of the spinnner.
+ */
+- (void)stopAnimating {
+    self.isLoading = NO;
+    self.bufferProgressView.hidden = NO;
+    self.sliderProgressView.hidden = NO;
+    self.sliderBtn.hidden = self.isHideSliderBlock;
+    self.loadingBarView.hidden = YES;
+    [self.loadingBarView.layer removeAllAnimations];
 }
 
 #pragma mark - User Action
@@ -228,7 +303,7 @@ static const CGFloat kAnimate = 0.3;
         }
             break;
         case UIGestureRecognizerStateChanged: {
-            [self sliderBtnDragMoving:self.sliderBtn point:[gesture locationInView:self]];
+            [self sliderBtnDragMoving:self.sliderBtn point:[gesture locationInView:self.bgProgressView]];
         }
             break;
         case UIGestureRecognizerStateEnded: {
@@ -266,23 +341,23 @@ static const CGFloat kAnimate = 0.3;
     // 点击的位置
     CGPoint point = touchPoint;
     // 获取进度值 由于btn是从 0-(self.width - btn.width)
-    float value = (point.x - btn.width * 0.5) / (self.width - btn.width);
+    CGFloat value = (point.x - btn.zf_width * 0.5) / self.bgProgressView.zf_width;
     // value的值需在0-1之间
     value = value >= 1.0 ? 1.0 : value <= 0.0 ? 0.0 : value;
     if (self.value == value) return;
     self.isForward = self.value < value;
-    [self setValue:value];
+    self.value = value;
     if ([self.delegate respondsToSelector:@selector(sliderValueChanged:)]) {
         [self.delegate sliderValueChanged:value];
     }
 }
 
 - (void)tapped:(UITapGestureRecognizer *)tap {
-    CGPoint point = [tap locationInView:self];
+    CGPoint point = [tap locationInView:self.bgProgressView];
     // 获取进度
-    float value = (point.x - self.bgProgressView.left) * 1.0 / self.bgProgressView.width;
+    CGFloat value = (point.x - self.sliderBtn.zf_width * 0.5) * 1.0 / self.bgProgressView.zf_width;
     value = value >= 1.0 ? 1.0 : value <= 0 ? 0 : value;
-    [self setValue:value];
+    self.value = value;
     if ([self.delegate respondsToSelector:@selector(sliderTapped:)]) {
         [self.delegate sliderTapped:value];
     }
@@ -326,6 +401,15 @@ static const CGFloat kAnimate = 0.3;
         [_sliderBtn setAdjustsImageWhenHighlighted:NO];
     }
     return _sliderBtn;
+}
+
+- (UIView *)loadingBarView {
+    if (!_loadingBarView) {
+        _loadingBarView = [[UIView alloc] init];
+        _loadingBarView.backgroundColor = [UIColor whiteColor];
+        _loadingBarView.hidden = YES;
+    }
+    return _loadingBarView;
 }
 
 @end

@@ -71,6 +71,8 @@
 
 @property (nonatomic, assign) ZFRotateType roateType;
 
+@property (nonatomic, strong) UIView *blackView;
+
 @end
 
 @implementation ZFOrientationObserver
@@ -78,8 +80,9 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _duration = 0.25;
+        _duration = 0.30;
         _fullScreenMode = ZFFullScreenModeLandscape;
+        _supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
         _allowOrentitaionRotation = YES;
         _roateType = ZFRotateTypeNormal;
     }
@@ -99,14 +102,15 @@
     self.playerViewTag = playerViewTag;
 }
 
-- (void)cellSmallModelRotateView:(UIView *)rotateView containerView:(UIView *)containerView {
-    self.roateType = ZFRotateTypeCellSmall;
+- (void)cellOtherModelRotateView:(UIView *)rotateView containerView:(UIView *)containerView {
+    self.roateType = ZFRotateTypeCellOther;
     self.view = rotateView;
     self.containerView = containerView;
 }
 
 - (void)dealloc {
     [self removeDeviceOrientationObserver];
+    [self.blackView removeFromSuperview];
 }
 
 - (void)addDeviceOrientationObserver {
@@ -134,19 +138,25 @@
     
     UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
     // Determine that if the current direction is the same as the direction you want to rotate, do nothing
-    if (_currentOrientation == currentOrientation && ![self isNeedAdaptiveiOS8Rotation]) return;
+    if (_currentOrientation == currentOrientation && ![self isNeedAdaptiveiOS8Rotation] && !self.forceDeviceOrientation) return;
     
     switch (_currentOrientation) {
         case UIInterfaceOrientationPortrait: {
-            [self enterLandscapeFullScreen:UIInterfaceOrientationPortrait animated:YES];
+            if ([self isSupportedPortrait]) {
+                [self enterLandscapeFullScreen:UIInterfaceOrientationPortrait animated:YES];
+            }
         }
             break;
         case UIInterfaceOrientationLandscapeLeft: {
-            [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeLeft animated:YES];
+            if ([self isSupportedLandscapeLeft]) {
+                [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeLeft animated:YES];
+            }
         }
             break;
         case UIInterfaceOrientationLandscapeRight: {
-            [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
+             if ([self isSupportedLandscapeRight]) {
+                 [self enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
+             }
         }
             break;
         default: break;
@@ -158,7 +168,7 @@
     _currentOrientation = orientation;
     UIView *superview = nil;
     CGRect frame;
-    if ([self isNeedAdaptiveiOS8Rotation]) {
+    if ([self isNeedAdaptiveiOS8Rotation] || self.forceDeviceOrientation) {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
             if (self.fullScreen) return;
             superview = self.fullScreenContainerView;
@@ -168,6 +178,7 @@
             if (self.roateType == ZFRotateTypeCell) superview = [self.cell viewWithTag:self.playerViewTag];
             else superview = self.containerView;
             self.fullScreen = NO;
+            if (self.blackView.superview != nil) [self.blackView removeFromSuperview];
         }
         if (self.orientationWillChange) self.orientationWillChange(self, self.isFullScreen);
         
@@ -178,6 +189,10 @@
                 [self.view layoutIfNeeded];
                 [self interfaceOrientation:orientation];
             } completion:^(BOOL finished) {
+                if (self.fullScreen) {
+                    [superview insertSubview:self.blackView belowSubview:self.view];
+                    self.blackView.frame = superview.bounds;
+                }
                 if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
             }];
         } else {
@@ -186,6 +201,10 @@
             [UIView animateWithDuration:0 animations:^{
                 [self interfaceOrientation:orientation];
             }];
+            if (self.fullScreen) {
+                [superview insertSubview:self.blackView belowSubview:self.view];
+                self.blackView.frame = superview.bounds;
+            }
             if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
         }
         return;
@@ -203,10 +222,14 @@
         if (self.roateType == ZFRotateTypeCell) superview = [self.cell viewWithTag:self.playerViewTag];
         else superview = self.containerView;
         self.fullScreen = NO;
+        if (self.blackView.superview != nil) [self.blackView removeFromSuperview];
     }
     frame = [superview convertRect:superview.bounds toView:self.fullScreenContainerView];
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [UIApplication sharedApplication].statusBarOrientation = orientation;
+#pragma clang diagnostic pop
     
     /// 处理8.0系统键盘
     if (SysVersion >= 8.0 && SysVersion < 9.0) {
@@ -233,6 +256,10 @@
         } completion:^(BOOL finished) {
             [superview addSubview:self.view];
             self.view.frame = superview.bounds;
+            if (self.fullScreen) {
+                [superview insertSubview:self.blackView belowSubview:self.view];
+                self.blackView.frame = superview.bounds;
+            }
             if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
         }];
     } else {
@@ -240,6 +267,10 @@
         [superview addSubview:self.view];
         self.view.frame = superview.bounds;
         [self.view layoutIfNeeded];
+        if (self.fullScreen) {
+            [superview insertSubview:self.blackView belowSubview:self.view];
+            self.blackView.frame = superview.bounds;
+        }
         if (self.orientationDidChanged) self.orientationDidChanged(self, self.isFullScreen);
     }
 }
@@ -323,6 +354,31 @@
     }
 }
 
+/// 是否支持 Portrait
+- (BOOL)isSupportedPortrait {
+    return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskPortrait;
+}
+
+/// 是否支持 LandscapeLeft
+- (BOOL)isSupportedLandscapeLeft {
+    return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskLandscapeLeft;
+}
+
+/// 是否支持 LandscapeRight
+- (BOOL)isSupportedLandscapeRight {
+    return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskLandscapeRight;
+}
+
+- (UIView *)blackView {
+    if (!_blackView) {
+        _blackView = [UIView new];
+        _blackView.backgroundColor = [UIColor blackColor];
+    }
+    return _blackView;
+}
+
+#pragma mark - setter
+
 - (void)setLockedScreen:(BOOL)lockedScreen {
     _lockedScreen = lockedScreen;
     if (lockedScreen) {
@@ -350,4 +406,3 @@
 }
 
 @end
-

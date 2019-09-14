@@ -8,6 +8,7 @@
 #import "UIView+EasyLayout.h"
 
 @implementation UIView (EasyLayout)
+
 @dynamic top;
 @dynamic left;
 @dynamic bottom;

@@ -25,14 +25,10 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#define iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+/// iPhoneX  iPhoneXS  iPhoneXS Max  iPhoneXR 机型判断
+#define iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? ((NSInteger)(([[UIScreen mainScreen] currentMode].size.height/[[UIScreen mainScreen] currentMode].size.width)*100) == 216) : NO)
 
-// 图片路径
-#define ZFPlayer_SrcName(file)               [@"ZFPlayer.bundle" stringByAppendingPathComponent:file]
-
-#define ZFPlayer_FrameworkSrcName(file)      [@"Frameworks/ZFPlayer.framework/ZFPlayer.bundle" stringByAppendingPathComponent:file]
-
-#define ZFPlayer_Image(file)                 [UIImage imageNamed:ZFPlayer_SrcName(file)] ? :[UIImage imageNamed:ZFPlayer_FrameworkSrcName(file)]
+#define ZFPlayer_Image(file)                 [ZFUtilities imageNamed:file]
 
 // 屏幕的宽
 #define ZFPlayer_ScreenWidth                 [[UIScreen mainScreen] bounds].size.width
@@ -44,6 +40,8 @@
 + (NSString *)convertTimeSecond:(NSInteger)timeSecond;
 
 + (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
+
++ (UIImage *)imageNamed:(NSString *)name;
 
 @end
 

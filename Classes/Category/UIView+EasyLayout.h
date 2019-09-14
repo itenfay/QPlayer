@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 
 @interface UIView (EasyLayout)
+
 @property (assign, nonatomic) CGFloat top;
 @property (assign, nonatomic) CGFloat left;
 @property (assign, nonatomic) CGFloat bottom;

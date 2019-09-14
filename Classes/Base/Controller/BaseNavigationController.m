@@ -21,8 +21,8 @@
 
 - (void)setDefaultBarStyle {
     [self.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
-    [self.navigationBar setShadowImage:[UIImage new]];
-    [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:18], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    [self.navigationBar setShadowImage:[[UIImage alloc] init]];
+    [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
 }
 
 - (void)didReceiveMemoryWarning {

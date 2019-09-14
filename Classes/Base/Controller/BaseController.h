@@ -23,11 +23,22 @@
 - (void)setProgressViewAddedToWebView;
 // 将进度条添加导航条上
 - (void)setProgressViewAddedToNavigationBar;
+// 移除进度条
+- (void)removeProgressView;
 
 // 加载网页内容
 - (void)loadWebContents:(NSString *)urlString;
 
 // 加载网页请求
 - (void)loadWebUrlRequest:(NSURLRequest *)urlRequest;
+
+// 移除 cell.contentView 所有子视图
+- (void)removeCellAllSubviews:(UITableViewCell *)cell;
+
+// 自定义 toob bar
+- (UIImageView *)buildCustomToolBar:(SEL)selector;
+
+// 获取纯图像
+- (UIImage *)pureImage:(CGRect)rect cornerRadius:(CGFloat)cornerRadius backgroudColor:(UIColor *)backgroudColor borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor;
 
 @end

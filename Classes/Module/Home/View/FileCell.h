@@ -7,7 +7,7 @@
 
 #import "BaseCell.h"
 
-#define FileCellHeight 90.f
+#define FileCellHeight    90.f
 
 @interface FileCell : BaseCell
 

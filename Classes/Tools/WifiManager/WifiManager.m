@@ -25,7 +25,7 @@
     if (self) {
         _httpServer = [[HTTPServer alloc] init];
         [_httpServer setType:@"_http._tcp."];
-        [_httpServer setPort:63425];
+        [_httpServer setPort:6688];
         [_httpServer setName:@"CocoaWebResource"];
         [_httpServer setupBuiltInDocroot];
     }

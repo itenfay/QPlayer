@@ -21,6 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 
 @implementation UITabBarController (ZFPlayerRotation)
@@ -48,7 +49,7 @@
 
 - (NSInteger)zf_selectedIndex {
     NSInteger index = [self zf_selectedIndex];
-    if (index > self.viewControllers.count) { return 0; }
+    if (index > self.viewControllers.count) return 0;
     return index;
 }
 

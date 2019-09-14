@@ -29,16 +29,16 @@
 
 @interface ZFPlayerLogManager : NSObject
 
-// 设置日志输出状态
+// Set the log output status.
 + (void)setLogEnable:(BOOL)enable;
 
-// 获取日志输出状态
+// Gets the log output status.
 + (BOOL)getLogEnable;
 
-/// 版本
+/// Get ZFPlayer version.
 + (NSString *)version;
 
-// 日志输出方法
+// Log output method.
 + (void)logWithFunction:(const char *)function lineNumber:(int)lineNumber formatString:(NSString *)formatString;
 
 @end

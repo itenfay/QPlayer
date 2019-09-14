@@ -9,9 +9,6 @@
 #define QPPchFile_h
 
 #import "AppDelegate.h"
-
-#pragma mark - Header
-
 #import "QPMacros.h"
 
 #pragma mark - Category

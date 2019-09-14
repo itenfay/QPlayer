@@ -7,97 +7,102 @@
 
 #import "SearchController.h"
 #import "DYFWebProgressView.h"
+#import "VideoPlayerController.h"
+#import "OCGumbo.h"
+#import "OCGumbo+Query.h"
 
-#define SCToobBarHeight 50.f
+#define SCToobBarHeight    50.f
 
-@interface SearchController () <UITextFieldDelegate, UIWebViewDelegate, PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
+@interface SearchController () <UITextFieldDelegate, UIWebViewDelegate, UIScrollViewDelegate, PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
 @property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, strong) NSURL *requestURL;
 @end
 
 @implementation SearchController
 
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    return UIStatusBarAnimationSlide;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    [self addObserver];
     [self setNavigationItems];
-    [self addWebToolbar];
     
     [self initWebView];
+    [self setProgressViewAddedToNavigationBar];
     
-    [self setProgressViewAddedToWebView];
+    [self loadDefaultRequest];
+    [self buildWebToolBar];
 }
 
 - (void)setNavigationItems {
-    UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
-    tf.placeholder = [NSString stringWithFormat:@"请输入要搜索的内容或网址"];
-    tf.borderStyle = UITextBorderStyleRoundedRect;
+    UITextField *tf  = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
+    //tf.placeholder = [NSString stringWithFormat:@"请输入要搜索的内容或网址"];
+    tf.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入要搜索的内容或网址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor grayColor]}];
+    tf.borderStyle     = UITextBorderStyleRoundedRect;
     tf.clearButtonMode = UITextFieldViewModeAlways;
-    tf.returnKeyType = UIReturnKeyGo;
-    tf.delegate = self;
+    tf.returnKeyType   = UIReturnKeyGo;
+    tf.delegate        = self;
+    tf.font            = [UIFont systemFontOfSize:16.f];
+    tf.textColor       = UIColor.blackColor;
     self.navigationItem.titleView = tf;
     
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    rightBtn.frame = CGRectMake(0, 0, 40, 30);
+    rightBtn.frame = CGRectMake(0, 0, 30, 30);
+    rightBtn.showsTouchWhenHighlighted = YES;
     [rightBtn setTitle:@"搜索" forState:UIControlStateNormal];
-    [rightBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+    [rightBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:16.f]];
     [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rightBtn setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-    [rightBtn addTarget:self action:@selector(wbSearch) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+    [rightBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [rightBtn addTarget:self action:@selector(presentSearchViewController:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
     
     UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     spaceItem.width = 15;
     
-    self.navigationItem.rightBarButtonItems = @[item, spaceItem];
+    self.navigationItem.rightBarButtonItems = @[rightItem, spaceItem];
 }
 
-- (void)addWebToolbar {
-    UIToolbar *toolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.height - QPTabbarHeight - SCToobBarHeight, self.view.width, SCToobBarHeight)];
-    toolbar.tag = 20;
-    [toolbar setBarStyle:UIBarStyleDefault];
+- (void)loadDefaultRequest {
+    NSString *urlStr = @"https://www.baidu.com";
     
-    NSArray *imgNames = @[@"ic_browser_reward_13x21", @"ic_browser_forward_13x21", @"ic_browser_refresh_24x21", @"ic_browser_stop_21x21"];
-    CGFloat btnWidth = 30;
-    CGFloat btnHeight = 30;
-    NSUInteger count = imgNames.count;
-    CGFloat itemFixedSpace = (toolbar.width - (btnWidth*count)) / (count + 1) - 5;
+    UITextField *tf = (UITextField *)self.navigationItem.titleView;
+    tf.text = urlStr;
     
-    NSMutableArray *mItems = [NSMutableArray arrayWithCapacity:0];
-    for (NSUInteger i = 0; i < count; i++) {
-        UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        space.width = itemFixedSpace;
-        [mItems addObject:space];
-        
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.tag = 10 + i;
-        btn.showsTouchWhenHighlighted = YES;
-        btn.frame = CGRectMake(0, 0, btnWidth, btnHeight);
-        [btn setImage:QPImageNamed(imgNames[i]) forState:UIControlStateNormal];
-        [btn addTarget:self action:@selector(webControlAtcion:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
-        [mItems addObject:item];
-    }
-    
-    [toolbar setItems:mItems];
-    
-    toolbar.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleHeight);
-    
-    [self.view addSubview:toolbar];
+    [self loadRequest:urlStr];
 }
 
 - (void)initWebView {
-    UIToolbar *bar = [self.view viewWithTag:20];
-    
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, bar.width, bar.top + 5)];
-    self.webView.backgroundColor = QPColorRGB(243, 243, 243);
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, self.view.height - QPTabBarHeight)];
+    self.webView.backgroundColor = QPColorFromRGB(243, 243, 243);
     self.webView.opaque = NO;
     self.webView.delegate = self;
     self.webView.scalesPageToFit = YES;
     self.webView.allowsInlineMediaPlayback = YES;
+    self.webView.scrollView.delegate = self;
+    self.webView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin |
+                                     UIViewAutoresizingFlexibleWidth      |
+                                     UIViewAutoresizingFlexibleTopMargin  |
+                                     UIViewAutoresizingFlexibleHeight);
     
-    self.webView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleHeight);
     [self.view addSubview:self.webView];
+}
+
+- (void)buildWebToolBar {
+    UIImageView *toolBar = [self buildCustomToolBar:@selector(controlWebNavigation:)];
+    toolBar.tag = 999;
+    toolBar.alpha = 0.f;
+    [self.view addSubview:toolBar];
+}
+
+- (UIImageView *)webToolBar {
+    return [self.view viewWithTag:999];
 }
 
 - (void)loadRequest:(NSString *)url {
@@ -105,36 +110,38 @@
     [self.webView loadRequest:request];
 }
 
-- (void)wbSearch {
+- (void)executeSearching {
     UITextField *tf = (UITextField *)self.navigationItem.titleView;
     [tf resignFirstResponder];
     
     if (tf.text.length > 0) {
         NSString *url = @"https://www.baidu.com";
+        NSString *lowercaseString = [tf.text lowercaseString];
         
-        NSString *lows = [tf.text lowercaseString];
-        if ([lows hasPrefix:@"http"]) {
+        if ([lowercaseString hasPrefix:@"http"] ||
+            [lowercaseString hasPrefix:@"https"]) {
             url = tf.text;
         }
-        else if ([lows hasPrefix:@"www"]) {
-            url = [NSString stringWithFormat:@"http://%@", tf.text];
+        else if ([lowercaseString hasPrefix:@"www"]) {
+            url = [NSString stringWithFormat:@"https://%@", tf.text];
         }
         else {
             url = [url stringByAppendingFormat:@"/s?wd=%@&cl=3", tf.text];
         }
         
         [self loadRequest:[self stringByAddingPercentEncoding:url]];
+        
+        tf.text = url;
     }
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    [self search];
     return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.returnKeyType == UIReturnKeyGo) {
-        [self wbSearch];
+        [self executeSearching];
     }
     return [textField resignFirstResponder];
 }
@@ -144,8 +151,16 @@
     return [string stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
 }
 
+#pragma make - UIWebViewDelegate
+
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     BOOL allowsAccess = [super webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+    
+    self.requestURL = request.URL;
+    
+    UITextField *tf = (UITextField *)self.navigationItem.titleView;
+    tf.text = self.requestURL.absoluteString;
+    
     return allowsAccess;
 }
 
@@ -161,47 +176,121 @@
     [super webView:webView didFailLoadWithError:error];
 }
 
-- (void)wbGoBack {
+- (void)parseHtmlToGrabVideoUrl {
+    NSString *urlString  = self.requestURL.absoluteString;
+    QPLog(@"urlString: %@", urlString);
+    
+    //    NSError *error       = nil;
+    //    NSString *htmlString = [[NSString stringWithContentsOfURL:self.requestURL encoding:NSUTF8StringEncoding error:&error] copy];
+    //
+    //    if (htmlString.length > 0) {
+    //
+    //        OCGumboDocument *document  = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
+    //        OCGumboElement *title_elem = (OCGumboElement *)document.Query(@"head").find(@"title").first();
+    //        NSString *title = title_elem.html();
+    //
+    //        OCGumboElement *src_elem   = (OCGumboElement *)document.Query(@"body").find(@"iframe").first();
+    //        NSString *src   = src_elem.attr(@"src");
+    //
+    //        if (src.length > 0) {
+    //            [self playVideo:title ?: @"" url:src];
+    //        }
+    //    }
+}
+
+- (void)playVideo:(NSString *)title url:(NSString *)urlString {
+    [self webGoBack];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        VideoPlayerController *vpc = [[VideoPlayerController alloc] init];
+        vpc.video_name   = title;
+        vpc.video_urlstr = urlString;
+        vpc.hidesBottomBarWhenPushed = YES;
+        
+        [self.navigationController pushViewController:vpc animated:YES];
+    });
+}
+
+#pragma make - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    UIView *toolBar = [self webToolBar];
+    if (toolBar.alpha == 0.f) {
+        [UIView animateWithDuration:0.5 animations:^{
+            toolBar.alpha = 1.f;
+        }];
+    }
+    [self cancelPerformRequestForHidingToolBar];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self delayToHideToolBar];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        [self delayToHideToolBar];
+    }
+}
+
+- (void)delayToHideToolBar {
+    [self performSelector:@selector(hideToolBar) withObject:nil afterDelay:10.0];
+}
+
+- (void)hideToolBar {
+    UIView *toolBar = [self webToolBar];
+    if (toolBar.alpha == 1.f) {
+        [UIView animateWithDuration:0.5 animations:^{
+            toolBar.alpha = 0.f;
+        }];
+    }
+}
+
+- (void)cancelPerformRequestForHidingToolBar {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideToolBar) object:nil];
+}
+
+- (void)webGoBack {
     if ([self.webView canGoBack]) {
         [self.webView goBack];
     }
 }
 
-- (void)wbGoForward {
+- (void)webGoForward {
     if ([self.webView canGoForward]) {
         [self.webView goForward];
     }
 }
 
-- (void)wbReload {
+- (void)webReload {
     [self.webView reload];
 }
 
-- (void)wbStopLoading {
+- (void)webStopLoading {
     [self.webView stopLoading];
 }
 
-- (void)webControlAtcion:(UIButton *)sender {
-    NSUInteger index = sender.tag - 10;
+- (void)controlWebNavigation:(UIButton *)sender {
+    NSUInteger index = sender.tag - 100;
     
     switch (index) {
         case 0: {
-            [self wbGoBack];
+            [self webGoBack];
             break;
         }
             
         case 1: {
-            [self wbGoForward];
+            [self webGoForward];
             break;
         }
             
         case 2: {
-            [self wbReload];
+            [self webReload];
             break;
         }
             
         case 3: {
-            [self wbStopLoading];
+            [self parseHtmlToGrabVideoUrl];
             break;
         }
             
@@ -211,42 +300,45 @@
 }
 
 - (void)addObserver {
-    [QPNotiDefaultCenter addObserver:self selector:@selector(beginFullScreen) name:UIWindowDidBecomeVisibleNotification object:nil]; //进入全屏
-    [QPNotiDefaultCenter addObserver:self selector:@selector(endFullScreen) name:UIWindowDidBecomeHiddenNotification object:nil]; //退出全屏
+    [QPNotiDefaultCenter addObserver:self selector:@selector(beginFullScreen) name:UIWindowDidBecomeVisibleNotification object:nil]; // 进入全屏
+    [QPNotiDefaultCenter addObserver:self selector:@selector(endFullScreen) name:UIWindowDidBecomeHiddenNotification object:nil];  // 退出全屏
 }
 
 - (void)removeObserver {
-    [QPNotiDefaultCenter removeObserver:self];
+    [QPNotiDefaultCenter removeObserver:self name:UIWindowDidBecomeVisibleNotification object:nil];
+    [QPNotiDefaultCenter removeObserver:self name:UIWindowDidBecomeHiddenNotification object:nil];
 }
 
-#pragma - mark 进入全屏
-
+// 进入全屏
 - (void)beginFullScreen {
-    QPSharedApp.statusBarHidden = NO;
+    if (@available(iOS 9.0, *)) {} else {
+        QPSharedApp.statusBarHidden = NO;
+    }
 }
 
-#pragma - mark 退出全屏
-
+//  退出全屏
 - (void)endFullScreen {
-    QPSharedApp.statusBarHidden = NO;
+    if (@available(iOS 9.0, *)) {} else {
+        QPSharedApp.statusBarHidden = NO;
+    }
 }
 
-- (void)search {
+- (void)presentSearchViewController:(UIButton *)sender {
     PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:nil searchBarPlaceholder:@"请输入要搜索的内容或网址" didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
         QPLog(@"searchText: %@", searchText);
     }];
     
-    searchViewController.hotSearchStyle = PYHotSearchStyleColorfulTag;
+    searchViewController.hotSearchStyle     = PYHotSearchStyleColorfulTag;
     searchViewController.searchHistoryStyle = PYSearchHistoryStyleDefault;
     
-    searchViewController.delegate = self;
+    searchViewController.delegate   = self;
     searchViewController.dataSource = self;
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:searchViewController];
     [nav.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
     [nav.navigationBar setShadowImage:[UIImage new]];
     [nav.navigationBar setTintColor:[UIColor whiteColor]];
-    [nav.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:18.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    [nav.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
     [self presentViewController:nav animated:YES completion:nil];
 }
@@ -284,7 +376,7 @@ didSelectSearchHistoryAtIndex:(NSInteger)index
         [self searchSuggestionsWithSearchText:searchText];
         [self didClickCancel:searchViewController];
         
-        [self wbSearch];
+        [self executeSearching];
     }
 }
 

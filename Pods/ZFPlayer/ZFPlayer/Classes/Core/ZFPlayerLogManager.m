@@ -24,7 +24,6 @@
 
 #import "ZFPlayerLogManager.h"
 
-// 默认值为NO
 static BOOL kLogEnable = NO;
 
 @implementation ZFPlayerLogManager
@@ -38,7 +37,7 @@ static BOOL kLogEnable = NO;
 }
 
 + (NSString *)version {
-    return @"3.1.4";
+    return @"3.2.12";
 }
 
 + (void)logWithFunction:(const char *)function lineNumber:(int)lineNumber formatString:(NSString *)formatString {

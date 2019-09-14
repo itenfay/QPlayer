@@ -1,21 +1,21 @@
 PODS:
   - FDFullscreenPopGesture (1.1)
-  - KSYMediaPlayer_iOS/KSYMediaPlayer_vod (3.0.3)
+  - KSYMediaPlayer (3.0.4)
   - MBProgressHUD (0.9.2)
-  - "MBProgressHUD+JDragon (0.0.3)":
+  - "MBProgressHUD+JDragon (0.0.4)":
     - MBProgressHUD (~> 0.9.2)
-  - MJRefresh (3.1.15.3)
+  - MJRefresh (3.1.17)
   - PYSearch (0.8.9)
   - SVBlurView (0.0.1)
-  - ZFPlayer (3.1.5):
-    - ZFPlayer/Core (= 3.1.5)
-  - ZFPlayer/AVPlayer (3.1.5):
+  - ZFPlayer (3.2.13):
+    - ZFPlayer/Core (= 3.2.13)
+  - ZFPlayer/AVPlayer (3.2.13):
     - ZFPlayer/Core
-  - ZFPlayer/ControlView (3.1.5):
+  - ZFPlayer/ControlView (3.2.13):
     - ZFPlayer/Core
-  - ZFPlayer/Core (3.1.5)
-  - ZFPlayer/KSYMediaPlayer (3.1.5):
-    - KSYMediaPlayer_iOS/KSYMediaPlayer_vod
+  - ZFPlayer/Core (3.2.13)
+  - ZFPlayer/KSYMediaPlayer (3.2.13):
+    - KSYMediaPlayer
     - ZFPlayer/Core
 
 DEPENDENCIES:
@@ -24,7 +24,7 @@ DEPENDENCIES:
   - MJRefresh (~> 3.1.12)
   - PYSearch (~> 0.8.8)
   - SVBlurView (~> 0.0.1)
-  - ZFPlayer (~> 3.1.5)
+  - ZFPlayer
   - ZFPlayer/AVPlayer
   - ZFPlayer/ControlView
   - ZFPlayer/KSYMediaPlayer
@@ -32,7 +32,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FDFullscreenPopGesture
-    - KSYMediaPlayer_iOS
+    - KSYMediaPlayer
     - MBProgressHUD
     - "MBProgressHUD+JDragon"
     - MJRefresh
@@ -42,14 +42,14 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
-  KSYMediaPlayer_iOS: bd163c277487e99df58941f10f090af2fb53fd6d
+  KSYMediaPlayer: 795fad3638981904805bec260898f805fb36c1c5
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
-  "MBProgressHUD+JDragon": 74b18a89dac13cc921df0e2b0c2945b29b15e7ab
-  MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
+  "MBProgressHUD+JDragon": 51958736b3a9f97adc176371544ffa257a0ba058
+  MJRefresh: ee5b68f639775462faba4db0fd243baf4d42c2cf
   PYSearch: 522b548196bc0457d6f47e30f46c4371af3ccd27
   SVBlurView: 04d65da92afd5cf3fc9ed3348181b0e0d6b1493c
-  ZFPlayer: 8273a62fcc76f451db043ce640434d5f8799c09a
+  ZFPlayer: b2ba40c924e1b9a7f0a670632c4235ffbe6ee055
 
-PODFILE CHECKSUM: ac646300e54c02b05c4e6d2baa409143e7a86ac4
+PODFILE CHECKSUM: 2843511773135e129da88e33968245709d4d0993
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.2

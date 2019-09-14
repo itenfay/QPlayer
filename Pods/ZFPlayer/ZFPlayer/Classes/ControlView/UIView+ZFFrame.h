@@ -26,20 +26,20 @@
 
 @interface UIView (ZFFrame)
 
-@property (nonatomic) CGFloat x;
-@property (nonatomic) CGFloat y;
-@property (nonatomic) CGFloat width;
-@property (nonatomic) CGFloat height;
+@property (nonatomic) CGFloat zf_x;
+@property (nonatomic) CGFloat zf_y;
+@property (nonatomic) CGFloat zf_width;
+@property (nonatomic) CGFloat zf_height;
 
-@property (nonatomic) CGFloat top;
-@property (nonatomic) CGFloat bottom;
-@property (nonatomic) CGFloat left;
-@property (nonatomic) CGFloat right;
+@property (nonatomic) CGFloat zf_top;
+@property (nonatomic) CGFloat zf_bottom;
+@property (nonatomic) CGFloat zf_left;
+@property (nonatomic) CGFloat zf_right;
 
-@property (nonatomic) CGFloat centerX;
-@property (nonatomic) CGFloat centerY;
+@property (nonatomic) CGFloat zf_centerX;
+@property (nonatomic) CGFloat zf_centerY;
 
-@property (nonatomic) CGPoint origin;
-@property (nonatomic) CGSize  size;
+@property (nonatomic) CGPoint zf_origin;
+@property (nonatomic) CGSize  zf_size;
 
 @end

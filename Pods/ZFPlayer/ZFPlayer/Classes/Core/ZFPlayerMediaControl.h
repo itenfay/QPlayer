@@ -112,6 +112,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer reachabilityChanged:(ZFReachabilityStatus)status;
 
+#pragma mark - The video size changed
+
+/**
+ When the video size changed
+ */
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer presentationSizeChanged:(CGSize)size;
+
 #pragma mark - Gesture
 
 /**
@@ -191,6 +198,11 @@ NS_ASSUME_NONNULL_BEGIN
  When the player disappearing in scrollView.
  */
 - (void)playerDisappearingInScrollView:(ZFPlayerController *)videoPlayer playerDisapperaPercent:(CGFloat)playerDisapperaPercent;
+
+/**
+ When the small float view show.
+ */
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer floatViewShow:(BOOL)show;
 
 @end
 

@@ -56,16 +56,6 @@
     self.closeBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
 }
 
-- (void)showControlView {
-    self.hidden = NO;
-    self.closeBtn.alpha = 1;
-}
-
-- (void)hideControlView {
-    self.hidden = YES;
-    self.closeBtn.alpha = 0;
-}
-
 - (void)closeBtnClick:(UIButton *)sender {
     if (self.closeClickCallback) self.closeClickCallback();
 }

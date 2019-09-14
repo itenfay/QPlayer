@@ -22,9 +22,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    self.navigationItem.title = @"本地资源";
-    
+
+    [self configureNavigationBar];
     [self initArr];
     
     [self localFileList];
@@ -32,6 +31,10 @@
     [self setupTableView];
     
     [self addMJHeader];
+}
+
+- (void)configureNavigationBar {
+    self.navigationItem.title = @"本地资源";
 }
 
 - (void)initArr {
@@ -58,12 +61,12 @@
 }
 
 - (void)setupTableView {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, QPScreenHeight - QPStatusBarAndNavigationBarHeight - QPTabbarHeight) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, self.view.height - QPTabBarHeight) style:UITableViewStylePlain];
     self.tableView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.tableView];
     
     self.tableView.dataSource = self;
-    self.tableView.delegate = self;
+    self.tableView.delegate   = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -172,7 +175,7 @@
         }
     }
 }
-*/
+ */
 
 - (void)deleteRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *fileModel = self.localFileList[indexPath.row];
@@ -196,18 +199,20 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellID = [NSString stringWithFormat:@"fileDescCell"];
+    NSString *cellID = [NSString stringWithFormat:@"FileDescCellIdentifier"];
     
     FileCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"FileCell" owner:self options:nil] firstObject];
+    } else {
+        [self removeCellAllSubviews:cell];
     }
     
     cell.backgroundColor = [UIColor clearColor];
     cell.contentView.backgroundColor = [UIColor whiteColor];
     
     FileModel *fileModel = self.localFileList[indexPath.row];
-    [self setIconForCell:cell withModel:fileModel];
+    [self setImageForCell:cell model:fileModel];
     [cell.titleLabel setText:fileModel.title];
     [self setFileSizeForCell:cell withModel:fileModel];
     [cell.dateLabel setText:fileModel.creationDate];
@@ -221,8 +226,8 @@
     FileModel *fileModel = self.localFileList[indexPath.row];
     
     VideoPlayerController *vpc = [[VideoPlayerController alloc] init];
-    vpc.v_url_str = fileModel.path;
-    vpc.v_name = fileModel.name;
+    vpc.video_urlstr = fileModel.path;
+    vpc.video_name = fileModel.name;
     vpc.hidesBottomBarWhenPushed = YES;
     
     [self.navigationController pushViewController:vpc animated:YES];
@@ -230,47 +235,69 @@
 
 - (void)setFileSizeForCell:(FileCell *)cell withModel:(FileModel *)model {
     double fsize = model.fileSize;
-    double re = fsize/1000;
+    double ret   = fsize/1000.0;
     
     NSString *text;
     
-    if (re < 1.0) {
+    if (ret < 1.0) {
         text = [NSString stringWithFormat:@"%0.1f MB", fsize];
     } else {
-        text = [NSString stringWithFormat:@"%0.1f GB", re];
+        text = [NSString stringWithFormat:@"%0.1f GB", ret];
     }
     
     [cell.sizelabel setText:text];
 }
 
-- (void)setIconForCell:(FileCell *)cell withModel:(FileModel *)model {
+- (void)setImageForCell:(FileCell *)cell model:(FileModel *)model {
     NSString *fileExt = [model.fileType lowercaseString];
-    
     NSString *imgName = nil;
     
     if ([fileExt isEqualToString:@"avi"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_avi"];
+        
     } else if ([fileExt isEqualToString:@"flv"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_flv"];
+        
     } else if ([fileExt isEqualToString:@"mkv"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_mkv"];
+        
     } else if ([fileExt isEqualToString:@"mov"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_mov"];
+        
     } else if ([fileExt isEqualToString:@"mp4"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_mp4"];
+        
     } else if ([fileExt isEqualToString:@"mpg"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_mpg"];
+        
     } else if ([fileExt isEqualToString:@"rm"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_rm"];
+        
     } else if ([fileExt isEqualToString:@"rmv"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_rmv"];
+        
     } else if ([fileExt isEqualToString:@"rmvb"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_rmv"];
+        
     } else if ([fileExt isEqualToString:@"swf"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_swf"];
+        
     } else if ([fileExt isEqualToString:@"wmv"]) {
+        
         imgName = [NSString stringWithFormat:@"icon_wmv"];
+        
     } else {
+        
         imgName = [NSString stringWithFormat:@"icon_jpg"];
     }
     

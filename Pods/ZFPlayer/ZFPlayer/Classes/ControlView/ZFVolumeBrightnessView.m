@@ -25,11 +25,7 @@
 #import "ZFVolumeBrightnessView.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFUtilities.h"
-#if __has_include(<ZFPlayer/ZFPlayer.h>)
 #import <ZFPlayer/ZFPlayer.h>
-#else
-#import "ZFPlayer.h"
-#endif
 
 @interface ZFVolumeBrightnessView ()
 
@@ -45,11 +41,8 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
         [self addSubview:self.iconImageView];
         [self addSubview:self.progressView];
-        self.layer.cornerRadius = 4;
-        self.layer.masksToBounds = YES;
         [self hideTipView];
     }
     return self;
@@ -70,7 +63,7 @@
     CGFloat margin = 10;
     
     min_x = margin;
-    min_w = 25;
+    min_w = 20;
     min_h = min_w;
     min_y = (min_view_h-min_h)/2;
     self.iconImageView.frame = CGRectMake(min_x, min_y, min_w, min_h);
@@ -80,10 +73,17 @@
     min_y = (min_view_h-min_h)/2;
     min_w = min_view_w - min_x - margin;
     self.progressView.frame = CGRectMake(min_x, min_y, min_w, min_h);
+    
+    self.layer.cornerRadius = min_view_h/2;
+    self.layer.masksToBounds = YES;
 }
 
 - (void)hideTipView {
-    self.hidden = YES;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.alpha = 0;
+    } completion:^(BOOL finished) {
+        self.hidden = YES;
+    }];
 }
 
 /// 添加系统音量view
@@ -104,12 +104,27 @@
     }
     self.progressView.progress = progress;
     self.volumeBrightnessType = volumeBrightnessType;
-    if (volumeBrightnessType == ZFVolumeBrightnessTypeVolume && progress == 0) {
-        self.iconImageView.image = ZFPlayer_Image(@"ZFPlayer_muted");
+    UIImage *playerImage = nil;
+    if (volumeBrightnessType == ZFVolumeBrightnessTypeVolume) {
+        if (progress == 0) {
+            playerImage = ZFPlayer_Image(@"ZFPlayer_muted");
+        } else if (progress > 0 && progress < 0.5) {
+            playerImage = ZFPlayer_Image(@"ZFPlayer_volume_low");
+        } else {
+            playerImage = ZFPlayer_Image(@"ZFPlayer_volume_high");
+        }
+    } else if (volumeBrightnessType == ZFVolumeBrightnessTypeumeBrightness) {
+        if (progress >= 0 && progress < 0.5) {
+            playerImage = ZFPlayer_Image(@"ZFPlayer_brightness_low");
+        } else {
+            playerImage = ZFPlayer_Image(@"ZFPlayer_brightness_high");
+        }
     }
+    self.iconImageView.image = playerImage;
     self.hidden = NO;
+    self.alpha = 1;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideTipView) object:nil];
-    [self performSelector:@selector(hideTipView) withObject:nil afterDelay:1.0];
+    [self performSelector:@selector(hideTipView) withObject:nil afterDelay:1.5];
 }
 
 - (void)setVolumeBrightnessType:(ZFVolumeBrightnessType)volumeBrightnessType {

@@ -4,17 +4,19 @@
 
 ## QPlayer
 
-播放同一WIFI网络中电脑共享的视频文件，支持wifi协议的视频文件传输，支持网页观看视频。
+&emsp; 播放同一WIFI网络中电脑共享的视频文件，支持 WiFi 协议的视频文件传输，支持网页观看视频。
 
 ## 技术交流群(群号:155353383)
 
-欢迎加入技术交流群，一起探讨技术问题。<br />
-![](https://github.com/dgynfi/QPlayer/raw/master/images/qq155353383.jpg)
+- 欢迎加入技术交流群，一起探讨技术问题。
+
+<div align=center>
+<img src="https://github.com/dgynfi/MacExcelTool/raw/master/Resources/qq155353383.jpg" width="20%" />
+</div>
 
 ## 致谢
 
-感谢QVPlayer提供图片资源和灵感。感谢[cocoa-web-resource](https://github.com/robin/cocoa-web-resource)的开源作者(robin)、[ZFPlayer](https://github.com/renzifeng/ZFPlayer)的作者(renzifeng)和其他开源作者。
-
+&emsp; 感谢 QVPlayer 提供图片资源和灵感。感谢 [cocoa-web-resource](https://github.com/robin/cocoa-web-resource) 的开源作者 (robin) 、[ZFPlayer](https://github.com/renzifeng/ZFPlayer) 的作者 (renzifeng) 和其他开源作者。
 
 ## Pods for QPlayer
 ```
@@ -23,7 +25,7 @@ pod 'SVBlurView', '~> 0.0.1'
 pod 'FDFullscreenPopGesture', '~> 1.1'
 pod 'PYSearch', '~> 0.8.8'
 pod 'MBProgressHUD+JDragon', '~> 0.0.3'
-pod 'ZFPlayer', '~> 3.1.5'
+pod 'ZFPlayer'
 pod 'ZFPlayer/ControlView'
 pod 'ZFPlayer/AVPlayer'
 pod 'ZFPlayer/KSYMediaPlayer'
@@ -31,4 +33,4 @@ pod 'ZFPlayer/KSYMediaPlayer'
 
 ## 使用
 
-在app设置中打开Wi-Fi文件传输的开关，在电脑浏览器中访问：如 http://192.168.1.34:63425 &nbsp;，网页打开后，选择文件点击上传，确保上传中不要关闭本应用并在同一wifi环境下使用本软件。
+&emsp; 在 app 设置中打开 WiFi 文件传输的开关，即可享用 WiFi 文件传输服务，在电脑浏览器中访问：如 “http://192.168.6.5:6688” ，打开网页后，选择文件，点击 upload，上传文件时，确保在同一 WiFi 环境下使用本软件并且不要关闭本应用。

@@ -2,7 +2,7 @@
 //  BaseNavigationController.m
 //
 //  Created by dyf on 2017/6/27.
-//  Copyright © 2017年 dyf. All rights reserved.
+//  Copyright © 2017 dyf. All rights reserved.
 //
 
 #import "BaseNavigationController.h"
@@ -15,11 +15,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [self setDefaultBarStyle];
+    [self setupDefaultBarStyle];
 }
 
-- (void)setDefaultBarStyle {
+- (void)setupDefaultBarStyle {
     [self.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[[UIImage alloc] init]];
     [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
@@ -27,7 +26,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

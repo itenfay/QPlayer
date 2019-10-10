@@ -1,6 +1,4 @@
-ARCHS[sdk=iphonesimulator*] = $(ARCHS_STANDARD_64_BIT)
 CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/ZFPlayer
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/KSYMediaPlayer/KSYMediaPlayer/Classes/Frameworks"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/ZFPlayer" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/ZFPlayer"
 PODS_BUILD_DIR = ${BUILD_DIR}

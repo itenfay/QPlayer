@@ -2,10 +2,11 @@
 //  AppDelegate.m
 //
 //  Created by dyf on 2017/6/29.
-//  Copyright © 2017年 dyf. All rights reserved.
+//  Copyright © 2017 dyf. All rights reserved.
 //
 
 #import "AppDelegate.h"
+#import <ZFPlayer/ZFPlayer.h>
 
 @interface AppDelegate ()
 
@@ -13,18 +14,25 @@
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
     
-    [self waitForLaunching];
+    [self extendSplashDisplayTime];
+    [self controlLog];
     
     return YES;
 }
 
-- (void)waitForLaunching {
+- (void)extendSplashDisplayTime {
     // sleep 2 seconds.
     [NSThread sleepForTimeInterval:2];
+}
+
+- (void)controlLog {
+#ifdef DEBUG
+    [ZFPlayerLogManager setLogEnable:YES];
+#else
+    [ZFPlayerLogManager setLogEnable:NO];
+#endif
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
@@ -39,6 +47,7 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    QPlayerSetPlaying(NO);
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -51,6 +60,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    QPlayerSetPlaying(NO);
 }
 
 @end

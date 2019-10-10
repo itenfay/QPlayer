@@ -2,7 +2,7 @@
 //  HistoryArchive.m
 //
 //  Created by dyf on 2017/9/1.
-//  Copyright © 2017年 dyf. All rights reserved.
+//  Copyright © 2017 dyf. All rights reserved.
 //
 
 #import "HistoryArchive.h"

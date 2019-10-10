@@ -2,7 +2,7 @@
 //  WifiManager.m
 //
 //  Created by dyf on 2017/9/1.
-//  Copyright © 2017年 dyf. All rights reserved.
+//  Copyright © 2017 dyf. All rights reserved.
 //
 
 #import "WifiManager.h"
@@ -25,22 +25,38 @@
     if (self) {
         _httpServer = [[HTTPServer alloc] init];
         [_httpServer setType:@"_http._tcp."];
-        [_httpServer setPort:6688];
+        [_httpServer setPort:8888];
         [_httpServer setName:@"CocoaWebResource"];
         [_httpServer setupBuiltInDocroot];
     }
     return self;
 }
 
+- (void)useDefaultPort8080 {
+    [self changePort:8080];
+}
+
+- (void)changePort:(UInt16)port {
+    [self operateServer:NO];
+    [_httpServer setPort:port];
+    [self operateServer:YES];
+}
+
 - (void)operateServer:(BOOL)status {
     NSError *error = nil;
+    
     if (status) {
-        BOOL serverIsRunning = [_httpServer start:&error];
-        if (!serverIsRunning) {
+        _serverStatus = [_httpServer start:&error];
+        
+        if (!_serverStatus) {
             QPLog(@"Error Starting HTTP Server: %@", error);
         }
-    } else {
-        [_httpServer stop];
+    }
+    else {
+        
+        if ([_httpServer stop]) {
+            _serverStatus = NO;
+        };
     }
 }
 

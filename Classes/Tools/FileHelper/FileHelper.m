@@ -2,26 +2,26 @@
 //  FileHelper.m
 //
 //  Created by dyf on 2017/8/28.
-//  Copyright © 2017年 dyf. All rights reserved.
+//  Copyright © 2017 dyf. All rights reserved.
 //
 
 #import "FileHelper.h"
 
-static NSString *FHCacheDirpath() {
-    NSString *path = QPAppendingPathComponent(QPCachesDirectoryPath, @"QPFiles");
+static inline NSString *FHCacheDirpath() {
+    NSString *cachePath = QPAppendingPathComponent(QPCachesDirectoryPath, @"QPlayerCacheFiles");
     
-    if (![QPFileMgr fileExistsAtPath:path]) {
+    if (![QPFileMgr fileExistsAtPath:cachePath]) {
         NSError *error = nil;
         
-        BOOL shouldCreate = [QPFileMgr createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
-        
-        if (!shouldCreate) {
-            QPLog(@"%s: %ld, %@", __func__, (long)error.code, error.localizedDescription)
+        [QPFileMgr createDirectoryAtPath:cachePath withIntermediateDirectories:YES attributes:nil error:&error];
+        if (error) {
+            QPLog(@" >>>>>>>>>> [createDirectoryAtPath] error: %@", error);
             return nil;
         }
     }
+    QPLog(@" >>>>>>>>>> cachePath: %@", cachePath);
     
-    return path;
+    return cachePath;
 }
 
 @implementation FileHelper
@@ -31,54 +31,53 @@ static NSString *FHCacheDirpath() {
 }
 
 + (NSArray *)getLocalVideoFiles {
-    NSString *path = FHCacheDirpath();
+    NSString *path    = FHCacheDirpath();
     NSArray *contents = [QPFileMgr contentsOfDirectoryAtPath:path error:nil];
     
-    NSMutableArray *mArr = [NSMutableArray arrayWithCapacity:0];
+    NSMutableArray *filesArray = [NSMutableArray arrayWithCapacity:0];
     
     for (NSString *item in contents) {
         FileModel *fileModel = [[FileModel alloc] init];
         fileModel.path = QPAppendingPathComponent(path, item);
         
         NSDictionary *fileAttrs = [QPFileMgr attributesOfItemAtPath:fileModel.path error:nil];
-        
         fileModel.fileSize = [[fileAttrs objectForKey:@"NSFileSize"] doubleValue]/1000000;
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+        [formatter setDateFormat:@"yyyy/MM/dd HH:mm:ss"]; // yyyy-MM-dd HH:mm:ss
         fileModel.modificationDate = [formatter stringFromDate:[fileAttrs objectForKey:@"NSFileModificationDate"]];
-        fileModel.creationDate = [formatter stringFromDate:[fileAttrs objectForKey:@"NSFileCreationDate"]];
+        fileModel.creationDate     = [formatter stringFromDate:[fileAttrs objectForKey:@"NSFileCreationDate"]];
         
         fileModel.name = item;
-        NSArray *range = [item componentsSeparatedByString:@"."];
-        if (range.count > 0) {
-            fileModel.fileType = [range lastObject];
+        
+        NSArray *components = [item componentsSeparatedByString:@"."];
+        if (components.count > 0) {
+            fileModel.fileType = [components lastObject];
         }
         
         fileModel.title = fileModel.name;
         
-        [mArr addObject:fileModel];
+        [filesArray addObject:fileModel];
     }
     
-    return mArr;
+    return [filesArray copy];
 }
 
 + (NSArray *)getLocalFiles {
-    NSString *path = FHCacheDirpath();
+    NSString *path    = FHCacheDirpath();
     NSArray *contents = [QPFileMgr contentsOfDirectoryAtPath:path error:nil];
     return contents;
 }
 
 + (BOOL)removeLocalFile:(NSString *)filename {
-    NSString *path = FHCacheDirpath();
+    NSString *path     = FHCacheDirpath();
     NSString *filePath = QPAppendingPathComponent(path, filename);
     
-    BOOL re = [QPFileMgr removeItemAtPath:filePath error:nil];
-    
+    BOOL ret   = [QPFileMgr removeItemAtPath:filePath error:nil];
     BOOL exist = [QPFileMgr fileExistsAtPath:filePath];
-    QPLog(@"%@ exists: %@", filename, exist ? @"YEW" : @"NO");
+    QPLog(@"%@ exists: %@", filename, exist ? @"YES" : @"NO");
     
-    return re;
+    return ret;
 }
 
 @end

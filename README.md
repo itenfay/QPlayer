@@ -11,69 +11,69 @@
 - 欢迎加入技术交流群，一起探讨技术问题。
 
 <div align=left>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/qq155353383.jpg" width="20%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/qq155353383.jpg" width="20%" />
 </div>
 
 ## 效果图
 
-- 直播 
+- 本地视频
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_pgg.jpeg" width="20%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_douyu.jpeg" width="20%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_huya.jpeg" width="20%" />
-<br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_yy.jpeg" width="20%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_bilibili.jpeg" width="20%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_chushou.jpeg" width="20%" />
-<br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_inke.jpeg" width="20%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_now.jpeg" width="20%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_huajiao.jpeg" width="20%" />
-<br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_iqiyi.jpeg" width="20%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_iqiyi_play.jpeg" width="20%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_qixiu.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_video_list.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Local_video_flv.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Local_video_wmv.jpeg" width="26%" />&nbsp;
 </div>
 
 - 电视台和广播直播
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_cctv6.jpeg" width="20%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_hnws.jpeg" width="20%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_sino.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_cctv6.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_hnws.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_sino.jpeg" width="26%" />&nbsp;
 <br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_aoya.jpeg" width="20%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_fengh.jpeg" width="20%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_hkcj.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_aoya.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_fengh.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_hkcj.jpeg" width="26%" />&nbsp;
 </div>
 
-- 本地视频
+- 直播 
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_video_list.jpeg" width="20%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Local_video_flv.jpeg" width="20%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Local_video_wmv.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_pgg.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_douyu.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_huya.jpeg" width="26%" />&nbsp;
+<br />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_yy.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_bilibili.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_chushou.jpeg" width="26%" />&nbsp;
+<br />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_inke.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_now.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_huajiao.jpeg" width="26%" />&nbsp;
+<br />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_iqiyi.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_iqiyi_play.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_qixiu.jpeg" width="26%" />&nbsp;
 </div>
 
 - Web和远程视频
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_mgtv_video.jpeg" width="20%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_qq_video.jpeg" width="20%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_xigua_video.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_mgtv_video.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_qq_video.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_xigua_video.jpeg" width="26%" />&nbsp;
 <br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_remote_video_play.jpeg" width="20%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_remote_video_v.jpeg" width="20%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_list.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_remote_video_play.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_remote_video_v.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_list.jpeg" width="26%" />&nbsp;
 </div>
 
 - 其他信息
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_settings.jpeg" width="20%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_settings_cport.jpeg" width="20%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_aboutme.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_settings.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_settings_cport.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_aboutme.jpeg" width="26%" />&nbsp;
 </div>
 
 ## Requirements

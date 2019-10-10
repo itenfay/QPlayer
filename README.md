@@ -10,7 +10,7 @@
 
 - 欢迎加入技术交流群，一起探讨技术问题。
 
-<div align=center>
+<div align=left>
 <img src="https://github.com/dgynfi/QPlayer/raw/master/images/qq155353383.jpg" width="20%" />
 </div>
 
@@ -19,66 +19,66 @@
 - 直播 
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_pgg.jpeg" width="30%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_douyu.jpeg" width="30%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_huya.jpeg" width="30%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_pgg.jpeg" width="20%" /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_douyu.jpeg" width="20%" /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_huya.jpeg" width="20%" />
 <br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_yy.jpeg" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_bilibili.jpeg" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_chushou.jpeg" width="30%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_yy.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_bilibili.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_chushou.jpeg" width="20%" />
 <br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_inke.jpeg" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_now.jpeg" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_huajiao.jpeg" width="30%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_inke.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_now.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_huajiao.jpeg" width="20%" />
 <br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_iqiyi.jpeg" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_iqiyi_play.jpeg" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_qixiu.jpeg" width="30%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_iqiyi.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_iqiyi_play.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_qixiu.jpeg" width="20%" />
 </div>
 
 - 电视台和广播直播
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_cctv6.jpeg" width="30%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_hnws.jpeg" width="30%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_sino.jpeg" width="30%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_cctv6.jpeg" width="20%" /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_hnws.jpeg" width="20%" /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_sino.jpeg" width="20%" />
 <br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_aoya.jpeg" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_fengh.jpeg" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_hkcj.jpeg" width="30%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_aoya.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_fengh.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_hkcj.jpeg" width="20%" />
 </div>
 
 - 本地视频
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_video_list.jpeg" width="30%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Local_video_flv.jpeg" width="30%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Local_video_wmv.jpeg" width="30%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_video_list.jpeg" width="20%" /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Local_video_flv.jpeg" width="20%" /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Local_video_wmv.jpeg" width="20%" />
 </div>
 
 - Web和远程视频
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_mgtv_video.jpeg" width="30%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_qq_video.jpeg" width="30%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_xigua_video.jpeg" width="30%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_mgtv_video.jpeg" width="20%" /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_qq_video.jpeg" width="20%" /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_xigua_video.jpeg" width="20%" />
 <br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_remote_video_play.jpeg" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_remote_video_v.jpeg" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_list.jpeg" width="30%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_remote_video_play.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_remote_video_v.jpeg" width="20%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_list.jpeg" width="20%" />
 </div>
 
 - 其他信息
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_settings.jpeg" width="30%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_settings_cport.jpeg" width="30%" /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_aboutme.jpeg" width="30%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_settings.jpeg" width="20%" /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_settings_cport.jpeg" width="20%" /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_aboutme.jpeg" width="20%" />
 </div>
 
 ## Requirements
 
-&emsp; iOS 8.0+, iPhone and iPad, Xcode10.2.1
+&emsp; iOS 8.0+, iPhone and iPad, Xcode10+.
 
 ## 开源组件
 
@@ -92,7 +92,8 @@
 
 - [ijkplayer](https://github.com/bilibili/ijkplayer) 
 
-&emsp; Android/iOS video player based on FFmpeg n3.4, with MediaCodec, VideoToolbox support. <br />
+&emsp; Android/iOS video player based on FFmpeg n3.4, with MediaCodec, VideoToolbox support. 
+
 &emsp; [IJKMediaFramework.framework Download](https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ) - 链接: https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ 提取码: mxqq 复制这段内容后打开百度网盘手机App，操作更方便哦
 
 - [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
@@ -133,7 +134,7 @@
 
 ## 使用
 
-&emsp; 在 app 设置中打开 WiFi 文件传输的开关，即可享用 WiFi 文件传输服务。在电脑浏览器中访问：如 “http://192.168.6.5:8888” ，打开网页后，选择文件，点击 Upload 上传。在上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏。
+&emsp; 在 app 设置中打开 WiFi 文件传输的开关，即可享用 WiFi 文件传输服务。在电脑浏览器中访问：如 [http://192.168.6.6:8888](http://192.168.6.6:8888) ，打开网页后，选择文件，点击 Upload 上传。在上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏。
 
 ## Pods for QPlayer
 ```

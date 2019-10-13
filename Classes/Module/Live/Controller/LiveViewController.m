@@ -58,6 +58,11 @@
     [self interactivePopGestureAction];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self inspectWebToolBarAlpha];
+}
+
 - (void)interactivePopGestureAction {
     if (self.navigationController ) {
         self.navigationController.interactivePopGestureRecognizer.delegate = self;
@@ -250,6 +255,10 @@
 - (void)inspectWebToolBarAlpha {
     if (self.webToolBar.alpha > 0.f) {
         self.webToolBar.alpha = 0.f;
+        self.scheduleTask(self,
+                          @selector(cancelHidingToolBar),
+                          nil,
+                          0.0);
     }
 }
 
@@ -427,10 +436,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     [self showToolBarWithAnimation];
-    self.scheduleTask(self,
-                      @selector(cancelHidingToolBar),
-                      nil,
-                      0.0);
+    [self cancelHidingToolBar];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {

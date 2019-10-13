@@ -48,6 +48,11 @@
     [self loadDefaultRequest];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self inspectWebToolBarAlpha];
+}
+
 - (void)setupNavigationItems {
     UIView *tfLeftView         = [[UIView alloc] init];
     tfLeftView.frame           = CGRectMake(0, 0, 26, 26);
@@ -130,6 +135,10 @@
 - (void)inspectWebToolBarAlpha {
     if (self.webToolBar.alpha > 0.f) {
         self.webToolBar.alpha = 0.f;
+        self.scheduleTask(self,
+                          @selector(cancelHidingToolBar),
+                          nil,
+                          0.0);
     }
 }
 
@@ -160,8 +169,8 @@
             aUrl = [aUrl stringByAppendingFormat:@"%@s?wd=%@&cl=3", bdUrl, text];
         }
         
-        [self loadRequest:[self urlEncode:aUrl]];
         self.titleView.text = aUrl;
+        [self loadRequest:[self urlEncode:aUrl]];
     }
 }
 
@@ -448,10 +457,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     [self showToolBarWithAnimation];
-    self.scheduleTask(self,
-                      @selector(cancelHidingToolBar),
-                      nil,
-                      0.0);
+    [self cancelHidingToolBar];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -556,7 +562,7 @@
                                          @"http://ten.budejie.com/video/",
                                          
                                          @"https://www.y80s.net/",
-                                         @"https://m.80s.la/",
+                                         @"http://m.8080s.net/",
                                          @"http://www.boqudy.com/",
                                          
                                          @"https://m.imooc.com/",

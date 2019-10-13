@@ -216,6 +216,10 @@
 - (void)inspectWebToolBarAlpha {
     if (self.webToolBar.alpha > 0.f) {
         self.webToolBar.alpha = 0.f;
+        self.scheduleTask(self,
+                          @selector(cancelHidingToolBar),
+                          nil,
+                          0.0);
     }
 }
 
@@ -494,10 +498,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     [self showToolBarWithAnimation];
-    self.scheduleTask(self,
-                      @selector(cancelHidingToolBar),
-                      nil,
-                      0.0);
+    [self cancelHidingToolBar];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {

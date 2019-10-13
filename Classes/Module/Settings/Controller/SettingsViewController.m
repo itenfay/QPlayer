@@ -126,7 +126,7 @@
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(tX, tY, tW, tH)];
         titleLabel.backgroundColor = UIColor.clearColor;
-        titleLabel.font            = [UIFont systemFontOfSize:13.6f];
+        titleLabel.font            = [UIFont systemFontOfSize:13.f];
         titleLabel.textColor       = QPColorFromRGB(96, 96, 96);
         titleLabel.textAlignment   = NSTextAlignmentLeft;
         titleLabel.text = (section == 0) ? @"开启后，可以享用 WiFi 文件传输服务" : @"打开电脑浏览器，输入以下网址进行访问";
@@ -152,12 +152,12 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(tX, tY, tW, tH)];
     titleLabel.backgroundColor = UIColor.clearColor;
-    titleLabel.font            = [UIFont systemFontOfSize:13.6f];
+    titleLabel.font            = [UIFont systemFontOfSize:13.f];
     titleLabel.textColor       = QPColorFromRGB(96, 96, 96);
     titleLabel.textAlignment   = NSTextAlignmentLeft;
     titleLabel.numberOfLines   = 2;
     titleLabel.lineBreakMode   = NSLineBreakByWordWrapping;
-    titleLabel.text = (section == 0) ? @"支持 mp4,mov,avi,flv,mkv,wmv,m4v,rm,rmvb,mp3 等主流媒体格式，支持 rtmp,http,hls,rstp 等直播流媒体播放" : @"上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏";
+    titleLabel.text = (section == 0) ? @"支持 MP4,MOV,AVI,FLV,MKV,WMV,M4V,RMVB,MP3 等主流媒体格式，支持 HTTP,RTMP,RSTP,HLS 等流媒体或直播播放" : @"上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏";
     [footerView addSubview:titleLabel];
     
     return footerView;

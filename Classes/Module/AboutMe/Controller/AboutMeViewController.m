@@ -10,7 +10,7 @@
 #import "AboutMeTableFooter.h"
 #import "QPTitleView.h"
 
-#define AboutMeTableHeaderHeight 260.f
+#define AboutMeTableHeaderHeight 280.f
 #define AboutMeTableCellHeight    50.f
 
 @interface AboutMeViewController () <UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
@@ -195,7 +195,7 @@
         
         NSString *intro = [QPInfoDictionary objectForKey:@"QPlyerBriefIntro"];
         UILabel *label  = header.briefIntroLabel;
-        UIFont  *font   = [UIFont systemFontOfSize:14.f];
+        UIFont  *font   = [UIFont systemFontOfSize:13.5f];
         CGFloat labH    = label.yf_heightToFit(intro,
                                                label.width,
                                                font);

@@ -6,6 +6,10 @@
 
 &emsp; QPlayer 是一款不容你错过的强大的视频播放器。支持 M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3 等主流媒体格式。输入任何 HTTP、RTMP、RTSP、HLS 地址播放网络流或直播。QPlayer 使用 ffmpeg，支持 WiFi 文件传输。聚合了多个直播、视频和短视频平台，可在线观看直播、视频和短视频。( QPlayer is a powerful video player that you can't miss. Support m4v, wmv, 3gp, mp4, mov, avi, mkv, mpeg, mpg, flv, rm, rmvb, mp3 format. Enter any HTTP, RTSP, RTMP, HLS address play network streaming or live. QPlayer use ffmpeg，you can transfer files via wifi. It aggregates several live, video and short video platforms, and you can watch live, video and short video online. )
 
+## 使用
+
+&emsp; 在 app 设置中打开 WiFi 文件传输的开关，即可享用 WiFi 文件传输服务。在电脑浏览器中访问：如 [http://192.168.6.6:8888](http://192.168.6.6:8888) ，打开网页后，选择文件，点击 Upload 上传。在上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏。
+
 ## 技术交流群(群号:155353383)
 
 - 欢迎加入技术交流群，一起探讨技术问题。
@@ -131,10 +135,6 @@
 - [MBProgressHUD-JDragon](https://github.com/lyc59621/MBProgressHUD-JDragon)
 
 &emsp; 封装MBProgressHUD的一个类别。
-
-## 使用
-
-&emsp; 在 app 设置中打开 WiFi 文件传输的开关，即可享用 WiFi 文件传输服务。在电脑浏览器中访问：如 [http://192.168.6.6:8888](http://192.168.6.6:8888) ，打开网页后，选择文件，点击 Upload 上传。在上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏。
 
 ## Pods for QPlayer
 ```

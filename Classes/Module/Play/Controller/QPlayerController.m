@@ -51,20 +51,27 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     QPLog(@" >>>>>>>>>> videoTitle: %@", self.videoTitle);
     QPLog(@" >>>>>>>>>> videoUrl: %@", self.videoUrl);
     QPLog(@" >>>>>>>>>> videoDecoding: %d", self.videoDecoding);
+    
     self.scheduleTask(self,
                       @selector(inspectWebToolBarAlpha),
                       nil,
-                      2.0);
+                      2.6);
     
     [self loadDefaultRequest];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     [self prepareToPlay];
+    [self interactivePopGestureAction];
 }
 
 - (void)prepareToPlay {
@@ -95,11 +102,6 @@
         NSURL *aURL = [NSURL URLWithString:self.videoUrl];
         [self useZFPlayerToPlay:aURL];
     }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self interactivePopGestureAction];
 }
 
 - (void)interactivePopGestureAction {
@@ -448,7 +450,9 @@
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [super webView:webView didFailProvisionalNavigation:navigation withError:error];
     
-    if (!error) { return; }
+    if (!error || error.code == NSURLErrorCancelled) {
+        return;
+    }
     
     NSString *errMessage = [NSString stringWithFormat:@"%zi, %@", error.code, error.localizedDescription];
     QPLog(@"[error]: %@", errMessage);
@@ -457,7 +461,9 @@
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [super webView:webView didFailNavigation:navigation withError:error];
     
-    if (!error) { return; }
+    if (!error || error.code == NSURLErrorCancelled) {
+        return;
+    }
     
     NSString *errMessage = [NSString stringWithFormat:@"%zi, %@", error.code, error.localizedDescription];
     QPLog(@"[error]: %@", errMessage);
@@ -475,6 +481,11 @@
         //QPLog(@"- [webView loadRequest:navigationAction.request]");
         //[webView loadRequest:navigationAction.request];
     //}
+    
+    if ([aUrl isEqualToString:@"about:blank"]) {
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }
     
     decisionHandler(WKNavigationActionPolicyAllow);
 }

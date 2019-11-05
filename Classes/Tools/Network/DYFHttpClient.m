@@ -34,7 +34,7 @@ NSString *const DYFHttpMethodDELETE = @"DELETE";
 static NSString *const DYFCharactersGeneralDelimitersToEncode = @":#[]@";
 static NSString *const DYFCharactersSubDelimitersToEncode = @"!$&'()*+,;=";
 
-NSString *DYFStringByAddingPercentEncodingFromString(NSString *str) {
+NSString *DYFPercentEscapedStringFromString(NSString *str) {
     //does not include "?" or "/" due to RFC 3986 - Section 3.4
     NSMutableCharacterSet *allowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
     [allowedCharacterSet removeCharactersInString:[DYFCharactersGeneralDelimitersToEncode stringByAppendingString:DYFCharactersSubDelimitersToEncode]];
@@ -62,7 +62,7 @@ NSString *DYFStringByAddingPercentEncodingFromString(NSString *str) {
 }
 
 NSString *DYFUrlEncode(NSString *str) {
-    return DYFStringByAddingPercentEncodingFromString(str);
+    return DYFPercentEscapedStringFromString(str);
 }
 
 NSString *DYFUrlDecode(NSString *str) {
@@ -70,9 +70,7 @@ NSString *DYFUrlDecode(NSString *str) {
     if (m_str) {
         return m_str;
     }
-    
     m_str = [str copy];
-    
     return m_str;
 }
 
@@ -87,12 +85,12 @@ NSString *DYFUrlDecode(NSString *str) {
     if (self) {
         _acceptableContentTypes = [NSSet setWithObjects:
                                    @"application/json",
-                                   @"text/html",
-                                   @"text/json",
-                                   @"text/javascript",
+                                   @"application/xml",
                                    @"text/plain",
-                                   @"text/xml",
-                                   @"image/jpeg", nil];
+                                   @"text/json", @"text/xml",
+                                   @"text/html",
+                                   @"text/javascript",
+                                   @"image/jpeg", @"image/png", nil];
     }
     return self;
 }

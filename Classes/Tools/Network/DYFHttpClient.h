@@ -39,7 +39,7 @@
  *
  *  @return The percent-escaped string.
  */
-FOUNDATION_EXPORT NSString *DYFStringByAddingPercentEncodingFromString(NSString *str);
+FOUNDATION_EXPORT NSString *DYFPercentEscapedStringFromString(NSString *str);
 
 /**
  *  This method starts an encode operation on the given string.

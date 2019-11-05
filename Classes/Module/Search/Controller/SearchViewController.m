@@ -217,7 +217,9 @@
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [super webView:webView didFailProvisionalNavigation:navigation withError:error];
     
-    if (!error) { return; }
+    if (!error || error.code == NSURLErrorCancelled) {
+        return;
+    }
     
     NSString *errMessage = [NSString stringWithFormat:@"%zi, %@", error.code, error.localizedDescription];
     QPLog(@"[error]: %@", errMessage);
@@ -229,7 +231,9 @@
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [super webView:webView didFailNavigation:navigation withError:error];
     
-    if (!error) { return; }
+    if (!error || error.code == NSURLErrorCancelled) {
+        return;
+    }
     
     NSString *errMessage = [NSString stringWithFormat:@"%zi, %@", error.code, error.localizedDescription];
     QPLog(@"[error]: %@", errMessage);
@@ -244,17 +248,21 @@
     NSURL *aURL = [navigationAction.request.URL copy];
     NSString *aUrl = aURL.absoluteString;
     QPLog(@"url: %@", aUrl);
-    
-    if (![aUrl isEqualToString:@"about:blank"]) {
-        self.requestUrl = aUrl;
-        self.titleView.text = aUrl;
-    }
-    
+
     // Method NO.1: resolve the problem about '_blank'.
     //if (navigationAction.targetFrame == nil) {
         //QPLog(@"- [webView loadRequest:navigationAction.request]");
         //[webView loadRequest:navigationAction.request];
     //}
+    
+    if ([aUrl isEqualToString:@"about:blank"]) {
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }
+    else {
+        self.requestUrl = aUrl;
+        self.titleView.text = aUrl;
+    }
     
     if ([self canAllowNavigationAction:aURL]) {
         decisionHandler(WKNavigationActionPolicyCancel);
@@ -271,13 +279,13 @@
     NSString *aUrl = aURL.absoluteString;
     QPLog(@"url: %@", aUrl);
     
-    //self.requestUrl = aUrl;
-    //self.titleView.text = aUrl;
-    
     if (!navigationAction.targetFrame.isMainFrame) {
         QPLog(@"- [webView loadRequest:navigationAction.request]");
         [webView loadRequest:navigationAction.request];
     }
+    
+    //self.requestUrl = aUrl;
+    //self.titleView.text = aUrl;
     
     return nil;
 }
@@ -300,9 +308,7 @@
         }
         else {
             if (![self parse80sLaHtmlString:aURL]) {
-                [self delayToScheduleTask:2.0 completion:^{
-                    [QPHudObject hideHUD];
-                }];
+                [self delayToScheduleTask:2.0 completion:^{ [QPHudObject hideHUD]; }];
             }
             return NO;
         }
@@ -331,8 +337,7 @@
 }
 
 - (BOOL)parse80sLaHtmlString:(NSURL *)aURL {
-    BOOL _isPlaying = NO;
-    
+    BOOL shouldPlay = NO;
     [QPHudObject showActivityMessageInView:@"正在解析..."];
     
     NSURL *newURL = [aURL copy];
@@ -360,14 +365,16 @@
                     //QPLog(@"arg: %@", arg);
                     
                     if ([arg containsString:keywords]) {
-                        _isPlaying = YES;
-                        int index = (i+1);
+                        shouldPlay = YES;
                         
+                        int index = (i+1);
                         if (index < argArray.count) {
                             NSString *tempUrl  = [argArray objectAtIndex:index];
+                            
                             NSString *videoUrl = [tempUrl componentsSeparatedByString:@"?"].firstObject;
                             videoUrl = [NSString stringWithFormat:@"%@://%@%@", newURL.scheme, newURL.host, videoUrl];
                             QPLog(@"videoUrl: %@", videoUrl);
+                            
                             [self playVideoWithTitle:title urlString:videoUrl];
                         }
                         
@@ -378,7 +385,7 @@
         }
     }
     
-    return _isPlaying;
+    return shouldPlay;
 }
 
 - (void)runJavaScript:(NSString *)aUrl {
@@ -389,7 +396,7 @@
     // Occurs javescript error.
     if ([aUrl containsString:@"haoa.haozuida.com"]) {
         
-        v_jsString = @"document.getElementsByTagName('video')[0].attribute['src'].value";
+        v_jsString = @"document.getElementsByTagName('video')[0].src";
         [self.webView evaluateJavaScript:v_jsString completionHandler:^(id _Nullable url, NSError * _Nullable error) {
             if (!error) {
                 tempUrl = url;
@@ -398,11 +405,11 @@
             }
         }];
         videoUrl = [tempUrl componentsSeparatedByString:@"?"].firstObject;
-   
+        
     }
     else {
         
-        v_jsString = @"document.getElementsByTagName('video')[0].attribute['poster'].value";
+        v_jsString = @"document.getElementsByTagName('video')[0].poster";
         [self.webView evaluateJavaScript:v_jsString completionHandler:^(id _Nullable url, NSError * _Nullable error) {
             if (!error) {
                 tempUrl = url;
@@ -410,8 +417,8 @@
                 QPLog(@"error: %@", error);
             }
         }];
+        
         videoUrl = [tempUrl stringByReplacingOccurrencesOfString:@"/1.jpg" withString:@"/index.m3u8"];
-    
     }
     
     QPLog(@"v_jsString: %@", v_jsString);
@@ -430,15 +437,13 @@
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
         [self playVideoWithTitle:videoTitle urlString:url];
     } else {
-        [self delayToScheduleTask:2.5 completion:^{
-            [QPHudObject hideHUD];
-        }];
+        [self delayToScheduleTask:2.0 completion:^{ [QPHudObject hideHUD]; }];
     }
 }
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)aUrl {
     @QPWeakObject(self)
-    [self delayToScheduleTask:2.5 completion:^{
+    [self delayToScheduleTask:2.0 completion:^{
         [QPHudObject hideHUD];
         
         if (!QPlayerIsPlaying()) {
@@ -524,8 +529,11 @@
 //  退出全屏
 - (void)onEndFullScreen:(NSNotification *)noti {
     QPLog();
+    
     if (@available(iOS 9.0, *)) {} else {}
     [QPSharedApp setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)presentSearchViewController:(UIButton *)sender {
@@ -658,7 +666,7 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
-    // overwrite
+    // override
     return UIStatusBarAnimationSlide;
 }
 

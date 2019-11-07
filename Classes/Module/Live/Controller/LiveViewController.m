@@ -364,7 +364,8 @@
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [super webView:webView didFailProvisionalNavigation:navigation withError:error];
     
-    if (!error || error.code == NSURLErrorCancelled) {
+    if (!error || error.code == NSURLErrorCancelled ||
+        error.code == NSURLErrorUnsupportedURL) {
         return;
     }
     
@@ -375,7 +376,8 @@
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [super webView:webView didFailNavigation:navigation withError:error];
     
-    if (!error || error.code == NSURLErrorCancelled) {
+    if (!error || error.code == NSURLErrorCancelled ||
+        error.code == NSURLErrorUnsupportedURL) {
         return;
     }
     
@@ -392,8 +394,8 @@
     
     // Method NO.1: resolve the problem about '_blank'.
     //if (navigationAction.targetFrame == nil) {
-        //QPLog(@"- [webView loadRequest:navigationAction.request]");
-        //[webView loadRequest:navigationAction.request];
+    //    QPLog(@"- [webView loadRequest:navigationAction.request]");
+    //    [webView loadRequest:navigationAction.request];
     //}
     
     if ([aUrl isEqualToString:@"about:blank"]) {
@@ -505,16 +507,17 @@
 // 进入全屏
 - (void)onBeginFullScreen:(NSNotification *)noti {
     QPLog();
-    if (@available(iOS 9.0, *)) {} else {}
+    if (@available(iOS 9.0, *)) {}
+    else {}
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 //  退出全屏
 - (void)onEndFullScreen:(NSNotification *)noti {
     QPLog();
-    
-    if (@available(iOS 9.0, *)) {} else {}
-    [QPSharedApp setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    
+    if (@available(iOS 9.0, *)) {}
+    else {}
+    [QPSharedApp setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -523,23 +526,23 @@
         //QPLog(@"searchText: %@", searchText);
     }];
     
-    searchViewController.delegate   = self;
-    searchViewController.dataSource = self;
-    
+    searchViewController.delegate    = self;
+    searchViewController.dataSource  = self;
     searchViewController.hotSearches = @[@"https://h5.inke.cn/app/home/hotlive",
                                          @"https://h.huajiao.com/",
+                                         @"https://m.v.6.cn/",
+                                         @"https://wap.yy.com/",
+                                         @"https://m.yizhibo.com/",
+                                         @"https://h5.9xiu.com/",
                                          @"https://m-x.pps.tv/",
                                          @"https://now.qq.com/",
-                                         @"https://m.yizhibo.com/",
-                                         @"https://m.v.6.cn/",
-                                         @"https://h5.9xiu.com/",
                                          
-                                         @"https://live.bilibili.com/h5/",
+                                         @"https://cdn.egame.qq.com/pgg-play/module/livelist.html",
                                          @"https://m.douyu.com/",
-                                         @"https://m.huya.com/", @"https://cdn.egame.qq.com/pgg-play/module/livelist.html",
+                                         @"https://m.huya.com/",
                                          @"https://www.chushou.tv/",
                                          @"https://h5.cc.163.com/",
-                                         @"https://wap.yy.com/",
+                                         @"https://live.bilibili.com/h5/",
                                          
                                          @"https://m-live.iqiyi.com/",
                                          @"http://tv.cctv.com/live/m/",
@@ -630,17 +633,19 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
     //self.searchSuggestions = searchSuggestionsM;
 }
 
-- (BOOL)prefersStatusBarHidden {
-    return [super prefersStatusBarHidden];
-}
+// Inherits the implementations of its superclass
 
-- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
-    return [super preferredStatusBarUpdateAnimation];
-}
+//- (BOOL)prefersStatusBarHidden {
+//    return NO;
+//}
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return [super preferredStatusBarStyle];
-}
+//- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+//    return UIStatusBarAnimationNone;
+//}
+
+//- (UIStatusBarStyle)preferredStatusBarStyle {
+//    return UIStatusBarStyleLightContent;
+//}
 
 - (void)dealloc {
     QPLog(@" >>>>>>>>>> ");

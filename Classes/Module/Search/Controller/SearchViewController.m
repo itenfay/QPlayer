@@ -217,7 +217,8 @@
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [super webView:webView didFailProvisionalNavigation:navigation withError:error];
     
-    if (!error || error.code == NSURLErrorCancelled) {
+    if (!error || error.code == NSURLErrorCancelled ||
+        error.code == NSURLErrorUnsupportedURL) {
         return;
     }
     
@@ -231,7 +232,8 @@
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [super webView:webView didFailNavigation:navigation withError:error];
     
-    if (!error || error.code == NSURLErrorCancelled) {
+    if (!error || error.code == NSURLErrorCancelled ||
+        error.code == NSURLErrorUnsupportedURL) {
         return;
     }
     
@@ -248,11 +250,11 @@
     NSURL *aURL = [navigationAction.request.URL copy];
     NSString *aUrl = aURL.absoluteString;
     QPLog(@"url: %@", aUrl);
-
+    
     // Method NO.1: resolve the problem about '_blank'.
     //if (navigationAction.targetFrame == nil) {
-        //QPLog(@"- [webView loadRequest:navigationAction.request]");
-        //[webView loadRequest:navigationAction.request];
+    //    QPLog(@"- [webView loadRequest:navigationAction.request]");
+    //    [webView loadRequest:navigationAction.request];
     //}
     
     if ([aUrl isEqualToString:@"about:blank"]) {
@@ -523,16 +525,17 @@
 // 进入全屏
 - (void)onBeginFullScreen:(NSNotification *)noti {
     QPLog();
-    if (@available(iOS 9.0, *)) {} else {}
+    if (@available(iOS 9.0, *)) {}
+    else {}
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 //  退出全屏
 - (void)onEndFullScreen:(NSNotification *)noti {
     QPLog();
-    
-    if (@available(iOS 9.0, *)) {} else {}
+    if (@available(iOS 9.0, *)) {}
+    else {}
     [QPSharedApp setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -541,37 +544,41 @@
         //QPLog(@"searchText: %@", searchText);
     }];
     
-    searchViewController.delegate   = self;
-    searchViewController.dataSource = self;
-    
+    searchViewController.delegate    = self;
+    searchViewController.dataSource  = self;
     searchViewController.hotSearches = @[@"https://www.baidu.com/",
                                          @"https://wap.sogou.com/",
                                          @"https://m.so.com/",
                                          @"https://m.sm.cn/",
-                                         @"https://www.google.com.hk/",
-                                         @"https://www.yahoo.com/",
                                          
                                          @"https://m.v.qq.com/",
-                                         @"https://m.iqiyi.com/",
                                          @"https://m.mgtv.com/",
+                                         @"https://m.iqiyi.com/",
                                          @"https://www.youku.com/",
                                          @"https://m.tv.sohu.com/",
-                                         @"https://v.ifeng.com/",
                                          @"https://m.pptv.com/",
                                          @"https://m.le.com/",
-                                         @"https://compaign.tudou.com/",
                                          @"https://m.mtime.cn/",
                                          
                                          @"https://m.ixigua.com/",
-                                         @"https://www.pearvideo.com/?from=intro",
-                                         @"https://www.meipai.com/",
-                                         @"https://m.ku6.com/index",
+                                         @"https://v.ifeng.com/",
                                          @"https://haokan.baidu.com/",
+                                         @"https://www.pearvideo.com/?from=intro",
                                          @"http://ten.budejie.com/video/",
+                                         @"https://m.ku6.com/index",
+                                         @"https://feeds.qq.com/",
                                          
                                          @"https://www.y80s.net/",
-                                         @"http://m.8080s.net/",
                                          @"http://www.boqudy.com/",
+                                         
+                                         @"https://xw.qq.com/m/sports/index.htm",
+                                         @"https://m.live.qq.com/",
+                                         @"https://sports.sina.cn/?from=wap",
+                                         @"https://m.sohu.com/z/",
+                                         
+                                         @"https://translate.google.cn/",
+                                         @"https://fanyi.baidu.com/",
+                                         @"https://fanyi.youdao.com/",
                                          
                                          @"https://m.imooc.com/",
                                          @"https://m.study.163.com/",
@@ -662,7 +669,8 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 }
 
 - (BOOL)prefersStatusBarHidden {
-    return [super prefersStatusBarHidden];
+    // override
+    return NO;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
@@ -671,7 +679,8 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return [super preferredStatusBarStyle];
+    // override
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)dealloc {

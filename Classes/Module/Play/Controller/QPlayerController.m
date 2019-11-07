@@ -51,7 +51,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     QPLog(@" >>>>>>>>>> videoTitle: %@", self.videoTitle);
     QPLog(@" >>>>>>>>>> videoUrl: %@", self.videoUrl);
     QPLog(@" >>>>>>>>>> videoDecoding: %d", self.videoDecoding);
@@ -285,7 +284,7 @@
     // Invalid, player hasn't been initialized yet.
     //[playerManager.player setPlayerOptionIntValue:self.videoDecoding forKey:@"videotoolbox"];
     //if ([urlScheme isEqualToString:@"rtsp"]) {
-        //[playerManager.player setFormatOptionValue:@"tcp" forKey:@"rtsp_transport"];
+    //    [playerManager.player setFormatOptionValue:@"tcp" forKey:@"rtsp_transport"];
     //}
     
     // player
@@ -327,10 +326,10 @@
     KSYMediaPlayerManager *playerManager = [[KSYMediaPlayerManager alloc] init]; // playerManager
     // Invalid, player hasn't been initialized yet.
     //if (self.videoDecoding == 1) {
-        // MPMovieVideoDecoderMode_AUTO
-        //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Hardware;
+    //    // MPMovieVideoDecoderMode_AUTO
+    //    playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Hardware;
     //} else {
-        //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Software;
+    //    playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Software;
     //}
     
     // player
@@ -450,7 +449,8 @@
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [super webView:webView didFailProvisionalNavigation:navigation withError:error];
     
-    if (!error || error.code == NSURLErrorCancelled) {
+    if (!error || error.code == NSURLErrorCancelled ||
+        error.code == NSURLErrorUnsupportedURL) {
         return;
     }
     
@@ -461,7 +461,8 @@
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [super webView:webView didFailNavigation:navigation withError:error];
     
-    if (!error || error.code == NSURLErrorCancelled) {
+    if (!error || error.code == NSURLErrorCancelled ||
+        error.code == NSURLErrorUnsupportedURL) {
         return;
     }
     
@@ -478,8 +479,8 @@
     
     // Method NO.1: resolve the problem about '_blank'.
     //if (navigationAction.targetFrame == nil) {
-        //QPLog(@"- [webView loadRequest:navigationAction.request]");
-        //[webView loadRequest:navigationAction.request];
+    //    QPLog(@"- [webView loadRequest:navigationAction.request]");
+    //    [webView loadRequest:navigationAction.request];
     //}
     
     if ([aUrl isEqualToString:@"about:blank"]) {
@@ -568,7 +569,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
     //if (self.player.isFullScreen) {
-        //return UIStatusBarStyleLightContent;
+    //    return UIStatusBarStyleLightContent;
     //}
     return UIStatusBarStyleLightContent;
 }

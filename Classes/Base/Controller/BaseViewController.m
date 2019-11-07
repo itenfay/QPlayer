@@ -456,7 +456,7 @@
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
-    return UIStatusBarAnimationSlide;
+    return UIStatusBarAnimationFade;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

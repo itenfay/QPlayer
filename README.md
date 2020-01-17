@@ -1,90 +1,64 @@
-[如果你觉得能帮助到你，请给一颗小星星。谢谢！(If you think it can help you, please give it a star. Thanks!)](https://github.com/dgynfi/QPlayer)
+[If you think it can help you, please give it a star. Thanks!](https://github.com/dgynfi/QPlayer)
 
-[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
 
 ## QPlayer
 
-&emsp; `QPlayer` 是一款不容你错过的强大的视频播放器。支持 `M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3` 等主流媒体格式。输入任何 `HTTP、RTMP、RTSP、HLS` 地址播放网络流或直播。`QPlayer` 使用 `ffmpeg`，支持 `WiFi` 文件传输。聚合了多个直播、视频和短视频平台，可在线观看直播、视频和短视频。( QPlayer is a powerful video player that you can't miss. Support m4v, wmv, 3gp, mp4, mov, avi, mkv, mpeg, mpg, flv, rm, rmvb, mp3 format. Enter any HTTP, RTSP, RTMP, HLS address play network streaming or live. QPlayer use ffmpeg，you can transfer files via wifi. It aggregates several live, video and short video platforms, and you can watch live, video and short video online. )
+&emsp; `QPlayer` is a powerful video player that you can't miss, supports `m4v, wmv, 3gp, mp4, mov, avi, mkv, mpeg, mpg, flv, rm, rmvb, mp3` format. Enter any `HTTP, RTSP, RTMP, HLS` address play network streaming or live. QPlayer use ffmpeg，you can transfer files via wifi. It aggregates several live, video and short video platforms, and you can watch live, video and short video online. (`QPlayer` 是一款你不容错过的强大的视频播放器，支持 `M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3` 等主流媒体格式。输入任何 `HTTP、RTMP、RTSP、HLS` 地址播放网络流或直播。`QPlayer` 使用 `ffmpeg`，支持 `WiFi` 文件传输。聚合了多个直播、视频和短视频平台，可在线观看直播、视频和短视频。)
 
-## 使用
+[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
+
+
+## Usage
 
 &emsp; 在 `App` 设置中打开 `WiFi` 文件传输的开关，即可享用 WiFi 文件传输服务。在电脑浏览器中访问：如 “[http://192.168.6.6:8888](http://192.168.6.6:8888)” ，打开网页后，选择文件，点击 `Upload` 上传。在上传媒体文件时，确保电脑和手机在同一 `WiFi` 环境并且不要关闭本应用也不要锁屏。
 
-## 技术交流群(群号:155353383)
 
-- 欢迎加入技术交流群，一起探讨技术问题。
+## Group (ID:15535338)
 
 <div align=center>
 &emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/qq155353383.jpg" width="26%" />
 </div>
 
-## 效果图
 
-- 本地视频
+## Preview
 
-<div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_video_list.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Local_video_flv.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Local_video_wmv.jpeg" width="26%" />&nbsp;
-</div>
-
-- 电视台和广播直播
+- Local videos
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_cctv6.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_hnws.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_sino.jpeg" width="26%" />&nbsp;
-<br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_aoya.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_fengh.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_live_hkcj.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_video.png" width="60%" />
 </div>
 
-- 直播 
+- TV and radio
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_pgg.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_douyu.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_huya.jpeg" width="26%" />&nbsp;
-<br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_yy.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_bilibili.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_chushou.jpeg" width="26%" />&nbsp;
-<br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_inke.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_now.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_huajiao.jpeg" width="26%" />&nbsp;
-<br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_iqiyi.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_iqiyi_play.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Live_qixiu.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/tv_radio.png" width="80%" />
 </div>
 
-- Web和远程视频
+- Lives 
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_mgtv_video.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_qq_video.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_xigua_video.jpeg" width="26%" />&nbsp;
-<br />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_remote_video_play.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Web_remote_video_v.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Pull_stream_list.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/mainstream_live.png" width="80%" />
 </div>
 
-- 其他信息
+- Web videos
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_settings.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_settings_cport.jpeg" width="26%" />&nbsp;
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Info_aboutme.jpeg" width="26%" />&nbsp;
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/web_video.png" width="80%" />
 </div>
 
+- App introduce
+
+<div align=center>
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/app_intro.png" width="80%" />
+</div>
+ 
+ 
 ## Requirements
 
 &emsp; iOS 8.0+, iPhone and iPad, Xcode10+.
 
-## 开源组件
+
+## Open Source Components
 
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking)
 
@@ -98,7 +72,7 @@
 
 &emsp; Android/iOS video player based on FFmpeg n3.4, with MediaCodec, VideoToolbox support. 
 
-&emsp; [IJKMediaFramework.framework Download](https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ) - 链接: https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ 提取码: mxqq 复制这段内容后打开百度网盘手机App，操作更方便哦
+&emsp; [IJKMediaFramework.framework Download](https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ) - 链接: https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ 提取码: mxqq
 
 - [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
 
@@ -136,7 +110,9 @@
 
 &emsp; 封装MBProgressHUD的一个类别。
 
+
 ## Pods for QPlayer
+
 ```
 # Pods for QPlayer
 pod 'AFNetworking'
@@ -154,6 +130,8 @@ pod 'SVBlurView', '~> 0.0.1'
 pod 'FDFullscreenPopGesture', '~> 1.1'
 ```
 
-## 我的简书
 
-- [QPlayer 一款不容你错过的视频播放器](https://www.jianshu.com/p/df5af1d079d6)
+## JianShu
+
+- [QPlayer一款你不容错过的视频播放器](https://www.jianshu.com/p/df5af1d079d6)
+

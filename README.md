@@ -25,7 +25,7 @@
 - Local videos
 
 <div align=center>
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_video.png" width="60%" />
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_video.png" width="80%" />
 </div>
 
 - TV and radio

@@ -14,7 +14,7 @@
 
 ## Group (ID:15535338)
 
-<div align=center>
+<div align=left>
 &emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
 </div>
 
@@ -23,31 +23,31 @@
 
 - Local videos
 
-<div align=center>
+<div align=left>
 &emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_video.png" width="80%" />
 </div>
 
 - TV and radio
 
-<div align=center>
+<div align=left>
 &emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/tv_radio.png" width="80%" />
 </div>
 
 - Lives 
 
-<div align=center>
+<div align=left>
 &emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/mainstream_live.png" width="80%" />
 </div>
 
 - Web videos
 
-<div align=center>
+<div align=left>
 &emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/web_video.png" width="80%" />
 </div>
 
 - App introduce
 
-<div align=center>
+<div align=left>
 &emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/app_intro.png" width="80%" />
 </div>
  

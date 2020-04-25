@@ -24,8 +24,13 @@
 
 #import "ZFAVPlayerManager.h"
 #import <UIKit/UIKit.h>
+#if __has_include(<ZFPlayer/ZFPlayer.h>)
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFReachabilityManager.h>
+#else
+#import "ZFPlayer.h"
+#import "ZFReachabilityManager.h"
+#endif
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored"-Wdeprecated-declarations"
@@ -288,7 +293,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
     [self.player pause];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // 如果此时用户已经暂停了，则不再需要开启播放了
-        if (!self.isPlaying) {
+        if (!self.isPlaying && self.loadState == ZFPlayerLoadStateStalled) {
             self.isBuffering = NO;
             return;
         }
@@ -329,12 +334,7 @@ static NSString *const kPresentationSize         = @"presentationSize";
         @strongify(self)
         if (!self) return;
         NSArray *loadedRanges = self.playerItem.seekableTimeRanges;
-        /// 大于0才把状态改为可以播放，解决黑屏问题
-        if (CMTimeGetSeconds(time) > 0 && !self.isReadyToPlay) {
-            self.isReadyToPlay = YES;
-            self.loadState = ZFPlayerLoadStatePlaythroughOK;
-        }
-        if (self.isPlaying) self.player.rate = self.rate;
+        if (self.isPlaying && self.loadState == ZFPlayerLoadStateStalled) self.player.rate = self.rate;
         if (loadedRanges.count > 0) {
             if (self.playerPlayTimeChanged) self.playerPlayTimeChanged(self, self.currentTime, self.totalTime);
         }
@@ -352,8 +352,9 @@ static NSString *const kPresentationSize         = @"presentationSize";
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([keyPath isEqualToString:kStatus]) {
             if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
-                /// 第一次初始化
-                if (self.loadState == ZFPlayerLoadStatePrepare) {
+                if (!self.isReadyToPlay) {
+                    self.isReadyToPlay = YES;
+                    self.loadState = ZFPlayerLoadStatePlaythroughOK;
                     if (self.playerReadyToPlay) self.playerReadyToPlay(self, self.assetURL);
                 }
                 if (self.seekTime) {

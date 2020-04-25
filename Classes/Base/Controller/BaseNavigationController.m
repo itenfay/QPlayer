@@ -15,13 +15,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setupDefaultBarStyle];
-}
-
-- (void)setupDefaultBarStyle {
-    [self.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
-    [self.navigationBar setShadowImage:[[UIImage alloc] init]];
-    [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
 }
 
 - (void)didReceiveMemoryWarning {

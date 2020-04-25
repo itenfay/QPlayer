@@ -2,22 +2,25 @@
 
 ## QPlayer
 
-`QPlayer`是一款你不容错过的强大的视频播放器，支持 `M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3` 等主流媒体格式。输入任何 `HTTP、RTMP、RTSP、HLS` 地址播放网络流或直播。`QPlayer` 使用 `ffmpeg`，支持 `WiFi` 文件传输。聚合了多个直播、视频和短视频平台，可在线观看直播、视频和短视频。(`QPlayer` is a powerful video player that you can't miss, supports `m4v, wmv, 3gp, mp4, mov, avi, mkv, mpeg, mpg, flv, rm, rmvb, mp3` format. Enter any `HTTP, RTSP, RTMP, HLS` address play network streaming or live. QPlayer use ffmpeg，you can transfer files via wifi. It aggregates several live, video and short video platforms, and you can watch live, video and short video online. )
+`QPlayer`是一款你不容错过的视频播放器，支持 `M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3` 等主流媒体格式。输入任何 `HTTP、RTMP、RTSP、HLS` 地址播放网络流或直播。`QPlayer` 使用 `ffmpeg`，支持 `WiFi` 文件传输。聚合了多个直播、视频和短视频平台，可在线观看直播、视频和短视频。(`QPlayer` is a video player that you can't miss, supports `m4v, wmv, 3gp, mp4, mov, avi, mkv, mpeg, mpg, flv, rm, rmvb, mp3` format. Enter any `HTTP, RTSP, RTMP, HLS` address play network streaming or live. QPlayer use ffmpeg，you can transfer files via wifi. It aggregates several live, video and short video platforms, and you can watch live, video and short video online. )
 
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
 
+## Disclaimer
+
+部分资源和内容来源于互联网，如涉及版权和法律法规问题，就请给提 issue 或者发送 email 联系本人。
 
 ## Usage
 
 在 `App` 设置中打开 `WiFi` 文件传输的开关，即可享用 WiFi 文件传输服务。在电脑浏览器中访问：如 “[http://192.168.6.6:8888](http://192.168.6.6:8888)”，打开网页后，选择文件，点击 `Upload` 上传。在上传媒体文件时，确保电脑和手机在同一 `WiFi` 环境并且不要关闭本应用也不要锁屏。
 
+PS：建议使用PC浏览器（ Safari [Mac], Microsoft Edge [Win10], Google Chrome [Mac Win10] ）
 
 ## Group (ID:15535338)
 
 <div align=left>
 &emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
 </div>
-
 
 ## Preview
 
@@ -50,12 +53,10 @@
 <div align=left>
 &emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/app_intro.png" width="80%" />
 </div>
- 
- 
+
 ## Requirements
 
 iOS 8.0+, iPhone and iPad, Xcode10+.
-
 
 ## Open Source Components
 
@@ -128,7 +129,6 @@ pod 'PYSearch', '~> 0.8.8'
 pod 'SVBlurView', '~> 0.0.1'
 pod 'FDFullscreenPopGesture', '~> 1.1'
 ```
-
 
 ## JianShu
 

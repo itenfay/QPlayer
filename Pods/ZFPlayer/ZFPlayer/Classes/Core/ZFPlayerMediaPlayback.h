@@ -92,9 +92,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerScalingMode) {
  @abstract Check whether video preparation is complete.
  @discussion isPreparedToPlay processing logic
  
- * If isPreparedToPlay is TRUE, you can call [ZFPlayerMediaPlayback play] API start playing;
- * If isPreparedToPlay to FALSE, direct call [ZFPlayerMediaPlayback play], in the play the internal automatic call [ZFPlayerMediaPlayback prepareToPlay] API.
- * Returns YES if prepared for playback.
+ * If isPreparedToPlay is true, you can call [ZFPlayerMediaPlayback play] API start playing;
+ * If isPreparedToPlay to false, direct call [ZFPlayerMediaPlayback play], in the play the internal automatic call [ZFPlayerMediaPlayback prepareToPlay] API.
+ * Returns true if prepared for playback.
  */
 @property (nonatomic, readonly) BOOL isPreparedToPlay;
 

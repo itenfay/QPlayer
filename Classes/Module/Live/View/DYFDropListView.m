@@ -29,6 +29,7 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
 @property (strong, nonatomic) NSMutableArray *dataArray;
 @property ( copy , nonatomic) DropListViewOnCloseHandler onCloseHandler;
 @property ( copy , nonatomic) DropListViewOnSelectRowHandler onSelectRowHandler;
+@property (assign, nonatomic) BOOL isDarkMode;
 
 @end
 
@@ -39,8 +40,10 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     QPLog(@" >>>>>>>>>> ");
     self.backgroundColor = UIColor.clearColor;
     
+    [self setupCorner];
     [self setupMtableView];
     [self setupCloseButton];
+    [self identifyMode];
     
     [self preLoadData];
 }
@@ -65,6 +68,11 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
         _dataArray = [NSMutableArray arrayWithCapacity:0];
     }
     return _dataArray;
+}
+
+- (void)setupCorner {
+    self.m_visualEffectView.layer.cornerRadius = 15.f;
+    self.m_visualEffectView.layer.masksToBounds = YES;
 }
 
 - (void)setupMtableView {
@@ -111,21 +119,36 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     NSString *filePath   = [bundlePath stringByAppendingPathComponent:kDropListDataFile];
     QPLog(@" >>>>>>>>>> filePath: %@", filePath);
     
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    //NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
     
-    NSEnumerator *enumerator = [dict keyEnumerator];
-    id key;
-    while ((key = [enumerator nextObject]) != nil) {
-        NSString *content = [dict objectForKey:key];
+    //NSEnumerator *enumerator = [dict keyEnumerator];
+    //id key;
+    //while ((key = [enumerator nextObject]) != nil) {
+    //    NSString *content = [dict objectForKey:key];
+    
+    //    DYFDropListModel *model = [[DYFDropListModel alloc] init];
+    //    model.m_title = key;
+    //    model.m_content = content;
+    //
+    //    [self.dataArray addObject:model];
+    //}
+    
+    //[self.dataArray sortUsingFunction:sortObjects context:NULL];
+    
+    NSArray *tvList = [NSArray arrayWithContentsOfFile:filePath];
+    
+    NSEnumerator *enumerator = [tvList objectEnumerator];
+    id obj;
+    while ((obj = [enumerator nextObject]) != nil) {
+        
+        NSDictionary *dict = (NSDictionary *)obj;
         
         DYFDropListModel *model = [[DYFDropListModel alloc] init];
-        model.m_title = key;
-        model.m_content = content;
+        model.m_title = dict.allKeys.firstObject;
+        model.m_content = dict.allValues.firstObject;
         
         [self.dataArray addObject:model];
     }
-    
-    [self.dataArray sortUsingFunction:sortObjects context:NULL];
     
     [self delayToScheduleTask:1 completion:^{
         [QPHudObject hideHUD];
@@ -173,11 +196,13 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     DYFDropListModel *model = self.dataArray[indexPath.row];
     
     cell.m_titleLabel.text = model.m_title;
-    cell.m_titleLabel.textColor = QPColorFromRGB(48, 48, 48);
+    cell.m_titleLabel.textColor = self.isDarkMode ? QPColorFromRGB(230, 230, 230) : QPColorFromRGB(50, 50, 50);
+    cell.m_titleLabel.font = [UIFont systemFontOfSize:13];
     //cell.m_titleLabel.numberOfLines = 2;
     
     cell.m_detailLabel.text = model.m_content;
-    cell.m_detailLabel.textColor = QPColorFromRGB(48, 48, 48);
+    cell.m_detailLabel.textColor = self.isDarkMode ? QPColorFromRGB(230, 230, 230) : QPColorFromRGB(50, 50, 50);
+    cell.m_detailLabel.font = [UIFont systemFontOfSize:13];
     //cell.m_detailLabel.numberOfLines = 2;
     
     return cell;
@@ -191,9 +216,35 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     QPLog(@" >>>>>>>>>> content: %@", model.m_content);
     
     !self.onSelectRowHandler ?:
-    self.onSelectRowHandler(indexPath.row,
-                            model.m_title,
-                            model.m_content);
+    self.onSelectRowHandler(indexPath.row, model.m_title, model.m_content);
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [self identifyMode];
+    [self.m_tableView reloadData];
+}
+
+- (void)identifyMode {
+    
+    if (@available(iOS 13.0, *)) {
+        
+        UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+        
+        if (mode == UIUserInterfaceStyleDark) {
+            // Dark Mode
+            self.isDarkMode = YES;
+            self.m_visualEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        } else if (mode == UIUserInterfaceStyleLight) {
+            // Light Mode or unspecified Mode
+            self.isDarkMode = NO;
+            self.m_visualEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        }
+        
+    } else {
+        
+        self.isDarkMode = NO;
+        self.m_visualEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    }
 }
 
 @end

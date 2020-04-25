@@ -25,6 +25,16 @@
 // The property determines whether the parsing button is required.
 @property (nonatomic, assign) BOOL parsingButtonRequired;
 
+// The property determines whether The dark interface style was truned on.
+@property (nonatomic, assign) BOOL isDarkMode;
+
+// Adds manual theme style change observer.
+- (void)addManualThemeStyleObserver;
+// Removes manual theme style change observer.
+- (void)removeManualThemeStyleObserver;
+// Adjusts theme style when the notification is received.
+- (void)adjustThemeStyle;
+
 // Sets up a navigation bar whether it is hidden.
 - (void)setNavigationBarHidden:(BOOL)hidden;
 

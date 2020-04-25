@@ -23,8 +23,12 @@
 // THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
-#import <ZFPlayer/ZFPlayerController.h>
 #import "ZFSliderView.h"
+#if __has_include(<ZFPlayer/ZFPlayerController.h>)
+#import <ZFPlayer/ZFPlayerController.h>
+#else
+#import "ZFPlayerController.h"
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

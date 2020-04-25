@@ -306,9 +306,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Default is UIInterfaceOrientationPortrait.
 @property (nonatomic, readonly) UIInterfaceOrientation currentOrientation;
 
-
-//@property (nonatomic, assign) BOOL <#instace#>
-
 /// The block invoked When player will rotate.
 @property (nonatomic, copy, nullable) void(^orientationWillChange)(ZFPlayerController *player, BOOL isFullScreen);
 
@@ -378,6 +375,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The indexPath is playing.
 @property (nonatomic, readonly, nullable) NSIndexPath *playingIndexPath;
 
+/// The indexPath should be play while scrolling.
+@property (nonatomic, readonly, nullable) NSIndexPath *shouldPlayIndexPath;
+
 /// The view tag that the player display in scrollView.
 @property (nonatomic, readonly) NSInteger containerViewTag;
 
@@ -422,6 +422,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The block invoked When the player did disappeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
+
+/// The block invoked When the player should play.
+@property (nonatomic, copy, nullable) void(^zf_playerShouldPlayInScrollView)(NSIndexPath *indexPath);
+
+/// The block invoked When the player did stop scroll.
+@property (nonatomic, copy, nullable) void(^zf_scrollViewDidEndScrollingCallback)(NSIndexPath *indexPath);
+
+/// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped).
+- (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler;
+
+/// Filter the cell that should be played while scrolling (you can use this to filter the highlighted cell).
+- (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler;
 
 /**
  Play the indexPath of url, while the `assetURLs` or `sectionAssetURLs` is not NULL.

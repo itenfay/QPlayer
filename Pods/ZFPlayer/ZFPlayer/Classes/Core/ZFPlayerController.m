@@ -146,6 +146,7 @@
             [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionAllowBluetooth error:nil];
             [[AVAudioSession sharedInstance] setActive:YES error:nil];
         }
+        if (self.viewControllerDisappear) self.pauseByEvent = YES;
     };
     
     self.currentPlayerManager.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
@@ -227,6 +228,7 @@
         self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.controlView.frame = self.currentPlayerManager.view.bounds;
         self.controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.orientationObserver updateRotateView:self.currentPlayerManager.view containerView:self.containerView];
     }
 }
 
@@ -242,7 +244,7 @@
             if (self.pauseWhenAppResignActive && self.currentPlayerManager.isPlaying) {
                 self.pauseByEvent = YES;
             }
-            if (self.isFullScreen && !self.isLockedScreen) self.orientationObserver.lockedScreen = YES;
+            self.orientationObserver.lockedScreen = YES;
             [[UIApplication sharedApplication].keyWindow endEditing:YES];
             if (!self.pauseWhenAppResignActive) {
                 [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
@@ -253,7 +255,7 @@
             @strongify(self)
             if (self.isViewControllerDisappear) return;
             if (self.isPauseByEvent) self.pauseByEvent = NO;
-            if (self.isFullScreen && !self.isLockedScreen) self.orientationObserver.lockedScreen = NO;
+            self.orientationObserver.lockedScreen = NO;
         };
         _notification.oldDeviceUnavailable = ^(ZFPlayerNotification * _Nonnull registrar) {
             @strongify(self)
@@ -709,16 +711,7 @@
 }
 
 - (BOOL)shouldForceDeviceOrientation {
-    if (self.forceDeviceOrientation) return YES;
-    NSArray<NSString *> *versionStrArr = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
-    int firstVer = [[versionStrArr objectAtIndex:0] intValue];
-    int secondVer = [[versionStrArr objectAtIndex:1] intValue];
-    if (firstVer == 8) {
-        if (secondVer >= 1 && secondVer <= 3) {
-            return YES;
-        }
-    }
-    return NO;
+    return self.forceDeviceOrientation;
 }
 
 #pragma mark - getter
@@ -1025,6 +1018,16 @@
         /// add to window
         if (!self.stopWhileNotVisible && playerDisapperaPercent >= self.playerDisapperaPercent) [self addPlayerViewToKeyWindow];
     };
+    
+    scrollView.zf_playerShouldPlayInScrollView = ^(NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
+        if (self.zf_playerShouldPlayInScrollView) self.zf_playerShouldPlayInScrollView(indexPath);
+    };
+    
+    scrollView.zf_scrollViewDidEndScrollingCallback = ^(NSIndexPath * _Nonnull indexPath) {
+        @strongify(self)
+        if (self.zf_scrollViewDidEndScrollingCallback) self.zf_scrollViewDidEndScrollingCallback(indexPath);
+    };
 }
 
 - (void)setWWANAutoPlay:(BOOL)WWANAutoPlay {
@@ -1106,8 +1109,12 @@
     objc_setAssociatedObject(self, @selector(zf_playerDidDisappearInScrollView), zf_playerDidDisappearInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (void)setZf_scrollViewDidStopScrollCallback:(void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidStopScrollCallback {
-    objc_setAssociatedObject(self, @selector(zf_scrollViewDidStopScrollCallback), zf_scrollViewDidStopScrollCallback, OBJC_ASSOCIATION_COPY_NONATOMIC);
+- (void)setZf_playerShouldPlayInScrollView:(void (^)(NSIndexPath * _Nonnull))zf_playerShouldPlayInScrollView {
+    objc_setAssociatedObject(self, @selector(zf_playerShouldPlayInScrollView), zf_playerShouldPlayInScrollView, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)setZf_scrollViewDidEndScrollingCallback:(void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidEndScrollingCallback {
+    objc_setAssociatedObject(self, @selector(zf_scrollViewDidEndScrollingCallback), zf_scrollViewDidEndScrollingCallback, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 #pragma mark - getter
@@ -1134,6 +1141,10 @@
 
 - (NSIndexPath *)playingIndexPath {
     return objc_getAssociatedObject(self, _cmd);
+}
+
+- (NSIndexPath *)shouldPlayIndexPath {
+    return self.scrollView.zf_shouldPlayIndexPath;
 }
 
 - (NSArray<NSArray<NSURL *> *> *)sectionAssetURLs {
@@ -1182,11 +1193,23 @@
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidStopScrollCallback {
+- (void (^)(NSIndexPath * _Nonnull))zf_playerShouldPlayInScrollView {
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void (^)(NSIndexPath * _Nonnull))zf_scrollViewDidEndScrollingCallback {
     return objc_getAssociatedObject(self, _cmd);
 }
 
 #pragma mark - Public method
+
+- (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler {
+    [self.scrollView zf_filterShouldPlayCellWhileScrolled:handler];
+}
+
+- (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler {
+    [self.scrollView zf_filterShouldPlayCellWhileScrolling:handler];
+}
 
 - (void)playTheIndexPath:(NSIndexPath *)indexPath {
     self.playingIndexPath = indexPath;

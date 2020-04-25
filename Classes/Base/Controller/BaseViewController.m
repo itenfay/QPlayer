@@ -20,7 +20,83 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self identifyMode];
+}
+
+- (void)addManualThemeStyleObserver {
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(adjustThemeStyle) name:kThemeStyleDidChangeNotification object:nil];
+}
+
+- (void)removeManualThemeStyleObserver {
+    [NSNotificationCenter.defaultCenter removeObserver:self name:kThemeStyleDidChangeNotification object:nil];
+}
+
+- (void)adjustThemeStyle {
+    [self identifyMode];
+}
+
+- (void)identifyMode {
+    
+    BOOL result = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
+    if (result) {
+        
+        if (@available(iOS 13.0, *)) {
+            
+            UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+            
+            if (mode == UIUserInterfaceStyleDark) {
+                // Dark Mode
+                [self adjustDarkTheme];
+            } else if (mode == UIUserInterfaceStyleLight) {
+                // Light Mode or unspecified Mode
+                [self adjustLightTheme];
+            }
+            
+        } else {
+            
+            [self adjustLightTheme];
+        }
+        
+    } else {
+        
+        [self adjustLightTheme];
+    }
+}
+
+- (void)adjustLightTheme {
+    [self setNavigationBarLightStyle];
     self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
+    self.isDarkMode = NO;
+}
+
+- (void)adjustDarkTheme {
+    [self setNavigationBarDarkStyle];
+    self.view.backgroundColor = QPColorFromRGB(30, 30, 30);
+    self.isDarkMode = YES;
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [self identifyMode];
+}
+
+- (UINavigationBar *)navigationBar {
+    if (self.navigationController) {
+        return self.navigationController.navigationBar;
+    }
+    return nil;
+}
+
+- (void)setNavigationBarLightStyle {
+    [self.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
+    [self.navigationBar setShadowImage:[[UIImage alloc] init]];
+    [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+}
+
+- (void)setNavigationBarDarkStyle {
+    [self.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBlackBg") forBarMetrics:UIBarMetricsDefault];
+    [self.navigationBar setShadowImage:[[UIImage alloc] init]];
+    [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    //[self.navigationBar setBarTintColor:QPColorFromRGB(20, 20, 20)];
 }
 
 - (void)setNavigationBarHidden:(BOOL)hidden {
@@ -40,18 +116,11 @@
     return button;
 }
 
-- (UINavigationBar *)navigationBar {
-    if (self.navigationController) {
-        return self.navigationController.navigationBar;
-    }
-    return nil;
-}
-
 - (WKWebViewConfiguration *)wk_webViewConfiguration {
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     
     WKPreferences *preferences = [[WKPreferences alloc] init];
-    preferences.minimumFontSize   = 0;
+    preferences.minimumFontSize = 0;
     preferences.javaScriptEnabled = YES;
     preferences.javaScriptCanOpenWindowsAutomatically = YES;
     config.preferences = preferences;
@@ -59,17 +128,16 @@
     config.allowsInlineMediaPlayback = YES;
     
     if (@available(iOS 9.0, *)) {
-        config.allowsPictureInPictureMediaPlayback = YES;
-        config.allowsAirPlayForMediaPlayback = YES;
-        if (@available(iOS 10.0, *))
-        {
+        // The default value is YES.
+        //config.allowsAirPlayForMediaPlayback = YES;
+        //config.allowsPictureInPictureMediaPlayback = YES;
+        
+        if (@available(iOS 10.0, *)) {
             config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypeAll;
-        }
-        else {
+        } else {
             config.requiresUserActionForMediaPlayback = YES;
         }
-    }
-    else {
+    } else {
         // Fallback on earlier versions
         config.mediaPlaybackAllowsAirPlay = YES;
         config.mediaPlaybackRequiresUserAction = YES;
@@ -136,7 +204,7 @@
 
 - (void)buildProgressView {
     if (!_progressView) {
-        self.progressView.lineWidth = 3.f;
+        self.progressView.lineWidth = 2.f;
         self.progressView.lineColor = QPColorFromRGB(248, 125, 36);
         
         if (self.isAddedToNavBar) {
@@ -155,7 +223,7 @@
         self.scheduleTask(self,
                           @selector(releaseProgressView),
                           nil,
-                          0.26);
+                          0.3);
     }
 }
 
@@ -199,10 +267,10 @@
     if (!_progressView) {
         CGRect frame         = CGRectZero;
         frame.origin.x       = 0.f;
-        frame.size.height    = 3.f;
+        frame.size.height    = 2.f;
         
         if (self.isAddedToNavBar) {
-            frame.origin.y   = self.navigationBar.height - 3.f;
+            frame.origin.y   = self.navigationBar.height - 2.f;
             frame.size.width = self.navigationBar.width;
             _progressView    = [[DYFWebProgressView alloc] initWithFrame:frame];
         } else {
@@ -254,7 +322,7 @@
     UIImageView *toolBar    = [[UIImageView alloc] initWithFrame:tlbFrame];
     toolBar.backgroundColor = [UIColor clearColor];
     toolBar.image           = [self colorImage:toolBar.bounds
-                                  cornerRadius:8.f
+                                  cornerRadius:15.f
                                 backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
                                    borderWidth:0.f
                                    borderColor:nil];
@@ -308,8 +376,7 @@
     CGSize mSize       = mRect.size;
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:mRect cornerRadius:cornerRadius];
     
-    if (@available(iOS 10.0, *))
-    {
+    if (@available(iOS 10.0, *)) {
         UIGraphicsImageRenderer *render = [[UIGraphicsImageRenderer alloc] initWithSize:mSize];
         
         newImage = [render imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
@@ -324,9 +391,7 @@
             CGContextAddPath (ctx.CGContext, path.CGPath);
             CGContextDrawPath(ctx.CGContext, kCGPathFillStroke);
         }];
-    }
-    else
-    {
+    } else {
         UIGraphicsBeginImageContext(mSize);
         
         CGContextRef context = UIGraphicsGetCurrentContext();
@@ -413,9 +478,11 @@
 
 - (NSString *)urlDecode:(NSString *)string {
     NSString *_string = [string stringByRemovingPercentEncoding];
+    
     if (_string) {
         return _string;
     }
+    
     return [string copy];
 }
 

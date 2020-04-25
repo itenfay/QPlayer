@@ -7,4 +7,12 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString *const kQPlayerPlaying;
+FOUNDATION_EXPORT NSString *const kQPlayerIsPlaying;
+
+FOUNDATION_EXPORT NSString *const kRecordKeyInfo;
+
+FOUNDATION_EXPORT NSString *const kWriteThemeStyleFlagOnceOnly;
+
+FOUNDATION_EXPORT NSString *const kThemeStyleOnOff;
+
+FOUNDATION_EXPORT NSString *const kThemeStyleDidChangeNotification;

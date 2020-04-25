@@ -25,7 +25,11 @@
 #import "ZFPortraitControlView.h"
 #import "UIView+ZFFrame.h"
 #import "ZFUtilities.h"
+#if __has_include(<ZFPlayer/ZFPlayer.h>)
 #import <ZFPlayer/ZFPlayer.h>
+#else
+#import "ZFPlayer.h"
+#endif
 
 @interface ZFPortraitControlView () <ZFSliderViewDelegate>
 /// 底部工具栏
@@ -71,85 +75,6 @@
     }
     return self;
 }
-
-- (void)makeSubViewsAction {
-    [self.playOrPauseBtn addTarget:self action:@selector(playPauseButtonClickAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.fullScreenBtn addTarget:self action:@selector(fullScreenButtonClickAction:) forControlEvents:UIControlEventTouchUpInside];
-}
-
-#pragma mark - ZFSliderViewDelegate
-
-- (void)sliderTouchBegan:(float)value {
-    self.slider.isdragging = YES;
-}
-
-- (void)sliderTouchEnded:(float)value {
-    if (self.player.totalTime > 0) {
-        @weakify(self)
-        [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
-            @strongify(self)
-            if (finished) {
-                self.slider.isdragging = NO;
-            }
-        }];
-        if (self.seekToPlay) {
-            [self.player.currentPlayerManager play];
-        }
-    } else {
-        self.slider.isdragging = NO;
-    }
-    if (self.sliderValueChanged) self.sliderValueChanged(value);
-}
-
-- (void)sliderValueChanged:(float)value {
-    if (self.player.totalTime == 0) {
-        self.slider.value = 0;
-        return;
-    }
-    self.slider.isdragging = YES;
-    NSString *currentTimeString = [ZFUtilities convertTimeSecond:self.player.totalTime*value];
-    self.currentTimeLabel.text = currentTimeString;
-    if (self.sliderValueChanging) self.sliderValueChanging(value,self.slider.isForward);
-}
-
-- (void)sliderTapped:(float)value {
-    if (self.player.totalTime > 0) {
-        self.slider.isdragging = YES;
-        @weakify(self)
-        [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
-            @strongify(self)
-            if (finished) {
-                self.slider.isdragging = NO;
-                [self.player.currentPlayerManager play];
-            }
-        }];
-    } else {
-        self.slider.isdragging = NO;
-        self.slider.value = 0;
-    }
-}
-
-#pragma mark - action
-
-- (void)playPauseButtonClickAction:(UIButton *)sender {
-    [self playOrPause];
-}
-
-- (void)fullScreenButtonClickAction:(UIButton *)sender {
-    [self.player enterFullScreen:YES animated:YES];
-}
-
-/// 根据当前播放状态取反
-- (void)playOrPause {
-    self.playOrPauseBtn.selected = !self.playOrPauseBtn.isSelected;
-    self.playOrPauseBtn.isSelected? [self.player.currentPlayerManager play]: [self.player.currentPlayerManager pause];
-}
-
-- (void)playBtnSelectedState:(BOOL)selected {
-    self.playOrPauseBtn.selected = selected;
-}
-
-#pragma mark - 添加子控件约束
 
 - (void)layoutSubviews {
     [super layoutSubviews];
@@ -225,7 +150,76 @@
     }
 }
 
-#pragma mark - 
+- (void)makeSubViewsAction {
+    [self.playOrPauseBtn addTarget:self action:@selector(playPauseButtonClickAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.fullScreenBtn addTarget:self action:@selector(fullScreenButtonClickAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+#pragma mark - action
+
+- (void)playPauseButtonClickAction:(UIButton *)sender {
+    [self playOrPause];
+}
+
+- (void)fullScreenButtonClickAction:(UIButton *)sender {
+    [self.player enterFullScreen:YES animated:YES];
+}
+
+/// 根据当前播放状态取反
+- (void)playOrPause {
+    self.playOrPauseBtn.selected = !self.playOrPauseBtn.isSelected;
+    self.playOrPauseBtn.isSelected? [self.player.currentPlayerManager play]: [self.player.currentPlayerManager pause];
+}
+
+- (void)playBtnSelectedState:(BOOL)selected {
+    self.playOrPauseBtn.selected = selected;
+}
+
+#pragma mark - ZFSliderViewDelegate
+
+- (void)sliderTouchBegan:(float)value {
+    self.slider.isdragging = YES;
+}
+
+- (void)sliderTouchEnded:(float)value {
+    if (self.player.totalTime > 0) {
+        self.slider.isdragging = YES;
+        if (self.sliderValueChanging) self.sliderValueChanging(value, self.slider.isForward);
+        @weakify(self)
+        [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
+            @strongify(self)
+            if (finished) {
+                self.slider.isdragging = NO;
+                if (self.sliderValueChanged) self.sliderValueChanged(value);
+            }
+        }];
+        if (self.seekToPlay) {
+            [self.player.currentPlayerManager play];
+        }
+    } else {
+        self.slider.isdragging = NO;
+        self.slider.value = 0;
+    }
+}
+
+- (void)sliderValueChanged:(float)value {
+    if (self.player.totalTime == 0) {
+        self.slider.value = 0;
+        return;
+    }
+    self.slider.isdragging = YES;
+    NSString *currentTimeString = [ZFUtilities convertTimeSecond:self.player.totalTime*value];
+    self.currentTimeLabel.text = currentTimeString;
+    if (self.sliderValueChanging) self.sliderValueChanging(value,self.slider.isForward);
+}
+
+- (void)sliderTapped:(float)value {
+    [self sliderTouchEnded:value];
+    NSString *currentTimeString = [ZFUtilities convertTimeSecond:self.player.totalTime*value];
+    self.currentTimeLabel.text = currentTimeString;
+}
+
+#pragma mark - public method 
 
 /** 重置ControlView */
 - (void)resetControlView {

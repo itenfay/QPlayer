@@ -43,6 +43,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     QPLog(@" >>>>>>>>>> ");
+    
     self.scheduleTask(self,
                       @selector(inspectWebToolBarAlpha),
                       nil,
@@ -112,24 +113,63 @@
     [tfLeftView addSubview:searchImgView];
     
     UITextField *textField    = [[UITextField alloc] init];
-    textField.backgroundColor = UIColor.whiteColor;
     textField.borderStyle     = UITextBorderStyleRoundedRect;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.returnKeyType   = UIReturnKeyGo;
     textField.delegate        = self;
     textField.font            = [UIFont systemFontOfSize:16.f];
-    textField.textColor       = UIColor.blackColor;
     textField.leftView        = tfLeftView;
     textField.leftViewMode    = UITextFieldViewModeAlways;
     textField.tag             = 68;
-    
-    textField.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入网址或rtmp等直播流地址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.f], NSForegroundColorAttributeName: [UIColor grayColor]}];
     
     textField.height = 30.f;
     textField.left   = backButton.right - 8.f;
     textField.top    = (titleView.height - textField.height)/2;
     textField.width  = historyButton.left - textField.left;
     [titleView addSubview:textField];
+    
+    [self adjustTitleViewColor];
+}
+
+- (void)adjustTitleViewColor {
+    
+    BOOL result = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
+    if (result) {
+        
+        if (@available(iOS 13.0, *)) {
+            
+            UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+            
+            if (mode == UIUserInterfaceStyleDark) {
+                // Dark Mode
+                [self matchTitleViewStyle:YES];
+            } else if (mode == UIUserInterfaceStyleLight) {
+                // Light Mode or unspecified Mode
+                [self matchTitleViewStyle:NO];
+            }
+            
+        } else {
+            
+            [self matchTitleViewStyle:NO];
+        }
+    } else {
+        
+        [self matchTitleViewStyle:NO];
+    }
+}
+
+- (void)matchTitleViewStyle:(BOOL)isDark {
+    self.titleView.backgroundColor = isDark ? UIColor.blackColor : UIColor.whiteColor;
+    self.titleView.textColor = isDark ? UIColor.whiteColor : UIColor.blackColor;
+    
+    if (isDark) {
+        
+        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入要搜索的内容或网址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+        
+    } else {
+        
+        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入要搜索的内容或网址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16], NSForegroundColorAttributeName: [UIColor grayColor]}];
+    }
 }
 
 - (void)back:(UIButton *)sender {
@@ -145,7 +185,7 @@
     
     playBtn.width  = 60;
     playBtn.height = 60;
-    playBtn.left   = -8;
+    playBtn.left   = -20;
     playBtn.top    = (self.webView.height - playBtn.height)/2;
     
     playBtn.backgroundColor = UIColor.clearColor;
@@ -155,7 +195,7 @@
     playBtn.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
     
     UIImage *bgImage = [self colorImage:playBtn.bounds
-                           cornerRadius:8
+                           cornerRadius:15.0
                          backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
                             borderWidth:0
                             borderColor:nil];
@@ -165,6 +205,8 @@
     [playBtn setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [playBtn setTitleColor:UIColor.grayColor forState:UIControlStateHighlighted];
     [playBtn setTitleShadowColor:UIColor.brownColor forState:UIControlStateNormal];
+    
+    [playBtn setTitleEdgeInsets:UIEdgeInsetsMake(10, 20, 10, 10)];
     
     [playBtn addTarget:self action:@selector(showDropListViewWithFade:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -227,7 +269,7 @@
     CGRect frame = CGRectMake(0, 0, QPScreenWidth, kH);
     [self initWebViewWithFrame:frame];
     
-    self.webView.backgroundColor     = QPColorFromRGB(243, 243, 243);
+    self.webView.backgroundColor     = UIColor.clearColor; //QPColorFromRGB(243, 243, 243);
     self.webView.opaque              = NO;
     self.webView.navigationDelegate  = self;
     self.webView.UIDelegate          = self;
@@ -258,7 +300,7 @@
         self.scheduleTask(self,
                           @selector(cancelHidingToolBar),
                           nil,
-                          0.0);
+                          0);
     }
 }
 
@@ -283,16 +325,19 @@
              [lowercaseString containsString:@"live"]  &&
              [lowercaseString containsString:@".mp3"]) ||
             [lowercaseString hasPrefix:@"mms"]) {
+            
             self.titleView.text = aUrl = text;
             NSString *title = [self titleMatchingWithUrl:aUrl];
             [self playVideoWithTitle:title urlString:aUrl];
             return;
-        }
-        else if ([lowercaseString hasPrefix:@"https"] ||
-                 [lowercaseString hasPrefix:@"http"]) {
+            
+        } else if ([lowercaseString hasPrefix:@"https"] ||
+                   [lowercaseString hasPrefix:@"http"]) {
+            
             aUrl = text;
-        }
-        else {
+            
+        } else {
+            
             NSString *bdUrl = @"https://www.baidu.com/";
             aUrl = [aUrl stringByAppendingFormat:@"%@s?wd=%@&cl=3", bdUrl, text];
         }
@@ -359,6 +404,7 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     [super webView:webView didFinishNavigation:navigation];
+    [self evaluateJavaScript:webView];
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
@@ -401,8 +447,7 @@
     if ([aUrl isEqualToString:@"about:blank"]) {
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
-    }
-    else {
+    } else {
         self.requestUrl = aUrl;
         self.titleView.text = aUrl;
     }
@@ -428,9 +473,53 @@
     return nil;
 }
 
+- (void)evaluateJavaScript:(WKWebView *)webView {
+    
+    NSString *jsStr = @"(document.getElementsByTagName(\"video\")[0]).src";
+    
+    [webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        
+        if(![response isEqual:[NSNull null]] && response != nil){
+            
+            // 截获到视频地址
+            NSString *videoUrl = (NSString *)response;
+            QPLog(@"videoUrl: %@", videoUrl);
+            [self attemptToPlayVideo:videoUrl];
+            
+        } else {
+            // 没有视频链接
+        }
+        
+    }];
+}
+
+- (void)attemptToPlayVideo:(NSString *)url {
+    QPLog(@"videoUrl: %@", url);
+    
+    [QPHudObject showActivityMessageInView:@"正在解析..."];
+    
+    NSString *videoTitle = self.webView.title;
+    QPLog(@"videoTitle: %@", videoTitle);
+    
+    if (url && url.length > 0 && [url hasPrefix:@"http"]) {
+       
+        [self delayToScheduleTask:2.0 completion:^{
+            [QPHudObject hideHUD];
+            [self playVideoWithTitle:videoTitle urlString:url];
+        }];
+        
+    } else {
+        
+        [self delayToScheduleTask:2.0 completion:^{
+            [QPHudObject hideHUD];
+        }];
+    }
+}
+
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)aUrl {
+    
     if (!QPlayerIsPlaying()) {
-        QPlayerSetPlaying(YES);
+        QPlayerSavePlaying(YES);
         
         QPlayerController *qpc    = [[QPlayerController alloc] init];
         qpc.isMediaPlayerPlayback = YES;
@@ -463,7 +552,7 @@
     self.scheduleTask(self,
                       @selector(hideToolBar),
                       nil,
-                      8.0);
+                      6);
 }
 
 - (void)hideToolBar {
@@ -530,12 +619,12 @@
     searchViewController.dataSource  = self;
     searchViewController.hotSearches = @[@"https://h5.inke.cn/app/home/hotlive",
                                          @"https://h.huajiao.com/",
-                                         @"https://m.v.6.cn/",
                                          @"https://wap.yy.com/",
                                          @"https://m.yizhibo.com/",
+                                         @"https://m.v.6.cn/",
                                          @"https://h5.9xiu.com/",
-                                         @"https://m-x.pps.tv/",
                                          @"https://now.qq.com/",
+                                         @"https://m-x.pps.tv/",
                                          
                                          @"https://cdn.egame.qq.com/pgg-play/module/livelist.html",
                                          @"https://m.douyu.com/",
@@ -544,9 +633,10 @@
                                          @"https://h5.cc.163.com/",
                                          @"https://live.bilibili.com/h5/",
                                          
-                                         @"https://m-live.iqiyi.com/",
-                                         @"http://tv.cctv.com/live/m/",
+                                         @"https://m.tv.bingdou.net/",
+                                         @"http://m.66zhibo.net/",
                                          @"http://m.migu123.com/",
+                                         @"http://tv.cctv.com/live/m/",
                                          @"http://m.azhibo.com/"];
     
     searchViewController.searchBar.tintColor = UIColor.blueColor;
@@ -555,8 +645,12 @@
     searchViewController.searchHistoryStyle = PYSearchHistoryStyleDefault;
     
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:searchViewController];
-    [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
     [nc.navigationBar setShadowImage:[UIImage new]];
+    if (self.isDarkMode) {
+        [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBlackBg") forBarMetrics:UIBarMetricsDefault];
+    } else {
+        [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
+    }
     [nc.navigationBar setTintColor:[UIColor whiteColor]];
     [nc.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -646,6 +740,11 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 //- (UIStatusBarStyle)preferredStatusBarStyle {
 //    return UIStatusBarStyleLightContent;
 //}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self adjustTitleViewColor];
+}
 
 - (void)dealloc {
     QPLog(@" >>>>>>>>>> ");

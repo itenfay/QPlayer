@@ -7,4 +7,12 @@
 
 #import "QPAppConst.h"
 
-NSString *const kQPlayerPlaying = @"kQPlayerPlaying";
+NSString *const kQPlayerIsPlaying = @"kQPlayerIsPlaying";
+
+NSString *const kRecordKeyInfo = @"kRecordKeyInfo";
+
+NSString *const kWriteThemeStyleFlagOnceOnly = @"kWriteThemeStyleFlagOnceOnly";
+
+NSString *const kThemeStyleOnOff = @"kThemeStyleOnOff";
+
+NSString *const kThemeStyleDidChangeNotification = @"kThemeStyleDidChangeNotification";

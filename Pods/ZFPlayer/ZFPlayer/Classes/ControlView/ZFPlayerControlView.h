@@ -25,9 +25,13 @@
 #import <UIKit/UIKit.h>
 #import "ZFPortraitControlView.h"
 #import "ZFLandScapeControlView.h"
-#import <ZFPlayer/ZFPlayerMediaControl.h>
 #import "ZFSpeedLoadingView.h"
 #import "ZFSmallFloatControlView.h"
+#if __has_include(<ZFPlayer/ZFPlayerMediaControl.h>)
+#import <ZFPlayer/ZFPlayerMediaControl.h>
+#else
+#import "ZFPlayerMediaControl.h"
+#endif
 
 @interface ZFPlayerControlView : UIView <ZFPlayerMediaControl>
 

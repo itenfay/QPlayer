@@ -45,6 +45,8 @@ NSInteger yf_sortObjects(FileModel *obj1, FileModel *obj2, void *context) {
     
     [self addTableView];
     [self buildMJRefreshHeader];
+    
+    [self addManualThemeStyleObserver];
 }
 
 - (void)configureNavigationBar {
@@ -52,7 +54,7 @@ NSInteger yf_sortObjects(FileModel *obj1, FileModel *obj2, void *context) {
     
     UIButton *liveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     liveButton.frame = CGRectMake(0, 0, 30, 30);
-    liveButton.showsTouchWhenHighlighted = YES;
+    //liveButton.showsTouchWhenHighlighted = YES;
     [liveButton setTitle:@"LIVE" forState:UIControlStateNormal];
     [liveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
     [liveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -280,20 +282,26 @@ NSInteger yf_sortObjects(FileModel *obj1, FileModel *obj2, void *context) {
         //[self removeCellAllSubviews:cell];
     }
     
-    cell.backgroundColor = [UIColor clearColor];
-    cell.contentView.backgroundColor = [UIColor whiteColor];
+    cell.backgroundColor = self.isDarkMode ? QPColorFromRGB(30, 30, 30) : [UIColor whiteColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     FileModel *fileModel = self.localFileList[indexPath.row];
     
     [self setThumbnailForCell:cell model:fileModel];
+    
     [cell.titleLabel setText:fileModel.title];
+    [cell.titleLabel setTextColor:self.isDarkMode ? QPColorFromRGB(230, 230, 230) : QPColorFromRGB(30, 30, 30)];
+    [cell.titleLabel setNumberOfLines:2];
+    [cell.titleLabel setLineBreakMode:NSLineBreakByCharWrapping];
     
     [self setInfoForCell:cell model:fileModel];
+    
     [cell.dateLabel setText:fileModel.creationDate];
+    [cell.dateLabel setTextColor:self.isDarkMode ? QPColorFromRGB(180, 180, 180) : UIColor.grayColor];
     
     [self setFormatImageForCell:cell model:fileModel];
-    [cell.divider setBackgroundColor:QPColorFromRGB(218, 218, 218)];
+    
+    [cell.divider setBackgroundColor:self.isDarkMode ? QPColorFromRGB(40, 40, 40) : QPColorFromRGB(230, 230, 230)];
     
     return cell;
 }
@@ -309,7 +317,7 @@ NSInteger yf_sortObjects(FileModel *obj1, FileModel *obj2, void *context) {
 
 - (void)playLocalVideo:(FileModel *)model forCell:(FileTableViewCell *)cell {
     if (!QPlayerIsPlaying()) {
-        QPlayerSetPlaying(YES);
+        QPlayerSavePlaying(YES);
         
         QPlayerController *qpc    = [[QPlayerController alloc] init];
         qpc.isLocalVideo          = YES;
@@ -324,7 +332,7 @@ NSInteger yf_sortObjects(FileModel *obj1, FileModel *obj2, void *context) {
 
 - (void)setInfoForCell:(FileTableViewCell *)cell model:(FileModel *)model {
     NSURL *aURL = [NSURL fileURLWithPath:model.path];
-    // [self totalTimeForVideo:aURL]
+    
     int duration = self.yf_videoDuration(aURL);
     NSString *displayTime = [self formatVideoDuration:duration];
     
@@ -340,12 +348,13 @@ NSInteger yf_sortObjects(FileModel *obj1, FileModel *obj2, void *context) {
     
     NSString *info = [NSString stringWithFormat:@"%@ | %@", displayTime, sizeStr];
     [cell.infolabel setText:info];
+    
+    [cell.infolabel setTextColor:self.isDarkMode ? QPColorFromRGB(180, 180, 180) : UIColor.grayColor];
 }
 
 - (void)setThumbnailForCell:(FileTableViewCell *)cell model:(FileModel *)model {
     NSURL *aURL = [NSURL fileURLWithPath:model.path];
-    // [self thumbnailForVideo:aURL];
-    UIImage *thumbnail = self.yf_videoThumbnailImage(aURL, 1.0, 107, 60);
+    UIImage *thumbnail = self.yf_videoThumbnailImage(aURL, 3, 107, 60);
     
     [cell.thumbnailImgView setBackgroundColor:QPColorFromRGB(36, 39, 46)];
     [cell.thumbnailImgView setImage:thumbnail];
@@ -353,8 +362,9 @@ NSInteger yf_sortObjects(FileModel *obj1, FileModel *obj2, void *context) {
 }
 
 - (void)setFormatImageForCell:(FileTableViewCell *)cell model:(FileModel *)model {
+    NSString *fileExt = [model.fileType lowercaseString];
+    
     NSString *filename = nil;
-    NSString *fileExt  = [model.fileType lowercaseString];
     
     if ([fileExt isEqualToString:@"avi"]) {
         filename = [NSString stringWithFormat:@"icon_avi"];
@@ -378,16 +388,29 @@ NSInteger yf_sortObjects(FileModel *obj1, FileModel *obj2, void *context) {
         filename = [NSString stringWithFormat:@"icon_swf"];
     } else if ([fileExt isEqualToString:@"wmv"]) {
         filename = [NSString stringWithFormat:@"icon_wmv"];
+    } else if ([fileExt isEqualToString:@"mp3"]) {
+        filename = [NSString stringWithFormat:@"default_thumbnail"];
     } else {
         filename = [NSString stringWithFormat:@"icon_jpg"];
     }
     
-    cell.formatImgView.image       = QPImageNamed(filename);
+    cell.formatImgView.image = QPImageNamed(filename);
     cell.formatImgView.contentMode = UIViewContentModeScaleToFill;
+}
+
+- (void)adjustThemeStyle {
+    [super adjustThemeStyle];
+    [self.tableView reloadData];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self.tableView reloadData];
 }
 
 - (void)dealloc {
     [WifiManager shared].httpServer.fileResourceDelegate = nil;
+    [self removeManualThemeStyleObserver];
 }
 
 - (void)didReceiveMemoryWarning {

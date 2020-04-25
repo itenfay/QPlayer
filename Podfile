@@ -6,7 +6,7 @@ target 'QPlayer' do
     # Pods for QPlayer
     pod 'AFNetworking'
     pod 'SDWebImage'
-    pod 'MJRefresh', '~> 3.1.12'
+    pod 'MJRefresh'
     
     pod 'ZFPlayer'
     pod 'ZFPlayer/ControlView'
@@ -16,7 +16,7 @@ target 'QPlayer' do
     #pod 'KSYMediaPlayer_iOS/KSYMediaPlayer_vod' # Conflicts with ijkplayer.
     
     pod 'MBProgressHUD+JDragon', '~> 0.0.3'
-    pod 'PYSearch', '~> 0.8.8'
+    pod 'PYSearch'
     pod 'SVBlurView', '~> 0.0.1'
     pod 'FDFullscreenPopGesture', '~> 1.1'
     

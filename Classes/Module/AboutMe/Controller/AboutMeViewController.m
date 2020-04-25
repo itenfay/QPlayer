@@ -36,7 +36,7 @@
     [self setupTextForTitleLabel:@"关于我"];
     
     [self setupMtableView];
-    [self preload];
+    [self loadData];
 }
 
 - (void)setupNavigationItems {
@@ -117,12 +117,9 @@
     return _dataArray;
 }
 
-- (void)preload {
+- (void)loadData {
     [self.dataArray removeAllObjects];
-    [self onLoadData];
-}
-
-- (void)onLoadData {
+    
     NSString *vString = [NSString stringWithFormat:@"%@.%@", QPAppVersion, QPBuildVersion];
     NSDictionary *vDict = @{@"版本": vString};
     [self.dataArray addObject:vDict];
@@ -200,6 +197,7 @@
                                                label.width,
                                                font);
         label.textAlignment = NSTextAlignmentLeft;
+        label.textColor = self.isDarkMode ? QPColorFromRGB(160, 160, 160) : QPColorFromRGB(96, 96, 96);
         
         header.briefIntroLabelHeight.constant = labH;
         CGFloat bgImgVH = header.logoBgImgViewHeight.constant;
@@ -268,15 +266,18 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
     }
     
+    cell.backgroundColor = self.isDarkMode ? QPColorFromRGB(20, 20, 20) : QPColorFromRGB(246, 246, 246);
+    
     NSDictionary *dict = self.dataArray[indexPath.row];
+    
     cell.textLabel.text = dict.allKeys.firstObject;
-    cell.textLabel.textColor  = QPColorFromRGB(48, 48, 48);
     cell.detailTextLabel.text = dict.allValues.firstObject;
+    cell.textLabel.textColor  = self.isDarkMode ?  QPColorFromRGB(220, 220, 220) : QPColorFromRGB(100, 100, 100);
+    cell.textLabel.font = [UIFont systemFontOfSize:16];
     
     if (indexPath.row == 0) {
         cell.accessoryType  = UITableViewCellAccessoryNone;
-    }
-    else {
+    } else {
         cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
     }
     
@@ -294,8 +295,7 @@
         NSString *gValue = QPInfoDictionary[@"QPlayerGithubUrl"];
         [self openWebPageWithUrl:gValue];
         
-    }
-    else if (indexPath.row == 2) {
+    } else if (indexPath.row == 2) {
         
         NSString *eValue = dict.allValues.firstObject;
         NSString *recipients = [NSString stringWithFormat:@"mailto:%@?subject=Hello!", eValue];
@@ -304,8 +304,7 @@
         
         [self openUrl:[self urlEncode:email]];
         
-    }
-    else {}
+    } else {}
 }
 
 - (void)openWebPageWithUrl:(NSString *)aUrl {
@@ -344,6 +343,11 @@
 - (NSArray<UIActivity *> *)safariViewController:(SFSafariViewController *)controller activityItemsForURL:(NSURL *)URL title:(NSString *)title {
     QPLog(@" >>>>>>>>>> ");
     return @[];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self.m_tableView reloadData];
 }
 
 @end

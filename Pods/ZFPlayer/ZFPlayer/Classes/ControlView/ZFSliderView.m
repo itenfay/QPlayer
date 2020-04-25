@@ -27,8 +27,6 @@
 
 /** 滑块的大小 */
 static const CGFloat kSliderBtnWH = 19.0;
-/** 间距 */
-static const CGFloat kProgressMargin = 2.0;
 /** 进度的高度 */
 static const CGFloat kProgressH = 1.0;
 /** 拖动slider动画的时间*/
@@ -86,6 +84,8 @@ static const CGFloat kAnimate = 0.3;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    if (isnan(self.value) || isnan(self.bufferValue)) return;
+
     CGFloat min_x = 0;
     CGFloat min_y = 0;
     CGFloat min_w = 0;
@@ -236,6 +236,17 @@ static const CGFloat kAnimate = 0.3;
     self.bgProgressView.zf_height     = sliderHeight;
     self.bufferProgressView.zf_height = sliderHeight;
     self.sliderProgressView.zf_height = sliderHeight;
+}
+
+- (void)setSliderRadius:(CGFloat)sliderRadius {
+    if (isnan(sliderRadius)) return;
+    _sliderRadius = sliderRadius;
+    self.bgProgressView.layer.cornerRadius      = sliderRadius;
+    self.bufferProgressView.layer.cornerRadius  = sliderRadius;
+    self.sliderProgressView.layer.cornerRadius  = sliderRadius;
+    self.bgProgressView.layer.masksToBounds     = YES;
+    self.bufferProgressView.layer.masksToBounds = YES;
+    self.sliderProgressView.layer.masksToBounds = YES;
 }
 
 - (void)setIsHideSliderBlock:(BOOL)isHideSliderBlock {

@@ -13,29 +13,17 @@
 
 @interface TabBarController ()
 
+// The property determines whether The dark interface style was truned on.
+@property (nonatomic, assign) BOOL isDarkMode;
+
 @end
 
 @implementation TabBarController
 
-+ (void)initialize {
-    // 通过 appearance 统一设置所有 UITabBarItem 的文字属性
-    // 带有 UI_APPEARANCE_SELECTOR 的方法, 都可以通过 appearance 对象来统一设置
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-    attributes[NSFontAttributeName] = [UIFont systemFontOfSize:12];
-    attributes[NSForegroundColorAttributeName] = [UIColor grayColor];
-    
-    NSMutableDictionary *selectedAttributes = [NSMutableDictionary dictionary];
-    selectedAttributes[NSFontAttributeName] = attributes[NSFontAttributeName];
-    selectedAttributes[NSForegroundColorAttributeName] = QPColorFromRGB(58, 60, 66);
-    
-    UITabBarItem *tabBarItem = [UITabBarItem appearance];
-    [tabBarItem setTitleTextAttributes:attributes forState:UIControlStateNormal];
-    [tabBarItem setTitleTextAttributes:selectedAttributes forState:UIControlStateSelected];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
+    [self identifyMode];
 }
 
 - (void)setup {
@@ -71,15 +59,65 @@
 }
 
 - (UIImage *(^)(UIImage *image))originalImage {
+    
     UIImage *(^block)(UIImage *image) = ^UIImage *(UIImage *image) {
         UIImageRenderingMode imgRenderingMode = UIImageRenderingModeAlwaysOriginal;
         return [image imageWithRenderingMode:imgRenderingMode];
     };
+    
     return block;
 }
 
 - (BaseNavigationController *)tbc_navigationController:(UIViewController *)viewController {
     return [[BaseNavigationController alloc] initWithRootViewController:viewController];
+}
+
+- (void)identifyMode {
+    if (@available(iOS 13.0, *)) {
+        
+        UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+        
+        if (mode == UIUserInterfaceStyleDark) {
+            // Dark Mode
+            self.isDarkMode = YES;
+        } else if (mode == UIUserInterfaceStyleLight) {
+            // Light Mode or unspecified Mode
+            self.isDarkMode = NO;
+        }
+        
+    } else {
+        
+        self.isDarkMode = NO;
+    }
+    
+    [self adjustTabBarThemeStyle];
+}
+
+- (void)adjustTabBarThemeStyle {
+    
+    UIColor *normalColor = self.isDarkMode ? QPColorFromRGB(200, 200, 200) : [UIColor grayColor];
+    UIColor *selectedColor = self.isDarkMode ? QPColorFromRGB(39, 220, 203) : QPColorFromRGB(58, 60, 66);
+    UIFont *font = [UIFont systemFontOfSize:12];
+    
+    UITabBarItem *tabBarItem = [UITabBarItem appearance];
+    
+    if (@available(iOS 13.0, *)) {
+        
+        self.tabBar.unselectedItemTintColor = normalColor;
+        self.tabBar.tintColor = selectedColor;
+        
+        [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateNormal];
+        [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateSelected];
+        
+    } else {
+        
+        [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : normalColor, NSFontAttributeName : font} forState:UIControlStateNormal];
+        [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : selectedColor, NSFontAttributeName : font} forState:UIControlStateSelected];
+    }
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [self identifyMode];
 }
 
 - (void)didReceiveMemoryWarning {

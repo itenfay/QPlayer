@@ -30,7 +30,6 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        QPLog(@" >>>>>>>>>> ");
         [self setHidesBottomBarWhenPushed:YES];
         [self setVideoDecoding:0];
         [self setParsingButtonRequired:NO];
@@ -43,7 +42,6 @@
     
     [self setupNavigationItems];
     [self addContainerView];
-    [self configureControlView];
     
     [self initWebView];
     [self buildWebToolBar];
@@ -51,53 +49,58 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     QPLog(@" >>>>>>>>>> videoTitle: %@", self.videoTitle);
     QPLog(@" >>>>>>>>>> videoUrl: %@", self.videoUrl);
     QPLog(@" >>>>>>>>>> videoDecoding: %d", self.videoDecoding);
     
+    [self loadDefaultRequest];
     self.scheduleTask(self,
                       @selector(inspectWebToolBarAlpha),
                       nil,
-                      2.6);
-    
-    [self loadDefaultRequest];
+                      3);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self interactivePopGestureAction];
+    [self configureControlView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self prepareToPlay];
-    [self interactivePopGestureAction];
 }
 
 - (void)prepareToPlay {
+    
     if (self.isLocalVideo && self.isZFPlayerPlayback) {
-        NSString *aUrl = [self.videoUrl copy];
-        NSURL *fileURL = [NSURL fileURLWithPath:aUrl];
+        
+        NSURL *fileURL = [NSURL fileURLWithPath:self.videoUrl];
         [self useZFPlayerToPlay:fileURL];
-    }
-    else if (self.isLocalVideo && self.isIJKPlayerPlayback) {
-        NSString *aUrl = [self.videoUrl copy];
-        NSURL *fileURL = [NSURL fileURLWithPath:aUrl];
+        
+    } else if (self.isLocalVideo && self.isIJKPlayerPlayback) {
+        
+        NSURL *fileURL = [NSURL fileURLWithPath:self.videoUrl];
         [self useIJKPlayerToPlay:fileURL];
-    }
-    else if (self.isIJKPlayerPlayback) {
+        
+    } else if (self.isIJKPlayerPlayback) {
+        
         NSURL *aURL = [NSURL URLWithString:self.videoUrl];
         [self useIJKPlayerToPlay:aURL]; // Live.
-    }
-    else if (self.isLocalVideo && self.isMediaPlayerPlayback) {
-        NSString *aUrl = [self.videoUrl copy];
-        NSURL *fileURL = [NSURL fileURLWithPath:aUrl];
+        
+    } else if (self.isLocalVideo && self.isMediaPlayerPlayback) {
+        
+        NSURL *fileURL = [NSURL fileURLWithPath:self.videoUrl];
         [self useKSYMediaPlayerToPlay:fileURL];
-    }
-    else if (self.isMediaPlayerPlayback) {
+        
+    } else if (self.isMediaPlayerPlayback) {
+        
         NSURL *aURL = [NSURL URLWithString:self.videoUrl];
         [self useKSYMediaPlayerToPlay:aURL]; // Live.
-    }
-    else {
+        
+    } else {
+        
         NSURL *aURL = [NSURL URLWithString:self.videoUrl];
         [self useZFPlayerToPlay:aURL];
     }
@@ -112,7 +115,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    QPlayerSetPlaying(NO);
+    QPlayerSavePlaying(NO);
     [self.player stopCurrentPlayingView];
 }
 
@@ -135,7 +138,6 @@
     self.navigationItem.hidesBackButton = YES;
     
     QPTitleView *titleView = [[QPTitleView alloc] init];
-    //titleView.backgroundColor = UIColor.redColor;
     titleView.left   = 0.f;
     titleView.top    = 0.f;
     titleView.width  = self.view.width;
@@ -158,7 +160,7 @@
     titleLabel.font            = [UIFont boldSystemFontOfSize:16.f];
     titleLabel.textColor       = UIColor.whiteColor;
     titleLabel.textAlignment   = NSTextAlignmentCenter;
-    titleLabel.text            = self.videoTitleByDeletingExtension ?: @"";
+    titleLabel.text            = QPInfoDictionary[@"CFBundleName"];
     
     titleLabel.height = 30.f;
     titleLabel.left   = backButton.right - 12.f;
@@ -220,7 +222,7 @@
         self.scheduleTask(self,
                           @selector(cancelHidingToolBar),
                           nil,
-                          0.0);
+                          0);
     }
 }
 
@@ -323,7 +325,9 @@
 }
 
 - (void)useKSYMediaPlayerToPlay:(NSURL *)aURL {
-    KSYMediaPlayerManager *playerManager = [[KSYMediaPlayerManager alloc] init]; // playerManager
+    // playerManager
+    KSYMediaPlayerManager *playerManager = [[KSYMediaPlayerManager alloc] init];
+    
     // Invalid, player hasn't been initialized yet.
     //if (self.videoDecoding == 1) {
     //    // MPMovieVideoDecoderMode_AUTO
@@ -527,7 +531,7 @@
     self.scheduleTask(self,
                       @selector(hideToolBar),
                       nil,
-                      8.0);
+                      6);
 }
 
 - (void)hideToolBar {

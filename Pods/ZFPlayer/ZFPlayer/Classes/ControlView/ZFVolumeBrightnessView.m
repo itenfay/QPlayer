@@ -25,7 +25,11 @@
 #import "ZFVolumeBrightnessView.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "ZFUtilities.h"
+#if __has_include(<ZFPlayer/ZFPlayer.h>)
 #import <ZFPlayer/ZFPlayer.h>
+#else
+#import "ZFPlayer.h"
+#endif
 
 @interface ZFVolumeBrightnessView ()
 

@@ -49,8 +49,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerScrollViewDirection) {
  * The player container type
  */
 typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
-    ZFPlayerContainerTypeCell,
-    ZFPlayerContainerTypeView
+    ZFPlayerContainerTypeView,
+    ZFPlayerContainerTypeCell
 };
 
 @interface UIScrollView (ZFPlayer)
@@ -61,21 +61,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
 /// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionHorizontal,the property has value.
 @property (nonatomic, readonly) CGFloat zf_lastOffsetX;
 
-/// The indexPath is playing.
-@property (nonatomic, nullable) NSIndexPath *zf_playingIndexPath;
-
-/// The indexPath that should play, the one that lights up.
-@property (nonatomic, nullable) NSIndexPath *zf_shouldPlayIndexPath;
-
-/// WWANA networks play automatically,default NO.
-@property (nonatomic, getter=zf_isWWANAutoPlay) BOOL zf_WWANAutoPlay;
-
-/// The player should auto player,default is YES.
-@property (nonatomic) BOOL zf_shouldAutoPlay;
-
-/// The view tag that the player display in scrollView.
-@property (nonatomic) NSInteger zf_containerViewTag;
-
 /// The scrollView scroll direction, default is ZFPlayerScrollViewDirectionVertical.
 @property (nonatomic) ZFPlayerScrollViewDirection zf_scrollViewDirection;
 
@@ -84,32 +69,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
 /// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionVertical，this value can only be ZFPlayerScrollDirectionLeft or ZFPlayerScrollDirectionRight.
 @property (nonatomic, readonly) ZFPlayerScrollDirection zf_scrollDirection;
 
-/// The video contrainerView type.
-@property (nonatomic, assign) ZFPlayerContainerType zf_containerType;
-
-/// The video contrainerView in normal model.
-@property (nonatomic, strong) UIView *zf_containerView;
-
-/// The currently playing cell stop playing when the cell has out off the screen，defalut is YES.
-@property (nonatomic, assign) BOOL zf_stopWhileNotVisible;
-
-/// Has stopped playing
-@property (nonatomic, assign) BOOL zf_stopPlay;
-
-/// The block invoked When the player did stop scroll.
-@property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScrollCallback)(NSIndexPath *indexPath);
-
-/// The block invoked When the player should play.
-@property (nonatomic, copy, nullable) void(^zf_shouldPlayIndexPathCallback)(NSIndexPath *indexPath);
-
-/// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped).
-- (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler;
-
-/// Filter the cell that should be played while scrolling (you can use this to filter the highlighted cell).
-- (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler;
-
 /// Get the cell according to indexPath.
 - (UIView *)zf_getCellForIndexPath:(NSIndexPath *)indexPath;
+
+/// Get the indexPath for cell.
+- (NSIndexPath *)zf_getIndexPathForCell:(UIView *)cell;
 
 /// Scroll to indexPath with animations.
 - (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ __nullable)(void))completionHandler;
@@ -163,6 +127,15 @@ typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
 /// The block invoked When the player did disappeared.
 @property (nonatomic, copy, nullable) void(^zf_playerDidDisappearInScrollView)(NSIndexPath *indexPath);
 
+/// The block invoked When the player did stop scroll.
+@property (nonatomic, copy, nullable) void(^zf_scrollViewDidEndScrollingCallback)(NSIndexPath *indexPath);
+
+/// The block invoked When the player did  scroll.
+@property (nonatomic, copy, nullable) void(^zf_scrollViewDidScrollCallback)(NSIndexPath *indexPath);
+
+/// The block invoked When the player should play.
+@property (nonatomic, copy, nullable) void(^zf_playerShouldPlayInScrollView)(NSIndexPath *indexPath);
+
 /// The current player scroll slides off the screen percent.
 /// the property used when the `stopWhileNotVisible` is YES, stop the current playing player.
 /// the property used when the `stopWhileNotVisible` is NO, the current playing player add to small container view.
@@ -179,6 +152,51 @@ typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
 
 /// The current player controller is disappear, not dealloc
 @property (nonatomic) BOOL zf_viewControllerDisappear;
+
+/// Has stopped playing
+@property (nonatomic, assign) BOOL zf_stopPlay;
+
+/// The currently playing cell stop playing when the cell has out off the screen，defalut is YES.
+@property (nonatomic, assign) BOOL zf_stopWhileNotVisible;
+
+/// The indexPath is playing.
+@property (nonatomic, nullable) NSIndexPath *zf_playingIndexPath;
+
+/// The indexPath should be play while scrolling.
+@property (nonatomic, nullable) NSIndexPath *zf_shouldPlayIndexPath;
+
+/// WWANA networks play automatically,default NO.
+@property (nonatomic, getter=zf_isWWANAutoPlay) BOOL zf_WWANAutoPlay;
+
+/// The player should auto player,default is YES.
+@property (nonatomic) BOOL zf_shouldAutoPlay;
+
+/// The view tag that the player display in scrollView.
+@property (nonatomic) NSInteger zf_containerViewTag;
+
+/// The video contrainerView in normal model.
+@property (nonatomic, strong) UIView *zf_containerView;
+
+
+/// The video contrainerView type.
+@property (nonatomic, assign) ZFPlayerContainerType zf_containerType;
+
+
+/// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped).
+- (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler;
+
+/// Filter the cell that should be played while scrolling (you can use this to filter the highlighted cell).
+- (void)zf_filterShouldPlayCellWhileScrolling:(void (^ __nullable)(NSIndexPath *indexPath))handler;
+
+@end
+
+@interface UIScrollView (ZFPlayerDeprecated)
+
+/// The block invoked When the player did stop scroll.
+@property (nonatomic, copy, nullable) void(^zf_scrollViewDidStopScrollCallback)(NSIndexPath *indexPath) __attribute__((deprecated("use `ZFPlayerController.zf_scrollViewDidEndScrollingCallback` instead.")));
+
+/// The block invoked When the player should play.
+@property (nonatomic, copy, nullable) void(^zf_shouldPlayIndexPathCallback)(NSIndexPath *indexPath) __attribute__((deprecated("use `ZFPlayerController.zf_playerShouldPlayInScrollView` instead.")));
 
 @end
 

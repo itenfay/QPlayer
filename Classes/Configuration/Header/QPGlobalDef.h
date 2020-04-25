@@ -12,11 +12,11 @@
 #define QPGlobalDef_h
 
 #ifndef QP_STATIC
-    #define QP_STATIC static
+#define QP_STATIC static
 #endif
 
 #ifndef QP_STATIC_INLINE
-    #define QP_STATIC_INLINE static inline
+#define QP_STATIC_INLINE static inline
 #endif
 
 QP_STATIC NSString *const QPCharactersGeneralDelimitersToEncode = @":#[]@";
@@ -55,21 +55,29 @@ QP_STATIC_INLINE NSString *QPUrlEncode(NSString *str) {
 
 QP_STATIC_INLINE NSString *QPUrlDecode(NSString *str) {
     NSString *_str = [str stringByRemovingPercentEncoding];
+    
     if (_str) {
         return _str;
     }
+    
     return [str copy];
 }
 
-QP_STATIC_INLINE void QPlayerSetPlaying(BOOL value) {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setBool:value forKey:kQPlayerPlaying];
-    [userDefaults synchronize];
+QP_STATIC_INLINE void QPlayerSaveFlag(NSString *key, id value) {
+    [NSUserDefaults.standardUserDefaults setObject:value forKey:key];
+    [NSUserDefaults.standardUserDefaults synchronize];
+}
+
+QP_STATIC_INLINE id QPlayerExtractFlag(NSString *key) {
+    return [NSUserDefaults.standardUserDefaults objectForKey:key];
+}
+
+QP_STATIC_INLINE void QPlayerSavePlaying(BOOL value) {
+    QPlayerSaveFlag(kQPlayerIsPlaying, [NSNumber numberWithBool:value]);
 }
 
 QP_STATIC_INLINE BOOL QPlayerIsPlaying() {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return [userDefaults boolForKey:kQPlayerPlaying];
+    return [QPlayerExtractFlag(kQPlayerIsPlaying) boolValue];
 }
 
 #endif /* QPGlobalDef_h */

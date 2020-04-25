@@ -18,8 +18,10 @@
 #define BaseLeftMargin       10.f
 
 @interface SettingsViewController () <UITableViewDelegate, UITableViewDataSource>
+
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, assign) UInt16 m_port;
+
 @end
 
 @implementation SettingsViewController
@@ -38,6 +40,8 @@
     
     [self configureNavigationBar];
     [self addTableView];
+    
+    [self addManualThemeStyleObserver];
 }
 
 - (void)configureNavigationBar {
@@ -89,13 +93,21 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     BOOL status = WifiManager.shared.serverStatus;
     if (!status) {
-        return 1;
+        return 2;
     }
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    if (section == 0) {
+        return 1;
+    } else if (section == 1) {
+        return 1;
+    } else if (section == 2) {
+        return 1;
+    } else {
+        return 1;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -107,41 +119,47 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    BOOL status = [[WifiManager shared] serverStatus];
-    if (section == 0 && status) {
-        //return 0.1f;
+    
+    if (section == 0) {
+        return 0.1f;
     }
+    
+    //BOOL status = [[WifiManager shared] serverStatus];
+    //if (section == 1 && status) {
+    //    return 0.1f;
+    //}
+    
     return SectionFooterHeight;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == 0 || section == 1) {
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, SectionHeaderHeight)];
-        headerView.backgroundColor = [UIColor clearColor];
-        
-        CGFloat tX = 2*BaseLeftMargin;
-        CGFloat tY = headerView.height/2.0 - BaseTopMargin;
-        CGFloat tW = headerView.width - 2*tX;
-        CGFloat tH = headerView.height/2.0;
-        
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(tX, tY, tW, tH)];
-        titleLabel.backgroundColor = UIColor.clearColor;
-        titleLabel.font            = [UIFont systemFontOfSize:13.f];
-        titleLabel.textColor       = QPColorFromRGB(96, 96, 96);
-        titleLabel.textAlignment   = NSTextAlignmentLeft;
-        titleLabel.text = (section == 0) ? @"开启后，可以享用 WiFi 文件传输服务" : @"打开电脑浏览器，输入以下网址进行访问";
-        [headerView addSubview:titleLabel];
-        
-        return headerView;
-    }
     
-    return nil;
+    NSArray *headerTitles = @[@"开启后，将与手机设置保持一致的深色或浅色模式", @"开启后，可以享用 WiFi 文件传输服务", @"打开电脑浏览器，输入以下网址进行访问"];
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, SectionHeaderHeight)];
+    headerView.backgroundColor = [UIColor clearColor];
+    
+    CGFloat tX = 2*BaseLeftMargin;
+    CGFloat tY = headerView.height/2.0 - BaseTopMargin;
+    CGFloat tW = headerView.width - 2*tX;
+    CGFloat tH = headerView.height/2.0;
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(tX, tY, tW, tH)];
+    titleLabel.backgroundColor = UIColor.clearColor;
+    titleLabel.font            = [UIFont systemFontOfSize:13.f];
+    titleLabel.textColor       = self.isDarkMode ? QPColorFromRGB(160, 160, 160) : QPColorFromRGB(96, 96, 96);
+    titleLabel.textAlignment   = NSTextAlignmentLeft;
+    titleLabel.text            = headerTitles[section];
+    
+    [headerView addSubview:titleLabel];
+    
+    return headerView;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    //BOOL status = [[WifiManager shared] serverStatus];
     
-    //if ((section == 0 && !status) || (section == 1 && status)) {
+    if (section == 0) return nil;
+    
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, SectionFooterHeight)];
     footerView.backgroundColor = [UIColor clearColor];
     
@@ -153,17 +171,14 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(tX, tY, tW, tH)];
     titleLabel.backgroundColor = UIColor.clearColor;
     titleLabel.font            = [UIFont systemFontOfSize:13.f];
-    titleLabel.textColor       = QPColorFromRGB(96, 96, 96);
+    titleLabel.textColor       = self.isDarkMode ? QPColorFromRGB(160, 160, 160) : QPColorFromRGB(96, 96, 96);
     titleLabel.textAlignment   = NSTextAlignmentLeft;
     titleLabel.numberOfLines   = 2;
     titleLabel.lineBreakMode   = NSLineBreakByWordWrapping;
-    titleLabel.text = (section == 0) ? @"支持 MP4,MOV,AVI,FLV,MKV,WMV,M4V,RMVB,MP3 等主流媒体格式，支持 HTTP,RTMP,RSTP,HLS 等流媒体或直播播放" : @"上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏";
+    titleLabel.text = (section == 1) ? @"支持 MP4,MOV,AVI,FLV,MKV,WMV,M4V,RMVB,MP3 等主流媒体格式，支持 HTTP,RTMP,RSTP,HLS 等流媒体或直播播放。" : @"上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏。";
     [footerView addSubview:titleLabel];
     
     return footerView;
-    //}
-    
-    //return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -177,37 +192,40 @@
         [self removeCellAllSubviews:cell];
     }
     
+    cell.backgroundColor = self.isDarkMode ? QPColorFromRGB(40, 40, 40) : [UIColor whiteColor];
+    
     if (indexPath.section == 0) {
+        
+        cell.textLabel.text = @"自动跟随系统主题设置";
+        cell.textLabel.textColor = self.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
+        
+        UISwitch *sw = [[UISwitch alloc] init];
+        sw.left      = QPScreenWidth - 70.f;
+        sw.centerY   = SettingsCellHeight/2.0;
+        sw.on        = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
+        sw.tag       = 10;
+        [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
+        
+        [cell.contentView addSubview:sw];
+        
+    } else if (indexPath.section == 1) {
+        
         cell.textLabel.text = @"WiFi 文件传输";
-        cell.textLabel.textColor = QPColorFromRGB(48, 48, 48);
+        cell.textLabel.textColor = self.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
         
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = SettingsCellHeight/2.0;
         sw.on        = [WifiManager shared].serverStatus;
+        sw.tag       = 9;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         
         [cell.contentView addSubview:sw];
-    } else if (indexPath.section == 1) {
+        
+    } else if (indexPath.section == 2) {
+        
         cell.textLabel.text = [NSString stringWithFormat:@"http://%@:%d", [WifiManager shared].httpServer.hostName, [WifiManager shared].httpServer.port];
-        cell.textLabel.textColor = QPColorFromRGB(48, 48, 48);
-        
-        //UIButton *cPortBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        //cPortBtn.width   = 70.f;
-        //cPortBtn.height  = 30.f;
-        //cPortBtn.left    = QPScreenWidth - cPortBtn.width - 20.f;
-        //cPortBtn.centerY = SettingsCellHeight/2.0;
-        
-        //cPortBtn.showsTouchWhenHighlighted = YES;
-        //cPortBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-        //cPortBtn.backgroundColor = UIColor.clearColor;
-        
-        //[cPortBtn setTitle:@"更改端口" forState:UIControlStateNormal];
-        //[cPortBtn setTitleColor:UIColor.blueColor forState:UIControlStateNormal];
-        //[cPortBtn setTitleColor:UIColor.grayColor forState:UIControlStateHighlighted];
-        
-        //[cPortBtn addTarget:self action:@selector(onChangePort:) forControlEvents:UIControlEventTouchUpInside];
-        //[cell.contentView addSubview:cPortBtn];
+        cell.textLabel.textColor = self.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
         
         cell.detailTextLabel.text = @"更改端口";
         cell.detailTextLabel.font = [UIFont systemFontOfSize:16.f];
@@ -225,7 +243,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == 1) {
+    if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             [self onChangePort:nil];
         }
@@ -233,16 +251,25 @@
 }
 
 - (void)switchValueChanged:(UISwitch *)sender {
-    if (sender.isOn) {
-        [[WifiManager shared] operateServer:YES];
+    
+    if (sender.tag == 10) {
+        
+        QPlayerSaveFlag(kThemeStyleOnOff, [NSNumber numberWithBool:sender.isOn]);
+        [NSNotificationCenter.defaultCenter postNotificationName:kThemeStyleDidChangeNotification object:nil];
+        
     } else {
-        [[WifiManager shared] operateServer:NO];
+        
+        if (sender.isOn) {
+            [[WifiManager shared] operateServer:YES];
+        } else {
+            [[WifiManager shared] operateServer:NO];
+        }
+        
+        BOOL status = [WifiManager shared].serverStatus;
+        QPLog(@" >>>>>>>>>> [Server] status: %d, %@", status, status ? [NSString stringWithFormat:@"http://%@:%d", [WifiManager shared].httpServer.hostName, [WifiManager shared].httpServer.port] : @"The server didn't open.");
+        
+        [self.tableView reloadData];
     }
-    
-    BOOL status = [WifiManager shared].serverStatus;
-    QPLog(@" >>>>>>>>>> [Server] status: %d, %@", status, status ? [NSString stringWithFormat:@"http://%@:%d", [WifiManager shared].httpServer.hostName, [WifiManager shared].httpServer.port] : @"The server didn't open.");
-    
-    [self.tableView reloadData];
 }
 
 - (void)onChangePort:(UIButton *)sender {
@@ -274,6 +301,20 @@
     }
     
     [self.tableView reloadData];
+}
+
+- (void)adjustThemeStyle {
+    [super adjustThemeStyle];
+    [self.tableView reloadData];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self.tableView reloadData];
+}
+
+- (void)dealloc {
+    [self removeManualThemeStyleObserver];
 }
 
 - (void)didReceiveMemoryWarning {

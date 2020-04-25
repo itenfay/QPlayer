@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.8</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -34,7 +34,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1688</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>InkeHotLiveUrl</key>
 	<string>https://h5.inke.cn/app/home/hotlive</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -89,7 +89,7 @@
 	<key>QPlayerGithubUrl</key>
 	<string>https://github.com/dgynfi/QPlayer</string>
 	<key>QPlyerBriefIntro</key>
-	<string>QPlayer 是一款不容你错过的强大的视频播放器，支持 M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3 等主流媒体格式，支持 WiFi 文件传输，可以随时随地观看本地视频。聚合了多个直播、视频和短视频平台，可以在线观看直播、视频和短视频，同时支持 HTTP、RTMP、RTSP、HLS 等流媒体播放。</string>
+	<string>QPlayer 是一款不容你错过的视频播放器，支持 M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3 等主流媒体格式，支持 WiFi 文件传输，可以随时随地观看本地视频。聚合了多个直播、视频和短视频平台，可以在线观看直播、视频和短视频，同时支持 HTTP、RTMP、RTSP、HLS 等流媒体播放。</string>
 	<key>TecentVideoUrl</key>
 	<string>https://m.v.qq.com/</string>
 	<key>UIMainStoryboardFile</key>

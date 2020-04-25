@@ -34,6 +34,7 @@
     [self willAddProgressViewToWebView];
     
     [self buildWebToolBar];
+    [self addManualThemeStyleObserver];
 }
 
 - (void)viewDidLoad {
@@ -42,7 +43,7 @@
     self.scheduleTask(self,
                       @selector(inspectWebToolBarAlpha),
                       nil,
-                      1.0);
+                      1);
     
     [self addObserver];
     [self loadDefaultRequest];
@@ -68,13 +69,12 @@
     textField.returnKeyType   = UIReturnKeyGo;
     textField.delegate        = self;
     textField.font            = [UIFont systemFontOfSize:16.f];
-    textField.textColor       = UIColor.blackColor;
     textField.leftView        = tfLeftView;
     textField.leftViewMode    = UITextFieldViewModeAlways;
     
-    textField.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入要搜索的内容或网址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.f], NSForegroundColorAttributeName: [UIColor grayColor]}];
-    
     self.navigationItem.titleView = textField;
+    
+    [self adjustTitleViewColor];
     
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     rightBtn.frame = CGRectMake(0, 0, 30, 30);
@@ -92,6 +92,57 @@
     self.navigationItem.rightBarButtonItems = @[rightItem, spaceItem];
 }
 
+- (void)adjustTitleViewColor {
+    
+    BOOL result = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
+    if (result) {
+        
+        if (@available(iOS 13.0, *)) {
+            
+            UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+            
+            if (mode == UIUserInterfaceStyleDark) {
+                // Dark Mode
+                [self matchTitleViewStyle:YES];
+            } else if (mode == UIUserInterfaceStyleLight) {
+                // Light Mode or unspecified Mode
+                [self matchTitleViewStyle:NO];
+            }
+            
+        } else {
+            
+            [self matchTitleViewStyle:NO];
+        }
+    } else {
+        
+        [self matchTitleViewStyle:NO];
+    }
+}
+
+- (void)matchTitleViewStyle:(BOOL)isDark {
+    self.titleView.backgroundColor = isDark ? UIColor.blackColor : UIColor.whiteColor;
+    self.titleView.textColor = isDark ? UIColor.whiteColor : UIColor.blackColor;
+    
+    if (isDark) {
+        
+        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入要搜索的内容或网址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+        
+    } else {
+        
+        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入要搜索的内容或网址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16], NSForegroundColorAttributeName: [UIColor grayColor]}];
+    }
+}
+
+- (void)adjustThemeStyle {
+    [super adjustThemeStyle];
+    [self adjustTitleViewColor];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self adjustTitleViewColor];
+}
+
 - (UITextField *)titleView {
     return (UITextField *)self.navigationItem.titleView;
 }
@@ -107,7 +158,7 @@
     CGRect frame = CGRectMake(0, 0, QPScreenWidth, kH);
     [self initWebViewWithFrame:frame];
     
-    self.webView.backgroundColor     = QPColorFromRGB(243, 243, 243);
+    self.webView.backgroundColor     = UIColor.clearColor; //QPColorFromRGB(243, 243, 243);
     self.webView.opaque              = NO;
     self.webView.navigationDelegate  = self;
     self.webView.UIDelegate          = self;
@@ -138,7 +189,7 @@
         self.scheduleTask(self,
                           @selector(cancelHidingToolBar),
                           nil,
-                          0.0);
+                          0);
     }
 }
 
@@ -212,6 +263,7 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     [super webView:webView didFinishNavigation:navigation];
+    [self evaluateJavaScript:webView];
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
@@ -260,8 +312,7 @@
     if ([aUrl isEqualToString:@"about:blank"]) {
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
-    }
-    else {
+    } else {
         self.requestUrl = aUrl;
         self.titleView.text = aUrl;
     }
@@ -304,73 +355,79 @@
         [host containsString:@"zuida"]) {
         
         if ([aUrl containsString:@"?url="]) { // host is zuidajiexi.net
+            
             NSString *videoUrl = [aUrl componentsSeparatedByString:@"?url="].lastObject;
             [self attemptToPlayVideo:videoUrl];
             return NO;
-        }
-        else {
-            if (![self parse80sLaHtmlString:aURL]) {
-                [self delayToScheduleTask:2.0 completion:^{ [QPHudObject hideHUD]; }];
+            
+        } else {
+            
+            if (![self parse80sHtmlString:aURL]) {
+                [self delayToScheduleTask:2.0 completion:^{
+                    [QPHudObject hideHUD];
+                }];
             }
             return NO;
         }
         
-    }
-    else if ([host isEqualToString:@"jx.yingdouw.com"]) {
+    } else if ([host isEqualToString:@"jx.yingdouw.com"]) {
         
         NSString *videoUrl = [aUrl componentsSeparatedByString:@"?id="].lastObject;
         [self attemptToPlayVideo:videoUrl];
         return YES;
         
-    }
-    else if ([host isEqualToString:@"www.boqudy.com"]) {
+    } else if ([host isEqualToString:@"www.boqudy.com"]) {
         
         if ([aUrl containsString:@"?videourl="]) {
-            NSString *tempStr  = [aUrl componentsSeparatedByString:@"?videourl="].lastObject;
+            NSString *tempStr = [aUrl componentsSeparatedByString:@"?videourl="].lastObject;
             NSString *videoUrl = [tempStr componentsSeparatedByString:@","].lastObject;
             [self attemptToPlayVideo:videoUrl];
             return NO;
         }
-        
     }
-    else {}
     
     return NO;
 }
 
-- (BOOL)parse80sLaHtmlString:(NSURL *)aURL {
-    BOOL shouldPlay = NO;
+- (BOOL)parse80sHtmlString:(NSURL *)aURL {
     [QPHudObject showActivityMessageInView:@"正在解析..."];
     
+    BOOL shouldPlay = NO;
     NSURL *newURL = [aURL copy];
     NSString *htmlString = [NSString stringWithContentsOfURL:newURL encoding:NSUTF8StringEncoding error:NULL];
     //QPLog(@"htmlString: %@", htmlString);
     
     OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-    if (document) {
+    if (document)
+    {
         OCGumboNode *titleElement = document.Query(@"head").find(@"title").first();
         NSString *title = titleElement.html();
         QPLog(@"title: %@", title);
         
         OCQueryObject *objArray = document.Query(@"body").find(@"script");
-        for (OCGumboNode *e in objArray) {
+        for (OCGumboNode *e in objArray)
+        {
             NSString *text = e.html();
             //QPLog(@"e.text: %@", text);
             
             NSString *keywords = @"var main";
             
-            if (text && text.length > 0 && [text containsString:keywords]) {
+            if (text && text.length > 0 && [text containsString:keywords])
+            {
                 NSArray *argArray = [text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@";\""]];
                 
-                for (int i = 0; i < argArray.count; i++) {
+                for (int i = 0; i < argArray.count; i++)
+                {
                     NSString *arg = [argArray objectAtIndex:i];
                     //QPLog(@"arg: %@", arg);
                     
-                    if ([arg containsString:keywords]) {
+                    if ([arg containsString:keywords])
+                    {
                         shouldPlay = YES;
                         
                         int index = (i+1);
-                        if (index < argArray.count) {
+                        if (index < argArray.count)
+                        {
                             NSString *tempUrl  = [argArray objectAtIndex:index];
                             
                             NSString *videoUrl = [tempUrl componentsSeparatedByString:@"?"].firstObject;
@@ -379,7 +436,6 @@
                             
                             [self playVideoWithTitle:title urlString:videoUrl];
                         }
-                        
                         break;
                     }
                 }
@@ -390,72 +446,59 @@
     return shouldPlay;
 }
 
-- (void)runJavaScript:(NSString *)aUrl {
-    NSString *videoUrl        = @"";
-    __block NSString *tempUrl = @"";
-    NSString *v_jsString      = nil;
+- (void)evaluateJavaScript:(WKWebView *)webView {
     
-    // Occurs javescript error.
-    if ([aUrl containsString:@"haoa.haozuida.com"]) {
-        
-        v_jsString = @"document.getElementsByTagName('video')[0].src";
-        [self.webView evaluateJavaScript:v_jsString completionHandler:^(id _Nullable url, NSError * _Nullable error) {
-            if (!error) {
-                tempUrl = url;
-            } else {
-                QPLog(@"error: %@", error);
-            }
-        }];
-        videoUrl = [tempUrl componentsSeparatedByString:@"?"].firstObject;
-        
-    }
-    else {
-        
-        v_jsString = @"document.getElementsByTagName('video')[0].poster";
-        [self.webView evaluateJavaScript:v_jsString completionHandler:^(id _Nullable url, NSError * _Nullable error) {
-            if (!error) {
-                tempUrl = url;
-            } else {
-                QPLog(@"error: %@", error);
-            }
-        }];
-        
-        videoUrl = [tempUrl stringByReplacingOccurrencesOfString:@"/1.jpg" withString:@"/index.m3u8"];
-    }
+    NSString *jsStr = @"(document.getElementsByTagName(\"video\")[0]).src";
     
-    QPLog(@"v_jsString: %@", v_jsString);
-    QPLog(@"videoUrl: %@", videoUrl);
-    
-    [self attemptToPlayVideo:videoUrl];
+    [webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        
+        if(![response isEqual:[NSNull null]] && response != nil){
+            
+            // 截获到视频地址
+            NSString *videoUrl = (NSString *)response;
+            QPLog(@"videoUrl: %@", videoUrl);
+            [self attemptToPlayVideo:videoUrl];
+            
+        } else {
+            // 没有视频链接
+        }
+        
+    }];
 }
 
 - (void)attemptToPlayVideo:(NSString *)url {
-    [QPHudObject showActivityMessageInView:@"正在解析..."];
     QPLog(@"videoUrl: %@", url);
+    
+    [QPHudObject showActivityMessageInView:@"正在解析..."];
     
     NSString *videoTitle = self.webView.title;
     QPLog(@"videoTitle: %@", videoTitle);
     
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
+        
         [self playVideoWithTitle:videoTitle urlString:url];
+        
     } else {
-        [self delayToScheduleTask:2.0 completion:^{ [QPHudObject hideHUD]; }];
+        
+        [self delayToScheduleTask:2.0 completion:^{
+            [QPHudObject hideHUD];
+        }];
     }
 }
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)aUrl {
-    @QPWeakObject(self)
+    
     [self delayToScheduleTask:2.0 completion:^{
         [QPHudObject hideHUD];
         
         if (!QPlayerIsPlaying()) {
-            QPlayerSetPlaying(YES);
+            QPlayerSavePlaying(YES);
             
             QPlayerController *qpc = [[QPlayerController alloc] init];
             qpc.videoTitle         = title;
             qpc.videoUrl           = aUrl;
             
-            [weak_self.navigationController pushViewController:qpc animated:YES];
+            [self.navigationController pushViewController:qpc animated:YES];
         }
     }];
 }
@@ -481,7 +524,7 @@
     self.scheduleTask(self,
                       @selector(hideToolBar),
                       nil,
-                      8.0);
+                      6);
 }
 
 - (void)hideToolBar {
@@ -566,7 +609,6 @@
                                          @"https://www.pearvideo.com/?from=intro",
                                          @"http://ten.budejie.com/video/",
                                          @"https://m.ku6.com/index",
-                                         @"https://feeds.qq.com/",
                                          
                                          @"https://www.y80s.net/",
                                          @"http://www.boqudy.com/",
@@ -590,8 +632,12 @@
     searchViewController.searchHistoryStyle = PYSearchHistoryStyleDefault;
     
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:searchViewController];
-    [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
     [nc.navigationBar setShadowImage:[UIImage new]];
+    if (self.isDarkMode) {
+        [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBlackBg") forBarMetrics:UIBarMetricsDefault];
+    } else {
+        [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
+    }
     [nc.navigationBar setTintColor:[UIColor whiteColor]];
     [nc.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -687,6 +733,7 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
     QPLog(@" >>>>>>>>>> ");
     [self releaseWebView];
     [self removeObserver];
+    [self removeManualThemeStyleObserver];
 }
 
 - (void)didReceiveMemoryWarning {

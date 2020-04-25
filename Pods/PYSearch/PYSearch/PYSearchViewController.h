@@ -334,6 +334,11 @@ didSelectSearchSuggestionAtIndex:(NSInteger)index
 @property (nonatomic, strong) UIColor *searchBarBackgroundColor;
 
 /**
+ The cornerRadius of `_UISearchBarSearchFieldBackgroundView` which from `self.searchTextField.subviews`, default is 0.0.
+ */
+@property (nonatomic, assign) CGFloat searchBarCornerRadius;
+
+/**
  The barButtonItem of cancel
  */
 @property (nonatomic, strong) UIBarButtonItem *cancelBarButtonItem;
@@ -393,6 +398,11 @@ didSelectSearchSuggestionAtIndex:(NSInteger)index
  Note: it is effective only when `searchResultShowMode` is `PYSearchResultShowModeEmbed`.
  */
 @property (nonatomic, assign) BOOL showSearchResultWhenSearchBarRefocused;
+
+/**
+ Whether show keyboard when return to search result, default is YES.
+ */
+@property (nonatomic, assign) BOOL showKeyboardWhenReturnSearchResult;
 
 /**
  Creates an instance of searchViewContoller with popular searches and search bar's placeholder.

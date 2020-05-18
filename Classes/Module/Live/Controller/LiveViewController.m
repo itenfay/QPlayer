@@ -152,6 +152,7 @@
             
             [self matchTitleViewStyle:NO];
         }
+        
     } else {
         
         [self matchTitleViewStyle:NO];
@@ -404,6 +405,7 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     [super webView:webView didFinishNavigation:navigation];
+    QPLog(@"url: %@", webView.URL);
     [self evaluateJavaScript:webView];
 }
 

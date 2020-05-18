@@ -263,6 +263,7 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     [super webView:webView didFinishNavigation:navigation];
+    QPLog(@"url: %@", webView.URL);
     [self evaluateJavaScript:webView];
 }
 
@@ -488,19 +489,19 @@
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)aUrl {
     
-    [self delayToScheduleTask:2.0 completion:^{
-        [QPHudObject hideHUD];
+    if (!QPlayerIsPlaying()) {
+        QPlayerSavePlaying(YES);
         
-        if (!QPlayerIsPlaying()) {
-            QPlayerSavePlaying(YES);
+        [self delayToScheduleTask:2.0 completion:^{
+            [QPHudObject hideHUD];
             
             QPlayerController *qpc = [[QPlayerController alloc] init];
             qpc.videoTitle         = title;
             qpc.videoUrl           = aUrl;
             
             [self.navigationController pushViewController:qpc animated:YES];
-        }
-    }];
+        }];
+    }
 }
 
 #pragma make - UIScrollViewDelegate

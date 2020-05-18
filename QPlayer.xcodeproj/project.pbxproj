@@ -56,6 +56,8 @@
 		14AD0632233724F600C4AD4A /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14AD0631233724F600C4AD4A /* VideoToolbox.framework */; };
 		14AEFFD6233B981800DD6560 /* UILabel+DYFAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 14AEFFD5233B981800DD6560 /* UILabel+DYFAdd.m */; };
 		14AEFFDA233BBA1600DD6560 /* QPHudObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 14AEFFD8233BBA1500DD6560 /* QPHudObject.m */; };
+		14E023D62471AC5E00435DC8 /* DYFNetworkSniffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E023D42471AC5E00435DC8 /* DYFNetworkSniffer.m */; };
+		14E023D82471BBEB00435DC8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E023D72471BBEA00435DC8 /* SystemConfiguration.framework */; };
 		14F521C1232A28EF00C866D1 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F521BD232A270800C866D1 /* libc++.tbd */; };
 		14F521E0232BCFC600C866D1 /* DYFProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F521D0232BCFC500C866D1 /* DYFProgressView.m */; };
 		14F521E1232BCFC600C866D1 /* DYFWebProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F521D1232BCFC500C866D1 /* DYFWebProgressView.m */; };
@@ -178,6 +180,9 @@
 		14AEFFD5233B981800DD6560 /* UILabel+DYFAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+DYFAdd.m"; sourceTree = "<group>"; };
 		14AEFFD8233BBA1500DD6560 /* QPHudObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPHudObject.m; sourceTree = "<group>"; };
 		14AEFFD9233BBA1600DD6560 /* QPHudObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPHudObject.h; sourceTree = "<group>"; };
+		14E023D42471AC5E00435DC8 /* DYFNetworkSniffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYFNetworkSniffer.m; sourceTree = "<group>"; };
+		14E023D52471AC5E00435DC8 /* DYFNetworkSniffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYFNetworkSniffer.h; sourceTree = "<group>"; };
+		14E023D72471BBEA00435DC8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		14F521BD232A270800C866D1 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		14F521BF232A274300C866D1 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		14F521CE232BCFC500C866D1 /* DYFProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYFProgressView.h; sourceTree = "<group>"; };
@@ -268,6 +273,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14E023D82471BBEB00435DC8 /* SystemConfiguration.framework in Frameworks */,
 				14A80583233CB87400CEFF14 /* SafariServices.framework in Frameworks */,
 				14AD0632233724F600C4AD4A /* VideoToolbox.framework in Frameworks */,
 				14AD0630233724E500C4AD4A /* UIKit.framework in Frameworks */,
@@ -617,6 +623,7 @@
 				14F521DA232BCFC600C866D1 /* FileHelper */,
 				14F521DD232BCFC600C866D1 /* HistoryManager */,
 				14203854233FA6CA00DDA120 /* Network */,
+				14E023D32471ABFF00435DC8 /* NetworkSniffer */,
 				14F521D2232BCFC500C866D1 /* OCGumbo */,
 				14F521CD232BCFC500C866D1 /* ProgressView */,
 				14F521D7232BCFC600C866D1 /* WifiManager */,
@@ -646,6 +653,15 @@
 				14AEFFD8233BBA1500DD6560 /* QPHudObject.m */,
 			);
 			path = Object;
+			sourceTree = "<group>";
+		};
+		14E023D32471ABFF00435DC8 /* NetworkSniffer */ = {
+			isa = PBXGroup;
+			children = (
+				14E023D52471AC5E00435DC8 /* DYFNetworkSniffer.h */,
+				14E023D42471AC5E00435DC8 /* DYFNetworkSniffer.m */,
+			);
+			path = NetworkSniffer;
 			sourceTree = "<group>";
 		};
 		14F521CD232BCFC500C866D1 /* ProgressView */ = {
@@ -846,6 +862,7 @@
 		F64D47BF8EF197EFA3197BA4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				14E023D72471BBEA00435DC8 /* SystemConfiguration.framework */,
 				14A80582233CB87400CEFF14 /* SafariServices.framework */,
 				14AD0631233724F600C4AD4A /* VideoToolbox.framework */,
 				14AD062F233724E400C4AD4A /* UIKit.framework */,
@@ -1014,6 +1031,7 @@
 				14F522B2232C00F300C866D1 /* string_piece.c in Sources */,
 				96532C631F5E814E00E66A2F /* DDData.m in Sources */,
 				144B22162338A5EC00994F35 /* SettingsViewController.m in Sources */,
+				14E023D62471AC5E00435DC8 /* DYFNetworkSniffer.m in Sources */,
 				96532C651F5E814E00E66A2F /* DDRange.m in Sources */,
 				144B22142338A5EC00994F35 /* LiveViewController.m in Sources */,
 				144B222223390A7200994F35 /* DYFDropListViewCell.m in Sources */,
@@ -1174,7 +1192,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 188;
+				CURRENT_PROJECT_VERSION = 189;
 				DEVELOPMENT_TEAM = KCBQ48PTUV;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1217,7 +1235,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 188;
+				CURRENT_PROJECT_VERSION = 189;
 				DEVELOPMENT_TEAM = KCBQ48PTUV;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

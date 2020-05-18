@@ -40,7 +40,6 @@
 - (void)loadView {
     [super loadView];
     
-    [self setupNavigationItems];
     [self addContainerView];
     
     [self initWebView];
@@ -54,17 +53,16 @@
     QPLog(@" >>>>>>>>>> videoUrl: %@", self.videoUrl);
     QPLog(@" >>>>>>>>>> videoDecoding: %d", self.videoDecoding);
     
+    [self setupNavigationItems];
+    [self configureControlView];
     [self loadDefaultRequest];
-    self.scheduleTask(self,
-                      @selector(inspectWebToolBarAlpha),
-                      nil,
-                      3);
+    
+    self.scheduleTask(self, @selector(inspectWebToolBarAlpha), nil, 2.5);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self interactivePopGestureAction];
-    [self configureControlView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -448,6 +446,7 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     [super webView:webView didFinishNavigation:navigation];
+    QPLog(@"url: %@", webView.URL);
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {

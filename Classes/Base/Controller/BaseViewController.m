@@ -23,6 +23,14 @@
     [self identifyMode];
 }
 
+- (void)monitorNetworkChangesWithSelector:(SEL)selector {
+    [NSNotificationCenter.defaultCenter addObserver:self selector:selector name:AFNetworkingReachabilityDidChangeNotification object:nil];
+}
+
+- (void)stopMonitoringNetworkChanges {
+    [NSNotificationCenter.defaultCenter removeObserver:self name:AFNetworkingReachabilityDidChangeNotification object:nil];
+}
+
 - (void)addManualThemeStyleObserver {
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(adjustThemeStyle) name:kThemeStyleDidChangeNotification object:nil];
 }

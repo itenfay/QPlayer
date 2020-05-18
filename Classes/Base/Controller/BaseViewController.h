@@ -18,6 +18,8 @@
 #import "OCGumbo.h"
 #import "OCGumbo+Query.h"
 
+#import "DYFNetworkSniffer.h"
+
 //###############################################################
 
 @interface BaseViewController : UIViewController <WKNavigationDelegate, WKUIDelegate>
@@ -27,6 +29,11 @@
 
 // The property determines whether The dark interface style was truned on.
 @property (nonatomic, assign) BOOL isDarkMode;
+
+// Posts a notification when network reachability changes.
+- (void)monitorNetworkChangesWithSelector:(SEL)selector;
+// Removes a notification for changes in network reachability status.
+- (void)stopMonitoringNetworkChanges;
 
 // Adds manual theme style change observer.
 - (void)addManualThemeStyleObserver;

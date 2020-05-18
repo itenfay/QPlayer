@@ -7,6 +7,7 @@
 
 #import "AppDelegate.h"
 #import <ZFPlayer/ZFPlayer.h>
+#import "DYFNetworkSniffer.h"
 
 @interface AppDelegate ()
 
@@ -19,6 +20,10 @@
     [self extendSplashDisplayTime];
     [self controlLog];
     [self setupConfiguration];
+    
+    if (!DYFNetworkSniffer.sharedSniffer.isStarted) {
+        [DYFNetworkSniffer.sharedSniffer start];
+    }
     
     return YES;
 }
@@ -58,10 +63,16 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     QPlayerSavePlaying(NO);
+    if (DYFNetworkSniffer.sharedSniffer.isStarted) {
+        [DYFNetworkSniffer.sharedSniffer stop];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    if (!DYFNetworkSniffer.sharedSniffer.isStarted) {
+        [DYFNetworkSniffer.sharedSniffer start];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -71,6 +82,9 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     QPlayerSavePlaying(NO);
+    if (DYFNetworkSniffer.sharedSniffer.isStarted) {
+        [DYFNetworkSniffer.sharedSniffer stop];
+    }
 }
 
 @end

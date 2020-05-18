@@ -6,8 +6,8 @@
 //
 
 #import "SettingsViewController.h"
-#import "WifiManager.h"
 #import "AboutMeViewController.h"
+#import "WifiManager.h"
 
 #define SettingsCellHeight   50.f
 
@@ -41,7 +41,16 @@
     [self configureNavigationBar];
     [self addTableView];
     
+    [self monitorNetworkChangesWithSelector:@selector(networkStatusDidChange:)];
     [self addManualThemeStyleObserver];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
+- (void)networkStatusDidChange:(NSNotification *)noti {
+    [self.tableView reloadData];
 }
 
 - (void)configureNavigationBar {
@@ -92,10 +101,10 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     BOOL status = WifiManager.shared.serverStatus;
-    if (!status) {
-        return 2;
+    if (!status || ![DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
+        return 3;
     }
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -104,6 +113,8 @@
     } else if (section == 1) {
         return 1;
     } else if (section == 2) {
+        return 1;
+    } else if (section == 3) {
         return 1;
     } else {
         return 1;
@@ -120,7 +131,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     
-    if (section == 0) {
+    if (section == 0 || section == 1) {
         return 0.1f;
     }
     
@@ -134,7 +145,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    NSArray *headerTitles = @[@"开启后，将与手机设置保持一致的深色或浅色模式", @"开启后，可以享用 WiFi 文件传输服务", @"打开电脑浏览器，输入以下网址进行访问"];
+    NSArray *headerTitles = @[@"开启后，将与手机设置保持一致的深色或浅色模式", @"显示网络连接状态", @"开启后，可以享用 WiFi 文件传输服务", @"打开电脑浏览器，输入以下网址进行访问"];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, SectionHeaderHeight)];
     headerView.backgroundColor = [UIColor clearColor];
@@ -158,7 +169,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     
-    if (section == 0) return nil;
+    if (section == 0 || section == 1) return nil;
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, SectionFooterHeight)];
     footerView.backgroundColor = [UIColor clearColor];
@@ -175,7 +186,7 @@
     titleLabel.textAlignment   = NSTextAlignmentLeft;
     titleLabel.numberOfLines   = 2;
     titleLabel.lineBreakMode   = NSLineBreakByWordWrapping;
-    titleLabel.text = (section == 1) ? @"支持 MP4,MOV,AVI,FLV,MKV,WMV,M4V,RMVB,MP3 等主流媒体格式，支持 HTTP,RTMP,RSTP,HLS 等流媒体或直播播放。" : @"上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏。";
+    titleLabel.text = (section == 2) ? @"支持 MP4,MOV,AVI,FLV,MKV,WMV,M4V,RMVB,MP3 等主流媒体格式，支持 HTTP,RTMP,RSTP,HLS 等流媒体或直播播放。" : @"上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏。";
     [footerView addSubview:titleLabel];
     
     return footerView;
@@ -210,25 +221,40 @@
         
     } else if (indexPath.section == 1) {
         
+        cell.textLabel.text = @"当前网络连接状态";
+        cell.textLabel.textColor = self.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
+        
+        cell.detailTextLabel.text = DYFNetworkSniffer.sharedSniffer.statusFlags;
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:16.f];
+        cell.detailTextLabel.textColor = self.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
+        
+    } else if (indexPath.section == 2) {
+        
         cell.textLabel.text = @"WiFi 文件传输";
         cell.textLabel.textColor = self.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
         
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = SettingsCellHeight/2.0;
-        sw.on        = [WifiManager shared].serverStatus;
         sw.tag       = 9;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         
+        if ([DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
+            sw.on = [WifiManager shared].serverStatus;
+        } else {
+            sw.on = NO;
+        }
+        
         [cell.contentView addSubview:sw];
         
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == 3) {
         
         cell.textLabel.text = [NSString stringWithFormat:@"http://%@:%d", [WifiManager shared].httpServer.hostName, [WifiManager shared].httpServer.port];
         cell.textLabel.textColor = self.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
         
         cell.detailTextLabel.text = @"更改端口";
         cell.detailTextLabel.font = [UIFont systemFontOfSize:16.f];
+        cell.detailTextLabel.textColor = QPColorFromRGB(66, 126, 210);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
@@ -243,7 +269,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == 2) {
+    if (indexPath.section == 3) {
         if (indexPath.row == 0) {
             [self onChangePort:nil];
         }
@@ -258,6 +284,12 @@
         [NSNotificationCenter.defaultCenter postNotificationName:kThemeStyleDidChangeNotification object:nil];
         
     } else {
+        
+        if (![DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
+            sender.on = !sender.isOn;
+            [QPHudObject showWarnMessage:@"当前网络不是WiFi"];
+            return;
+        }
         
         if (sender.isOn) {
             [[WifiManager shared] operateServer:YES];
@@ -314,6 +346,7 @@
 }
 
 - (void)dealloc {
+    [self stopMonitoringNetworkChanges];
     [self removeManualThemeStyleObserver];
 }
 

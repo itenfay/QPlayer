@@ -136,15 +136,17 @@
     config.allowsInlineMediaPlayback = YES;
     
     if (@available(iOS 9.0, *)) {
-        // The default value is YES.
-        //config.allowsAirPlayForMediaPlayback = YES;
-        //config.allowsPictureInPictureMediaPlayback = YES;
         
         if (@available(iOS 10.0, *)) {
             config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypeAll;
         } else {
             config.requiresUserActionForMediaPlayback = YES;
         }
+        
+        // The default value is YES.
+        config.allowsAirPlayForMediaPlayback = YES;
+        config.allowsPictureInPictureMediaPlayback = YES;
+        
     } else {
         // Fallback on earlier versions
         config.mediaPlaybackAllowsAirPlay = YES;
@@ -195,10 +197,12 @@
 }
 
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
+    [self adjustThemeForWebView:webView];
     [self buildProgressView];
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    [self adjustThemeForWebView:webView];
     [self removeProgressView];
 }
 
@@ -237,6 +241,23 @@
 
 - (void)releaseProgressView {
     _progressView = nil;
+}
+
+- (void)adjustThemeForWebView:(WKWebView *)webView {
+    NSString *bgColor   = @"";
+    NSString *textColor = @"";
+    
+    BOOL result = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
+    if (result && self.isDarkMode) {
+        bgColor   = @"'#1E1E1E'";
+        textColor = @"'#B4B4B4'";
+    } else {
+        bgColor   = @"'#F3F3F3'";
+        textColor = @"'#303030'";
+    }
+    
+    [webView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.backgroundColor=%@", bgColor] completionHandler:nil];
+    [webView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor=%@", textColor] completionHandler:nil];
 }
 
 // Navigates to the back item in the back-forward list.

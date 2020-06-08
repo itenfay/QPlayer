@@ -477,7 +477,7 @@
 
 - (void)evaluateJavaScript:(WKWebView *)webView {
     
-    NSString *jsStr = @"(document.getElementsByTagName(\"video\")[0]).src";
+    NSString *jsStr = @"document.getElementsByTagName('video')[0].src";
     
     [webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
         

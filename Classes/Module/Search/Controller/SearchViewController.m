@@ -399,36 +399,31 @@
     //QPLog(@"htmlString: %@", htmlString);
     
     OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-    if (document)
-    {
+    if (document) {
         OCGumboNode *titleElement = document.Query(@"head").find(@"title").first();
         NSString *title = titleElement.html();
         QPLog(@"title: %@", title);
         
         OCQueryObject *objArray = document.Query(@"body").find(@"script");
-        for (OCGumboNode *e in objArray)
-        {
+        for (OCGumboNode *e in objArray) {
             NSString *text = e.html();
             //QPLog(@"e.text: %@", text);
             
             NSString *keywords = @"var main";
             
-            if (text && text.length > 0 && [text containsString:keywords])
-            {
+            if (text && text.length > 0 && [text containsString:keywords]) {
                 NSArray *argArray = [text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@";\""]];
                 
-                for (int i = 0; i < argArray.count; i++)
-                {
+                for (int i = 0; i < argArray.count; i++) {
                     NSString *arg = [argArray objectAtIndex:i];
                     //QPLog(@"arg: %@", arg);
                     
-                    if ([arg containsString:keywords])
-                    {
+                    if ([arg containsString:keywords]) {
                         shouldPlay = YES;
                         
                         int index = (i+1);
-                        if (index < argArray.count)
-                        {
+                        
+                        if (index < argArray.count) {
                             NSString *tempUrl  = [argArray objectAtIndex:index];
                             
                             NSString *videoUrl = [tempUrl componentsSeparatedByString:@"?"].firstObject;
@@ -437,6 +432,7 @@
                             
                             [self playVideoWithTitle:title urlString:videoUrl];
                         }
+                        
                         break;
                     }
                 }
@@ -449,7 +445,7 @@
 
 - (void)evaluateJavaScript:(WKWebView *)webView {
     
-    NSString *jsStr = @"(document.getElementsByTagName(\"video\")[0]).src";
+    NSString *jsStr = @"document.getElementsByTagName('video')[0].src";
     
     [webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
         

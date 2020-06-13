@@ -150,7 +150,7 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
         [self.dataArray addObject:model];
     }
     
-    [self delayToScheduleTask:1 completion:^{
+    [self delayToScheduleTask:1.0 completion:^{
         [QPHudObject hideHUD];
     }];
 }

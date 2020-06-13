@@ -133,8 +133,8 @@
 
 - (void)adjustTitleViewColor {
     
-    BOOL result = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
-    if (result) {
+    BOOL bValue = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
+    if (bValue) {
         
         if (@available(iOS 13.0, *)) {
             
@@ -505,14 +505,14 @@
     
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
        
-        [self delayToScheduleTask:2.0 completion:^{
+        [self delayToScheduleTask:1.0 completion:^{
             [QPHudObject hideHUD];
             [self playVideoWithTitle:videoTitle urlString:url];
         }];
         
     } else {
         
-        [self delayToScheduleTask:2.0 completion:^{
+        [self delayToScheduleTask:1.0 completion:^{
             [QPHudObject hideHUD];
         }];
     }

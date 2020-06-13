@@ -45,8 +45,8 @@
 
 - (void)identifyMode {
     
-    BOOL result = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
-    if (result) {
+    BOOL bValue = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
+    if (bValue) {
         
         if (@available(iOS 13.0, *)) {
             
@@ -247,8 +247,8 @@
     NSString *bgColor   = @"";
     NSString *textColor = @"";
     
-    BOOL result = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
-    if (result && self.isDarkMode) {
+    BOOL bValue = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
+    if (bValue && self.isDarkMode) {
         bgColor   = @"'#1E1E1E'";
         textColor = @"'#B4B4B4'";
     } else {

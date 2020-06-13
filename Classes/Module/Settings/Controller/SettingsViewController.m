@@ -8,6 +8,7 @@
 #import "SettingsViewController.h"
 #import "AboutMeViewController.h"
 #import "WifiManager.h"
+#import "TabBarController.h"
 
 #define SettingsCellHeight   50.f
 
@@ -282,6 +283,10 @@
         
         QPlayerSaveFlag(kThemeStyleOnOff, [NSNumber numberWithBool:sender.isOn]);
         [NSNotificationCenter.defaultCenter postNotificationName:kThemeStyleDidChangeNotification object:nil];
+        if (self.tabBarController) {
+            TabBarController *tbc = (TabBarController *)self.tabBarController;
+            [tbc adjustTabBarThemeStyle];
+        }
         
     } else {
         

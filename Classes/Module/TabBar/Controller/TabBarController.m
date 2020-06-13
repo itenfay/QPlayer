@@ -58,21 +58,12 @@
     self.selectedIndex   = 0;
 }
 
-- (UIImage *(^)(UIImage *image))originalImage {
-    
-    UIImage *(^block)(UIImage *image) = ^UIImage *(UIImage *image) {
-        UIImageRenderingMode imgRenderingMode = UIImageRenderingModeAlwaysOriginal;
-        return [image imageWithRenderingMode:imgRenderingMode];
-    };
-    
-    return block;
-}
-
 - (BaseNavigationController *)tbc_navigationController:(UIViewController *)viewController {
     return [[BaseNavigationController alloc] initWithRootViewController:viewController];
 }
 
 - (void)identifyMode {
+    
     if (@available(iOS 13.0, *)) {
         
         UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
@@ -96,28 +87,96 @@
 - (void)adjustTabBarThemeStyle {
     
     UIColor *normalColor = self.isDarkMode ? QPColorFromRGB(200, 200, 200) : [UIColor grayColor];
-    UIColor *selectedColor = self.isDarkMode ? QPColorFromRGB(39, 220, 203) : QPColorFromRGB(58, 60, 66);
-    UIFont *font = [UIFont systemFontOfSize:12];
     
+    UIColor *selectedColor = QPColorFromRGB(58, 60, 66);
+    if (self.isDarkMode) {
+        selectedColor = QPColorFromRGB(39, 220, 203);
+    }
+    
+    UIImage *bgImage = [self imageWithColor:QPColorFromRGB(188, 188, 188)];
+    if (self.isDarkMode) {
+        bgImage = [self imageWithColor:QPColorFromRGB(88, 88, 88)];
+    }
+    UIImage *shadowImage = [self imageWithColor:UIColor.clearColor];
+    
+    UIFont *font = [UIFont systemFontOfSize:12];
     UITabBarItem *tabBarItem = [UITabBarItem appearance];
     
-    if (@available(iOS 13.0, *)) {
+    BOOL bValue = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
+    if (bValue) {
         
-        self.tabBar.unselectedItemTintColor = normalColor;
-        self.tabBar.tintColor = selectedColor;
+        if (@available(iOS 10.0, *)) {
+            
+            self.tabBar.unselectedItemTintColor = normalColor;
+            self.tabBar.tintColor = selectedColor;
+            
+            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateNormal];
+            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateSelected];
+            
+        } else {
+            
+            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : normalColor, NSFontAttributeName : font} forState:UIControlStateNormal];
+            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : selectedColor, NSFontAttributeName : font} forState:UIControlStateSelected];
+        }
         
-        [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateNormal];
-        [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateSelected];
+        if (@available(iOS 13.0, *)) {
+            
+            UITabBarAppearance *appearance = [self.tabBar.standardAppearance copy];
+            appearance.backgroundImage = bgImage;
+            appearance.shadowImage = shadowImage;
+            [appearance configureWithTransparentBackground];
+            self.tabBar.standardAppearance = appearance;
+            
+        } else {
+            
+            [self.tabBar setBackgroundImage:[self imageWithColor:QPColorFromRGB(188, 188, 188)]];
+            [self.tabBar setShadowImage:[self imageWithColor:UIColor.clearColor]];
+        }
         
     } else {
         
-        [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : normalColor, NSFontAttributeName : font} forState:UIControlStateNormal];
-        [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : selectedColor, NSFontAttributeName : font} forState:UIControlStateSelected];
+        if (@available(iOS 10.0, *)) {
+            
+            self.tabBar.unselectedItemTintColor = normalColor;
+            self.tabBar.tintColor = selectedColor;
+            
+            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateNormal];
+            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateSelected];
+            
+        } else {
+            
+            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : normalColor, NSFontAttributeName : font} forState:UIControlStateNormal];
+            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : selectedColor, NSFontAttributeName : font} forState:UIControlStateSelected];
+        }
     }
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     [self identifyMode];
+}
+
+- (UIImage *(^)(UIImage *image))originalImage {
+    
+    UIImage *(^block)(UIImage *image) = ^UIImage *(UIImage *image) {
+        UIImageRenderingMode imgRenderingMode = UIImageRenderingModeAlwaysOriginal;
+        return [image imageWithRenderingMode:imgRenderingMode];
+    };
+    
+    return block;
+}
+
+- (UIImage *)imageWithColor:(UIColor *)color {
+    CGRect rect = CGRectMake(0, 0, 1, 1);
+    
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+    
+    [color setFill];
+    UIRectFill(rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -9,4 +9,6 @@
 
 @interface TabBarController : UITabBarController
 
+- (void)adjustTabBarThemeStyle;
+
 @end

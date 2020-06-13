@@ -94,8 +94,8 @@
 
 - (void)adjustTitleViewColor {
     
-    BOOL result = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
-    if (result) {
+    BOOL bValue = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
+    if (bValue) {
         
         if (@available(iOS 13.0, *)) {
             
@@ -364,7 +364,7 @@
         } else {
             
             if (![self parse80sHtmlString:aURL]) {
-                [self delayToScheduleTask:2.0 completion:^{
+                [self delayToScheduleTask:1.0 completion:^{
                     [QPHudObject hideHUD];
                 }];
             }
@@ -477,7 +477,7 @@
         
     } else {
         
-        [self delayToScheduleTask:2.0 completion:^{
+        [self delayToScheduleTask:1.0 completion:^{
             [QPHudObject hideHUD];
         }];
     }
@@ -488,7 +488,7 @@
     if (!QPlayerIsPlaying()) {
         QPlayerSavePlaying(YES);
         
-        [self delayToScheduleTask:2.0 completion:^{
+        [self delayToScheduleTask:1.0 completion:^{
             [QPHudObject hideHUD];
             
             QPlayerController *qpc = [[QPlayerController alloc] init];

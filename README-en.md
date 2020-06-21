@@ -5,7 +5,7 @@ If this project can help you, please give it [a star](https://github.com/dgynfi/
 
 ## QPlayer
 
-`QPlayer` is a video player that you can't miss, supports `m4v, wmv, 3gp, mp4, mov, avi, mkv, mpeg, mpg, flv, rm, rmvb, mp3` format. Enter any `HTTP, RTSP, RTMP, HLS` address play network streaming or live. QPlayer use ffmpeg，you can transfer files via wifi. It aggregates several live, video and short video platforms, and you can watch live, video and short video online. 
+`QPlayer` is a video player that you can't miss, supports `m4v, wmv, 3gp, mp4, mov, avi, mkv, mpeg, mpg, flv, rm, rmvb, mp3` format. Enter any `HTTP, RTSP, RTMP, HLS` address play network streaming or live. `QPlayer` uses `ffmpeg`，you can transfer files via wifi. It aggregates several lives, videos and short video platforms, and you can watch live, video and short video online. 
 
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
 

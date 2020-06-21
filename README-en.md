@@ -66,7 +66,7 @@ PS: `PC` browser is recommended (Safari [MAC], Microsoft edge [win10], Google Ch
 
 ## Blog
 
-- [How to use ZFPlayer & KSYMediaPlayer to customize own live, audio and video player for iOS](https://www.jianshu.com/p/df5af1d079d6)
+- [How to customize your own live, audio and video player (QPlayer) for iOS?](https://www.jianshu.com/p/df5af1d079d6)
 
 
 ## Open Source Components

@@ -66,7 +66,7 @@ PS：建议使用PC浏览器（ Safari [Mac], Microsoft Edge [Win10], Google Chr
 
 ## 博客
 
-- [iOS 使用 ZFPlayer & KSYMediaPlayer 定制自己的直播音视频播放器](https://www.jianshu.com/p/df5af1d079d6)
+- [iOS 定制自己的直播/音视频播放器 QPlayer](https://www.jianshu.com/p/df5af1d079d6)
 
 
 ## 开源组件

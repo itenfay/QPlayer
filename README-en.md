@@ -1,8 +1,6 @@
-[Chinese Document](https://github.com/dgynfi/QPlayer)
+## [Chinese Document](https://github.com/dgynfi/QPlayer)
 
-***
-
-[If this project can help you, please give it a star. Thanks!](https://github.com/dgynfi/QPlayer)
+If this project can help you, please give it [a star](https://github.com/dgynfi/QPlayer/blob/master/README-en.md). Thanks!
 
 
 ## QPlayer
@@ -37,8 +35,8 @@ Some of the resources and content come from the Internet. If there are copyright
 - Lives And TV
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/ms_live.png" width="80%" /> <br /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/live_tv.png" width="80%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/ms_live.png" width="80%" /> <br />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/live_tv.png" width="80%" />
 </div>
 
 - Web Videos
@@ -50,7 +48,7 @@ Some of the resources and content come from the Internet. If there are copyright
 - App Introduction
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/app_intro.png" width="30%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/app_intro.png" width="80%" />
 </div>
 
 
@@ -61,7 +59,7 @@ iOS 8.0+, iPhone and iPad, Xcode10+.
 
 ## File Transfer
 
-Turn on the `WiFi` file transfer switch in the app settings to enjoy the `WiFi` file transfer service. Input in the computer browser, for example, "[http://192.168.6.6 :8888](http://192.168.6.6 : 8888)", After open the web page, select the file, and click `Upload`. When uploading media files, make sure the computer and mobile phone are in the same `WiFi` environment and do not close the app or lock the screen.
+Turn on the `WiFi` file transfer switch in the app settings to enjoy the `WiFi` file transfer service. Input in the computer browser, for example, "[http://192.168.6.6:8888](http://192.168.6.6:8888)", After open the web page, select the file, and click `Upload`. When uploading media files, make sure the computer and mobile phone are in the same `WiFi` environment and do not close the app or lock the screen.
 
 PS: `PC` browser is recommended (Safari [MAC], Microsoft edge [win10], Google Chrome [MAC win10])
 
@@ -95,7 +93,7 @@ PS: `PC` browser is recommended (Safari [MAC], Microsoft edge [win10], Google Ch
 
 - [FDFullscreenPopGesture](https://github.com/forkingdog/FDFullscreenPopGesture) 
 
-A UINavigationController's category to enable fullscreen pop gesture with iOS7+ system style.
+    A UINavigationController's category to enable fullscreen pop gesture with iOS7+ system style.
 
 - [PYSearch](https://github.com/ko1o/PYSearch)
 

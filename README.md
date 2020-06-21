@@ -1,8 +1,6 @@
-[英文文档（English Document）](README-en.md)
+## [英文文档（English Document）](README-en.md)
 
-***
-
-[如果此项目能帮助到你，就请你给一颗星。谢谢！](https://github.com/dgynfi/QPlayer)
+如果此项目能帮助到你，就请你给[一颗星](https://github.com/dgynfi/QPlayer)。谢谢！
 
 
 ## QPlayer
@@ -37,8 +35,8 @@
 - 直播和电视
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/ms_live.png" width="80%" /> <br /> 
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/live_tv.png" width="80%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/ms_live.png" width="80%" /> <br />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/live_tv.png" width="80%" />
 </div>
 
 - 网页视频
@@ -50,7 +48,7 @@
 - 应用介绍
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/app_intro.png" width="30%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/app_intro.png" width="80%" />
 </div>
 
 

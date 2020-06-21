@@ -1,7 +1,7 @@
 //
 //  SettingsViewController.m
 //
-//  Created by dyf on 2017/6/28.
+//  Created by dyf on 2017/6/28. ( https://github.com/dgynfi/QPlayer )
 //  Copyright © 2017 dyf. All rights reserved.
 //
 
@@ -208,7 +208,7 @@
     
     if (indexPath.section == 0) {
         
-        cell.textLabel.text = @"自动跟随系统主题设置";
+        cell.textLabel.text = @"自动跟随系统设置";
         cell.textLabel.textColor = self.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
         
         UISwitch *sw = [[UISwitch alloc] init];

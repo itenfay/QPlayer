@@ -1,7 +1,7 @@
 //
 //  DYFHttpClient.h
 //
-//  Created by dyf on 16/6/30.
+//  Created by dyf on 16/6/30. ( https://github.com/dgynfi/QPlayer )
 //  Copyright © 2016 dyf. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy

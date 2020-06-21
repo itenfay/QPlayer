@@ -1,7 +1,7 @@
 //
 //  UIView+DYFAdd.m
 //
-//  Created by dyf on 2016/8/9.
+//  Created by dyf on 2016/8/9. ( https://github.com/dgynfi/QPlayer )
 //  Copyright © 2016 dyf. All rights reserved.
 //
 

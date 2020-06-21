@@ -2,7 +2,7 @@
 //  QPlayerController.m
 //  QPlayer
 //
-//  Created by dyf on 2017/12/28.
+//  Created by dyf on 2017/12/28. ( https://github.com/dgynfi/QPlayer )
 //  Copyright © 2017 dyf. All rights reserved.
 //
 
@@ -153,6 +153,18 @@
     backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 12);
     [titleView addSubview:backButton];
     
+    UIButton *portraitButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    portraitButton.width     = 40.f;
+    portraitButton.height    = 30.f;
+    portraitButton.right     = titleView.right - 2*12.f; // The margin is 12.
+    portraitButton.top       = (titleView.height - portraitButton.height)/2;
+    portraitButton.showsTouchWhenHighlighted = YES;
+    [portraitButton setTitle:@"竖屏" forState:UIControlStateNormal];
+    [portraitButton setTitleColor:QPColorFromRGB(252, 252, 252) forState:UIControlStateNormal];
+    [portraitButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
+    [portraitButton addTarget:self action:@selector(forcePortraitVideoPlayback:) forControlEvents:UIControlEventTouchUpInside];
+    [titleView addSubview:portraitButton];
+    
     UILabel *titleLabel        = [[UILabel alloc] init];
     titleLabel.backgroundColor = UIColor.clearColor;
     titleLabel.font            = [UIFont boldSystemFontOfSize:16.f];
@@ -163,12 +175,18 @@
     titleLabel.height = 30.f;
     titleLabel.left   = backButton.right - 12.f;
     titleLabel.top    = (titleView.height - titleLabel.height)/2;
-    titleLabel.width  = titleView.right - titleLabel.left - 2*16.f;
+    titleLabel.width  = portraitButton.left - titleLabel.left - 12.f;
     [titleView addSubview:titleLabel];
 }
 
 - (void)back:(UIButton *)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)forcePortraitVideoPlayback:(UIButton *)sender {
+    if (self.player) {
+        [self.player enterPortraitFullScreen:YES animated:YES];
+    }
 }
 
 - (void)addContainerView {
@@ -225,7 +243,7 @@
 }
 
 - (void)loadDefaultRequest {
-    NSString *aUrl = [QPInfoDictionary objectForKey:@"MyGithubUrl"];
+    NSString *aUrl = [QPInfoDictionary objectForKey:@"MyJianShuUrl"];
     [self loadRequest:aUrl];
 }
 
@@ -248,12 +266,12 @@
     self.player.shouldAutoPlay = YES;
     self.player.assetURL       = aURL;
     
-    self.player.playerApperaPercent      = 1.0;
-    self.player.playerDisapperaPercent   = 0.5;
+    self.player.playerApperaPercent      = 0.0;
+    self.player.playerDisapperaPercent   = 1.0;
     self.player.statusBarHidden          = NO;
     self.player.pauseWhenAppResignActive = YES;
     
-    // Force Landscape Full Screen.
+    // Force landscape full fcreen.
     //[self.player enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
     
     @weakify(self)
@@ -295,12 +313,12 @@
     self.player.shouldAutoPlay = YES;
     self.player.assetURL       = aURL;
     
-    self.player.playerApperaPercent      = 1.0;
-    self.player.playerDisapperaPercent   = 0.5;
+    self.player.playerApperaPercent      = 0.0;
+    self.player.playerDisapperaPercent   = 1.0;
     self.player.statusBarHidden          = NO;
     self.player.pauseWhenAppResignActive = YES;
     
-    // Force Landscape Full Screen.
+    // Force landscape full fcreen.
     //[self.player enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
     
     @weakify(self)
@@ -342,12 +360,12 @@
     self.player.shouldAutoPlay = YES;
     self.player.assetURL       = aURL;
     
-    self.player.playerApperaPercent      = 1.0;
-    self.player.playerDisapperaPercent   = 0.5;
+    self.player.playerApperaPercent      = 0.0;
+    self.player.playerDisapperaPercent   = 1.0;
     self.player.statusBarHidden          = NO;
     self.player.pauseWhenAppResignActive = YES;
     
-    // Force Landscape Full Screen.
+    // Force landscape full screen.
     //[self.player enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
     
     @weakify(self)
@@ -589,8 +607,8 @@
     if (!_controlView) {
         _controlView = [ZFPlayerControlView new];
         _controlView.fastViewAnimated       = YES;
-        _controlView.autoHiddenTimeInterval = 5.0;
-        _controlView.autoFadeTimeInterval   = 0.5;
+        _controlView.autoHiddenTimeInterval = 3.0;
+        _controlView.autoFadeTimeInterval   = 0.3;
         _controlView.prepareShowControlView = YES;
         _controlView.prepareShowLoading     = YES;
     }

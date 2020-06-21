@@ -11,7 +11,7 @@
 #import "QPTitleView.h"
 
 #define AboutMeTableHeaderHeight 280.f
-#define AboutMeTableCellHeight    50.f
+#define AboutMeTableCellHeight    46.f
 
 @interface AboutMeViewController () <UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 
@@ -124,9 +124,17 @@
     NSDictionary *vDict = @{@"版本": vString};
     [self.dataArray addObject:vDict];
     
-    NSString *gString = [NSString stringWithFormat:@"★ Star"];
-    NSDictionary *gDict = @{@"Github": gString};
+    NSString *gString = [NSString stringWithFormat:@" ★ "];
+    NSDictionary *gDict = @{@"Star": gString};
     [self.dataArray addObject:gDict];
+    
+    NSString *hString = [NSString stringWithFormat:@"Home"];
+    NSDictionary *hDict = @{@"GitHub": hString};
+    [self.dataArray addObject:hDict];
+    
+    NSString *rString = [NSString stringWithFormat:@"Repositories"];
+    NSDictionary *rDict = @{@"GitHub": rString};
+    [self.dataArray addObject:rDict];
     
     NSString *eString = [QPInfoDictionary objectForKey:@"MyEmail"];
     NSDictionary *eDict = @{@"Email": eString};
@@ -225,13 +233,13 @@
         UINib *nib = [UINib nibWithNibName:NSStringFromClass([AboutMeTableFooter class]) bundle:NSBundle.mainBundle];
         AboutMeTableFooter *footer = [nib instantiateWithOwner:nil options:nil].firstObject;
         
-        NSUInteger nums = self.dataArray.count;
-        CGFloat headerH = AboutMeTableHeaderHeight;
-        CGFloat cellH   = AboutMeTableCellHeight;
-        footer.left     = 0.f;
-        footer.top      = 0.f;
-        footer.width    = self.view.width;
-        footer.height   = self.m_tableView.height - headerH - nums*cellH;
+        NSUInteger count = self.dataArray.count;
+        CGFloat headerH  = AboutMeTableHeaderHeight;
+        CGFloat cellH    = AboutMeTableCellHeight;
+        footer.left      = 0.f;
+        footer.top       = 0.f;
+        footer.width     = self.view.width;
+        footer.height    = self.m_tableView.height - headerH - count*cellH;
         
         @QPWeakObject(self)
         
@@ -292,10 +300,21 @@
     
     if (indexPath.row == 1) {
         
-        NSString *gValue = QPInfoDictionary[@"QPlayerGithubUrl"];
-        [self openWebPageWithUrl:gValue];
+        NSString *str = QPInfoDictionary[@"QPlayerGithubUrl"];
+        [self openWebPageWithUrl:str];
         
     } else if (indexPath.row == 2) {
+        
+        NSString *str = QPInfoDictionary[@"MyGithubUrl"];
+        [self openWebPageWithUrl:str];
+        
+    } else if (indexPath.row == 3) {
+        
+        NSString *str = QPInfoDictionary[@"MyGithubUrl"];
+        str = [NSString stringWithFormat:@"%@?tab=repositories", str];
+        [self openWebPageWithUrl:str];
+        
+    } else if (indexPath.row == 4) {
         
         NSString *eValue = dict.allValues.firstObject;
         NSString *recipients = [NSString stringWithFormat:@"mailto:%@?subject=Hello!", eValue];
@@ -303,35 +322,34 @@
         NSString *email = [NSString stringWithFormat:@"%@%@", recipients, body];
         
         [self openUrl:[self urlEncode:email]];
-        
     } else {}
 }
 
-- (void)openWebPageWithUrl:(NSString *)aUrl {
-    QPLog(@" >>>>>>>>>> %@", aUrl);
+- (void)openWebPageWithUrl:(NSString *)anUrl {
+    QPLog(@" >>>>>>>>>> %@", anUrl);
     
     if (@available(iOS 9.0, *)) {
         
-        NSURL *aURL = [NSURL URLWithString:aUrl];
+        NSURL *anURL = [NSURL URLWithString:anUrl];
         
-        SFSafariViewController *safariVC = [[SFSafariViewController alloc] initWithURL:aURL];
+        SFSafariViewController *safariVC = [[SFSafariViewController alloc] initWithURL:anURL];
         safariVC.delegate = self;
         [self presentViewController:safariVC animated:YES completion:NULL];
         
     } else {
         
-        [self openUrl:aUrl];
+        [self openUrl:anUrl];
     }
 }
 
-- (void)openUrl:(NSString *)aUrl {
-    NSURL *aURL = [NSURL URLWithString:aUrl];
-    QPLog(@" >>>>>>>>>> %@", aURL);
+- (void)openUrl:(NSString *)anUrl {
+    NSURL *anURL = [NSURL URLWithString:anUrl];
+    QPLog(@" >>>>>>>>>> %@", anURL);
     
     if (@available(iOS 10.0, *)) {
-        [QPSharedApp openURL:aURL options:@{} completionHandler:NULL];
+        [QPSharedApp openURL:anURL options:@{} completionHandler:NULL];
     } else {
-        [QPSharedApp openURL:aURL];
+        [QPSharedApp openURL:anURL];
     }
 }
 

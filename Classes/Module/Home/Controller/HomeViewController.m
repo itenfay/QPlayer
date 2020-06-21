@@ -362,39 +362,10 @@ NSInteger yf_sortObjects(FileModel *obj1, FileModel *obj2, void *context) {
 }
 
 - (void)setFormatImageForCell:(FileTableViewCell *)cell model:(FileModel *)model {
-    NSString *fileExt = [model.fileType lowercaseString];
+    NSString *ext = [model.fileType lowercaseString];
+    NSString *iconName = QPlayerMatchingIconName(ext);
     
-    NSString *filename = nil;
-    
-    if ([fileExt isEqualToString:@"avi"]) {
-        filename = [NSString stringWithFormat:@"icon_avi"];
-    } else if ([fileExt isEqualToString:@"flv"]) {
-        filename = [NSString stringWithFormat:@"icon_flv"];
-    } else if ([fileExt isEqualToString:@"mkv"]) {
-        filename = [NSString stringWithFormat:@"icon_mkv"];
-    } else if ([fileExt isEqualToString:@"mov"]) {
-        filename = [NSString stringWithFormat:@"icon_mov"];
-    } else if ([fileExt isEqualToString:@"mp4"]) {
-        filename = [NSString stringWithFormat:@"icon_mp4"];
-    } else if ([fileExt isEqualToString:@"mpg"]) {
-        filename = [NSString stringWithFormat:@"icon_mpg"];
-    } else if ([fileExt isEqualToString:@"rm"]) {
-        filename = [NSString stringWithFormat:@"icon_rm"];
-    } else if ([fileExt isEqualToString:@"rmv"]) {
-        filename = [NSString stringWithFormat:@"icon_rmv"];
-    } else if ([fileExt isEqualToString:@"rmvb"]) {
-        filename = [NSString stringWithFormat:@"icon_rmv"];
-    } else if ([fileExt isEqualToString:@"swf"]) {
-        filename = [NSString stringWithFormat:@"icon_swf"];
-    } else if ([fileExt isEqualToString:@"wmv"]) {
-        filename = [NSString stringWithFormat:@"icon_wmv"];
-    } else if ([fileExt isEqualToString:@"mp3"]) {
-        filename = [NSString stringWithFormat:@"default_thumbnail"];
-    } else {
-        filename = [NSString stringWithFormat:@"icon_jpg"];
-    }
-    
-    cell.formatImgView.image = QPImageNamed(filename);
+    cell.formatImgView.image = QPImageNamed(iconName);
     cell.formatImgView.contentMode = UIViewContentModeScaleToFill;
 }
 

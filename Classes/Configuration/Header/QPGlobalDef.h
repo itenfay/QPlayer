@@ -1,7 +1,7 @@
 //
 //  QPGlobalDef.h
 //
-//  Created by dyf on 2017/6/27.
+//  Created by dyf on 2017/6/27. ( https://github.com/dgynfi/QPlayer )
 //  Copyright © 2017 dyf. All rights reserved.
 //
 
@@ -12,12 +12,19 @@
 #define QPGlobalDef_h
 
 #ifndef QP_STATIC
-#define QP_STATIC static
+    #define QP_STATIC static
 #endif
 
 #ifndef QP_STATIC_INLINE
-#define QP_STATIC_INLINE static inline
+    #define QP_STATIC_INLINE static inline
 #endif
+
+
+// Video searching history cache path.
+#define VIDEO_SEARCH_HISTORY_CACHE_PATH [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"VideoSearchHistories.plist"]
+
+// Live searching history cache path.
+#define LIVE_SEARCH_HISTORY_CACHE_PATH [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"LiveSearchHistories.plist"]
 
 QP_STATIC NSString *const QPCharactersGeneralDelimitersToEncode = @":#[]@";
 QP_STATIC NSString *const QPCharactersSubDelimitersToEncode = @"!$&'()*+,;=";
@@ -78,6 +85,76 @@ QP_STATIC_INLINE void QPlayerSavePlaying(BOOL value) {
 
 QP_STATIC_INLINE BOOL QPlayerIsPlaying() {
     return [QPlayerExtractFlag(kQPlayerIsPlaying) boolValue];
+}
+
+QP_STATIC_INLINE NSString *QPlayerMatchingIconName(NSString *ext) {
+    NSString *iconName = nil;
+    
+    if ([ext isEqualToString:@"avi"]) {
+        iconName = [NSString stringWithFormat:@"icon_avi"];
+    } else if ([ext isEqualToString:@"flv"]) {
+        iconName = [NSString stringWithFormat:@"icon_flv"];
+    } else if ([ext isEqualToString:@"mkv"]) {
+        iconName = [NSString stringWithFormat:@"icon_mkv"];
+    } else if ([ext isEqualToString:@"mov"]) {
+        iconName = [NSString stringWithFormat:@"icon_mov"];
+    } else if ([ext isEqualToString:@"mp4"]) {
+        iconName = [NSString stringWithFormat:@"icon_mp4"];
+    } else if ([ext isEqualToString:@"mpg"]) {
+        iconName = [NSString stringWithFormat:@"icon_mpg"];
+    } else if ([ext isEqualToString:@"rm"]) {
+        iconName = [NSString stringWithFormat:@"icon_rm"];
+    } else if ([ext isEqualToString:@"rmvb"]) {
+        iconName = [NSString stringWithFormat:@"icon_rmvb"];
+    } else if ([ext isEqualToString:@"swf"]) {
+        iconName = [NSString stringWithFormat:@"icon_swf"];
+    } else if ([ext isEqualToString:@"wmv"]) {
+        iconName = [NSString stringWithFormat:@"icon_wmv"];
+    } else if ([ext isEqualToString:@"mp3"]) {
+        iconName = [NSString stringWithFormat:@"icon_mp3"];
+    } else if ([ext isEqualToString:@"wma"]) {
+        iconName = [NSString stringWithFormat:@"icon_wma"];
+    } else if ([ext isEqualToString:@"wav"]) {
+        iconName = [NSString stringWithFormat:@"icon_wav"];
+    } else {
+        iconName = [NSString stringWithFormat:@"icon_jpg"];
+    }
+    
+    return iconName;
+}
+
+QP_STATIC_INLINE BOOL QPlayerCanSupportAVFormat(NSString *url) {
+    BOOL canSupport = NO;
+    
+    if ([url hasSuffix:@".m3u8"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".avi"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".flv"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".mkv"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".mov"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".mp4"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".rm"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".rmvb"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".swf"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".wmv"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".mp3"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".wav"]) {
+        canSupport = YES;
+    } else if ([url hasSuffix:@".wma"]) {
+        canSupport = YES;
+    }
+    
+    return canSupport;
 }
 
 #endif /* QPGlobalDef_h */

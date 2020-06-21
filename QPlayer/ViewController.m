@@ -1,7 +1,7 @@
 //
 //  ViewController.m
 //
-//  Created by dyf on 2017/6/29.
+//  Created by dyf on 2017/6/29. ( https://github.com/dgynfi/QPlayer )
 //  Copyright © 2017 dyf. All rights reserved.
 //
 

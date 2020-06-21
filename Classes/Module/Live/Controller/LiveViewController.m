@@ -1,7 +1,7 @@
 //
 //  LiveViewController.m
 //
-//  Created by dyf on 2017/12/28.
+//  Created by dyf on 2017/12/28. ( https://github.com/dgynfi/QPlayer )
 //  Copyright © 2017 dyf. All rights reserved.
 //
 
@@ -9,9 +9,6 @@
 #import "QPlayerController.h"
 #import "QPTitleView.h"
 #import "DYFDropListView.h"
-
-// Live searching history cache path.
-#define LIVE_SEARCH_HISTORY_CACHE_PATH [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"LiveSearchHistories.plist"]
 
 @interface LiveViewController () <UITextFieldDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate, PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
 @property (nonatomic, copy) NSString *requestUrl;
@@ -316,39 +313,36 @@
     [self.titleView resignFirstResponder];
     
     if (text.length > 0) {
-        NSString *aUrl = @"";
-        NSString *lowercaseString = [text lowercaseString];
+        NSString *tempStr = [text lowercaseString];
+        NSString *url = @"";
         
-        if ([lowercaseString hasPrefix:@"rtmp"]        ||
-            [lowercaseString hasPrefix:@"rtsp"]        ||
-            [lowercaseString containsString:@"m3u8"]   ||
-            ([lowercaseString containsString:@"fm"]    &&
-             [lowercaseString containsString:@"live"]  &&
-             [lowercaseString containsString:@".mp3"]) ||
-            [lowercaseString hasPrefix:@"mms"]) {
+        if ([tempStr hasPrefix:@"rtmp"]        ||
+            [tempStr hasPrefix:@"rtsp"]        ||
+            [tempStr hasPrefix:@"mms"]         ||
+            QPlayerCanSupportAVFormat(tempStr)) {
             
-            self.titleView.text = aUrl = text;
-            NSString *title = [self titleMatchingWithUrl:aUrl];
-            [self playVideoWithTitle:title urlString:aUrl];
+            self.titleView.text = url = text;
+            NSString *title = [self titleMatchingWithUrl:url];
+            [self playVideoWithTitle:title urlString:url];
             return;
             
-        } else if ([lowercaseString hasPrefix:@"https"] ||
-                   [lowercaseString hasPrefix:@"http"]) {
+        } else if ([tempStr hasPrefix:@"https"] ||
+                   [tempStr hasPrefix:@"http"]) {
             
-            aUrl = text;
+            url = text;
             
         } else {
             
             NSString *bdUrl = @"https://www.baidu.com/";
-            aUrl = [aUrl stringByAppendingFormat:@"%@s?wd=%@&cl=3", bdUrl, text];
+            url = [url stringByAppendingFormat:@"%@s?wd=%@&cl=3", bdUrl, text];
         }
         
-        [self loadRequest:[self urlEncode:aUrl]];
-        self.titleView.text = aUrl;
+        [self loadRequest:[self urlEncode:url]];
+        self.titleView.text = url;
     }
 }
 
-- (NSString *)titleMatchingWithUrl:(NSString *)aUrl {
+- (NSString *)titleMatchingWithUrl:(NSString *)url {
     // DYFDropListView.bundle -> DropListViewData.plist
     NSString *path       = [NSBundle.mainBundle pathForResource:kResourceBundle ofType:nil];
     NSString *bundlePath = [NSBundle bundleWithPath:path].bundlePath;
@@ -359,12 +353,12 @@
     
     for (NSString *key in dict) {
         NSString *value = dict[key];
-        if ([value isEqualToString:aUrl]) {
+        if ([value isEqualToString:url]) {
             return key;
         }
     }
     
-    return aUrl;
+    return url;
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -518,7 +512,7 @@
     }
 }
 
-- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)aUrl {
+- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)url {
     
     if (!QPlayerIsPlaying()) {
         QPlayerSavePlaying(YES);
@@ -527,7 +521,7 @@
         qpc.isMediaPlayerPlayback = YES;
         qpc.videoDecoding         = 1; // 硬解码
         qpc.videoTitle            = title;
-        qpc.videoUrl              = aUrl;
+        qpc.videoUrl              = url;
         
         [self.navigationController pushViewController:qpc animated:YES];
     }

@@ -1,7 +1,7 @@
 //
 //  TabBarController.m
 //
-//  Created by dyf on 2017/12/28.
+//  Created by dyf on 2017/12/28. ( https://github.com/dgynfi/QPlayer )
 //  Copyright © 2017 dyf. All rights reserved.
 //
 
@@ -63,7 +63,6 @@
 }
 
 - (void)identifyMode {
-    
     if (@available(iOS 13.0, *)) {
         
         UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
@@ -85,7 +84,6 @@
 }
 
 - (void)adjustTabBarThemeStyle {
-    
     UIColor *normalColor = self.isDarkMode ? QPColorFromRGB(200, 200, 200) : [UIColor grayColor];
     
     UIColor *selectedColor = QPColorFromRGB(58, 60, 66);
@@ -99,7 +97,7 @@
     }
     UIImage *shadowImage = [self imageWithColor:UIColor.clearColor];
     
-    UIFont *font = [UIFont systemFontOfSize:12];
+    UIFont *font = [UIFont boldSystemFontOfSize:13.f];
     UITabBarItem *tabBarItem = [UITabBarItem appearance];
     
     BOOL bValue = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
@@ -110,13 +108,19 @@
             self.tabBar.unselectedItemTintColor = normalColor;
             self.tabBar.tintColor = selectedColor;
             
-            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateNormal];
-            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateSelected];
+            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font}
+                                      forState:UIControlStateNormal];
+            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font}
+                                      forState:UIControlStateSelected];
             
         } else {
             
-            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : normalColor, NSFontAttributeName : font} forState:UIControlStateNormal];
-            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : selectedColor, NSFontAttributeName : font} forState:UIControlStateSelected];
+            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : normalColor,
+                                                 NSFontAttributeName : font}
+                                      forState:UIControlStateNormal];
+            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : selectedColor,
+                                                 NSFontAttributeName : font}
+                                      forState:UIControlStateSelected];
         }
         
         if (@available(iOS 13.0, *)) {
@@ -140,13 +144,19 @@
             self.tabBar.unselectedItemTintColor = normalColor;
             self.tabBar.tintColor = selectedColor;
             
-            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateNormal];
-            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font} forState:UIControlStateSelected];
+            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font}
+                                      forState:UIControlStateNormal];
+            [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font}
+                                      forState:UIControlStateSelected];
             
         } else {
             
-            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : normalColor, NSFontAttributeName : font} forState:UIControlStateNormal];
-            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : selectedColor, NSFontAttributeName : font} forState:UIControlStateSelected];
+            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : normalColor,
+                                                 NSFontAttributeName : font}
+                                      forState:UIControlStateNormal];
+            [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : selectedColor,
+                                                 NSFontAttributeName : font}
+                                      forState:UIControlStateSelected];
         }
     }
 }

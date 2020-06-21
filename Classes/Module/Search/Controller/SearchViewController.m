@@ -1,15 +1,12 @@
 //
 //  SearchViewController.m
 //
-//  Created by dyf on 2017/12/28.
+//  Created by dyf on 2017/12/28. ( https://github.com/dgynfi/QPlayer )
 //  Copyright © 2017 dyf. All rights reserved.
 //
 
 #import "SearchViewController.h"
 #import "QPlayerController.h"
-
-// Video searching history cache path.
-#define VIDEO_SEARCH_HISTORY_CACHE_PATH [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"VideoSearchHistories.plist"]
 
 @interface SearchViewController () <UITextFieldDelegate, UIScrollViewDelegate, PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
 @property (nonatomic, copy) NSString *requestUrl;
@@ -204,24 +201,48 @@
     [self.titleView resignFirstResponder];
     
     if (text.length > 0) {
-        NSString *aUrl = @"";
-        NSString *lowercaseString = [text lowercaseString];
+        NSString *tempStr = [text lowercaseString];
+        NSString *url = @"";
         
-        if ([lowercaseString hasPrefix:@"https"] ||
-            [lowercaseString hasPrefix:@"http"]) {
-            aUrl = text;
-        }
-        else if ([lowercaseString hasPrefix:@"www."] ||
-                 [lowercaseString hasPrefix:@"m."]) {
-            aUrl = [NSString stringWithFormat:@"https://%@", text];
-        }
-        else {
+        if (QPlayerCanSupportAVFormat(tempStr)) {
+            
+            self.titleView.text = url = text;
+            [self playRemoteVideoWithUrl:url];
+            
+        } else if ([tempStr hasPrefix:@"https"] ||
+                   [tempStr hasPrefix:@"http"]) {
+            
+            url = text;
+            
+        } else if ([tempStr hasPrefix:@"www."] ||
+                   [tempStr hasPrefix:@"m."]   ||
+                   [tempStr hasSuffix:@".com"] ||
+                   [tempStr hasSuffix:@".cc"]) {
+            
+            url = [NSString stringWithFormat:@"https://%@", text];
+            
+        } else {
+            
             NSString *bdUrl = @"https://www.baidu.com/";
-            aUrl = [aUrl stringByAppendingFormat:@"%@s?wd=%@&cl=3", bdUrl, text];
+            url = [url stringByAppendingFormat:@"%@s?wd=%@&cl=3", bdUrl, text];
         }
         
-        self.titleView.text = aUrl;
-        [self loadRequest:[self urlEncode:aUrl]];
+        self.titleView.text = url;
+        [self loadRequest:[self urlEncode:url]];
+    }
+}
+
+- (void)playRemoteVideoWithUrl:(NSString *)url {
+    
+    if (!QPlayerIsPlaying()) {
+        QPlayerSavePlaying(YES);
+        
+        QPlayerController *qpc    = [[QPlayerController alloc] init];
+        qpc.isMediaPlayerPlayback = YES;
+        qpc.videoTitle            = url;
+        qpc.videoUrl              = url;
+        
+        [self.navigationController pushViewController:qpc animated:YES];
     }
 }
 
@@ -483,7 +504,7 @@
     }
 }
 
-- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)aUrl {
+- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)url {
     
     if (!QPlayerIsPlaying()) {
         QPlayerSavePlaying(YES);
@@ -493,7 +514,7 @@
             
             QPlayerController *qpc = [[QPlayerController alloc] init];
             qpc.videoTitle         = title;
-            qpc.videoUrl           = aUrl;
+            qpc.videoUrl           = url;
             
             [self.navigationController pushViewController:qpc animated:YES];
         }];

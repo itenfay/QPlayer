@@ -26,7 +26,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.aple.qplayer</string>
+			<string>com.omg.qplayer</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>video-qplayer</string>
@@ -66,7 +66,7 @@
 	<key>MyEmail</key>
 	<string>vinphy.teng@foxmail.com</string>
 	<key>MyGithubUrl</key>
-	<string>https://github.com/dgynfi/</string>
+	<string>https://github.com/dgynfi</string>
 	<key>MyJianShuUrl</key>
 	<string>https://www.jianshu.com/u/7fc76f1179cc</string>
 	<key>NSAppTransportSecurity</key>

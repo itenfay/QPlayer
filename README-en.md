@@ -1,5 +1,7 @@
 [Chinese Document](https://github.com/dgynfi/QPlayer)
 
+***
+
 [If this project can help you, please give it a star. Thanks!](https://github.com/dgynfi/QPlayer)
 
 
@@ -29,36 +31,26 @@ Some of the resources and content come from the Internet. If there are copyright
 - Local Videos
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-1.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-2.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-3.png" width="30%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_videos.png" width="80%" />
 </div>
 
 - Lives And TV
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-4.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-5.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-6.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-7.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-8.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-9.png" width="30%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/ms_live.png" width="80%" /> <br /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/live_tv.png" width="80%" />
 </div>
 
 - Web Videos
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-10.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-11.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-12.png" width="30%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/web_videos.png" width="80%" />
 </div>
 
-- App Introduce
+- App Introduction
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-13.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-14.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-15.png" width="30%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/app_intro.png" width="30%" />
 </div>
 
 
@@ -69,7 +61,7 @@ iOS 8.0+, iPhone and iPad, Xcode10+.
 
 ## File Transfer
 
-Turn on the `WiFi` file transfer switch in the app settings to enjoy the `WiFi` file transfer service. Access in the computer browser: for example: [http://192.168.6.6 :8888](http://192.168.6.6 : 8888), After open the web page on the computer browser, select the file, and click `Upload`. When uploading media files, make sure the computer and mobile phone are in the same `WiFi` environment and do not close the app or lock the screen.
+Turn on the `WiFi` file transfer switch in the app settings to enjoy the `WiFi` file transfer service. Input in the computer browser, for example, "[http://192.168.6.6 :8888](http://192.168.6.6 : 8888)", After open the web page, select the file, and click `Upload`. When uploading media files, make sure the computer and mobile phone are in the same `WiFi` environment and do not close the app or lock the screen.
 
 PS: `PC` browser is recommended (Safari [MAC], Microsoft edge [win10], Google Chrome [MAC win10])
 
@@ -91,7 +83,7 @@ PS: `PC` browser is recommended (Safari [MAC], Microsoft edge [win10], Google Ch
 
 - [ijkplayer](https://github.com/bilibili/ijkplayer) 
 
-    Android/iOS video player based on FFmpeg n3.4, with MediaCodec, VideoToolbox support. [[ IJKMediaFramework.framework Download ]](https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ) - Extraction Code: mxqq
+    Android/iOS video player based on FFmpeg n3.4, with MediaCodec, VideoToolbox support. ( [ IJKMediaFramework.framework Download ](https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ) - Extraction Code: mxqq )
 
 - [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
 

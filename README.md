@@ -1,4 +1,6 @@
-[英文文档](https://github.com/dgynfi/QPlayer/blob/master/README-en.md)
+[英文文档（English Document）](README-en.md)
+
+***
 
 [如果此项目能帮助到你，就请你给一颗星。谢谢！](https://github.com/dgynfi/QPlayer)
 
@@ -10,7 +12,7 @@
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
 
 
-## 负责声明
+## 免责声明
 
 本文使用的相关技术以及资源仅用于学习交流，请勿用于其他任何商业用途，否则后果自负！！！
 
@@ -24,47 +26,31 @@
 </div>
 
 
-## Preview
+## 预览
 
-- Local Videos
+- 本地视频
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-1.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-2.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-3.png" width="30%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_videos.png" width="80%" />
 </div>
 
-- TV and radio
+- 直播和电视
 
 <div align=left>
-&emsp; 
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/ms_live.png" width="80%" /> <br /> 
+<img src="https://github.com/dgynfi/QPlayer/raw/master/images/live_tv.png" width="80%" />
 </div>
 
-- Lives And TV
+- 网页视频
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-4.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-5.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-6.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-7.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-8.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-9.png" width="30%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/web_videos.png" width="80%" />
 </div>
 
-- Web Videos
+- 应用介绍
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-10.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-11.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-12.png" width="30%" />
-</div>
-
-- App Introduce
-
-<div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-13.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-14.png" width="30%" />
-<img src="https://github.com/dgynfi/QPlayer/raw/master/images/Screenshots/wxgetmsgimg-15.png" width="30%" />
+&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/app_intro.png" width="30%" />
 </div>
 
 
@@ -75,7 +61,7 @@ iOS 8.0+, iPhone and iPad, Xcode10+.
 
 ## 文件传输
 
-在 `App` 设置中打开 `WiFi` 文件传输的开关，即可享用 WiFi 文件传输服务。在电脑浏览器中访问：如 “[http://192.168.6.6:8888](http://192.168.6.6:8888)”，打开网页后，选择文件，点击 `Upload` 上传。在上传媒体文件时，确保电脑和手机在同一 `WiFi` 环境并且不要关闭本应用也不要锁屏。
+在 `App` 设置中打开 `WiFi` 文件传输的开关，即可享用 WiFi 文件传输服务。在电脑浏览器中输入，例如：“[http://192.168.6.6:8888](http://192.168.6.6:8888)”，打开网页后，选择文件，点击 `Upload` 上传。在上传媒体文件时，确保电脑和手机在同一 `WiFi` 环境并且不要关闭本应用也不要锁屏。
 
 PS：建议使用PC浏览器（ Safari [Mac], Microsoft Edge [Win10], Google Chrome [Mac Win10] ）
 
@@ -97,7 +83,7 @@ PS：建议使用PC浏览器（ Safari [Mac], Microsoft Edge [Win10], Google Chr
 
 - [ijkplayer](https://github.com/bilibili/ijkplayer) 
 
-    Android/iOS video player based on FFmpeg n3.4, with MediaCodec, VideoToolbox support. [( IJKMediaFramework.framework 下载 )](https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ) - 提取码: mxqq
+    Android/iOS video player based on FFmpeg n3.4, with MediaCodec, VideoToolbox support. ( [IJKMediaFramework.framework 下载](https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ) - 提取码: mxqq )
 
 - [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
 

@@ -120,13 +120,16 @@
     self.titleView.backgroundColor = isDark ? UIColor.blackColor : UIColor.whiteColor;
     self.titleView.textColor = isDark ? UIColor.whiteColor : UIColor.blackColor;
     
+    NSString *title = @"请输入要搜索的内容或网址";
+    UIFont *font = [UIFont systemFontOfSize:16.f];
+    
     if (isDark) {
         
-        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入要搜索的内容或网址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor whiteColor]}];
         
     } else {
         
-        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入要搜索的内容或网址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16], NSForegroundColorAttributeName: [UIColor grayColor]}];
+        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor grayColor]}];
     }
 }
 

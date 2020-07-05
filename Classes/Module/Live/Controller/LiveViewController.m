@@ -160,13 +160,16 @@
     self.titleView.backgroundColor = isDark ? UIColor.blackColor : UIColor.whiteColor;
     self.titleView.textColor = isDark ? UIColor.whiteColor : UIColor.blackColor;
     
+    NSString *title = @"请输入网址或RTMP/M3U8等直播流地址";
+    UIFont *font = [UIFont systemFontOfSize:15.f];
+    
     if (isDark) {
         
-        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入要搜索的内容或网址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor whiteColor]}];
         
     } else {
         
-        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:@"请输入要搜索的内容或网址" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16], NSForegroundColorAttributeName: [UIColor grayColor]}];
+        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor grayColor]}];
     }
 }
 
@@ -199,7 +202,7 @@
                             borderColor:nil];
     [playBtn setBackgroundImage:bgImage forState:UIControlStateNormal];
     
-    [playBtn setTitle:@"直播\n拉流" forState:UIControlStateNormal];
+    [playBtn setTitle:@"直播\n TV" forState:UIControlStateNormal];
     [playBtn setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [playBtn setTitleColor:UIColor.grayColor forState:UIControlStateHighlighted];
     [playBtn setTitleShadowColor:UIColor.brownColor forState:UIControlStateNormal];
@@ -607,7 +610,7 @@
 }
 
 - (void)presentSearchViewController:(UIButton *)sender {
-    PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:@[] searchBarPlaceholder:@"请输入网址或rtmp等直播流地址" didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
+    PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:@[] searchBarPlaceholder:@"请输入网址或RTMP/M3U8等直播流地址" didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
         //QPLog(@"searchText: %@", searchText);
     }];
     
@@ -648,7 +651,7 @@
         [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
     }
     [nc.navigationBar setTintColor:[UIColor whiteColor]];
-    [nc.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    [nc.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:16.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
     [self presentViewController:nc animated:YES completion:nil];

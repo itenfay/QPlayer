@@ -119,9 +119,10 @@
 - (void)matchTitleViewStyle:(BOOL)isDark {
     self.titleView.backgroundColor = isDark ? UIColor.blackColor : UIColor.whiteColor;
     self.titleView.textColor = isDark ? UIColor.whiteColor : UIColor.blackColor;
+    self.titleView.font = [UIFont systemFontOfSize:16.f];
     
     NSString *title = @"请输入要搜索的内容或网址";
-    UIFont *font = [UIFont systemFontOfSize:16.f];
+    UIFont *font = [UIFont systemFontOfSize:15.f];
     
     if (isDark) {
         
@@ -660,7 +661,7 @@
         [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
     }
     [nc.navigationBar setTintColor:[UIColor whiteColor]];
-    [nc.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    [nc.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
     [self presentViewController:nc animated:YES completion:nil];

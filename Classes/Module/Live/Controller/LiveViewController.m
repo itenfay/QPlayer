@@ -159,9 +159,10 @@
 - (void)matchTitleViewStyle:(BOOL)isDark {
     self.titleView.backgroundColor = isDark ? UIColor.blackColor : UIColor.whiteColor;
     self.titleView.textColor = isDark ? UIColor.whiteColor : UIColor.blackColor;
+    self.titleView.font = [UIFont systemFontOfSize:16.f];
     
     NSString *title = @"请输入网址或RTMP/M3U8等直播流地址";
-    UIFont *font = [UIFont systemFontOfSize:15.f];
+    UIFont *font = [UIFont systemFontOfSize:14.f];
     
     if (isDark) {
         
@@ -610,7 +611,7 @@
 }
 
 - (void)presentSearchViewController:(UIButton *)sender {
-    PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:@[] searchBarPlaceholder:@"请输入网址或RTMP/M3U8等直播流地址" didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
+    PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:@[] searchBarPlaceholder:@"请输入要搜索的内容或网址" didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
         //QPLog(@"searchText: %@", searchText);
     }];
     
@@ -651,7 +652,7 @@
         [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
     }
     [nc.navigationBar setTintColor:[UIColor whiteColor]];
-    [nc.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:16.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    [nc.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
     [self presentViewController:nc animated:YES completion:nil];

@@ -118,3 +118,14 @@ PS: `PC` browser is recommended (Safari [MAC], Microsoft edge [win10], Google Ch
 - [MBProgressHUD-JDragon](https://github.com/lyc59621/MBProgressHUD-JDragon)
 
     A category that encapsulates `MBProgressHUD`.
+
+
+## Clone
+
+If you need to build a custom video player, you can input the command (`git clone https://github.com/dgynfi/QPlayer.git`) on the terminal to clone the project.
+
+
+## Feedback is welcome
+
+If you notice any issue, got stuck or just want to chat feel free to create an issue. I will be happy to help you.
+

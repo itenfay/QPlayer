@@ -118,3 +118,14 @@ PS：建议使用PC浏览器（ Safari [Mac], Microsoft Edge [Win10], Google Chr
 - [MBProgressHUD-JDragon](https://github.com/lyc59621/MBProgressHUD-JDragon)
 
     封装MBProgressHUD的一个类别。
+
+
+## 克隆
+
+如果你需要构建自定义的视频播放器，你就在终端输入命令 (`git clone https://github.com/dgynfi/QPlayer.git`) 克隆此工程。
+
+
+## 欢迎反馈
+
+如果你注意到任何问题，被卡住或只是想聊天，请随意创建一个问题。我很乐意帮助你。
+

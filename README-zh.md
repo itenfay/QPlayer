@@ -117,7 +117,7 @@ PS：建议使用PC浏览器（ Safari [Mac], Microsoft Edge [Win10], Google Chr
 
 ## 克隆
 
-如果你需要构建自定义的视频播放器，你就在终端输入命令 (`git clone https://github.com/dgynfi/QPlayer.git`) 克隆此工程。
+如果你需要构建自定义的视频播放器，那么你可以在终端输入命令 (`git clone https://github.com/dgynfi/QPlayer.git`) 克隆此工程。
 
 
 ## 欢迎反馈

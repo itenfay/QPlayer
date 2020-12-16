@@ -8,14 +8,16 @@
 
 #import "QPlayerController.h"
 #import "QPTitleView.h"
+
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
+
 #import "KSYMediaPlayerManager.h" // Conflicts with ijkplayer.
 /*
  #import <ZFPlayer/ZFIJKPlayerManager.h>
  #import <ZFPlayer/KSMediaPlayerManager.h>
- */
+*/
 
 @interface QPlayerController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
 
@@ -52,6 +54,8 @@
     QPLog(@" >>>>>>>>>> videoTitle: %@", self.videoTitle);
     QPLog(@" >>>>>>>>>> videoUrl: %@", self.videoUrl);
     QPLog(@" >>>>>>>>>> videoDecoding: %d", self.videoDecoding);
+    
+    QPAppDelegate.allowOrentitaionRotation = YES;
     
     [self setupNavigationItems];
     [self configureControlView];
@@ -113,6 +117,9 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    QPAppDelegate.allowOrentitaionRotation = NO;
+    
     QPlayerSavePlaying(NO);
     [self.player stopCurrentPlayingView];
 }
@@ -162,7 +169,7 @@
     [portraitButton setTitle:@"竖屏" forState:UIControlStateNormal];
     [portraitButton setTitleColor:QPColorFromRGB(252, 252, 252) forState:UIControlStateNormal];
     [portraitButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
-    [portraitButton addTarget:self action:@selector(forcePortraitVideoPlayback:) forControlEvents:UIControlEventTouchUpInside];
+    [portraitButton addTarget:self action:@selector(usingPortraitVideoPlayback:) forControlEvents:UIControlEventTouchUpInside];
     [titleView addSubview:portraitButton];
     
     UILabel *titleLabel        = [[UILabel alloc] init];
@@ -183,9 +190,9 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)forcePortraitVideoPlayback:(UIButton *)sender {
+- (void)usingPortraitVideoPlayback:(UIButton *)sender {
     if (self.player) {
-        [self.player enterPortraitFullScreen:YES animated:YES];
+        [self.player enterPortraitFullScreen:YES animated:YES completion:NULL];
     }
 }
 
@@ -268,26 +275,30 @@
     
     self.player.playerApperaPercent      = 0.0;
     self.player.playerDisapperaPercent   = 1.0;
-    self.player.statusBarHidden          = NO;
+    //self.player.statusBarHidden        = NO;
     self.player.pauseWhenAppResignActive = YES;
     
-    // Force landscape full fcreen.
-    //[self.player enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
-    
-    @weakify(self)
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        @strongify(self)
-        [self setNeedsStatusBarAppearanceUpdate];
-        [UIViewController attemptRotationToDeviceOrientation];
+    @zf_weakify(self)
+    self.controlView.backBtnClickCallback = ^{
+        @zf_strongify(self)
+        [self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:YES completion:NULL];
+        //[self.player stop];
     };
     
+    self.player.orientationObserver.supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
+    [self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:NO completion:NULL];
+    
+    //self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+    //@zf_strongify(self)
+    //[self setNeedsStatusBarAppearanceUpdate];
+    //[UIViewController attemptRotationToDeviceOrientation];
+    //};
+    
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
-        //@strongify(self)
         QPLog(@"%s", __func__);
     };
     
     self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, id _Nonnull error) {
-        //@strongify(self)
         QPLog(@"%s, error: %@", __func__, error);
     };
 }
@@ -315,9 +326,10 @@
     
     self.player.playerApperaPercent      = 0.0;
     self.player.playerDisapperaPercent   = 1.0;
-    self.player.statusBarHidden          = NO;
+    //self.player.statusBarHidden        = NO;
     self.player.pauseWhenAppResignActive = YES;
     
+    // The old version.
     // Force landscape full fcreen.
     //[self.player enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
     
@@ -329,12 +341,10 @@
     };
     
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
-        //@strongify(self)
         QPLog(@"%s", __func__);
     };
     
     self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, id _Nonnull error) {
-        //@strongify(self)
         QPLog(@"%s, error: %@", __func__, error);
     };
     */
@@ -362,26 +372,30 @@
     
     self.player.playerApperaPercent      = 0.0;
     self.player.playerDisapperaPercent   = 1.0;
-    self.player.statusBarHidden          = NO;
+    //self.player.statusBarHidden        = NO;
     self.player.pauseWhenAppResignActive = YES;
     
-    // Force landscape full screen.
-    //[self.player enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
-    
-    @weakify(self)
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        @strongify(self)
-        [self setNeedsStatusBarAppearanceUpdate];
-        [UIViewController attemptRotationToDeviceOrientation];
+    @zf_weakify(self)
+    self.controlView.backBtnClickCallback = ^{
+        @zf_strongify(self)
+        [self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:YES completion:NULL];
+        //[self.player stop];
     };
     
+    self.player.orientationObserver.supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
+    [self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:NO completion:NULL];
+    
+    //self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+        //@zf_strongify(self)
+        //[self setNeedsStatusBarAppearanceUpdate];
+        //[UIViewController attemptRotationToDeviceOrientation];
+    //};
+    
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
-        //@strongify(self)
         QPLog(@"%s", __func__);
     };
     
     self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, id _Nonnull error) {
-        //@strongify(self)
         QPLog(@"%s, error: %@", __func__, error);
     };
 }
@@ -596,7 +610,8 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-    return self.player.isStatusBarHidden;
+    //return self.player.isStatusBarHidden;
+    return NO;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {

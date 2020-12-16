@@ -202,6 +202,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
     } else {
         [self removeCellAllSubviews:cell];
+        cell.textLabel.text = @"";
+        cell.detailTextLabel.text = @"";
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
     cell.backgroundColor = self.isDarkMode ? QPColorFromRGB(40, 40, 40) : [UIColor whiteColor];

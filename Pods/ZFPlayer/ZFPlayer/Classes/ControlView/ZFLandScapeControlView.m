@@ -26,9 +26,9 @@
 #import "UIView+ZFFrame.h"
 #import "ZFUtilities.h"
 #if __has_include(<ZFPlayer/ZFPlayer.h>)
-#import <ZFPlayer/ZFPlayer.h>
+#import <ZFPlayer/ZFPlayerConst.h>
 #else
-#import "ZFPlayer.h"
+#import "ZFPlayerConst.h"
 #endif
 
 @interface ZFLandScapeControlView () <ZFSliderViewDelegate>
@@ -161,7 +161,9 @@
     if (!self.isShow) {
         self.topToolView.zf_y = -self.topToolView.zf_height;
         self.bottomToolView.zf_y = self.zf_height;
+        self.lockBtn.zf_left = iPhoneX ? -82: -47;
     } else {
+        self.lockBtn.zf_left = iPhoneX ? 50: 18;
         if (self.player.isLockedScreen) {
             self.topToolView.zf_y = -self.topToolView.zf_height;
             self.bottomToolView.zf_y = self.zf_height;
@@ -226,9 +228,9 @@
     if (self.player.totalTime > 0) {
         self.slider.isdragging = YES;
         if (self.sliderValueChanging) self.sliderValueChanging(value, self.slider.isForward);
-        @weakify(self)
+        @zf_weakify(self)
         [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
-            @strongify(self)
+            @zf_strongify(self)
             if (finished) {
                 self.slider.isdragging = NO;
                 if (self.sliderValueChanged) self.sliderValueChanged(value);
@@ -359,6 +361,14 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.slider.sliderBtn.transform = CGAffineTransformIdentity;
     }];
+}
+
+#pragma mark - setter
+
+- (void)setFullScreenMode:(ZFFullScreenMode)fullScreenMode {
+    _fullScreenMode = fullScreenMode;
+    self.player.orientationObserver.fullScreenMode = fullScreenMode;
+    self.lockBtn.hidden = fullScreenMode == ZFFullScreenModePortrait;
 }
 
 #pragma mark - getter

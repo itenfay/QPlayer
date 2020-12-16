@@ -26,9 +26,9 @@
 #import "UIView+ZFFrame.h"
 #import "ZFUtilities.h"
 #if __has_include(<ZFPlayer/ZFPlayer.h>)
-#import <ZFPlayer/ZFPlayer.h>
+#import <ZFPlayer/ZFPlayerConst.h>
 #else
-#import "ZFPlayer.h"
+#import "ZFPlayerConst.h"
 #endif
 
 @interface ZFPortraitControlView () <ZFSliderViewDelegate>
@@ -185,9 +185,9 @@
     if (self.player.totalTime > 0) {
         self.slider.isdragging = YES;
         if (self.sliderValueChanging) self.sliderValueChanging(value, self.slider.isForward);
-        @weakify(self)
+        @zf_weakify(self)
         [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
-            @strongify(self)
+            @zf_strongify(self)
             if (finished) {
                 self.slider.isdragging = NO;
                 if (self.sliderValueChanged) self.sliderValueChanged(value);
@@ -296,6 +296,13 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.slider.sliderBtn.transform = CGAffineTransformIdentity;
     }];
+}
+
+#pragma mark - setter
+
+- (void)setFullScreenMode:(ZFFullScreenMode)fullScreenMode {
+    _fullScreenMode = fullScreenMode;
+    self.player.orientationObserver.fullScreenMode = fullScreenMode;
 }
 
 #pragma mark - getter

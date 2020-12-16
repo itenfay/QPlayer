@@ -98,7 +98,7 @@
 
 @implementation NSString (md5)
 
-+ (NSString *)zf_keyForRequest:(NSURLRequest *)request{
++ (NSString *)zf_keyForRequest:(NSURLRequest *)request {
     return request.URL.absoluteString;
 }
 
@@ -159,8 +159,7 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:directoryPath isDirectory:nil]) {
         dispatch_queue_t ioQueue = dispatch_queue_create("com.hackemist.SDWebImageCache", DISPATCH_QUEUE_SERIAL);
         dispatch_async(ioQueue, ^{
-            NSError *error = nil;
-            [[NSFileManager defaultManager] removeItemAtPath:directoryPath error:&error];
+            [[NSFileManager defaultManager] removeItemAtPath:directoryPath error:nil];
             [[NSFileManager defaultManager] createDirectoryAtPath:directoryPath
                                       withIntermediateDirectories:YES
                                                        attributes:nil
@@ -227,47 +226,39 @@
 
 #pragma mark - getter
 
-- (ZFImageBlock)completion
-{
+- (ZFImageBlock)completion {
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (ZFImageDownloader *)imageDownloader
-{
+- (ZFImageDownloader *)imageDownloader {
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (NSUInteger)attemptToReloadTimesForFailedURL
-{
+- (NSUInteger)attemptToReloadTimesForFailedURL {
     NSUInteger count = [objc_getAssociatedObject(self, _cmd) integerValue];
     if (count == 0) {  count = 2; }
     return count;
 }
 
-- (BOOL)shouldAutoClipImageToViewSize
-{
+- (BOOL)shouldAutoClipImageToViewSize {
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 #pragma mark - setter
 
-- (void)setCompletion:(ZFImageBlock)completion
-{
+- (void)setCompletion:(ZFImageBlock)completion {
     objc_setAssociatedObject(self, @selector(completion), completion, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (void)setImageDownloader:(ZFImageDownloader *)imageDownloader
-{
+- (void)setImageDownloader:(ZFImageDownloader *)imageDownloader {
     objc_setAssociatedObject(self, @selector(imageDownloader), imageDownloader, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setAttemptToReloadTimesForFailedURL:(NSUInteger)attemptToReloadTimesForFailedURL
-{
+- (void)setAttemptToReloadTimesForFailedURL:(NSUInteger)attemptToReloadTimesForFailedURL {
     objc_setAssociatedObject(self, @selector(attemptToReloadTimesForFailedURL), @(attemptToReloadTimesForFailedURL), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setShouldAutoClipImageToViewSize:(BOOL)shouldAutoClipImageToViewSize
-{
+- (void)setShouldAutoClipImageToViewSize:(BOOL)shouldAutoClipImageToViewSize {
     objc_setAssociatedObject(self, @selector(shouldAutoClipImageToViewSize), @(shouldAutoClipImageToViewSize), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

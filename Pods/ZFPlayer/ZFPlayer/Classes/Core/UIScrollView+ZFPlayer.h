@@ -53,6 +53,19 @@ typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
     ZFPlayerContainerTypeCell
 };
 
+typedef NS_ENUM(NSInteger , ZFPlayerScrollViewScrollPosition) {
+    ZFPlayerScrollViewScrollPositionNone,
+    /// Apply to UITableView and UICollectionViewDirection is vertical scrolling.
+    ZFPlayerScrollViewScrollPositionTop,
+    ZFPlayerScrollViewScrollPositionCenteredVertically,
+    ZFPlayerScrollViewScrollPositionBottom,
+    
+    /// Only apply to UICollectionViewDirection is horizontal scrolling.
+    ZFPlayerScrollViewScrollPositionLeft,
+    ZFPlayerScrollViewScrollPositionCenteredHorizontally,
+    ZFPlayerScrollViewScrollPositionRight
+};
+
 @interface UIScrollView (ZFPlayer)
 
 /// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionVertical,the property has value.
@@ -66,7 +79,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
 
 /// The scroll direction of scrollView while scrolling.
 /// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionVertical，this value can only be ZFPlayerScrollDirectionUp or ZFPlayerScrollDirectionDown.
-/// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionVertical，this value can only be ZFPlayerScrollDirectionLeft or ZFPlayerScrollDirectionRight.
+/// When the ZFPlayerScrollViewDirection is ZFPlayerScrollViewDirectionHorizontal，this value can only be ZFPlayerScrollDirectionLeft or ZFPlayerScrollDirectionRight.
 @property (nonatomic, readonly) ZFPlayerScrollDirection zf_scrollDirection;
 
 /// Get the cell according to indexPath.
@@ -75,16 +88,31 @@ typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
 /// Get the indexPath for cell.
 - (NSIndexPath *)zf_getIndexPathForCell:(UIView *)cell;
 
-/// Scroll to indexPath with animations.
-- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath completionHandler:(void (^ __nullable)(void))completionHandler;
+/**
+Scroll to indexPath with position.
+ 
+@param indexPath scroll the  indexPath.
+@param scrollPosition  scrollView scroll position.
+@param animated animate.
+@param completionHandler  Scroll completion callback.
+*/
+- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath
+                 atScrollPosition:(ZFPlayerScrollViewScrollPosition)scrollPosition
+                         animated:(BOOL)animated
+                completionHandler:(void (^ __nullable)(void))completionHandler;
 
-/// add in 3.2.4 version.
-/// Scroll to indexPath with animations.
-- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated completionHandler:(void (^ __nullable)(void))completionHandler;
-
-/// add in 3.2.8 version.
-/// Scroll to indexPath with animations duration.
-- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath animateWithDuration:(NSTimeInterval)duration completionHandler:(void (^ __nullable)(void))completionHandler;
+/**
+Scroll to indexPath with position.
+ 
+@param indexPath scroll the  indexPath.
+@param scrollPosition  scrollView scroll position.
+@param duration animate duration.
+@param completionHandler  Scroll completion callback.
+*/
+- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath
+                 atScrollPosition:(ZFPlayerScrollViewScrollPosition)scrollPosition
+                  animateDuration:(NSTimeInterval)duration
+                completionHandler:(void (^ __nullable)(void))completionHandler;
 
 ///------------------------------------
 /// The following method must be implemented in UIScrollViewDelegate.
@@ -177,10 +205,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
 /// The video contrainerView in normal model.
 @property (nonatomic, strong) UIView *zf_containerView;
 
-
 /// The video contrainerView type.
 @property (nonatomic, assign) ZFPlayerContainerType zf_containerType;
-
 
 /// Filter the cell that should be played when the scroll is stopped (to play when the scroll is stopped).
 - (void)zf_filterShouldPlayCellWhileScrolled:(void (^ __nullable)(NSIndexPath *indexPath))handler;
@@ -197,6 +223,21 @@ typedef NS_ENUM(NSInteger, ZFPlayerContainerType) {
 
 /// The block invoked When the player should play.
 @property (nonatomic, copy, nullable) void(^zf_shouldPlayIndexPathCallback)(NSIndexPath *indexPath) __attribute__((deprecated("use `ZFPlayerController.zf_playerShouldPlayInScrollView` instead.")));
+
+
+/// Scroll to indexPath position  `ZFPlayerScrollViewScrollPositionTop` with animations.
+- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath
+                completionHandler:(void (^ __nullable)(void))completionHandler __attribute__((deprecated("use `zf_scrollToRowAtIndexPath:atScrollPosition:animated:completionHandler:` instead.")));
+
+/// Scroll to indexPath position  `ZFPlayerScrollViewScrollPositionTop` with animations.
+- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath
+                         animated:(BOOL)animated
+                completionHandler:(void (^ __nullable)(void))completionHandler __attribute__((deprecated("use `zf_scrollToRowAtIndexPath:atScrollPosition:animated:completionHandler:` instead.")));
+
+/// Scroll to indexPath position  `ZFPlayerScrollViewScrollPositionTop` with animations.
+- (void)zf_scrollToRowAtIndexPath:(NSIndexPath *)indexPath
+              animateWithDuration:(NSTimeInterval)duration
+                completionHandler:(void (^ __nullable)(void))completionHandler __attribute__((deprecated("use `zf_scrollToRowAtIndexPath:atScrollPosition:animateDuration:completionHandler:` instead.")));
 
 @end
 

@@ -50,7 +50,13 @@
     }
 }
 
+// 在这里写支持的旋转方向，为了防止横屏方向，应用启动时候界面变为横屏模式
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    
+    if (self.allowOrentitaionRotation) {
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+    
     return UIInterfaceOrientationMaskPortrait;
 }
 
@@ -62,7 +68,9 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
     QPlayerSavePlaying(NO);
+    
     if (DYFNetworkSniffer.sharedSniffer.isStarted) {
         [DYFNetworkSniffer.sharedSniffer stop];
     }
@@ -70,6 +78,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
     if (!DYFNetworkSniffer.sharedSniffer.isStarted) {
         [DYFNetworkSniffer.sharedSniffer start];
     }
@@ -81,7 +90,9 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
     QPlayerSavePlaying(NO);
+    
     if (DYFNetworkSniffer.sharedSniffer.isStarted) {
         [DYFNetworkSniffer.sharedSniffer stop];
     }

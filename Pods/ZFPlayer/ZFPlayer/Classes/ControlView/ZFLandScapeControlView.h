@@ -76,6 +76,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 如果是暂停状态，seek完是否播放，默认YES
 @property (nonatomic, assign) BOOL seekToPlay;
 
+/// 全屏模式
+@property (nonatomic, assign) ZFFullScreenMode fullScreenMode;
+
 /// 重置控制层
 - (void)resetControlView;
 

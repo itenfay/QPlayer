@@ -206,6 +206,7 @@
                                                font);
         label.textAlignment = NSTextAlignmentLeft;
         label.textColor = self.isDarkMode ? QPColorFromRGB(160, 160, 160) : QPColorFromRGB(96, 96, 96);
+        label.lineBreakMode = NSLineBreakByCharWrapping;
         
         header.briefIntroLabelHeight.constant = labH;
         CGFloat bgImgVH = header.logoBgImgViewHeight.constant;
@@ -272,6 +273,11 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
+    } else {
+        [self removeCellAllSubviews:cell];
+        cell.textLabel.text = @"";
+        cell.detailTextLabel.text = @"";
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
     cell.backgroundColor = self.isDarkMode ? QPColorFromRGB(20, 20, 20) : QPColorFromRGB(246, 246, 246);

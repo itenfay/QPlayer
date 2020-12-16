@@ -278,8 +278,6 @@ NSInteger yf_sortObjects(FileModel *obj1, FileModel *obj2, void *context) {
     FileTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         cell = [[NSBundle.mainBundle loadNibNamed:NSStringFromClass([FileTableViewCell class]) owner:nil options:nil] firstObject];
-    } else {
-        //[self removeCellAllSubviews:cell];
     }
     
     cell.backgroundColor = self.isDarkMode ? QPColorFromRGB(30, 30, 30) : [UIColor whiteColor];

@@ -14,4 +14,3 @@
 @property (nonatomic, assign) BOOL allowOrentitaionRotation;
 
 @end
-

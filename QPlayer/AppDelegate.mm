@@ -7,7 +7,6 @@
 
 #import "AppDelegate.h"
 #import <ZFPlayer/ZFPlayer.h>
-#import "DYFNetworkSniffer.h"
 
 @interface AppDelegate ()
 
@@ -42,11 +41,11 @@
 }
 
 - (void)setupConfiguration {
-    BOOL result = [QPlayerExtractFlag(kWriteThemeStyleFlagOnceOnly) boolValue];
+    BOOL result = [QPlayerExtractValue(kWriteThemeStyleFlagOnceOnly) boolValue];
     
     if (!result) {
-        QPlayerSaveFlag(kThemeStyleOnOff, [NSNumber numberWithBool:YES]);
-        QPlayerSaveFlag(kWriteThemeStyleFlagOnceOnly, [NSNumber numberWithBool:YES]);
+        QPlayerStoreValue(kThemeStyleOnOff, [NSNumber numberWithBool:YES]);
+        QPlayerStoreValue(kWriteThemeStyleFlagOnceOnly, [NSNumber numberWithBool:YES]);
     }
 }
 

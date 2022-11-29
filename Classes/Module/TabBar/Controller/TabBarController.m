@@ -22,8 +22,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self updateTabBarAppearance:NO];
     [self setup];
     [self identifyMode];
+}
+
+- (void)updateTabBarAppearance:(BOOL)isDark {
+    if (@available(iOS 13.0, *)) {
+        UITabBarAppearance *appearance = [UITabBarAppearance new];
+        /// 背景色
+        appearance.backgroundColor = isDark ? QPColorFromRGB(20, 20, 20) : UIColor.whiteColor;
+        /// 去掉半透明效果
+        appearance.backgroundEffect = nil;
+        /// 去一条阴影线
+        appearance.shadowColor = UIColor.clearColor;
+        self.tabBar.standardAppearance = appearance;
+        if (@available(iOS 15.0, *)) {
+            self.tabBar.scrollEdgeAppearance = appearance;
+        }
+    }
 }
 
 - (void)setup {
@@ -84,6 +101,8 @@
 }
 
 - (void)adjustTabBarThemeStyle {
+    [self updateTabBarAppearance:self.isDarkMode];
+    
     UIColor *normalColor = self.isDarkMode ? QPColorFromRGB(200, 200, 200) : [UIColor grayColor];
     
     UIColor *selectedColor = QPColorFromRGB(58, 60, 66);

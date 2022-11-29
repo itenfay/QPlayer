@@ -156,7 +156,7 @@
         _doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
         _doubleTap.delegate = self;
         _doubleTap.delaysTouchesBegan = YES;
-        _singleTap.delaysTouchesEnded = YES;
+        _doubleTap.delaysTouchesEnded = YES;
         _doubleTap.numberOfTouchesRequired = 1; 
         _doubleTap.numberOfTapsRequired = 2;
     }

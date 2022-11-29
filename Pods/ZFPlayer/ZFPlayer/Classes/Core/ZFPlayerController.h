@@ -37,26 +37,28 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ZFPlayerController : NSObject
 
 /// The video contrainerView in normal model.
-@property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, weak, nullable) UIView *containerView;
 
 /// The currentPlayerManager must conform `ZFPlayerMediaPlayback` protocol.
 @property (nonatomic, strong) id<ZFPlayerMediaPlayback> currentPlayerManager;
 
 /// The custom controlView must conform `ZFPlayerMediaControl` protocol.
-@property (nonatomic, strong) UIView<ZFPlayerMediaControl> *controlView;
+@property (nonatomic, strong, nullable) UIView<ZFPlayerMediaControl> *controlView;
 
 /// The notification manager class.
-@property (nonatomic, strong, readonly) ZFPlayerNotification *notification;
+@property (nonatomic, strong, readonly, nullable) ZFPlayerNotification *notification;
 
 /// The container view type.
 @property (nonatomic, assign, readonly) ZFPlayerContainerType containerType;
 
 /// The player's small container view.
-@property (nonatomic, strong, readonly) ZFFloatView *smallFloatView;
+@property (nonatomic, strong, readonly, nullable) ZFFloatView *smallFloatView;
 
 /// Whether the small window is displayed.
 @property (nonatomic, assign, readonly) BOOL isSmallFloatViewShow;
 
+/// The scroll view is `tableView` or `collectionView`.
+@property (nonatomic, weak, nullable) UIScrollView *scrollView;
 /*!
  @method            playerWithPlayerManager:containerView:
  @abstract          Create an ZFPlayerController that plays a single audiovisual item.
@@ -162,7 +164,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) float brightness;
 
 /// The play asset URL.
-@property (nonatomic) NSURL *assetURL;
+@property (nonatomic, nullable) NSURL *assetURL;
 
 /// If tableView or collectionView has only one section , use `assetURLs`.
 /// If tableView or collectionView has more sections , use `sectionAssetURLs`.
@@ -300,10 +302,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Lock the screen orientation.
 @property (nonatomic, getter=isLockedScreen) BOOL lockedScreen;
 
-/// The current orientation of the player.
-/// Default is UIInterfaceOrientationPortrait.
-@property (nonatomic, readonly) UIInterfaceOrientation currentOrientation;
-
 /// The block invoked When player will rotate.
 @property (nonatomic, copy, nullable) void(^orientationWillChange)(ZFPlayerController *player, BOOL isFullScreen);
 
@@ -396,9 +394,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface ZFPlayerController (ZFPlayerScrollView)
-
-/// The scroll view is `tableView` or `collectionView`.
-@property (nonatomic, readonly, nullable) UIScrollView *scrollView;
 
 /// The scrollView player should auto player, default is YES.
 @property (nonatomic) BOOL shouldAutoPlay;

@@ -1,0 +1,1 @@
+../../../ZFPlayer/ZFPlayer/Classes/Core/ZFLandscapeRotationManager_iOS16.h

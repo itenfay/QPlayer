@@ -20,17 +20,17 @@ PODS:
     - MBProgressHUD (~> 0.9.2)
   - MJRefresh (3.5.0)
   - PYSearch (0.9.1)
-  - SDWebImage (5.8.4):
-    - SDWebImage/Core (= 5.8.4)
-  - SDWebImage/Core (5.8.4)
+  - SDWebImage (5.9.5):
+    - SDWebImage/Core (= 5.9.5)
+  - SDWebImage/Core (5.9.5)
   - SVBlurView (0.0.1)
-  - ZFPlayer (4.0.1):
-    - ZFPlayer/Core (= 4.0.1)
-  - ZFPlayer/AVPlayer (4.0.1):
+  - ZFPlayer (4.1.4):
+    - ZFPlayer/Core (= 4.1.4)
+  - ZFPlayer/AVPlayer (4.1.4):
     - ZFPlayer/Core
-  - ZFPlayer/ControlView (4.0.1):
+  - ZFPlayer/ControlView (4.1.4):
     - ZFPlayer/Core
-  - ZFPlayer/Core (4.0.1)
+  - ZFPlayer/Core (4.1.4)
 
 DEPENDENCIES:
   - AFNetworking
@@ -45,7 +45,7 @@ DEPENDENCIES:
   - ZFPlayer/ControlView
 
 SPEC REPOS:
-  trunk:
+  https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git:
     - AFNetworking
     - FDFullscreenPopGesture
     - MBProgressHUD
@@ -63,10 +63,10 @@ SPEC CHECKSUMS:
   "MBProgressHUD+JDragon": 15bf7583612f0bb9f0bcea634ba5eb247b17d014
   MJRefresh: 6afc955813966afb08305477dd7a0d9ad5e79a16
   PYSearch: 76dee18eea3309b60921a5d6a69390a63a5dda15
-  SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
+  SDWebImage: 0b2ba0d56479bf6a45ecddbfd5558bea93150d25
   SVBlurView: 04d65da92afd5cf3fc9ed3348181b0e0d6b1493c
-  ZFPlayer: f88787c815f7b0801279c42f131a89e2823e669e
+  ZFPlayer: 5cf39e8d9f0c2394a014b0db4767b5b5a6bffe13
 
-PODFILE CHECKSUM: de9c07334e8c9230d4e3696ec262e5dee6f9eed0
+PODFILE CHECKSUM: 4cb0632545f69dbd049fa68a3f115a414c364179
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.11.3

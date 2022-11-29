@@ -1,5 +1,8 @@
 platform :ios, '8.0'
 
+source 'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git'
+#source 'https://gitee.com/mirrors/CocoaPods-Specs.git'
+
 target 'QPlayer' do
     # use_frameworks!
     

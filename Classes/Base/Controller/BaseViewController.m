@@ -20,6 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self updateNaviBarAppearance:NO];
     [self identifyMode];
 }
 
@@ -39,19 +40,32 @@
     [NSNotificationCenter.defaultCenter removeObserver:self name:kThemeStyleDidChangeNotification object:nil];
 }
 
+- (void)updateNaviBarAppearance:(BOOL)isDark {
+    UINavigationController *navi = self.navigationController;
+    if (navi == nil) { return; }
+    if (@available(iOS 13.0, *)) {
+        UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+        /// 背景色
+        appearance.backgroundColor = isDark ?  QPColorFromRGB(20, 20, 20) : QPColorFromRGB(39, 220, 203);
+        /// 去掉半透明效果
+        appearance.backgroundEffect = nil;
+        /// 去除导航栏阴影（如果不设置clear，导航栏底下会有一条阴影线）
+        appearance.shadowColor = UIColor.clearColor;
+        appearance.titleTextAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17], NSForegroundColorAttributeName: UIColor.whiteColor};
+        navi.navigationBar.standardAppearance = appearance;
+        navi.navigationBar.scrollEdgeAppearance = appearance;
+    }
+}
+
 - (void)adjustThemeStyle {
     [self identifyMode];
 }
 
 - (void)identifyMode {
-    
     BOOL bValue = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
     if (bValue) {
-        
         if (@available(iOS 13.0, *)) {
-            
             UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
-            
             if (mode == UIUserInterfaceStyleDark) {
                 // Dark Mode
                 [self adjustDarkTheme];
@@ -59,26 +73,24 @@
                 // Light Mode or unspecified Mode
                 [self adjustLightTheme];
             }
-            
         } else {
-            
             [self adjustLightTheme];
         }
-        
     } else {
-        
         [self adjustLightTheme];
     }
 }
 
 - (void)adjustLightTheme {
     [self setNavigationBarLightStyle];
+    [self updateNaviBarAppearance:NO];
     self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
     self.isDarkMode = NO;
 }
 
 - (void)adjustDarkTheme {
     [self setNavigationBarDarkStyle];
+    [self updateNaviBarAppearance:YES];
     self.view.backgroundColor = QPColorFromRGB(30, 30, 30);
     self.isDarkMode = YES;
 }
@@ -197,12 +209,12 @@
 }
 
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
-    [self adjustThemeForWebView:webView];
+    //[self adjustThemeForWebView:webView];
     [self buildProgressView];
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    [self adjustThemeForWebView:webView];
+    //[self adjustThemeForWebView:webView];
     [self removeProgressView];
 }
 

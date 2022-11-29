@@ -55,8 +55,8 @@
     CGFloat min_y = 0;
     CGFloat min_w = 0;
     CGFloat min_h = 0;
-    CGFloat min_view_w = self.frame.size.width;
-    CGFloat min_view_h = self.frame.size.height;
+    CGFloat min_view_w = self.bounds.size.width;
+    CGFloat min_view_h = self.bounds.size.height;
     
     CGSize playerViewSize = CGSizeZero;
     CGFloat videoWidth = self.presentationSize.width;

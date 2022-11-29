@@ -919,7 +919,7 @@
 				TargetAttributes = {
 					965E09DD1F04A85F009BBBD9 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = KCBQ48PTUV;
+						DevelopmentTeam = ZV3MMP87F8;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1192,8 +1192,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
-				DEVELOPMENT_TEAM = KCBQ48PTUV;
+				CURRENT_PROJECT_VERSION = 1129;
+				DEVELOPMENT_TEAM = ZV3MMP87F8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/KSYMediaPlayer_vod",
@@ -1203,7 +1203,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/QPlayer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.2.1;
+				MARKETING_VERSION = 3.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1220,7 +1220,7 @@
 					"-framework",
 					"\"UIKit\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.omg.qplayer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hsn.qplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1235,8 +1235,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
-				DEVELOPMENT_TEAM = KCBQ48PTUV;
+				CURRENT_PROJECT_VERSION = 1129;
+				DEVELOPMENT_TEAM = ZV3MMP87F8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/KSYMediaPlayer_vod",
@@ -1246,7 +1246,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/QPlayer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.2.1;
+				MARKETING_VERSION = 3.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1263,7 +1263,7 @@
 					"-framework",
 					"\"UIKit\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.omg.qplayer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hsn.qplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

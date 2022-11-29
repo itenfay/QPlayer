@@ -188,8 +188,8 @@
         @zf_weakify(self)
         [self.player seekToTime:self.player.totalTime*value completionHandler:^(BOOL finished) {
             @zf_strongify(self)
+            self.slider.isdragging = NO;
             if (finished) {
-                self.slider.isdragging = NO;
                 if (self.sliderValueChanged) self.sliderValueChanged(value);
             }
         }];

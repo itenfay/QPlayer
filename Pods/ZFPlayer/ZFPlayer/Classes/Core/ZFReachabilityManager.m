@@ -48,6 +48,8 @@ NSString * ZFStringFromNetworkReachabilityStatus(ZFReachabilityStatus status) {
             return NSLocalizedStringFromTable(@"Reachable via 3G", @"ZFPlayer", nil);
         case ZFReachabilityStatusReachableVia4G:
             return NSLocalizedStringFromTable(@"Reachable via 4G", @"ZFPlayer", nil);
+        case ZFReachabilityStatusReachableVia5G:
+            return NSLocalizedStringFromTable(@"Reachable via 5G", @"ZFPlayer", nil);
         case ZFReachabilityStatusUnknown:
         default:
             return NSLocalizedStringFromTable(@"Unknown", @"ZFPlayer", nil);
@@ -69,13 +71,36 @@ static ZFReachabilityStatus ZFReachabilityStatusForFlags(SCNetworkReachabilityFl
     else if ((flags & kSCNetworkReachabilityFlagsIsWWAN) != 0) {
         CTTelephonyNetworkInfo * info = [[CTTelephonyNetworkInfo alloc] init];
         NSString *currentRadioAccessTechnology = info.currentRadioAccessTechnology;
+        if (@available(iOS 12.1, *)) {
+            if (info && [info respondsToSelector:@selector(serviceCurrentRadioAccessTechnology)]) {
+                NSDictionary *radioDic = [info serviceCurrentRadioAccessTechnology];
+                if (radioDic.allKeys.count) {
+                    currentRadioAccessTechnology = [radioDic objectForKey:radioDic.allKeys[0]];
+                }
+            }
+        }
         if (currentRadioAccessTechnology) {
-            if ([currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyLTE]) {
-                status = ZFReachabilityStatusReachableVia4G;
-            } else if ([currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyEdge] || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyGPRS]) {
+            if ([currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyEdge]
+                || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyGPRS]
+                || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyCDMA1x]) {
                 status = ZFReachabilityStatusReachableVia2G;
-            } else {
+            } else if ([currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyWCDMA]
+                       || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyHSDPA]
+                       || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyHSUPA]
+                       || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyCDMAEVDORev0]
+                       || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyCDMAEVDORevA]
+                       || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyCDMAEVDORevB]
+                       || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyeHRPD]) {
                 status = ZFReachabilityStatusReachableVia3G;
+            } else if ([currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyLTE]) {
+                status = ZFReachabilityStatusReachableVia4G;
+            } else if (@available(iOS 14.1, *)) {
+                if ([currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyNRNSA]
+                    || [currentRadioAccessTechnology isEqualToString:CTRadioAccessTechnologyNR]) {
+                    status = ZFReachabilityStatusReachableVia5G;
+                }
+            } else {
+                status = ZFReachabilityStatusUnknown;
             }
         }
     }
@@ -100,12 +125,14 @@ static void ZFPostReachabilityStatusChange(SCNetworkReachabilityFlags flags, ZFR
     dispatch_async(dispatch_get_main_queue(), ^{
         if (block) block(status);
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        NSDictionary *userInfo = @{ ZFReachabilityNotificationStatusItem: @(status) };
+        NSMutableDictionary *userInfo = @{}.mutableCopy;
+        userInfo[ZFReachabilityNotificationStatusItem] = @(status);
+        
         [notificationCenter postNotificationName:ZFReachabilityDidChangeNotification object:nil userInfo:userInfo];
     });
 }
 
-static void AFNetworkReachabilityCallback(SCNetworkReachabilityRef __unused target, SCNetworkReachabilityFlags flags, void *info) {
+static void ZFPlayerReachabilityCallback(SCNetworkReachabilityRef __unused target, SCNetworkReachabilityFlags flags, void *info) {
     ZFPostReachabilityStatusChange(flags, (__bridge ZFReachabilityStatusBlock)info);
 }
 
@@ -223,7 +250,7 @@ static void ZFReachabilityReleaseCallback(const void *info) {
     };
     
     SCNetworkReachabilityContext context = {0, (__bridge void *)callback, ZFReachabilityRetainCallback, ZFReachabilityReleaseCallback, NULL};
-    SCNetworkReachabilitySetCallback(self.networkReachability, AFNetworkReachabilityCallback, &context);
+    SCNetworkReachabilitySetCallback(self.networkReachability, ZFPlayerReachabilityCallback, &context);
     SCNetworkReachabilityScheduleWithRunLoop(self.networkReachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{

@@ -28,25 +28,15 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol ZFLandscapeViewControllerDelegate <NSObject>
-
+@optional
 - (BOOL)ls_shouldAutorotate;
-- (void)ls_willRotateToOrientation:(UIInterfaceOrientation)orientation;
-- (void)ls_didRotateFromOrientation:(UIInterfaceOrientation)orientation;
-- (CGRect)ls_targetRect;
+- (void)rotationFullscreenViewController:(ZFLandscapeViewController *)viewController viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator;
 
 @end
 
 @interface ZFLandscapeViewController : UIViewController
 
-@property (nonatomic, weak) UIView *contentView;
-
-@property (nonatomic, weak) UIView *containerView;
-
-@property (nonatomic, assign) CGRect targetRect;
-
 @property (nonatomic, weak, nullable) id<ZFLandscapeViewControllerDelegate> delegate;
-
-@property (nonatomic, readonly) BOOL isFullscreen;
 
 @property (nonatomic, assign) BOOL disableAnimations;
 
@@ -55,8 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 /// defalut is UIStatusBarAnimationSlide.
 @property (nonatomic, assign) UIStatusBarAnimation statusBarAnimation;
-
-@property (nonatomic, copy) void(^rotatingCompleted)(void);
 
 @end
 

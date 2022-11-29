@@ -110,6 +110,9 @@
 /// 是否自定义禁止pan手势，默认 NO.
 @property (nonatomic, assign) BOOL customDisablePanMovingDirection;
 
+/// 横屏时候是否显示自定义状态栏(iOS13+)，默认 NO.
+@property (nonatomic, assign) BOOL showCustomStatusBar;
+
 /// 全屏模式
 @property (nonatomic, assign) ZFFullScreenMode fullScreenMode;
 

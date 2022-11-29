@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL shouldAutoPlay;
 
 /// The play asset URL.
-@property (nonatomic) NSURL *assetURL;
+@property (nonatomic, nullable) NSURL *assetURL;
 
 /// The video size.
 @property (nonatomic) CGSize presentationSize;

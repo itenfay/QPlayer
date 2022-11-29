@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #import "ZFLandscapeWindow.h"
+#import "ZFLandscapeRotationManager_iOS15.h"
 
 @implementation ZFLandscapeWindow
 @dynamic rootViewController;
@@ -32,12 +33,15 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.windowLevel = UIWindowLevelNormal;
-        _landscapeViewController = [[ZFLandscapeViewController alloc] init];
-        self.rootViewController = _landscapeViewController;
+        self.windowLevel = UIWindowLevelStatusBar - 1;
         if (@available(iOS 13.0, *)) {
             if (self.windowScene == nil) {
                 self.windowScene = UIApplication.sharedApplication.keyWindow.windowScene;
+            }
+            if (@available(iOS 9.0, *)) {
+                [self.rootViewController loadViewIfNeeded];
+            } else {
+                [self.rootViewController view];
             }
         }
         self.hidden = YES;

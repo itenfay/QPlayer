@@ -143,7 +143,10 @@ NSString *const ZFNetworkSpeedNotificationKey         = @"ZFNetworkSpeedNotifica
     freeifaddrs(ifa_list);
     if (_iBytes != 0) {
         _downloadNetworkSpeed = [[self stringWithbytes:iBytes - _iBytes] stringByAppendingString:@"/s"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:ZFDownloadNetworkSpeedNotificationKey object:nil userInfo:@{ZFNetworkSpeedNotificationKey:_downloadNetworkSpeed}];
+        NSMutableDictionary *userInfo = @{}.mutableCopy;
+        userInfo[ZFNetworkSpeedNotificationKey] = _downloadNetworkSpeed;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:ZFDownloadNetworkSpeedNotificationKey object:nil userInfo:userInfo];
         ZFPlayerLog(@"downloadNetworkSpeed : %@",_downloadNetworkSpeed);
     }
     
@@ -151,7 +154,10 @@ NSString *const ZFNetworkSpeedNotificationKey         = @"ZFNetworkSpeedNotifica
     
     if (_oBytes != 0) {
         _uploadNetworkSpeed = [[self stringWithbytes:oBytes - _oBytes] stringByAppendingString:@"/s"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:ZFUploadNetworkSpeedNotificationKey object:nil userInfo:@{ZFNetworkSpeedNotificationKey:_uploadNetworkSpeed}];
+        NSMutableDictionary *userInfo = @{}.mutableCopy;
+        userInfo[ZFNetworkSpeedNotificationKey] = _uploadNetworkSpeed;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:ZFUploadNetworkSpeedNotificationKey object:nil userInfo:userInfo];
         ZFPlayerLog(@"uploadNetworkSpeed :%@",_uploadNetworkSpeed);
     }
     

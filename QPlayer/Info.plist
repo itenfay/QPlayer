@@ -26,10 +26,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.omg.qplayer</string>
+			<string>com.cx.qplayer</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>video-qplayer</string>
+				<string>cxqplayer</string>
 			</array>
 		</dict>
 	</array>

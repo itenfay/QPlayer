@@ -13,6 +13,7 @@
 #import "QPGlobalDef.h"
 #import "QPHudObject.h"
 #import "QPTitleView.h"
+#import "DYFNetworkSniffer.h"
 
 #pragma mark - Category
 
@@ -31,5 +32,10 @@
 #import "UINavigationController+FDFullscreenPopGesture.h"
 #import "PYSearch.h"
 #import "DYFWebProgressView.h"
+
+#import <ZFPlayer/ZFPlayer.h>
+#import <ZFPlayer/ZFLandscapeRotationManager.h>
+#import <ZFPlayer/ZFLandscapeRotationManager_iOS15.h>
+#import <ZFPlayer/ZFLandscapeRotationManager_iOS16.h>
 
 #endif /* QPPchFile_h */

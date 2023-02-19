@@ -26,10 +26,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.omg.qplayer</string>
+			<string>com.cx.qplayer</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>video-qplayer</string>
+				<string>cxqplayer</string>
 			</array>
 		</dict>
 	</array>
@@ -62,11 +62,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MyBlogUrl</key>
-	<string>https://dgynfi.github.io</string>
+	<string>https://chenxing640.github.io</string>
 	<key>MyEmail</key>
-	<string>vinphy.teng@foxmail.com</string>
+	<string>chenxing640@foxmail.com</string>
 	<key>MyGithubUrl</key>
-	<string>https://github.com/dgynfi</string>
+	<string>https://github.com/chenxing640</string>
 	<key>MyJianShuUrl</key>
 	<string>https://www.jianshu.com/u/7fc76f1179cc</string>
 	<key>NSAppTransportSecurity</key>
@@ -87,8 +87,8 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>是否允许此App访问你的媒体资料库？若不允许，则无法存取照片。</string>
 	<key>QPlayerGithubUrl</key>
-	<string>https://github.com/dgynfi/QPlayer</string>
-	<key>QPlyerBriefIntro</key>
+	<string>https://github.com/chenxing640/QPlayer</string>
+	<key>QPlyerDesc</key>
 	<string>QPlayer 是一款不容你错过的视频播放器，支持 M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3 等主流媒体格式，支持 WiFi 文件传输，可以随时随地观看本地视频。聚合了多个直播、视频和短视频平台，可以在线观看直播、视频和短视频，同时支持 HTTP、RTMP、RTSP、HLS 等流媒体播放。</string>
 	<key>TecentVideoUrl</key>
 	<string>https://m.v.qq.com/</string>
@@ -105,13 +105,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>

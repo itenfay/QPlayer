@@ -92,8 +92,8 @@
 		96532C6A1F5E814E00E66A2F /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C581F5E814E00E66A2F /* HTTPServer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		96532C701F5E814E00E66A2F /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C611F5E814E00E66A2F /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		96532C721F5E816000E66A2F /* docroot in Resources */ = {isa = PBXBuildFile; fileRef = 96532C711F5E816000E66A2F /* docroot */; };
-		965E09E31F04A85F009BBBD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 965E09E21F04A85F009BBBD9 /* main.m */; };
-		965E09E61F04A85F009BBBD9 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 965E09E51F04A85F009BBBD9 /* AppDelegate.mm */; };
+		965E09E31F04A85F009BBBD9 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 965E09E21F04A85F009BBBD9 /* main.mm */; };
+		965E09E61F04A85F009BBBD9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 965E09E51F04A85F009BBBD9 /* AppDelegate.m */; };
 		965E09E91F04A85F009BBBD9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965E09E81F04A85F009BBBD9 /* ViewController.m */; };
 		965E09EC1F04A85F009BBBD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 965E09EA1F04A85F009BBBD9 /* Main.storyboard */; };
 		965E09EE1F04A85F009BBBD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 965E09ED1F04A85F009BBBD9 /* Assets.xcassets */; };
@@ -262,9 +262,9 @@
 		96532C611F5E814E00E66A2F /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		96532C711F5E816000E66A2F /* docroot */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docroot; sourceTree = "<group>"; };
 		965E09DE1F04A85F009BBBD9 /* QPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		965E09E21F04A85F009BBBD9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		965E09E21F04A85F009BBBD9 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		965E09E41F04A85F009BBBD9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		965E09E51F04A85F009BBBD9 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		965E09E51F04A85F009BBBD9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		965E09E71F04A85F009BBBD9 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		965E09E81F04A85F009BBBD9 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		965E09EB1F04A85F009BBBD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -981,7 +981,7 @@
 			isa = PBXGroup;
 			children = (
 				965E09E41F04A85F009BBBD9 /* AppDelegate.h */,
-				965E09E51F04A85F009BBBD9 /* AppDelegate.mm */,
+				965E09E51F04A85F009BBBD9 /* AppDelegate.m */,
 				965E09E71F04A85F009BBBD9 /* ViewController.h */,
 				965E09E81F04A85F009BBBD9 /* ViewController.m */,
 				965E09EA1F04A85F009BBBD9 /* Main.storyboard */,
@@ -996,7 +996,7 @@
 		965E09E11F04A85F009BBBD9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				965E09E21F04A85F009BBBD9 /* main.m */,
+				965E09E21F04A85F009BBBD9 /* main.mm */,
 				965E0A141F04A896009BBBD9 /* AppPrefix.pch */,
 			);
 			name = "Supporting Files";
@@ -1062,7 +1062,7 @@
 				TargetAttributes = {
 					965E09DD1F04A85F009BBBD9 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = KCBQ48PTUV;
+						DevelopmentTeam = ZV3MMP87F8;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1213,7 +1213,10 @@
 				141B170025C93B46008C465C /* DYFHttpClient.m in Sources */,
 				141B172225C93B46008C465C /* QPAboutMeTableFooter.m in Sources */,
 				96532C621F5E814E00E66A2F /* AsyncSocket.m in Sources */,
-				965E09E31F04A85F009BBBD9 /* main.m in Sources */,
+				144B220F2338A5EC00994F35 /* QPlayerController.m in Sources */,
+				965E09E31F04A85F009BBBD9 /* main.mm in Sources */,
+				1467B2AA233A448000526926 /* AboutMeTableFooter.m in Sources */,
+				1420384E233E68FE00DDA120 /* DYFDropListModel.m in Sources */,
 				96532C641F5E814E00E66A2F /* DDNumber.m in Sources */,
 				1438F69325CC5282000CC65D /* QPBaseViewController.m in Sources */,
 				141B173C25C93CC7008C465C /* UIViewController+QPAdditions.m in Sources */,
@@ -1336,8 +1339,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 302;
-				DEVELOPMENT_TEAM = KCBQ48PTUV;
+				CURRENT_PROJECT_VERSION = 0206;
+				DEVELOPMENT_TEAM = ZV3MMP87F8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/KSYMediaPlayer_vod",
@@ -1345,7 +1348,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${PROJECT_NAME}/AppPrefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/QPlayer/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 3.0.2;
 				OTHER_LDFLAGS = (
@@ -1364,7 +1367,7 @@
 					"-framework",
 					"\"UIKit\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.omg.qplayer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cx.qplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1379,8 +1382,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 302;
-				DEVELOPMENT_TEAM = KCBQ48PTUV;
+				CURRENT_PROJECT_VERSION = 0206;
+				DEVELOPMENT_TEAM = ZV3MMP87F8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/KSYMediaPlayer_vod",
@@ -1388,7 +1391,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${PROJECT_NAME}/AppPrefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/QPlayer/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 3.0.2;
 				OTHER_LDFLAGS = (
@@ -1407,7 +1410,7 @@
 					"-framework",
 					"\"UIKit\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.omg.qplayer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cx.qplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

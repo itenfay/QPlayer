@@ -679,6 +679,18 @@
     [nc.navigationBar setTintColor:[UIColor whiteColor]];
     [nc.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    if (@available(iOS 13.0, *)) {
+        UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+        /// 背景色
+        appearance.backgroundColor = QPColorFromRGB(39, 220, 203);
+        /// 去掉半透明效果
+        appearance.backgroundEffect = nil;
+        /// 去除导航栏阴影（如果不设置clear，导航栏底下会有一条阴影线）
+        appearance.shadowColor = UIColor.clearColor;
+        appearance.titleTextAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17], NSForegroundColorAttributeName: UIColor.whiteColor};
+        nc.navigationBar.standardAppearance = appearance;
+        nc.navigationBar.scrollEdgeAppearance = appearance;
+    }
     
     [self presentViewController:nc animated:YES completion:nil];
 }

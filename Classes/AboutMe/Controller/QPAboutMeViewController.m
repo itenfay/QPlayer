@@ -198,7 +198,7 @@
                                     borderColor:nil];
         header.logoBgImgView.image = cornerImage;
         
-        NSString *intro = [QPInfoDictionary objectForKey:@"QPlyerBriefIntro"];
+        NSString *intro = [QPInfoDictionary objectForKey:@"QPlyerDesc"];
         UILabel *label  = header.briefIntroLabel;
         UIFont  *font   = [UIFont systemFontOfSize:13.5f];
         CGFloat labH    = label.yf_heightToFit(intro,

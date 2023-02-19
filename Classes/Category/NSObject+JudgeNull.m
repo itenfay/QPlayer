@@ -9,7 +9,8 @@
 
 @implementation NSObject (JudgeNull)
 
-- (BOOL)isNull {
+- (BOOL)isNull
+{
     if ([self isEqual:[NSNull null]]) {
         return YES;
     } else {

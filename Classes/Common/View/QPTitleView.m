@@ -9,7 +9,8 @@
 
 @implementation QPTitleView
 
-- (CGSize)intrinsicContentSize {
+- (CGSize)intrinsicContentSize
+{
     return UILayoutFittingExpandedSize;
 }
 

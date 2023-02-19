@@ -13,7 +13,6 @@
 #ifndef QPGlobalDef_h
 #define QPGlobalDef_h
 
-
 #ifndef QP_STATIC
 #define QP_STATIC static
 #endif
@@ -21,7 +20,6 @@
 #ifndef QP_STATIC_INLINE
 #define QP_STATIC_INLINE static inline
 #endif
-
 
 // Video searching history cache path.
 #ifndef VIDEO_SEARCH_HISTORY_CACHE_PATH
@@ -33,12 +31,11 @@
 #define LIVE_SEARCH_HISTORY_CACHE_PATH [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"LiveSearchHistories.plist"]
 #endif
 
-
 QP_STATIC NSString *const QPCharactersGeneralDelimitersToEncode = @":#[]@";
 QP_STATIC NSString *const QPCharactersSubDelimitersToEncode = @"!$&'()*+,;=";
 
-
-QP_STATIC_INLINE NSString *QPStringByAddingPercentEncodingFromString(NSString *str) {
+QP_STATIC_INLINE NSString *QPStringByAddingPercentEncodingFromString(NSString *str)
+{
     //does not include "?" or "/" due to RFC 3986 - Section 3.4
     NSMutableCharacterSet *allowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
     [allowedCharacterSet removeCharactersInString:[QPCharactersGeneralDelimitersToEncode stringByAppendingString:QPCharactersSubDelimitersToEncode]];
@@ -65,30 +62,31 @@ QP_STATIC_INLINE NSString *QPStringByAddingPercentEncodingFromString(NSString *s
     return escaped;
 }
 
-QP_STATIC_INLINE NSString *QPUrlEncode(NSString *str) {
+QP_STATIC_INLINE NSString *QPUrlEncode(NSString *str)
+{
     return QPStringByAddingPercentEncodingFromString(str);
 }
 
-QP_STATIC_INLINE NSString *QPUrlDecode(NSString *str) {
+QP_STATIC_INLINE NSString *QPUrlDecode(NSString *str)
+{
     NSString *_str = [str stringByRemovingPercentEncoding];
-    
-    if (_str) {
-        return _str;
-    }
-    
+    if (_str) { return _str; }
     return [str copy];
 }
 
-QP_STATIC_INLINE void QPlayerStoreValue(NSString *key, id value) {
+QP_STATIC_INLINE void QPlayerStoreValue(NSString *key, id value)
+{
     [NSUserDefaults.standardUserDefaults setObject:value forKey:key];
     [NSUserDefaults.standardUserDefaults synchronize];
 }
 
-QP_STATIC_INLINE id QPlayerExtractValue(NSString *key) {
+QP_STATIC_INLINE id QPlayerExtractValue(NSString *key)
+{
     return [NSUserDefaults.standardUserDefaults objectForKey:key];
 }
 
-QP_STATIC_INLINE void QPlayerSavePlaying(BOOL value) {
+QP_STATIC_INLINE void QPlayerSavePlaying(BOOL value)
+{
     QPlayerStoreValue(kQPlayerIsPlaying, [NSNumber numberWithBool:value]);
 }
 
@@ -96,17 +94,19 @@ QP_STATIC_INLINE BOOL QPlayerIsPlaying() {
     return [QPlayerExtractValue(kQPlayerIsPlaying) boolValue];
 }
 
-QP_STATIC_INLINE void QPlayerSetCarrierNetworkAllowed(BOOL value) {
+QP_STATIC_INLINE void QPlayerSetCarrierNetworkAllowed(BOOL value)
+{
     QPlayerStoreValue(kCarrierNetworkAllowed, [NSNumber numberWithBool:value]);
 }
 
-QP_STATIC_INLINE BOOL QPlayerCarrierNetworkAllowed() {
+QP_STATIC_INLINE BOOL QPlayerCarrierNetworkAllowed()
+{
     return [QPlayerExtractValue(kCarrierNetworkAllowed) boolValue];
 }
 
-QP_STATIC_INLINE NSString *QPlayerMatchingIconName(NSString *ext) {
+QP_STATIC_INLINE NSString *QPlayerMatchingIconName(NSString *ext)
+{
     NSString *iconName = nil;
-    
     if ([ext isEqualToString:@"avi"]) {
         iconName = [NSString stringWithFormat:@"icon_avi"];
     } else if ([ext isEqualToString:@"flv"]) {
@@ -136,13 +136,12 @@ QP_STATIC_INLINE NSString *QPlayerMatchingIconName(NSString *ext) {
     } else {
         iconName = [NSString stringWithFormat:@"icon_jpg"];
     }
-    
     return iconName;
 }
 
-QP_STATIC_INLINE BOOL QPlayerCanSupportAVFormat(NSString *url) {
+QP_STATIC_INLINE BOOL QPlayerCanSupportAVFormat(NSString *url)
+{
     BOOL canSupport = NO;
-    
     if ([url hasSuffix:@".m3u8"]) {
         canSupport = YES;
     } else if ([url hasSuffix:@".avi"]) {
@@ -170,30 +169,21 @@ QP_STATIC_INLINE BOOL QPlayerCanSupportAVFormat(NSString *url) {
     } else if ([url hasSuffix:@".wma"]) {
         canSupport = YES;
     }
-    
     return canSupport;
 }
 
-QP_STATIC_INLINE BOOL QPlayerDetermineWhetherToPlay() {
-    
+QP_STATIC_INLINE BOOL QPlayerDetermineWhetherToPlay()
+{
     if ([DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
-        
         return YES;
-        
     } else if ([DYFNetworkSniffer.sharedSniffer isConnectedViaWWAN]) {
-        
         if (QPlayerCarrierNetworkAllowed()) {
             return YES;
         }
-        
         [QPHudUtils showWarnMessage:@"请在设置中允许流量播放！"];
-        
         return NO;
-        
     } else {
-        
         [QPHudUtils showWarnMessage:@"没有检测到网络！"];
-        
         return NO;
     }
 }

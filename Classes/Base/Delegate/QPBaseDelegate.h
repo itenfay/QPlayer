@@ -10,7 +10,6 @@
 @protocol QPBaseDelegate <NSObject>
 
 @optional
-
 // Navigates to the back item in the back-forward list.
 - (void)onGoBack;
 // Navigates to the forward item in the back-forward list.

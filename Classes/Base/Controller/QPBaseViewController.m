@@ -18,29 +18,35 @@
 
 @implementation QPBaseViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self updateNaviBarAppearance:NO];
     [self identifyMode];
 }
 
-- (void)monitorNetworkChangesWithSelector:(SEL)selector {
+- (void)monitorNetworkChangesWithSelector:(SEL)selector
+{
     [NSNotificationCenter.defaultCenter addObserver:self selector:selector name:AFNetworkingReachabilityDidChangeNotification object:nil];
 }
 
-- (void)stopMonitoringNetworkChanges {
+- (void)stopMonitoringNetworkChanges
+{
     [NSNotificationCenter.defaultCenter removeObserver:self name:AFNetworkingReachabilityDidChangeNotification object:nil];
 }
 
-- (void)addManualThemeStyleObserver {
+- (void)addManualThemeStyleObserver
+{
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(adjustThemeStyle) name:kThemeStyleDidChangeNotification object:nil];
 }
 
-- (void)removeManualThemeStyleObserver {
+- (void)removeManualThemeStyleObserver
+{
     [NSNotificationCenter.defaultCenter removeObserver:self name:kThemeStyleDidChangeNotification object:nil];
 }
 
-- (void)updateNaviBarAppearance:(BOOL)isDark {
+- (void)updateNaviBarAppearance:(BOOL)isDark
+{
     UINavigationController *navi = self.navigationController;
     if (navi == nil) { return; }
     if (@available(iOS 13.0, *)) {
@@ -57,11 +63,13 @@
     }
 }
 
-- (void)adjustThemeStyle {
+- (void)adjustThemeStyle
+{
     [self identifyMode];
 }
 
-- (void)identifyMode {
+- (void)identifyMode
+{
     BOOL bValue = [QPlayerExtractFlag(kThemeStyleOnOff) boolValue];
     if (bValue) {
         if (@available(iOS 13.0, *)) {
@@ -85,101 +93,102 @@
     }
 }
 
-- (void)adjustLightTheme {
+- (void)adjustLightTheme
+{
     [self setNavigationBarLightStyle];
     [self updateNaviBarAppearance:NO];
     self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
     self.isDarkMode = NO;
 }
 
-- (void)adjustDarkTheme {
+- (void)adjustDarkTheme
+{
     [self setNavigationBarDarkStyle];
     [self updateNaviBarAppearance:YES];
     self.view.backgroundColor = QPColorFromRGB(30, 30, 30);
     self.isDarkMode = YES;
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
     [self identifyMode];
 }
 
-- (UINavigationBar *)navigationBar {
+- (UINavigationBar *)navigationBar
+{
     if (self.navigationController) {
         return self.navigationController.navigationBar;
     }
     return nil;
 }
 
-- (void)setNavigationBarLightStyle {
+- (void)setNavigationBarLightStyle
+{
     [self.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[[UIImage alloc] init]];
     [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
 }
 
-- (void)setNavigationBarDarkStyle {
+- (void)setNavigationBarDarkStyle
+{
     [self.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBlackBg") forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[[UIImage alloc] init]];
     [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
     //[self.navigationBar setBarTintColor:QPColorFromRGB(20, 20, 20)];
 }
 
-- (void)setNavigationBarHidden:(BOOL)hidden {
+- (void)setNavigationBarHidden:(BOOL)hidden
+{
     if (self.navigationController) {
         self.navigationController.navigationBarHidden = hidden;
     }
 }
 
-- (UIButton *)backButtonWithTarget:(id)target selector:(SEL)selector {
+- (UIButton *)backButtonWithTarget:(id)target selector:(SEL)selector
+{
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, 40, 36);
-    
     [button setImage:QPImageNamed(@"back_normal_white") forState:UIControlStateNormal];
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 20);
-    
     return button;
 }
 
-- (WKWebViewConfiguration *)wkWebViewConfiguration {
+- (WKWebViewConfiguration *)wkWebViewConfiguration
+{
     WKWebViewConfiguration *conf = [[WKWebViewConfiguration alloc] init];
-    
     WKPreferences *preferences = [[WKPreferences alloc] init];
     preferences.minimumFontSize = 0;
     preferences.javaScriptEnabled = YES;
     preferences.javaScriptCanOpenWindowsAutomatically = NO;
     conf.preferences = preferences;
-    
     conf.processPool = [[WKProcessPool alloc] init];
     conf.userContentController = [[WKUserContentController alloc] init];
-    
     conf.allowsInlineMediaPlayback = YES;
-    
     if (@available(iOS 9.0, *)) {
-        
         if (@available(iOS 10.0, *)) {
             conf.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypeNone;
         } else {
             conf.requiresUserActionForMediaPlayback = NO;
         }
-        
         // The default value is YES.
         conf.allowsAirPlayForMediaPlayback = YES;
         conf.allowsPictureInPictureMediaPlayback = YES;
-        
     } else {
         // Fallback on earlier versions
         conf.mediaPlaybackAllowsAirPlay = YES;
         conf.mediaPlaybackRequiresUserAction = YES;
     }
-    
     return conf;
 }
 
-- (void)initWebViewWithFrame:(CGRect)frame {
+- (void)initWebViewWithFrame:(CGRect)frame
+{
     [self initWebViewWithFrame:frame configuration:self.wkWebViewConfiguration];
 }
 
-- (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration {
+- (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration
+{
     if (!_wkWebView) {
         _wkWebView = [[WKWebView alloc] initWithFrame:frame configuration:configuration];
     }
@@ -189,51 +198,62 @@
     return _wkWebView;
 }
 
-- (void)willAddProgressViewToWebView {
+- (void)willAddProgressViewToWebView
+{
     self.isAddedToNavBar = NO;
 }
 
-- (void)willAddProgressViewToNavigationBar {
+- (void)willAddProgressViewToNavigationBar
+{
     self.isAddedToNavBar = YES;
 }
 
-- (void)loadWebContents:(NSString *)urlString {
+- (void)loadWebContents:(NSString *)urlString
+{
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:request];
 }
 
-- (void)loadWebUrlRequest:(NSURLRequest *)urlRequest {
+- (void)loadWebUrlRequest:(NSURLRequest *)urlRequest
+{
     [self.webView loadRequest:urlRequest];
 }
 
-- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
+{
     // didStartProvisionalNavigation.
 }
 
-- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation {
+- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation
+{
     // didReceiveServerRedirectForProvisionalNavigation.
 }
 
-- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
+- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation
+{
     //[self adjustThemeForWebView:webView];
     [self buildProgressView];
 }
 
-- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
     //[self adjustThemeForWebView:webView];
     [self removeProgressView];
 }
 
-- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
     [self removeProgressView];
 }
 
-- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
     [self removeProgressView];
 }
 
-- (void)buildProgressView {
+- (void)buildProgressView
+{
     if (!_progressView) {
         self.progressView.lineWidth = 2.f;
         self.progressView.lineColor = QPColorFromRGB(248, 125, 36);
@@ -248,7 +268,8 @@
     }
 }
 
-- (void)removeProgressView {
+- (void)removeProgressView
+{
     if (_progressView) {
         [self.progressView endLoading];
         self.scheduleTask(self,
@@ -258,11 +279,13 @@
     }
 }
 
-- (void)releaseProgressView {
+- (void)releaseProgressView
+{
     _progressView = nil;
 }
 
-- (void)adjustThemeForWebView:(WKWebView *)webView {
+- (void)adjustThemeForWebView:(WKWebView *)webView
+{
     //[webView evaluateJavaScript:@"document.body.style.backgroundColor" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
     //if (!error) {
     //    QPLog(@"result: %@", result);
@@ -291,21 +314,24 @@
 }
 
 // Navigates to the back item in the back-forward list.
-- (void)onGoBack {
+- (void)onGoBack
+{
     if ([self.webView canGoBack]) {
         [self.webView goBack];
     }
 }
 
 // Navigates to the forward item in the back-forward list.
-- (void)onGoForward {
+- (void)onGoForward
+{
     if ([self.webView canGoForward]) {
         [self.webView goForward];
     }
 }
 
 // Reloads the current page.
-- (void)onReload {
+- (void)onReload
+{
     if (_progressView) {
         [self.progressView endLoading];
         _progressView = nil;
@@ -314,19 +340,22 @@
 }
 
 // Stops loading all resources on the current page.
-- (void)onStopLoading {
+- (void)onStopLoading
+{
     if ([self.webView isLoading]) {
         [self.webView stopLoading];
     }
 }
 
-- (void)releaseWebView {
+- (void)releaseWebView
+{
     if (_wkWebView) {
         _wkWebView = nil;
     }
 }
 
-- (DYFWebProgressView *)progressView {
+- (DYFWebProgressView *)progressView
+{
     if (!_progressView) {
         CGRect frame         = CGRectZero;
         frame.origin.x       = 0.f;
@@ -342,21 +371,23 @@
             _progressView    = [[DYFWebProgressView alloc] initWithFrame:frame];
         }
     }
-    
     return _progressView;
 }
 
-- (void)removeCellAllSubviews:(UITableViewCell *)cell {
+- (void)removeCellAllSubviews:(UITableViewCell *)cell
+{
     while (cell.contentView.subviews.lastObject != nil) {
         [(UIView *)cell.contentView.subviews.lastObject removeFromSuperview];
     }
 }
 
-- (UIImageView *)buildCustomToolBar {
+- (UIImageView *)buildCustomToolBar
+{
     return [self buildCustomToolBar:@selector(toolBarItemClicked:)];
 }
 
-- (UIImageView *)buildCustomToolBar:(SEL)selector {
+- (UIImageView *)buildCustomToolBar:(SEL)selector
+{
     NSArray *tempArray = @[@"web_reward_13x21",
                            @"web_forward_13x21",
                            @"web_refresh_24x21",
@@ -409,31 +440,27 @@
     return toolBar;
 }
 
-- (void)toolBarItemClicked:(UIButton *)sender {
+- (void)toolBarItemClicked:(UIButton *)sender
+{
     NSUInteger index = sender.tag - 100;
-    
     switch (index) {
         case 0: { [self onGoBack]; }
             break;
-            
         case 1: { [self onGoForward]; }
             break;
-            
         case 2: { [self onReload]; }
             break;
-            
         case 3: { [self onStopLoading]; }
             break;
-            
         case 4: { QPLog(); }
             break;
-            
         default:
             break;
     }
 }
 
-- (UIImage *)colorImage:(CGRect)rect cornerRadius:(CGFloat)cornerRadius backgroudColor:(UIColor *)backgroudColor borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor {
+- (UIImage *)colorImage:(CGRect)rect cornerRadius:(CGFloat)cornerRadius backgroudColor:(UIColor *)backgroudColor borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor
+{
     UIImage *newImage  = nil;
     CGRect mRect       = rect;
     CGSize mSize       = mRect.size;
@@ -441,42 +468,32 @@
     
     if (@available(iOS 10.0, *)) {
         UIGraphicsImageRenderer *render = [[UIGraphicsImageRenderer alloc] initWithSize:mSize];
-        
         newImage = [render imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
             UIGraphicsImageRendererContext *ctx = rendererContext;
-            
             CGContextSetFillColorWithColor  (ctx.CGContext, backgroudColor.CGColor);
             CGContextSetStrokeColorWithColor(ctx.CGContext, borderColor.CGColor);
             CGContextSetLineWidth           (ctx.CGContext, borderWidth);
-            
             [path addClip];
-            
             CGContextAddPath (ctx.CGContext, path.CGPath);
             CGContextDrawPath(ctx.CGContext, kCGPathFillStroke);
         }];
     } else {
         UIGraphicsBeginImageContext(mSize);
-        
         CGContextRef context = UIGraphicsGetCurrentContext();
-        
         CGContextSetFillColorWithColor  (context, backgroudColor.CGColor);
         CGContextSetStrokeColorWithColor(context, borderColor.CGColor);
         CGContextSetLineWidth           (context, borderWidth);
-        
         [path addClip];
-        
         CGContextAddPath (context, path.CGPath);
         CGContextDrawPath(context, kCGPathFillStroke);
-        
         newImage = UIGraphicsGetImageFromCurrentImageContext();
-        
         UIGraphicsEndImageContext();
     }
-    
     return newImage;
 }
 
-- (NSString *)formatVideoDuration:(int)duration {
+- (NSString *)formatVideoDuration:(int)duration
+{
     int seconds = duration;
     int hour    = 0;
     int minute  = 0;
@@ -487,18 +504,15 @@
         hour = delta;
         seconds -= delta * secondsPerHour;
     }
-    
     int secondsPerMinute = 60;
     if (seconds >= secondsPerMinute) {
         int delta = seconds / secondsPerMinute;
         minute = delta;
         seconds -= delta * secondsPerMinute;
     }
-    
     if (hour == 0 && minute == 0 && seconds == 0) {
         return [NSString stringWithFormat:@"--:--"];
     }
-    
     if (hour == 0) {
         return [NSString stringWithFormat:@"%02d:%02d", minute, seconds];
     }
@@ -506,63 +520,59 @@
     return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute, seconds];
 }
 
-- (NSString *)totalTimeForVideo:(NSURL *)aUrl {
+- (NSString *)totalTimeForVideo:(NSURL *)aUrl
+{
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:aUrl];
     CMTime time = playerItem.asset.duration;
-    
     //Float64 sec = CMTimeGetSeconds(time);
     int duration = (int)time.value / time.timescale;
-    
     return [self formatVideoDuration:duration];
 }
 
-- (UIImage *)thumbnailForVideo:(NSURL *)aUrl {
+- (UIImage *)thumbnailForVideo:(NSURL *)aUrl
+{
     AVAsset *asset = [AVAsset assetWithURL:aUrl];
     AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
     imageGenerator.appliesPreferredTrackTransform = YES;
-    
     CMTime time = CMTimeMakeWithSeconds(2, 1);
     CMTime actualTime;
     CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:&actualTime error:NULL];
-    
     if (imageRef) {
         UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
         CGImageRelease(imageRef);
         return thumbnail;
     }
-    
     return QPImageNamed(@"default_thumbnail");
 }
 
-- (NSString *)urlEncode:(NSString *)string {
+- (NSString *)urlEncode:(NSString *)string
+{
     NSCharacterSet *characterSet = [NSCharacterSet URLQueryAllowedCharacterSet];
     return [string stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
 }
 
-- (NSString *)urlDecode:(NSString *)string {
+- (NSString *)urlDecode:(NSString *)string
+{
     NSString *_string = [string stringByRemovingPercentEncoding];
-    
-    if (_string) {
-        return _string;
-    }
-    
+    if (_string) { return _string; }
     return [string copy];
 }
 
-- (void)delayToScheduleTask:(NSTimeInterval)seconds completion:(void (^)(void))completion {
+- (void)delayToScheduleTask:(NSTimeInterval)seconds completion:(void (^)(void))completion
+{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         !completion ?: completion();
     });
 }
 
-- (void (^)(id target, SEL selector, id object, NSTimeInterval delayInSeconds))scheduleTask {
+- (void (^)(id target, SEL selector, id object, NSTimeInterval delayInSeconds))scheduleTask
+{
     void (^taskBlock)(id target, SEL selector, id object, NSTimeInterval delayInSeconds) = ^(id target, SEL selector, id object, NSTimeInterval delayInSeconds) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         if (delayInSeconds > 0) {
             [target performSelector:selector withObject:object afterDelay:delayInSeconds];
-        }
-        else {
+        } else {
             [target performSelector:selector withObject:object];
         }
 #pragma clang diagnostic pop
@@ -570,7 +580,8 @@
     return taskBlock;
 }
 
-- (void (^)(id target, SEL selector, id object))cancelPerformingSelector {
+- (void (^)(id target, SEL selector, id object))cancelPerformingSelector
+{
     void (^cancelBlock)(id target, SEL selector, id object) = ^(id target,
                                                                 SEL selector,
                                                                 id object) {
@@ -581,19 +592,23 @@
     return cancelBlock;
 }
 
-- (BOOL)prefersStatusBarHidden {
+- (BOOL)prefersStatusBarHidden
+{
     return NO;
 }
 
-- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
     return UIStatusBarAnimationFade;
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
     return UIStatusBarStyleLightContent;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

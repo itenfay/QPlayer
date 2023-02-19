@@ -22,121 +22,145 @@
 @dynamic centerX;
 @dynamic centerY;
 
-- (CGFloat)top {
+- (CGFloat)top
+{
     return self.frame.origin.y;
 }
 
-- (void)setTop:(CGFloat)top {
+- (void)setTop:(CGFloat)top
+{
     CGRect frame = self.frame;
     frame.origin.y = top;
     self.frame = frame;
 }
 
-- (CGFloat)left {
+- (CGFloat)left
+{
     return self.frame.origin.x;
 }
 
-- (void)setLeft:(CGFloat)left {
+- (void)setLeft:(CGFloat)left
+{
     CGRect frame = self.frame;
     frame.origin.x = left;
     self.frame = frame;
 }
 
-- (CGFloat)bottom {
+- (CGFloat)bottom
+{
     return self.frame.size.height + self.frame.origin.y;
 }
 
-- (void)setBottom:(CGFloat)bottom {
+- (void)setBottom:(CGFloat)bottom
+{
     CGRect frame = self.frame;
     frame.origin.y = bottom - frame.size.height;
     self.frame = frame;
 }
 
-- (CGFloat)right {
+- (CGFloat)right
+{
     return self.frame.size.width + self.frame.origin.x;
 }
 
-- (void)setRight:(CGFloat)right {
+- (void)setRight:(CGFloat)right
+{
     CGRect frame = self.frame;
     frame.origin.x = right - frame.size.width;
     self.frame = frame;
 }
 
-- (CGFloat)x {
+- (CGFloat)x
+{
     return self.frame.origin.x;
 }
 
-- (void)setX:(CGFloat)value {
+- (void)setX:(CGFloat)value
+{
     CGRect frame = self.frame;
     frame.origin.x = value;
     self.frame = frame;
 }
 
-- (CGFloat)y {
+- (CGFloat)y
+{
     return self.frame.origin.y;
 }
 
-- (void)setY:(CGFloat)value {
+- (void)setY:(CGFloat)value
+{
     CGRect frame = self.frame;
     frame.origin.y = value;
     self.frame = frame;
 }
 
-- (CGFloat)width {
+- (CGFloat)width
+{
     return self.frame.size.width;
 }
 
-- (void)setWidth:(CGFloat)width {
+- (void)setWidth:(CGFloat)width
+{
     CGRect frame = self.frame;
     frame.size.width = width;
     self.frame = frame;
 }
 
-- (CGFloat)height {
+- (CGFloat)height
+{
     return self.frame.size.height;
 }
 
-- (void)setHeight:(CGFloat)height {
+- (void)setHeight:(CGFloat)height
+{
     CGRect frame = self.frame;
     frame.size.height = height;
     self.frame = frame;
 }
 
-- (CGPoint)origin {
+- (CGPoint)origin
+{
     return self.frame.origin;
 }
 
-- (void)setOrigin:(CGPoint)origin {
+- (void)setOrigin:(CGPoint)origin
+{
     CGRect frame = self.frame;
     frame.origin = origin;
     self.frame = frame;
 }
 
-- (CGSize)size {
+- (CGSize)size
+{
     return self.frame.size;
 }
 
-- (void)setSize:(CGSize)size {
+- (void)setSize:(CGSize)size
+{
     CGRect frame = self.frame;
     frame.size = size;
     self.frame = frame;
 }
 
-- (CGFloat)centerX {
+- (CGFloat)centerX
+{
     return self.center.x;
 }
 
-- (void)setCenterX:(CGFloat)centerX {
+- (void)setCenterX:(CGFloat)centerX
+{
     CGPoint center = self.center;
     center.x = centerX;
     self.center = center;
 }
 
-- (CGFloat)centerY {
+- (CGFloat)centerY
+{
     return self.center.y;
 }
 
-- (void)setCenterY:(CGFloat)centerY {
+- (void)setCenterY:(CGFloat)centerY
+{
     CGPoint center = self.center;
     center.y = centerY;
     self.center = center;
@@ -151,35 +175,25 @@
     
     if (@available(iOS 10.0, *)) {
         UIGraphicsImageRenderer *render = [[UIGraphicsImageRenderer alloc] initWithSize:mSize];
-        
         newImage = [render imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
             UIGraphicsImageRendererContext *ctx = rendererContext;
-            
             CGContextSetFillColorWithColor  (ctx.CGContext, backgroudColor.CGColor);
             CGContextSetStrokeColorWithColor(ctx.CGContext, borderColor.CGColor);
             CGContextSetLineWidth           (ctx.CGContext, borderWidth);
-            
             [path addClip];
-            
             CGContextAddPath (ctx.CGContext, path.CGPath);
             CGContextDrawPath(ctx.CGContext, kCGPathFillStroke);
         }];
     } else {
         UIGraphicsBeginImageContext(mSize);
-        
         CGContextRef context = UIGraphicsGetCurrentContext();
-        
         CGContextSetFillColorWithColor  (context, backgroudColor.CGColor);
         CGContextSetStrokeColorWithColor(context, borderColor.CGColor);
         CGContextSetLineWidth           (context, borderWidth);
-        
         [path addClip];
-        
         CGContextAddPath (context, path.CGPath);
         CGContextDrawPath(context, kCGPathFillStroke);
-        
         newImage = UIGraphicsGetImageFromCurrentImageContext();
-        
         UIGraphicsEndImageContext();
     }
     
@@ -200,8 +214,7 @@
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         if (delayInSeconds > 0) {
             [target performSelector:selector withObject:object afterDelay:delayInSeconds];
-        }
-        else {
+        } else {
             [target performSelector:selector withObject:object];
         }
 #pragma clang diagnostic pop

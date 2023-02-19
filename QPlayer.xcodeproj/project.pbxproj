@@ -309,14 +309,14 @@
 		141B165925C93B43008C465C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				141B165A25C93B43008C465C /* HudUtils */,
 				141B165D25C93B43008C465C /* FileHelper */,
-				141B166025C93B43008C465C /* WifiManager */,
-				141B166325C93B43008C465C /* Network */,
-				141B166625C93B43008C465C /* OCGumbo */,
-				141B168B25C93B44008C465C /* NetworkSniffer */,
 				141B168E25C93B44008C465C /* HistoryManager */,
+				141B165A25C93B43008C465C /* HudUtils */,
+				141B166325C93B43008C465C /* Network */,
+				141B168B25C93B44008C465C /* NetworkSniffer */,
+				141B166625C93B43008C465C /* OCGumbo */,
 				141B169125C93B44008C465C /* ProgressView */,
+				141B166025C93B43008C465C /* WifiManager */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -361,10 +361,10 @@
 			isa = PBXGroup;
 			children = (
 				141B166725C93B43008C465C /* gumbo */,
-				141B168725C93B44008C465C /* OCGumbo+Query.h */,
 				141B168825C93B44008C465C /* OCGumbo.h */,
-				141B168925C93B44008C465C /* OCGumbo+Query.m */,
 				141B168A25C93B44008C465C /* OCGumbo.m */,
+				141B168725C93B44008C465C /* OCGumbo+Query.h */,
+				141B168925C93B44008C465C /* OCGumbo+Query.m */,
 			);
 			path = OCGumbo;
 			sourceTree = "<group>";
@@ -372,37 +372,37 @@
 		141B166725C93B43008C465C /* gumbo */ = {
 			isa = PBXGroup;
 			children = (
-				141B166825C93B43008C465C /* string_buffer.c */,
-				141B166925C93B43008C465C /* error.h */,
-				141B166A25C93B43008C465C /* tag_enum.h */,
-				141B166B25C93B43008C465C /* util.c */,
-				141B166C25C93B43008C465C /* char_ref.rl */,
-				141B166D25C93B43008C465C /* insertion_mode.h */,
-				141B166E25C93B43008C465C /* parser.h */,
-				141B166F25C93B43008C465C /* vector.c */,
 				141B167025C93B43008C465C /* attribute.c */,
-				141B167125C93B43008C465C /* char_ref.c */,
-				141B167225C93B43008C465C /* tokenizer.h */,
-				141B167325C93B43008C465C /* utf8.c */,
-				141B167425C93B43008C465C /* string_piece.h */,
-				141B167525C93B43008C465C /* tokenizer_states.h */,
-				141B167625C93B43008C465C /* token_type.h */,
-				141B167725C93B43008C465C /* tag_gperf.h */,
-				141B167825C93B44008C465C /* string_buffer.h */,
-				141B167925C93B44008C465C /* error.c */,
-				141B167A25C93B44008C465C /* tag.in */,
-				141B167B25C93B44008C465C /* util.h */,
-				141B167C25C93B44008C465C /* tag.c */,
-				141B167D25C93B44008C465C /* char_ref.h */,
-				141B167E25C93B44008C465C /* vector.h */,
 				141B167F25C93B44008C465C /* attribute.h */,
+				141B167125C93B43008C465C /* char_ref.c */,
+				141B167D25C93B44008C465C /* char_ref.h */,
+				141B166C25C93B43008C465C /* char_ref.rl */,
+				141B167925C93B44008C465C /* error.c */,
+				141B166925C93B43008C465C /* error.h */,
+				141B168625C93B44008C465C /* gumbo.h */,
+				141B166D25C93B43008C465C /* insertion_mode.h */,
 				141B168025C93B44008C465C /* parser.c */,
+				141B166E25C93B43008C465C /* parser.h */,
+				141B166825C93B43008C465C /* string_buffer.c */,
+				141B167825C93B44008C465C /* string_buffer.h */,
+				141B168525C93B44008C465C /* string_piece.c */,
+				141B167425C93B43008C465C /* string_piece.h */,
+				141B166A25C93B43008C465C /* tag_enum.h */,
+				141B167725C93B43008C465C /* tag_gperf.h */,
 				141B168125C93B44008C465C /* tag_sizes.h */,
 				141B168225C93B44008C465C /* tag_strings.h */,
-				141B168325C93B44008C465C /* utf8.h */,
+				141B167C25C93B44008C465C /* tag.c */,
+				141B167A25C93B44008C465C /* tag.in */,
+				141B167625C93B43008C465C /* token_type.h */,
+				141B167525C93B43008C465C /* tokenizer_states.h */,
 				141B168425C93B44008C465C /* tokenizer.c */,
-				141B168525C93B44008C465C /* string_piece.c */,
-				141B168625C93B44008C465C /* gumbo.h */,
+				141B167225C93B43008C465C /* tokenizer.h */,
+				141B167325C93B43008C465C /* utf8.c */,
+				141B168325C93B44008C465C /* utf8.h */,
+				141B166B25C93B43008C465C /* util.c */,
+				141B167B25C93B44008C465C /* util.h */,
+				141B166F25C93B43008C465C /* vector.c */,
+				141B167E25C93B44008C465C /* vector.h */,
 			);
 			path = gumbo;
 			sourceTree = "<group>";
@@ -419,8 +419,8 @@
 		141B168E25C93B44008C465C /* HistoryManager */ = {
 			isa = PBXGroup;
 			children = (
-				141B168F25C93B44008C465C /* QPHistoryArchive.m */,
 				141B169025C93B44008C465C /* QPHistoryArchive.h */,
+				141B168F25C93B44008C465C /* QPHistoryArchive.m */,
 			);
 			path = HistoryManager;
 			sourceTree = "<group>";
@@ -429,8 +429,8 @@
 			isa = PBXGroup;
 			children = (
 				141B169225C93B44008C465C /* DYFProgressView.h */,
-				141B169325C93B44008C465C /* DYFWebProgressView.h */,
 				141B169425C93B44008C465C /* DYFProgressView.m */,
+				141B169325C93B44008C465C /* DYFWebProgressView.h */,
 				141B169525C93B44008C465C /* DYFWebProgressView.m */,
 			);
 			path = ProgressView;
@@ -475,9 +475,9 @@
 		141B16B425C93B44008C465C /* AboutMe */ = {
 			isa = PBXGroup;
 			children = (
-				141B16B525C93B44008C465C /* Presenter */,
 				141B16B625C93B44008C465C /* Controller */,
 				141B16BA25C93B44008C465C /* Model */,
+				141B16B525C93B44008C465C /* Presenter */,
 				141B16BB25C93B44008C465C /* View */,
 			);
 			path = AboutMe;
@@ -494,8 +494,8 @@
 			isa = PBXGroup;
 			children = (
 				141B16B725C93B44008C465C /* QPAboutMeViewController.h */,
-				141B16B825C93B44008C465C /* QPAboutMeViewController.xib */,
 				141B16B925C93B44008C465C /* QPAboutMeViewController.m */,
+				141B16B825C93B44008C465C /* QPAboutMeViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -510,12 +510,12 @@
 		141B16BB25C93B44008C465C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				141B16BC25C93B44008C465C /* QPAboutMeTableHeader.h */,
 				141B16BD25C93B44008C465C /* QPAboutMeTableFooter.h */,
-				141B16BE25C93B44008C465C /* QPAboutMeTableHeader.xib */,
-				141B16BF25C93B44008C465C /* QPAboutMeTableFooter.xib */,
 				141B16C025C93B45008C465C /* QPAboutMeTableFooter.m */,
+				141B16BF25C93B44008C465C /* QPAboutMeTableFooter.xib */,
+				141B16BC25C93B44008C465C /* QPAboutMeTableHeader.h */,
 				141B16C125C93B45008C465C /* QPAboutMeTableHeader.m */,
+				141B16BE25C93B44008C465C /* QPAboutMeTableHeader.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -523,9 +523,9 @@
 		141B16C225C93B45008C465C /* Play */ = {
 			isa = PBXGroup;
 			children = (
-				141B16C325C93B45008C465C /* Presenter */,
 				141B16C425C93B45008C465C /* Controller */,
 				141B16C725C93B45008C465C /* Model */,
+				141B16C325C93B45008C465C /* Presenter */,
 				141B16C825C93B45008C465C /* View */,
 			);
 			path = Play;
@@ -564,9 +564,9 @@
 		141B16C925C93B45008C465C /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				141B16CA25C93B45008C465C /* Presenter */,
 				141B16CB25C93B45008C465C /* Controller */,
 				141B16CE25C93B45008C465C /* Model */,
+				141B16CA25C93B45008C465C /* Presenter */,
 				141B16CF25C93B45008C465C /* View */,
 			);
 			path = Search;
@@ -614,9 +614,9 @@
 		141B16D325C93B45008C465C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				141B16D425C93B45008C465C /* Presenter */,
 				141B16D525C93B45008C465C /* Controller */,
 				141B16D825C93B45008C465C /* Model */,
+				141B16D425C93B45008C465C /* Presenter */,
 				141B16D925C93B45008C465C /* View */,
 			);
 			path = Settings;
@@ -655,9 +655,9 @@
 		141B16DA25C93B45008C465C /* Live */ = {
 			isa = PBXGroup;
 			children = (
-				141B16DB25C93B45008C465C /* Presenter */,
 				141B16DC25C93B45008C465C /* Controller */,
 				141B16DF25C93B45008C465C /* Model */,
+				141B16DB25C93B45008C465C /* Presenter */,
 				141B16E025C93B45008C465C /* View */,
 			);
 			path = Live;
@@ -696,10 +696,10 @@
 		141B16E125C93B45008C465C /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				141B16E225C93B45008C465C /* Delegate */,
 				141B16E325C93B45008C465C /* Adapter */,
 				141B16E825C93B45008C465C /* Const */,
 				141B16EB25C93B45008C465C /* Definition */,
+				141B16E225C93B45008C465C /* Delegate */,
 				141B16EE25C93B45008C465C /* View */,
 			);
 			path = Common;
@@ -754,9 +754,9 @@
 		141B16F125C93B46008C465C /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				141B16F225C93B46008C465C /* Presenter */,
 				141B16F325C93B46008C465C /* Controller */,
 				141B16F625C93B46008C465C /* Model */,
+				141B16F225C93B46008C465C /* Presenter */,
 				141B16F925C93B46008C465C /* View */,
 			);
 			path = Home;
@@ -915,8 +915,8 @@
 		96532C451F5E814E00E66A2F /* CocoaWebResource */ = {
 			isa = PBXGroup;
 			children = (
-				96532C711F5E816000E66A2F /* docroot */,
 				96532C461F5E814E00E66A2F /* CocoaWebResource */,
+				96532C711F5E816000E66A2F /* docroot */,
 				96532C5F1F5E814E00E66A2F /* RegexKitLite */,
 			);
 			path = CocoaWebResource;
@@ -982,13 +982,13 @@
 			children = (
 				965E09E41F04A85F009BBBD9 /* AppDelegate.h */,
 				965E09E51F04A85F009BBBD9 /* AppDelegate.m */,
+				965E09ED1F04A85F009BBBD9 /* Assets.xcassets */,
+				965E09F21F04A85F009BBBD9 /* Info.plist */,
+				965E09EF1F04A85F009BBBD9 /* LaunchScreen.storyboard */,
+				965E09EA1F04A85F009BBBD9 /* Main.storyboard */,
+				965E09E11F04A85F009BBBD9 /* Supporting Files */,
 				965E09E71F04A85F009BBBD9 /* ViewController.h */,
 				965E09E81F04A85F009BBBD9 /* ViewController.m */,
-				965E09EA1F04A85F009BBBD9 /* Main.storyboard */,
-				965E09ED1F04A85F009BBBD9 /* Assets.xcassets */,
-				965E09EF1F04A85F009BBBD9 /* LaunchScreen.storyboard */,
-				965E09F21F04A85F009BBBD9 /* Info.plist */,
-				965E09E11F04A85F009BBBD9 /* Supporting Files */,
 			);
 			path = QPlayer;
 			sourceTree = "<group>";
@@ -996,8 +996,8 @@
 		965E09E11F04A85F009BBBD9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				965E09E21F04A85F009BBBD9 /* main.mm */,
 				965E0A141F04A896009BBBD9 /* AppPrefix.pch */,
+				965E09E21F04A85F009BBBD9 /* main.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1005,25 +1005,25 @@
 		F64D47BF8EF197EFA3197BA4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				14E023D72471BBEA00435DC8 /* SystemConfiguration.framework */,
-				14A80582233CB87400CEFF14 /* SafariServices.framework */,
-				14AD0631233724F600C4AD4A /* VideoToolbox.framework */,
-				14AD062F233724E400C4AD4A /* UIKit.framework */,
-				14AD062D233724DC00C4AD4A /* QuartzCore.framework */,
-				14AD062B233724D000C4AD4A /* OpenGLES.framework */,
-				14AD0629233724C400C4AD4A /* MobileCoreServices.framework */,
-				14AD0627233724B500C4AD4A /* MediaPlayer.framework */,
-				14AD0625233724A000C4AD4A /* libbz2.tbd */,
-				14AD06232337249500C4AD4A /* CoreVideo.framework */,
-				14AD06212337248800C4AD4A /* CoreMedia.framework */,
-				14AD061F2337247F00C4AD4A /* CoreGraphics.framework */,
-				14AD061D2337246D00C4AD4A /* AVFoundation.framework */,
 				14AD061B2337241F00C4AD4A /* AudioToolbox.framework */,
-				14F52215232BF1D400C866D1 /* libxml2.tbd */,
+				14AD061D2337246D00C4AD4A /* AVFoundation.framework */,
+				14AD061F2337247F00C4AD4A /* CoreGraphics.framework */,
+				14AD06212337248800C4AD4A /* CoreMedia.framework */,
+				14AD06232337249500C4AD4A /* CoreVideo.framework */,
+				14AD0625233724A000C4AD4A /* libbz2.tbd */,
 				14F521BF232A274300C866D1 /* libc++.1.tbd */,
 				14F521BD232A270800C866D1 /* libc++.tbd */,
-				1496B4AD20D5BA57004CE10C /* libz.tbd */,
 				60680FC631705B531937CD6E /* libPods-QPlayer.a */,
+				14F52215232BF1D400C866D1 /* libxml2.tbd */,
+				1496B4AD20D5BA57004CE10C /* libz.tbd */,
+				14AD0627233724B500C4AD4A /* MediaPlayer.framework */,
+				14AD0629233724C400C4AD4A /* MobileCoreServices.framework */,
+				14AD062B233724D000C4AD4A /* OpenGLES.framework */,
+				14AD062D233724DC00C4AD4A /* QuartzCore.framework */,
+				14A80582233CB87400CEFF14 /* SafariServices.framework */,
+				14E023D72471BBEA00435DC8 /* SystemConfiguration.framework */,
+				14AD062F233724E400C4AD4A /* UIKit.framework */,
+				14AD0631233724F600C4AD4A /* VideoToolbox.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1207,16 +1207,13 @@
 				141B172B25C93B46008C465C /* QPAppConst.m in Sources */,
 				141B171225C93B46008C465C /* DYFProgressView.m in Sources */,
 				141B172C25C93B46008C465C /* QPTitleView.m in Sources */,
-				965E09E61F04A85F009BBBD9 /* AppDelegate.mm in Sources */,
+				965E09E61F04A85F009BBBD9 /* AppDelegate.m in Sources */,
 				141B172825C93B46008C465C /* LiveViewController.m in Sources */,
 				1430B8B1234C3FBC00189025 /* KSYMediaPlayerManager.m in Sources */,
 				141B170025C93B46008C465C /* DYFHttpClient.m in Sources */,
 				141B172225C93B46008C465C /* QPAboutMeTableFooter.m in Sources */,
 				96532C621F5E814E00E66A2F /* AsyncSocket.m in Sources */,
-				144B220F2338A5EC00994F35 /* QPlayerController.m in Sources */,
 				965E09E31F04A85F009BBBD9 /* main.mm in Sources */,
-				1467B2AA233A448000526926 /* AboutMeTableFooter.m in Sources */,
-				1420384E233E68FE00DDA120 /* DYFDropListModel.m in Sources */,
 				96532C641F5E814E00E66A2F /* DDNumber.m in Sources */,
 				1438F69325CC5282000CC65D /* QPBaseViewController.m in Sources */,
 				141B173C25C93CC7008C465C /* UIViewController+QPAdditions.m in Sources */,

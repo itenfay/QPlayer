@@ -91,8 +91,8 @@
 		96532C6A1F5E814E00E66A2F /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C581F5E814E00E66A2F /* HTTPServer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		96532C701F5E814E00E66A2F /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C611F5E814E00E66A2F /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		96532C721F5E816000E66A2F /* docroot in Resources */ = {isa = PBXBuildFile; fileRef = 96532C711F5E816000E66A2F /* docroot */; };
-		965E09E31F04A85F009BBBD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 965E09E21F04A85F009BBBD9 /* main.m */; };
-		965E09E61F04A85F009BBBD9 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 965E09E51F04A85F009BBBD9 /* AppDelegate.mm */; };
+		965E09E31F04A85F009BBBD9 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 965E09E21F04A85F009BBBD9 /* main.mm */; };
+		965E09E61F04A85F009BBBD9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 965E09E51F04A85F009BBBD9 /* AppDelegate.m */; };
 		965E09E91F04A85F009BBBD9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965E09E81F04A85F009BBBD9 /* ViewController.m */; };
 		965E09EC1F04A85F009BBBD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 965E09EA1F04A85F009BBBD9 /* Main.storyboard */; };
 		965E09EE1F04A85F009BBBD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 965E09ED1F04A85F009BBBD9 /* Assets.xcassets */; };
@@ -254,9 +254,9 @@
 		96532C611F5E814E00E66A2F /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		96532C711F5E816000E66A2F /* docroot */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docroot; sourceTree = "<group>"; };
 		965E09DE1F04A85F009BBBD9 /* QPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		965E09E21F04A85F009BBBD9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		965E09E21F04A85F009BBBD9 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		965E09E41F04A85F009BBBD9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		965E09E51F04A85F009BBBD9 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		965E09E51F04A85F009BBBD9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		965E09E71F04A85F009BBBD9 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		965E09E81F04A85F009BBBD9 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		965E09EB1F04A85F009BBBD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -838,7 +838,7 @@
 			isa = PBXGroup;
 			children = (
 				965E09E41F04A85F009BBBD9 /* AppDelegate.h */,
-				965E09E51F04A85F009BBBD9 /* AppDelegate.mm */,
+				965E09E51F04A85F009BBBD9 /* AppDelegate.m */,
 				965E09E71F04A85F009BBBD9 /* ViewController.h */,
 				965E09E81F04A85F009BBBD9 /* ViewController.m */,
 				965E09EA1F04A85F009BBBD9 /* Main.storyboard */,
@@ -853,7 +853,7 @@
 		965E09E11F04A85F009BBBD9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				965E09E21F04A85F009BBBD9 /* main.m */,
+				965E09E21F04A85F009BBBD9 /* main.mm */,
 				965E0A141F04A896009BBBD9 /* AppPrefix.pch */,
 			);
 			name = "Supporting Files";
@@ -1058,12 +1058,12 @@
 				14AEFFD6233B981800DD6560 /* UILabel+DYFAdd.m in Sources */,
 				96532C701F5E814E00E66A2F /* RegexKitLite.m in Sources */,
 				1467B29C233A1AD300526926 /* AboutMeViewController.m in Sources */,
-				965E09E61F04A85F009BBBD9 /* AppDelegate.mm in Sources */,
+				965E09E61F04A85F009BBBD9 /* AppDelegate.m in Sources */,
 				14F522AC232C00F300C866D1 /* utf8.c in Sources */,
 				1430B8B1234C3FBC00189025 /* KSYMediaPlayerManager.m in Sources */,
 				96532C621F5E814E00E66A2F /* AsyncSocket.m in Sources */,
 				144B220F2338A5EC00994F35 /* QPlayerController.m in Sources */,
-				965E09E31F04A85F009BBBD9 /* main.m in Sources */,
+				965E09E31F04A85F009BBBD9 /* main.mm in Sources */,
 				1467B2AA233A448000526926 /* AboutMeTableFooter.m in Sources */,
 				1420384E233E68FE00DDA120 /* DYFDropListModel.m in Sources */,
 				96532C641F5E814E00E66A2F /* DDNumber.m in Sources */,

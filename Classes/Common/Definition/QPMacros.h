@@ -1,8 +1,8 @@
 //
 //  QPMacros.h
 //
-//  Created by dyf on 2017/6/27. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 2017/6/27. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 
 #ifndef QPMacros_h

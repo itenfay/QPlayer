@@ -1,8 +1,8 @@
 //
 //  QPFileHelper.h
 //
-//  Created by dyf on 2017/8/28. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 2017/8/28. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

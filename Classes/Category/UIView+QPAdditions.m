@@ -1,8 +1,8 @@
 //
 //  UIView+QPAdditions.m
 //
-//  Created by dyf on 2016/8/9. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2016 dyf. All rights reserved.
+//  Created by chenxing on 2016/8/9. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2016 chenxing. All rights reserved.
 //
 
 #import "UIView+QPAdditions.h"
@@ -166,72 +166,19 @@
     self.center = center;
 }
 
-- (UIImage *)colorImage:(CGRect)rect cornerRadius:(CGFloat)cornerRadius backgroudColor:(UIColor *)backgroudColor borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor
+- (void)removeAllSubviews
 {
-    UIImage *newImage  = nil;
-    CGRect mRect       = rect;
-    CGSize mSize       = mRect.size;
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:mRect cornerRadius:cornerRadius];
-    
-    if (@available(iOS 10.0, *)) {
-        UIGraphicsImageRenderer *render = [[UIGraphicsImageRenderer alloc] initWithSize:mSize];
-        newImage = [render imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
-            UIGraphicsImageRendererContext *ctx = rendererContext;
-            CGContextSetFillColorWithColor  (ctx.CGContext, backgroudColor.CGColor);
-            CGContextSetStrokeColorWithColor(ctx.CGContext, borderColor.CGColor);
-            CGContextSetLineWidth           (ctx.CGContext, borderWidth);
-            [path addClip];
-            CGContextAddPath (ctx.CGContext, path.CGPath);
-            CGContextDrawPath(ctx.CGContext, kCGPathFillStroke);
-        }];
-    } else {
-        UIGraphicsBeginImageContext(mSize);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor  (context, backgroudColor.CGColor);
-        CGContextSetStrokeColorWithColor(context, borderColor.CGColor);
-        CGContextSetLineWidth           (context, borderWidth);
-        [path addClip];
-        CGContextAddPath (context, path.CGPath);
-        CGContextDrawPath(context, kCGPathFillStroke);
-        newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-    }
-    
-    return newImage;
-}
-
-- (void)delayToScheduleTask:(NSTimeInterval)seconds completion:(void (^)(void))completion
-{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        !completion ?: completion();
-    });
-}
-
-- (void (^)(id target, SEL selector, id object, NSTimeInterval delayInSeconds))scheduleTask
-{
-    void (^taskBlock)(id target, SEL selector, id object, NSTimeInterval delayInSeconds) = ^(id target, SEL selector, id object, NSTimeInterval delayInSeconds) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        if (delayInSeconds > 0) {
-            [target performSelector:selector withObject:object afterDelay:delayInSeconds];
-        } else {
-            [target performSelector:selector withObject:object];
+    UIView *view = self;
+    if ([view isKindOfClass:UITableViewCell.class]) {
+        UITableViewCell *cell = (UITableViewCell *)view;
+        while (cell.contentView.subviews.lastObject != nil) {
+            [(UIView *)cell.contentView.subviews.lastObject removeFromSuperview];
         }
-#pragma clang diagnostic pop
-    };
-    return taskBlock;
-}
-
-- (void (^)(id target, SEL selector, id object))cancelPerformingSelector
-{
-    void (^cancelBlock)(id target, SEL selector, id object) = ^(id target,
-                                                                SEL selector,
-                                                                id object) {
-        [NSObject cancelPreviousPerformRequestsWithTarget:target
-                                                 selector:selector
-                                                   object:object];
-    };
-    return cancelBlock;
+    } else {
+        for (UIView *subview in view.subviews) {
+            [subview removeFromSuperview];
+        }
+    }
 }
 
 @end

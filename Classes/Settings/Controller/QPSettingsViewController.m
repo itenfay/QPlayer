@@ -1,8 +1,8 @@
 //
 //  SettingsViewController.m
 //
-//  Created by dyf on 2017/6/28. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 2017/6/28. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 
 #import "SettingsViewController.h"
@@ -43,7 +43,7 @@
     [self addTableView];
     
     [self monitorNetworkChangesWithSelector:@selector(networkStatusDidChange:)];
-    [self addManualThemeStyleObserver];
+    [self addThemeStyleChangedObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -102,7 +102,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     BOOL status = WifiManager.shared.serverStatus;
-    if (!status || ![DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
+    if (!status || ![chenxingNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
         return 4;
     }
     return 5;
@@ -233,7 +233,7 @@
         cell.textLabel.text = @"当前网络连接状态";
         cell.textLabel.textColor = self.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
         
-        cell.detailTextLabel.text = DYFNetworkSniffer.sharedSniffer.statusFlags;
+        cell.detailTextLabel.text = chenxingNetworkSniffer.sharedSniffer.statusFlags;
         cell.detailTextLabel.font = [UIFont systemFontOfSize:16.f];
         cell.detailTextLabel.textColor = self.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
         
@@ -262,7 +262,7 @@
         sw.tag       = 8;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         
-        if ([DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
+        if ([chenxingNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
             sw.on = [WifiManager shared].serverStatus;
         } else {
             sw.on = NO;
@@ -321,7 +321,7 @@
         
     } else {
         
-        if (![DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
+        if (![chenxingNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
             sender.on = !sender.isOn;
             [QPHudObject showWarnMessage:@"当前网络不是WiFi"];
             return;
@@ -372,8 +372,8 @@
     [self.tableView reloadData];
 }
 
-- (void)adjustThemeStyle {
-    [super adjustThemeStyle];
+- (void)adaptThemeStyle {
+    [super adaptThemeStyle];
     [self.tableView reloadData];
 }
 
@@ -384,7 +384,7 @@
 
 - (void)dealloc {
     [self stopMonitoringNetworkChanges];
-    [self removeManualThemeStyleObserver];
+    [self removeThemeStyleChangedObserver];
 }
 
 - (void)didReceiveMemoryWarning {

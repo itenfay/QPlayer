@@ -1,8 +1,8 @@
 //
 //  DYFProgressView.m
 //
-//  Created by dyf on 17/5/27.
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 17/5/27.
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,18 +34,21 @@
 
 @implementation DYFProgressView
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
     CGSize w_size = self.window.bounds.size;
     CGRect frame  = CGRectMake(0, 0, w_size.width, w_size.height);
     [self configViewWithFrame:frame color:[UIColor orangeColor]];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame
+{
     return [self initWithFrame:frame color:[UIColor orangeColor]];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color {
+- (instancetype)initWithFrame:(CGRect)frame color:(UIColor *)color
+{
     self = [super initWithFrame:frame];
     if (self) {
         if (color) {
@@ -57,7 +60,8 @@
     return self;
 }
 
-- (void)configViewWithFrame:(CGRect)frame color:(UIColor *)color {
+- (void)configViewWithFrame:(CGRect)frame color:(UIColor *)color
+{
     self.userInteractionEnabled = NO;
     self.autoresizingMask       = UIViewAutoresizingFlexibleWidth;
     
@@ -74,35 +78,43 @@
     self.progress = 0;
 }
 
-- (double)progress {
+- (double)progress
+{
     return CGRectGetWidth(_progressView.frame)/CGRectGetWidth(self.bounds);
 }
 
-- (void)setProgress:(double)progress {
+- (void)setProgress:(double)progress
+{
     [self setProgress:progress animated:NO];
 }
 
-- (UIColor *)progressColor {
+- (UIColor *)progressColor
+{
     return _progressView.backgroundColor;
 }
 
-- (void)setProgressColor:(UIColor *)progressColor {
+- (void)setProgressColor:(UIColor *)progressColor
+{
     _progressView.backgroundColor = progressColor;
 }
 
-- (void)setTrackColor:(UIColor *)trackColor {
+- (void)setTrackColor:(UIColor *)trackColor
+{
     self.backgroundColor = trackColor;
 }
 
-- (UIColor *)trackColor {
+- (UIColor *)trackColor
+{
     return self.backgroundColor;
 }
 
-- (void)clearBackgroundColor {
+- (void)clearBackgroundColor
+{
     self.backgroundColor = [UIColor clearColor];
 }
 
-- (void)setProgress:(double)progress animated:(BOOL)animated {
+- (void)setProgress:(double)progress animated:(BOOL)animated
+{
     BOOL change = progress > 0.0;
     [UIView animateWithDuration:(change && animated) ? _animationDuration : 0.0 animations:^{
         CGRect frame            = self.progressView.frame;
@@ -129,10 +141,11 @@
     }
 }
 
-- (void)dealloc {
-#if DEBUG
+- (void)dealloc
+{
+    #if DEBUG
     NSLog(@"%s", __func__);
-#endif
+    #endif
     [_progressView removeFromSuperview];
     [self removeFromSuperview];
 }

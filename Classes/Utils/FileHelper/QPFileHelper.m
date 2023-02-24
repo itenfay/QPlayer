@@ -1,21 +1,19 @@
 //
 //  QPFileHelper.m
 //
-//  Created by dyf on 2017/8/28. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 2017/8/28. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 
 #import "QPFileHelper.h"
 
-static inline NSString *QPFCacheDirpath() {
-    
+static inline NSString *QPFCacheDirpath()
+{
     NSString *cachePath = QPAppendingPathComponent(QPCachesDirectoryPath, @"QPlayerCacheFiles");
     QPLog(@"cachePath: %@", cachePath);
     
     if (![QPFileMgr fileExistsAtPath:cachePath]) {
-        
         NSError *error = nil;
-        
         [QPFileMgr createDirectoryAtPath:cachePath withIntermediateDirectories:YES attributes:nil error:&error];
         if (error) {
             QPLog(@"[createDirectoryAtPath: ...] error: %@", error);
@@ -28,19 +26,18 @@ static inline NSString *QPFCacheDirpath() {
 
 @implementation QPFileHelper
 
-+ (NSString *)cachePath {
++ (NSString *)cachePath
+{
     return QPFCacheDirpath();
 }
 
-+ (NSArray *)localVideoFiles {
-    
++ (NSArray *)localVideoFiles
+{
     NSString *path = QPFCacheDirpath();
     NSArray *contents = [QPFileMgr contentsOfDirectoryAtPath:path error:nil];
-    
     NSMutableArray *filesArray = [NSMutableArray arrayWithCapacity:0];
     
     for (NSString *item in contents) {
-        
         QPFileModel *fm = [[QPFileModel alloc] init];
         fm.path = QPAppendingPathComponent(path, item);
         
@@ -67,19 +64,21 @@ static inline NSString *QPFCacheDirpath() {
     return [filesArray copy];
 }
 
-+ (NSArray *)localFiles {
++ (NSArray *)localFiles
+{
     NSString *path    = QPFCacheDirpath();
     NSArray *contents = [QPFileMgr contentsOfDirectoryAtPath:path error:nil];
     return contents;
 }
 
-+ (BOOL)removeLocalFile:(NSString *)filename {
++ (BOOL)removeLocalFile:(NSString *)filename
+{
     NSString *path     = QPFCacheDirpath();
     NSString *filePath = QPAppendingPathComponent(path, filename);
     
     BOOL ret = [QPFileMgr removeItemAtPath:filePath error:nil];
-    BOOL r = [QPFileMgr fileExistsAtPath:filePath];
-    QPLog(@"%@ exists: %@", filename, r ? @"YES" : @"NO");
+    BOOL exists = [QPFileMgr fileExistsAtPath:filePath];
+    QPLog(@"%@ exists: %@", filename, exists ? @"YES" : @"NO");
     return ret;
 }
 

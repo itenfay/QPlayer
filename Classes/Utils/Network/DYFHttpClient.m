@@ -1,8 +1,8 @@
 //
 //  DYFHttpClient.m
 //
-//  Created by dyf on 16/6/30. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2016 dyf. All rights reserved.
+//  Created by chenxing on 16/6/30. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2016 chenxing. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,8 @@ NSString *const DYFHttpMethodDELETE = @"DELETE";
 static NSString *const DYFCharactersGeneralDelimitersToEncode = @":#[]@";
 static NSString *const DYFCharactersSubDelimitersToEncode = @"!$&'()*+,;=";
 
-NSString *DYFPercentEscapedStringFromString(NSString *str) {
+NSString *DYFPercentEscapedStringFromString(NSString *str)
+{
     //does not include "?" or "/" due to RFC 3986 - Section 3.4
     NSMutableCharacterSet *allowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
     [allowedCharacterSet removeCharactersInString:[DYFCharactersGeneralDelimitersToEncode stringByAppendingString:DYFCharactersSubDelimitersToEncode]];
@@ -61,11 +62,13 @@ NSString *DYFPercentEscapedStringFromString(NSString *str) {
     return escaped;
 }
 
-NSString *DYFUrlEncode(NSString *str) {
+NSString *DYFUrlEncode(NSString *str)
+{
     return DYFPercentEscapedStringFromString(str);
 }
 
-NSString *DYFUrlDecode(NSString *str) {
+NSString *DYFUrlDecode(NSString *str)
+{
     NSString *m_str = [str stringByRemovingPercentEncoding];
     if (m_str) {
         return m_str;
@@ -76,11 +79,13 @@ NSString *DYFUrlDecode(NSString *str) {
 
 @implementation DYFHttpClient
 
-+ (instancetype)httpClient {
++ (instancetype)httpClient
+{
     return [[self alloc] init];
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
     if (self) {
         _acceptableContentTypes = [NSSet setWithObjects:
@@ -95,12 +100,13 @@ NSString *DYFUrlDecode(NSString *str) {
     return self;
 }
 
-- (NSMutableURLRequest *)requestWithMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters {
+- (NSMutableURLRequest *)requestWithMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters
+{
     return [self requestWithMethod:method URLString:URLString parameters:parameters timeoutInterval:0];
 }
 
-- (NSMutableURLRequest *)requestWithMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters timeoutInterval:(NSTimeInterval)timeoutInterval {
-    
+- (NSMutableURLRequest *)requestWithMethod:(NSString *)method URLString:(NSString *)URLString parameters:(id)parameters timeoutInterval:(NSTimeInterval)timeoutInterval
+{
     AFHTTPRequestSerializer *serializer = [AFHTTPRequestSerializer serializer];
     if (timeoutInterval > 0) {
         serializer.timeoutInterval = timeoutInterval;
@@ -115,11 +121,13 @@ NSString *DYFUrlDecode(NSString *str) {
     return nil;
 }
 
-- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request completionHandler:(DYFURLSessionTaskCompletionHandler)completionHandler {
+- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request completionHandler:(DYFURLSessionTaskCompletionHandler)completionHandler
+{
     return [self dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:completionHandler];
 }
 
-- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request uploadProgress:(DYFURLSessionTaskUploadProgressHandler)uploadProgressHandler downloadProgress:(DYFURLSessionTaskDownloadProgressHandler)downloadProgressHandler completionHandler:(DYFURLSessionTaskCompletionHandler)completionHandler {
+- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request uploadProgress:(DYFURLSessionTaskUploadProgressHandler)uploadProgressHandler downloadProgress:(DYFURLSessionTaskDownloadProgressHandler)downloadProgressHandler completionHandler:(DYFURLSessionTaskCompletionHandler)completionHandler
+{
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
     
@@ -151,7 +159,8 @@ NSString *DYFUrlDecode(NSString *str) {
     return dataTask;
 }
 
-- (NSURLSessionUploadTask *)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL progress:(DYFURLSessionTaskUploadProgressHandler)uploadProgressHandler completionHandler:(DYFURLSessionTaskCompletionHandler)completionHandler {
+- (NSURLSessionUploadTask *)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL progress:(DYFURLSessionTaskUploadProgressHandler)uploadProgressHandler completionHandler:(DYFURLSessionTaskCompletionHandler)completionHandler
+{
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
     
@@ -179,7 +188,8 @@ NSString *DYFUrlDecode(NSString *str) {
     return uploadTask;
 }
 
-- (NSURLSessionDownloadTask *)downloadTaskWithRequest:(NSURLRequest *)request progress:(DYFURLSessionTaskDownloadProgressHandler)downloadProgressHandler destination:(DYFURLSessionTaskDestinationHandler)destinationHandler completionHandler:(DYFURLSessionTaskCompletionHandler)completionHandler {
+- (NSURLSessionDownloadTask *)downloadTaskWithRequest:(NSURLRequest *)request progress:(DYFURLSessionTaskDownloadProgressHandler)downloadProgressHandler destination:(DYFURLSessionTaskDestinationHandler)destinationHandler completionHandler:(DYFURLSessionTaskCompletionHandler)completionHandler
+{
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
     

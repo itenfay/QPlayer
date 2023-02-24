@@ -1,8 +1,8 @@
 //
 //  HistoryArchive.m
 //
-//  Created by dyf on 2017/9/1.
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 2017/9/1.
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 
 #import "HistoryArchive.h"
@@ -11,11 +11,13 @@ static NSString *const kHistoryArchiveKey = @"QPlayerHistoryArchive";
 
 @implementation HistoryArchive
 
-- (NSString *)cacheDir {
+- (NSString *)cacheDir
+{
     return QPAppendingPathComponent(QPCachesDirectoryPath, @"QPlayerHistoryCache");
 }
 
-- (void)saveArray:(NSArray *)array {
+- (void)saveArray:(NSArray *)array
+{
     // 归档
     NSMutableData *data = [[NSMutableData alloc] init];
     
@@ -27,7 +29,8 @@ static NSString *const kHistoryArchiveKey = @"QPlayerHistoryArchive";
     [data writeToFile:[self cacheDir] atomically:YES];
 }
 
-- (NSArray *)loadArchives {
+- (NSArray *)loadArchives
+{
     NSData *data = [[NSMutableData alloc] initWithContentsOfFile:[self cacheDir]];
     
     NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];

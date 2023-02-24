@@ -1,8 +1,8 @@
 //
 //  QPHomeViewController.m
 //
-//  Created by dyf on 2017/6/28. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 2017/6/28. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 
 #import "QPHomeViewController.h"
@@ -34,7 +34,7 @@
     [super viewDidLoad];
     
     [self configureNavigationBar];
-    [self addManualThemeStyleObserver];
+    [self addThemeStyleChangedObserver];
     
     
 }
@@ -213,8 +213,8 @@
     cell.formatImgView.contentMode = UIViewContentModeScaleToFill;
 }
 
-- (void)adjustThemeStyle {
-    [super adjustThemeStyle];
+- (void)adaptThemeStyle {
+    [super adaptThemeStyle];
     [self.tableView reloadData];
 }
 
@@ -224,7 +224,7 @@
 }
 
 - (void)dealloc {
-    [self removeManualThemeStyleObserver];
+    [self removeThemeStyleChangedObserver];
 }
 
 - (void)didReceiveMemoryWarning {

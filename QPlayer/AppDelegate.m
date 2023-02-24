@@ -1,8 +1,8 @@
 //
 //  AppDelegate.m
 //
-//  Created by dyf on 2017/6/29. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 2017/6/29. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -23,8 +23,8 @@
     [self controlLog];
     [self setupConfiguration];
     
-    if (!DYFNetworkSniffer.sharedSniffer.isStarted) {
-        [DYFNetworkSniffer.sharedSniffer start];
+    if (!chenxingNetworkSniffer.sharedSniffer.isStarted) {
+        [chenxingNetworkSniffer.sharedSniffer start];
     }
     
     return YES;
@@ -82,16 +82,16 @@
     
     QPlayerSavePlaying(NO);
     
-    if (DYFNetworkSniffer.sharedSniffer.isStarted) {
-        [DYFNetworkSniffer.sharedSniffer stop];
+    if (chenxingNetworkSniffer.sharedSniffer.isStarted) {
+        [chenxingNetworkSniffer.sharedSniffer stop];
     }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
-    if (!DYFNetworkSniffer.sharedSniffer.isStarted) {
-        [DYFNetworkSniffer.sharedSniffer start];
+    if (!chenxingNetworkSniffer.sharedSniffer.isStarted) {
+        [chenxingNetworkSniffer.sharedSniffer start];
     }
 }
 
@@ -104,8 +104,8 @@
     
     QPlayerSavePlaying(NO);
     
-    if (DYFNetworkSniffer.sharedSniffer.isStarted) {
-        [DYFNetworkSniffer.sharedSniffer stop];
+    if (chenxingNetworkSniffer.sharedSniffer.isStarted) {
+        [chenxingNetworkSniffer.sharedSniffer stop];
     }
 }
 

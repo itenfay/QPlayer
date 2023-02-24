@@ -1,8 +1,8 @@
 //
 //  DYFNetworkSniffer.m
 //
-//  Created by dyf on 2017/8/28. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 2017/8/28. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 
 #import "DYFNetworkSniffer.h"
@@ -13,7 +13,8 @@
 
 @implementation DYFNetworkSniffer
 
-+ (instancetype)sharedSniffer {
++ (instancetype)sharedSniffer
+{
     static DYFNetworkSniffer *_instance = nil;
     
     static dispatch_once_t onceToken;
@@ -24,7 +25,8 @@
     return _instance;
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
     if (self) {
         self.isStarted = NO;
@@ -33,18 +35,21 @@
     return self;
 }
 
-- (void)start {
+- (void)start
+{
     self.isStarted = YES;
     [self delayToSniff];
 }
 
-- (void)delayToSniff {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+- (void)delayToSniff
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self startSniffing];
     });
 }
 
-- (void)startSniffing {
+- (void)startSniffing
+{
     [AFNetworkReachabilityManager.sharedManager startMonitoring];
     [AFNetworkReachabilityManager.sharedManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
@@ -66,17 +71,20 @@
     }];
 }
 
-- (void)stop {
+- (void)stop
+{
     self.isStarted = NO;
     [AFNetworkReachabilityManager.sharedManager stopMonitoring];
 }
 
-- (BOOL)isConnectedToNetwork {
+- (BOOL)isConnectedToNetwork
+{
     AFNetworkReachabilityManager *mgr = AFNetworkReachabilityManager.sharedManager;
     return mgr.networkReachabilityStatus != AFNetworkReachabilityStatusNotReachable;
 }
 
-- (BOOL)isConnectedViaWWAN {
+- (BOOL)isConnectedViaWWAN
+{
     AFNetworkReachabilityManager *mgr = AFNetworkReachabilityManager.sharedManager;
     
     if (![self isConnectedToNetwork]) {
@@ -85,19 +93,18 @@
     return mgr.networkReachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN;
 }
 
-- (BOOL)isConnectedViaWiFi {
+- (BOOL)isConnectedViaWiFi
+{
     AFNetworkReachabilityManager *mgr = AFNetworkReachabilityManager.sharedManager;
-    
     if (![self isConnectedToNetwork]) {
         return NO;
     }
     return mgr.networkReachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi;
 }
 
-- (void)updateCellularNetworkStatus {
-    
+- (void)updateCellularNetworkStatus
+{
     if (@available(iOS 7.0, *)) {
-        
         NSArray *type2G_Strings = @[CTRadioAccessTechnologyEdge,
                                     CTRadioAccessTechnologyGPRS,
                                     CTRadioAccessTechnologyCDMA1x];
@@ -114,7 +121,6 @@
         
         CTTelephonyNetworkInfo *info= [[CTTelephonyNetworkInfo alloc] init];
         NSString *currentAccessType = info.currentRadioAccessTechnology;
-        
         if ([type4G_Strings containsObject:currentAccessType]) {
             _statusFlags = @"4G";
         } else if ([type3G_Strings containsObject:currentAccessType]) {
@@ -124,7 +130,6 @@
         } else {
             _statusFlags = @"WWAN";
         }
-        
     } else {
         _statusFlags = @"WWAN";
     }

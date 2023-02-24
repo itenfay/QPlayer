@@ -45,7 +45,7 @@ DEPENDENCIES:
   - ZFPlayer/ControlView
 
 SPEC REPOS:
-  https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git:
+  https://gitee.com/mirrors/CocoaPods-Specs.git:
     - AFNetworking
     - FDFullscreenPopGesture
     - MBProgressHUD
@@ -57,7 +57,7 @@ SPEC REPOS:
     - ZFPlayer
 
 SPEC CHECKSUMS:
-  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  AFNetworking: cb604b1c2bded0871f5f61f5d53653739e841d6b
   FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   "MBProgressHUD+JDragon": 15bf7583612f0bb9f0bcea634ba5eb247b17d014
@@ -67,6 +67,6 @@ SPEC CHECKSUMS:
   SVBlurView: 04d65da92afd5cf3fc9ed3348181b0e0d6b1493c
   ZFPlayer: 5cf39e8d9f0c2394a014b0db4767b5b5a6bffe13
 
-PODFILE CHECKSUM: 4cb0632545f69dbd049fa68a3f115a414c364179
+PODFILE CHECKSUM: 5fece2e10db9134cda09919d601bc5b8cf598208
 
 COCOAPODS: 1.11.3

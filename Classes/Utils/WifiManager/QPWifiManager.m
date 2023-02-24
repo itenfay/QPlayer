@@ -1,15 +1,16 @@
 //
 //  QPWifiManager.m
 //
-//  Created by dyf on 2017/9/1. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 2017/9/1. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 
 #import "QPWifiManager.h"
 
 @implementation QPWifiManager
 
-+ (instancetype)shared {
++ (instancetype)shared
+{
     static QPWifiManager *_inst;
     
     static dispatch_once_t onceToken;
@@ -20,7 +21,8 @@
     return _inst;
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
     if (self) {
         _httpServer = [[HTTPServer alloc] init];
@@ -32,19 +34,21 @@
     return self;
 }
 
-- (void)useDefaultPort8080 {
+- (void)useDefaultPort8080
+{
     [self changePort:8080];
 }
 
-- (void)changePort:(UInt16)port {
+- (void)changePort:(UInt16)port
+{
     [self operateServer:NO];
     [_httpServer setPort:port];
     [self operateServer:YES];
 }
 
-- (void)operateServer:(BOOL)status {
+- (void)operateServer:(BOOL)status
+{
     NSError *error = nil;
-    
     if (status) {
         _serverStatus = [_httpServer start:&error];
         
@@ -53,14 +57,14 @@
         }
     }
     else {
-        
         if ([_httpServer stop]) {
             _serverStatus = NO;
-        };
+        }
     }
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     self.httpServer.fileResourceDelegate = nil;
 }
 

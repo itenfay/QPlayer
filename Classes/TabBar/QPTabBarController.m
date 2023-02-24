@@ -1,8 +1,8 @@
 //
 //  QPTabBarController.m
 //
-//  Created by dyf on 2017/12/28. ( https://github.com/dgynfi/QPlayer )
-//  Copyright © 2017 dyf. All rights reserved.
+//  Created by chenxing on 2017/12/28. ( https://github.com/chenxing640/QPlayer )
+//  Copyright © 2017 chenxing. All rights reserved.
 //
 
 #import "QPTabBarController.h"
@@ -20,6 +20,50 @@
 
 @implementation QPTabBarController
 
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationFade;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
+- (void)needsStatusBarAppearanceUpdate
+{
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (void)needsUpdateOfSupportedInterfaceOrientations
+{
+    if (@available(iOS 16.0, *)) {
+        [self setNeedsUpdateOfSupportedInterfaceOrientations];
+    } else {
+        [UIViewController attemptRotationToDeviceOrientation];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self updateTabBarAppearance:NO];
@@ -27,7 +71,15 @@
     [self identifyMode];
 }
 
-- (void)updateTabBarAppearance:(BOOL)isDark {
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear: animated];
+    [self needsStatusBarAppearanceUpdate];
+    [self needsUpdateOfSupportedInterfaceOrientations];
+}
+
+- (void)updateTabBarAppearance:(BOOL)isDark
+{
     if (@available(iOS 13.0, *)) {
         UITabBarAppearance *appearance = [UITabBarAppearance new];
         /// 背景色
@@ -43,7 +95,8 @@
     }
 }
 
-- (void)setup {
+- (void)setup
+{
     UIImage *htbItemImage = QPImageNamed(@"tabbar_item_home_00");
     UIImage *htbItemSelectedImage = self.originalImage(QPImageNamed(@"tabbar_item_home_01"));
     
@@ -75,11 +128,13 @@
     self.selectedIndex   = 0;
 }
 
-- (BaseNavigationController *)tbc_navigationController:(UIViewController *)viewController {
+- (BaseNavigationController *)tbc_navigationController:(UIViewController *)viewController
+{
     return [[BaseNavigationController alloc] initWithRootViewController:viewController];
 }
 
-- (void)identifyMode {
+- (void)identifyMode
+{
     if (@available(iOS 13.0, *)) {
         
         UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
@@ -100,7 +155,8 @@
     [self adjustTabBarThemeStyle];
 }
 
-- (void)adjustTabBarThemeStyle {
+- (void)adjustTabBarThemeStyle
+{
     [self updateTabBarAppearance:self.isDarkMode];
     
     UIColor *normalColor = self.isDarkMode ? QPColorFromRGB(200, 200, 200) : [UIColor grayColor];
@@ -180,11 +236,13 @@
     }
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
     [self identifyMode];
 }
 
-- (UIImage *(^)(UIImage *image))originalImage {
+- (UIImage *(^)(UIImage *image))originalImage
+{
     
     UIImage *(^block)(UIImage *image) = ^UIImage *(UIImage *image) {
         UIImageRenderingMode imgRenderingMode = UIImageRenderingModeAlwaysOriginal;
@@ -194,7 +252,8 @@
     return block;
 }
 
-- (UIImage *)imageWithColor:(UIColor *)color {
+- (UIImage *)imageWithColor:(UIColor *)color
+{
     CGRect rect = CGRectMake(0, 0, 1, 1);
     
     UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
@@ -210,7 +269,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

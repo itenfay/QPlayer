@@ -6,7 +6,7 @@
 //
 
 #import "ViewController.h"
-#import "TabBarController.h"
+#import "QPTabBarController.h"
 
 @interface ViewController ()
 
@@ -14,99 +14,109 @@
 
 @implementation ViewController
 
-- (instancetype)initWithCoder:(NSCoder *)coder {
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
     self = [super initWithCoder:coder];
     if (self) {
-        QPLog(@" >>>>>>>>>> ");
     }
     return self;
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
-    QPLog(@" >>>>>>>>>> ");
+    QPLog(@">>> ");
 }
 
-- (void)loadView {
-    [super loadView];
-    QPLog(@" >>>>>>>>>> ");
-    [self prepareToRenderScreen];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    QPLog(@" >>>>>>>>>> ");
-    self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    QPLog(@" >>>>>>>>>> ");
-}
-
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    QPLog(@" >>>>>>>>>> ");
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    QPLog(@" >>>>>>>>>> ");
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    QPLog(@" >>>>>>>>>> ");
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    QPLog(@" >>>>>>>>>> ");
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    QPLog(@" >>>>>>>>>> ");
-}
-
-- (void)prepareToRenderScreen {
-    TabBarController *tabBarController = [[TabBarController alloc] init];
-    [QPAppDelegate.window setRootViewController:tabBarController];
-}
-
-- (BOOL)prefersStatusBarHidden {
-    QPLog(@" >>>>>>>>>> ");
+- (BOOL)prefersStatusBarHidden
+{
     return NO;
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    QPLog(@" >>>>>>>>>> ");
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
     return UIStatusBarStyleLightContent;
 }
 
-- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
-    QPLog(@" >>>>>>>>>> ");
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
     return UIStatusBarAnimationSlide;
 }
 
-- (BOOL)shouldAutorotate {
-    QPLog(@" >>>>>>>>>> ");
-    return NO;
+- (BOOL)shouldAutorotate
+{
+    return YES;
 }
 
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-    QPLog(@" >>>>>>>>>> ");
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
     return UIInterfaceOrientationPortrait;
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    QPLog(@" >>>>>>>>>> ");
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)loadView
+{
+    [super loadView];
+    QPLog(@">>> ");
+    [self prepareToRenderScreen];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    QPLog(@">>> ");
+    self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    QPLog(@">>> ");
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    QPLog(@">>> ");
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    QPLog(@">>> ");
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    QPLog(@">>> ");
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    QPLog(@">>> ");
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    QPLog(@">>> ");
+}
+
+- (void)prepareToRenderScreen
+{
+    QPTabBarController *tabBarController = [[QPTabBarController alloc] init];
+    [QPAppDelegate.window setRootViewController:tabBarController];
+}
+
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    QPLog(@" >>>>>>>>>> ");
 }
 
 @end

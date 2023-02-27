@@ -8,8 +8,8 @@
 #import "QPTabBarController.h"
 #import "QPBaseNavigationController.h"
 #import "QPHomeViewController.h"
-#import "QPSearchViewController.h"
-#import "QPSettingsViewController.h"
+#import "SearchViewController.h"
+#import "SettingsViewController.h"
 
 @interface QPTabBarController ()
 
@@ -104,7 +104,7 @@
     homeVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"本地资源"
                                                       image:htbItemImage
                                               selectedImage:htbItemSelectedImage];
-    QPBaseNavigationController *hnc = [self tbc_navigationController:homeVC];
+    QPBaseNavigationController *hnc = [self supplyNavigationController:homeVC];
     
     UIImage *stbItemImage = QPImageNamed(@"tabbar_item_browser_00");
     UIImage *stbItemSelectedImage = self.originalImage(QPImageNamed(@"tabbar_item_browser_01"));
@@ -113,7 +113,7 @@
     searchVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"打开网址"
                                                         image:stbItemImage
                                                 selectedImage:stbItemSelectedImage];
-    QPBaseNavigationController *snc = [self tbc_navigationController:searchVC];
+    QPBaseNavigationController *snc = [self supplyNavigationController:searchVC];
     
     UIImage *settbItemImage = QPImageNamed(@"tabbar_item_setting_00");
     UIImage *settbItemSelectedImage = self.originalImage(QPImageNamed(@"tabbar_item_setting_01"));
@@ -122,15 +122,15 @@
     settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"设置"
                                                           image:settbItemImage
                                                   selectedImage:settbItemSelectedImage];
-    QPBaseNavigationController *setnc = [self tbc_navigationController:settingsVC];
+    QPBaseNavigationController *setnc = [self supplyNavigationController:settingsVC];
     
     self.viewControllers = @[hnc, snc, setnc];
     self.selectedIndex   = 0;
 }
 
-- (BaseNavigationController *)tbc_navigationController:(UIViewController *)viewController
+- (QPBaseNavigationController *)supplyNavigationController:(UIViewController *)viewController
 {
-    return [[BaseNavigationController alloc] initWithRootViewController:viewController];
+    return [[QPBaseNavigationController alloc] initWithRootViewController:viewController];
 }
 
 - (void)identifyMode
@@ -243,7 +243,6 @@
 
 - (UIImage *(^)(UIImage *image))originalImage
 {
-    
     UIImage *(^block)(UIImage *image) = ^UIImage *(UIImage *image) {
         UIImageRenderingMode imgRenderingMode = UIImageRenderingModeAlwaysOriginal;
         return [image imageWithRenderingMode:imgRenderingMode];

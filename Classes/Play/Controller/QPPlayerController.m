@@ -8,7 +8,6 @@
 
 #import "QPlayerController.h"
 #import "QPTitleView.h"
-
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>

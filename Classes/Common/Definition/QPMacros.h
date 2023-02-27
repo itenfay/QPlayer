@@ -225,7 +225,7 @@
 
 // Logs
 #if DEBUG
-#define QPLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define QPLog(fmt, ...) NSLog((@"[L: %d] %s " fmt), __LINE__, __PRETTY_FUNCTION__, ##__VA_ARGS__)
 #else
 #define QPLog(...)      while(0){}
 #endif

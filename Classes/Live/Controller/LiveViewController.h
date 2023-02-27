@@ -5,8 +5,8 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "QPBaseWebViewController.h"
 
-@interface LiveViewController : BaseViewController
+@interface LiveViewController : QPBaseWebViewController
 
 @end

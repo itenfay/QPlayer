@@ -18,7 +18,7 @@
 @property (nonatomic, assign) BOOL parsingButtonRequired;
 
 /// The property determines whether The dark interface style was truned on.
-@property (nonatomic, assign) BOOL isDarkMode;
+@property (nonatomic, assign, readonly) BOOL isDarkMode;
 
 /// Indicates to the system that the view controller status bar attributes have changed.
 - (void)needsStatusBarAppearanceUpdate;
@@ -36,29 +36,23 @@
 - (void)removeThemeStyleChangedObserver;
 /// Adapts theme style when the notification is received.
 - (void)adaptThemeStyle;
-
-/// Sets up a navigation bar whether it is hidden.
-- (void)setNavigationBarHidden:(BOOL)hidden;
-
-/// Return a back button with a target and selector.
-- (UIButton *)backButtonWithTarget:(id)target selector:(SEL)selector;
+/// Can override this method.
+- (void)adaptLightTheme;
+/// Can override this method.
+- (void)adaptDarkTheme;
+/// Can override this method.
+- (void)adaptNavigationBarAppearance:(BOOL)isDark;
 
 /// Return a navigation bar.
 - (UINavigationBar *)navigationBar;
+/// Configure a navigation bar.
+- (void)configNavigaitonBar:(UIImage *)backgroundImage titleTextAttributes:(NSDictionary<NSAttributedStringKey, id> *)titleTextAttributes;
+/// Configure a navigation bar.
+- (void)configNavigaitonBar:(UIImage *)backgroundImage shadowImage:(UIImage *)shadowImage titleTextAttributes:(NSDictionary<NSAttributedStringKey, id> *)titleTextAttributes;
+/// Sets up a navigation bar whether it is hidden.
+- (void)setupNavigationBarHidden:(BOOL)hidden;
 
-/// Return a string that uses to show the duration of a video.
-- (NSString *)formatVideoDuration:(int)duration;
-
-/// Returns total display time.
-- (NSString *)totalTimeForVideo:(NSURL *)aUrl;
-
-/// Returns a thumbnail with a specific url.
-- (UIImage *)thumbnailForVideo:(NSURL *)aUrl;
-
-/// Returns a new string made from the receiver by replacing all characters not in the allowedCharacters set with percent encoded characters. UTF-8 encoding is used to determine the correct percent encoded characters.
-- (NSString *)urlEncode:(NSString *)string;
-
-/// Returns a new string made from the receiver by replacing all percent encoded sequences with the matching UTF-8 characters.
-- (NSString *)urlDecode:(NSString *)string;
+/// Return a back button with a target and selector.
+- (UIButton *)backButtonWithTarget:(id)target selector:(SEL)selector;
 
 @end

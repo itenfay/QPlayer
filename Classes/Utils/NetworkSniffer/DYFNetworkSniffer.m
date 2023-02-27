@@ -106,22 +106,28 @@
 {
     if (@available(iOS 7.0, *)) {
         NSArray *type2G_Strings = @[CTRadioAccessTechnologyEdge,
-                                    CTRadioAccessTechnologyGPRS,
-                                    CTRadioAccessTechnologyCDMA1x];
-        
+                                    CTRadioAccessTechnologyGPRS];
         NSArray *type3G_Strings = @[CTRadioAccessTechnologyHSDPA,
                                     CTRadioAccessTechnologyWCDMA,
+                                    CTRadioAccessTechnologyCDMA1x,
                                     CTRadioAccessTechnologyHSUPA,
+                                    CTRadioAccessTechnologyeHRPD,
                                     CTRadioAccessTechnologyCDMAEVDORev0,
                                     CTRadioAccessTechnologyCDMAEVDORevA,
-                                    CTRadioAccessTechnologyCDMAEVDORevB,
-                                    CTRadioAccessTechnologyeHRPD];
-        
+                                    CTRadioAccessTechnologyCDMAEVDORevB];
         NSArray *type4G_Strings = @[CTRadioAccessTechnologyLTE];
         
         CTTelephonyNetworkInfo *info= [[CTTelephonyNetworkInfo alloc] init];
         NSString *currentAccessType = info.currentRadioAccessTechnology;
-        if ([type4G_Strings containsObject:currentAccessType]) {
+        if (@available(iOS 14.1, *)) {
+            NSArray *type5G_Strings = @[CTRadioAccessTechnologyNR,
+                                        CTRadioAccessTechnologyNRNSA];
+            if ([type5G_Strings containsObject:currentAccessType]) {
+                _statusFlags = @"5G";
+            } else {
+                _statusFlags = @"WWAN";
+            }
+        } else if ([type4G_Strings containsObject:currentAccessType]) {
             _statusFlags = @"4G";
         } else if ([type3G_Strings containsObject:currentAccessType]) {
             _statusFlags = @"3G";

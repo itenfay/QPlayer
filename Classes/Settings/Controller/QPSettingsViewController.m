@@ -1,11 +1,11 @@
 //
-//  SettingsViewController.m
+//  QPSettingsViewController.m
 //
 //  Created by chenxing on 2017/6/28. ( https://github.com/chenxing640/QPlayer )
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "SettingsViewController.h"
+#import "QPSettingsViewController.h"
 #import "AboutMeViewController.h"
 #import "WifiManager.h"
 #import "TabBarController.h"
@@ -18,14 +18,14 @@
 #define BaseTopMargin         5.f
 #define BaseLeftMargin       10.f
 
-@interface SettingsViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface QPSettingsViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, assign) UInt16 m_port;
 
 @end
 
-@implementation SettingsViewController
+@implementation QPSettingsViewController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

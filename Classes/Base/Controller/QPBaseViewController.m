@@ -65,8 +65,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self updateNaviBarAppearance:NO];
-    [self identifyMode];
+    [self needsStatusBarAppearanceUpdate];
+    [self needsUpdateOfSupportedInterfaceOrientations];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -74,6 +74,7 @@
     [super viewWillAppear:animated];
     [self needsStatusBarAppearanceUpdate];
     [self needsUpdateOfSupportedInterfaceOrientations];
+    [self adaptThemeStyle];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -111,12 +112,49 @@
     [NSNotificationCenter.defaultCenter removeObserver:self name:kThemeStyleDidChangeNotification object:nil];
 }
 
-- (void)adaptThemeStyle
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
-    [self identifyMode];
+    [self adaptThemeStyle];
 }
 
-- (void)updateNaviBarAppearance:(BOOL)isDark
+- (void)adaptThemeStyle
+{
+    BOOL ret = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
+    if (ret) {
+        if (@available(iOS 13.0, *)) {
+            UIUserInterfaceStyle style = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+            if (style == UIUserInterfaceStyleDark) {
+                // Dark Mode
+                [self adaptDarkTheme];
+            } else if (style == UIUserInterfaceStyleLight) {
+                // Light Mode or unspecified Mode
+                [self adaptLightTheme];
+            }
+        } else {
+            [self adaptLightTheme];
+        }
+    } else {
+        [self adaptLightTheme];
+    }
+}
+
+- (void)adaptLightTheme
+{
+    [self adaptNavigationBarAppearance:NO];
+    [self setupNavigationBarLightStyle];
+    self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
+    _isDarkMode = NO;
+}
+
+- (void)adaptDarkTheme
+{
+    [self adaptNavigationBarAppearance:YES];
+    [self setupNavigationBarDarkStyle];
+    self.view.backgroundColor = QPColorFromRGB(30, 30, 30);
+    _isDarkMode = YES;
+}
+
+- (void)adaptNavigationBarAppearance:(BOOL)isDark
 {
     UINavigationController *navi = self.navigationController;
     if (navi == nil) { return; }
@@ -128,52 +166,10 @@
         appearance.backgroundEffect = nil;
         /// 去除导航栏阴影（如果不设置clear，导航栏底下会有一条阴影线）
         appearance.shadowColor = UIColor.clearColor;
-        appearance.titleTextAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17], NSForegroundColorAttributeName: UIColor.whiteColor};
+        appearance.titleTextAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: UIColor.whiteColor};
         navi.navigationBar.standardAppearance = appearance;
         navi.navigationBar.scrollEdgeAppearance = appearance;
     }
-}
-
-- (void)identifyMode
-{
-    BOOL bValue = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
-    if (bValue) {
-        if (@available(iOS 13.0, *)) {
-            UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
-            if (mode == UIUserInterfaceStyleDark) {
-                // Dark Mode
-                [self adjustDarkTheme];
-            } else if (mode == UIUserInterfaceStyleLight) {
-                // Light Mode or unspecified Mode
-                [self adjustLightTheme];
-            }
-        } else {
-            [self adjustLightTheme];
-        }
-    } else {
-        [self adjustLightTheme];
-    }
-}
-
-- (void)adjustLightTheme
-{
-    [self setNavigationBarLightStyle];
-    [self updateNaviBarAppearance:NO];
-    self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
-    self.isDarkMode = NO;
-}
-
-- (void)adjustDarkTheme
-{
-    [self setNavigationBarDarkStyle];
-    [self updateNaviBarAppearance:YES];
-    self.view.backgroundColor = QPColorFromRGB(30, 30, 30);
-    self.isDarkMode = YES;
-}
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [self identifyMode];
 }
 
 - (UINavigationBar *)navigationBar
@@ -184,22 +180,31 @@
     return nil;
 }
 
-- (void)setNavigationBarLightStyle
+- (void)configNavigaitonBar:(UIImage *)backgroundImage titleTextAttributes:(NSDictionary<NSAttributedStringKey, id> *)titleTextAttributes
 {
-    [self.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
-    [self.navigationBar setShadowImage:[[UIImage alloc] init]];
-    [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    [self configNavigaitonBar:backgroundImage shadowImage:[[UIImage alloc] init] titleTextAttributes:titleTextAttributes];
 }
 
-- (void)setNavigationBarDarkStyle
+- (void)configNavigaitonBar:(UIImage *)backgroundImage shadowImage:(UIImage *)shadowImage titleTextAttributes:(NSDictionary<NSAttributedStringKey, id> *)titleTextAttributes
 {
-    [self.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBlackBg") forBarMetrics:UIBarMetricsDefault];
-    [self.navigationBar setShadowImage:[[UIImage alloc] init]];
-    [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]}];
-    //[self.navigationBar setBarTintColor:QPColorFromRGB(20, 20, 20)];
+    [self.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+    [self.navigationBar setShadowImage:shadowImage];
+    [self.navigationBar setTitleTextAttributes:titleTextAttributes];
 }
 
-- (void)setNavigationBarHidden:(BOOL)hidden
+- (void)setupNavigationBarLightStyle
+{
+    id titleTextAttrs = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    [self configNavigaitonBar:QPImageNamed(@"NavigationBarBg") titleTextAttributes:titleTextAttrs];
+}
+
+- (void)setupNavigationBarDarkStyle
+{
+    id titleTextAttrs = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:17.f], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    [self configNavigaitonBar:QPImageNamed(@"NavigationBarBlackBg") titleTextAttributes:titleTextAttrs];
+}
+
+- (void)setupNavigationBarHidden:(BOOL)hidden
 {
     if (self.navigationController) {
         self.navigationController.navigationBarHidden = hidden;
@@ -210,113 +215,21 @@
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, 40, 36);
-    UIImage *x = QPImageNamed(@"back_normal_white");
-    [x imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
     [button setImage:QPImageNamed(@"back_normal_white") forState:UIControlStateNormal];
-    
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 20);
     return button;
 }
 
-- (void)adjustThemeForWebView:(WKWebView *)webView
-{
-    //[webView evaluateJavaScript:@"document.body.style.backgroundColor" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
-    //if (!error) {
-    //    QPLog(@"result: %@", result);
-    //} else {
-    //QPLog(@"error: %@, %@", @(error.code), error.localizedDescription);
-    //}
-    //}];
-    
-    NSString *bgColor   = @"";
-    NSString *textColor = @"";
-    BOOL bValue = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
-    if (bValue && self.isDarkMode) {
-        bgColor   = @"'#1E1E1E'";
-        textColor = @"'#B4B4B4'";
-    } else {
-        bgColor   = @"'#F3F3F3'";
-        textColor = @"'#303030'";
-    }
-    
-    // document.getElementsByTagName('body')[0].style.backgroundColor
-    // document.body.style.backgroundColor
-    [webView evaluateJavaScript:[NSString stringWithFormat:@"document.body.style.backgroundColor=%@", bgColor] completionHandler:NULL];
-    // document.getElementsByTagName('body')[0].style.webkitTextFillColor
-    [webView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor=%@", textColor] completionHandler:NULL];
-}
-
-- (NSString *)formatVideoDuration:(int)duration
-{
-    int seconds = duration;
-    int hour    = 0;
-    int minute  = 0;
-    
-    int secondsPerHour = 60 * 60;
-    if (seconds >= secondsPerHour) {
-        int delta = seconds / secondsPerHour;
-        hour = delta;
-        seconds -= delta * secondsPerHour;
-    }
-    int secondsPerMinute = 60;
-    if (seconds >= secondsPerMinute) {
-        int delta = seconds / secondsPerMinute;
-        minute = delta;
-        seconds -= delta * secondsPerMinute;
-    }
-    if (hour == 0 && minute == 0 && seconds == 0) {
-        return [NSString stringWithFormat:@"--:--"];
-    }
-    if (hour == 0) {
-        return [NSString stringWithFormat:@"%02d:%02d", minute, seconds];
-    }
-    
-    return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute, seconds];
-}
-
-- (NSString *)totalTimeForVideo:(NSURL *)aUrl
-{
-    AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:aUrl];
-    CMTime time = playerItem.asset.duration;
-    //Float64 sec = CMTimeGetSeconds(time);
-    int duration = (int)time.value / time.timescale;
-    return [self formatVideoDuration:duration];
-}
-
-- (UIImage *)thumbnailForVideo:(NSURL *)aUrl
-{
-    AVAsset *asset = [AVAsset assetWithURL:aUrl];
-    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-    imageGenerator.appliesPreferredTrackTransform = YES;
-    CMTime time = CMTimeMakeWithSeconds(2, 1);
-    CMTime actualTime;
-    CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:&actualTime error:NULL];
-    if (imageRef) {
-        UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
-        CGImageRelease(imageRef);
-        return thumbnail;
-    }
-    return QPImageNamed(@"default_thumbnail");
-}
-
-- (NSString *)urlEncode:(NSString *)string
-{
-    NSCharacterSet *characterSet = [NSCharacterSet URLQueryAllowedCharacterSet];
-    return [string stringByAddingPercentEncodingWithAllowedCharacters:characterSet];
-}
-
-- (NSString *)urlDecode:(NSString *)string
-{
-    NSString *_string = [string stringByRemovingPercentEncoding];
-    if (_string) { return _string; }
-    return [string copy];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    QPLog(@"::");
+}
+
+- (void)dealloc
+{
+    QPLog(@"::");
 }
 
 @end

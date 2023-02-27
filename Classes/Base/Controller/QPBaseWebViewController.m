@@ -8,12 +8,9 @@
 #import "QPBaseWebViewController.h"
 
 @interface QPBaseWebViewController ()
-
-// Declares a web view object.
+/// Declares a web view object.
 @property (nonatomic, strong) WKWebView *wkWebView;
-
 @property (nonatomic, strong) DYFWebProgressView *progressView;
-
 @end
 
 @implementation QPBaseWebViewController
@@ -23,37 +20,42 @@
     [super viewDidLoad];
 }
 
-- (WKWebViewConfiguration *)wkWebViewConfiguration
+- (WKWebViewConfiguration *)webViewConfiguration
 {
-    WKWebViewConfiguration *conf = [[WKWebViewConfiguration alloc] init];
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     WKPreferences *preferences = [[WKPreferences alloc] init];
     preferences.minimumFontSize = 0;
     preferences.javaScriptEnabled = YES;
-    preferences.javaScriptCanOpenWindowsAutomatically = NO;
-    conf.preferences = preferences;
-    conf.processPool = [[WKProcessPool alloc] init];
-    conf.userContentController = [[WKUserContentController alloc] init];
-    conf.allowsInlineMediaPlayback = YES;
+    preferences.javaScriptCanOpenWindowsAutomatically = YES;
+    config.preferences = preferences;
+    //conf.processPool = [[WKProcessPool alloc] init];
+    config.userContentController = [[WKUserContentController alloc] init];
+    config.allowsInlineMediaPlayback = YES;
     if (@available(iOS 9.0, *)) {
-        if (@available(iOS 10.0, *)) {
-            conf.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypeNone;
-        } else {
-            conf.requiresUserActionForMediaPlayback = NO;
-        }
         // The default value is YES.
-        conf.allowsAirPlayForMediaPlayback = YES;
-        conf.allowsPictureInPictureMediaPlayback = YES;
+        config.allowsAirPlayForMediaPlayback = YES;
+        config.allowsPictureInPictureMediaPlayback = YES;
+        if (@available(iOS 10.0, *)) {
+            // WKAudiovisualMediaTypeNone
+            config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypeAll;
+        } else {
+            //config.requiresUserActionForMediaPlayback = NO;
+        }
     } else {
         // Fallback on earlier versions
-        conf.mediaPlaybackAllowsAirPlay = YES;
-        conf.mediaPlaybackRequiresUserAction = YES;
+        //config.mediaPlaybackAllowsAirPlay = YES;
+        //config.mediaPlaybackRequiresUserAction = YES;
     }
-    return conf;
+    return config;
+}
+
+- (WKUserContentController *)userContentController {
+    return [[WKUserContentController alloc] init];
 }
 
 - (void)initWebViewWithFrame:(CGRect)frame
 {
-    [self initWebViewWithFrame:frame configuration:self.wkWebViewConfiguration];
+    [self initWebViewWithFrame:frame configuration:self.webViewConfiguration];
 }
 
 - (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration
@@ -64,6 +66,7 @@
 }
 
 - (WKWebView *)webView {
+    [self addObserver:_wkWebView forKeyPath:@"" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
     return _wkWebView;
 }
 
@@ -141,10 +144,7 @@
 {
     if (_progressView) {
         [self.progressView endLoading];
-        self.scheduleTask(self,
-                          @selector(releaseProgressView),
-                          nil,
-                          0.3);
+        self.scheduleTask(self, @selector(releaseProgressView), nil, 0.3);
     }
 }
 
@@ -182,7 +182,6 @@
     [webView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor=%@", textColor] completionHandler:NULL];
 }
 
-// Navigates to the back item in the back-forward list.
 - (void)onGoBack
 {
     if ([self.webView canGoBack]) {
@@ -190,7 +189,6 @@
     }
 }
 
-// Navigates to the forward item in the back-forward list.
 - (void)onGoForward
 {
     if ([self.webView canGoForward]) {
@@ -198,7 +196,6 @@
     }
 }
 
-// Reloads the current page.
 - (void)onReload
 {
     if (_progressView) {
@@ -208,7 +205,6 @@
     [self.webView reload];
 }
 
-// Stops loading all resources on the current page.
 - (void)onStopLoading
 {
     if ([self.webView isLoading]) {
@@ -243,13 +239,6 @@
     return _progressView;
 }
 
-- (void)removeCellAllSubviews:(UITableViewCell *)cell
-{
-    while (cell.contentView.subviews.lastObject != nil) {
-        [(UIView *)cell.contentView.subviews.lastObject removeFromSuperview];
-    }
-}
-
 - (UIImageView *)buildCustomToolBar
 {
     return [self buildCustomToolBar:@selector(toolBarItemClicked:)];
@@ -257,10 +246,8 @@
 
 - (UIImageView *)buildCustomToolBar:(SEL)selector
 {
-    NSArray *tempArray = @[@"web_reward_13x21",
-                           @"web_forward_13x21",
-                           @"web_refresh_24x21",
-                           @"web_stop_21x21",
+    NSArray *tempArray = @[@"web_reward_13x21", @"web_forward_13x21",
+                           @"web_refresh_24x21", @"web_stop_21x21",
                            @"parse_button_blue"];
     NSMutableArray *imgNames = [tempArray mutableCopy];
     
@@ -326,92 +313,6 @@
         default:
             break;
     }
-}
-
-- (UIImage *)colorImage:(CGRect)rect cornerRadius:(CGFloat)cornerRadius backgroudColor:(UIColor *)backgroudColor borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor
-{
-    UIImage *newImage  = nil;
-    CGRect mRect       = rect;
-    CGSize mSize       = mRect.size;
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:mRect cornerRadius:cornerRadius];
-    
-    if (@available(iOS 10.0, *)) {
-        UIGraphicsImageRenderer *render = [[UIGraphicsImageRenderer alloc] initWithSize:mSize];
-        newImage = [render imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
-            UIGraphicsImageRendererContext *ctx = rendererContext;
-            CGContextSetFillColorWithColor  (ctx.CGContext, backgroudColor.CGColor);
-            CGContextSetStrokeColorWithColor(ctx.CGContext, borderColor.CGColor);
-            CGContextSetLineWidth           (ctx.CGContext, borderWidth);
-            [path addClip];
-            CGContextAddPath (ctx.CGContext, path.CGPath);
-            CGContextDrawPath(ctx.CGContext, kCGPathFillStroke);
-        }];
-    } else {
-        UIGraphicsBeginImageContext(mSize);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor  (context, backgroudColor.CGColor);
-        CGContextSetStrokeColorWithColor(context, borderColor.CGColor);
-        CGContextSetLineWidth           (context, borderWidth);
-        [path addClip];
-        CGContextAddPath (context, path.CGPath);
-        CGContextDrawPath(context, kCGPathFillStroke);
-        newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-    }
-    return newImage;
-}
-
-- (NSString *)formatVideoDuration:(int)duration
-{
-    int seconds = duration;
-    int hour    = 0;
-    int minute  = 0;
-    
-    int secondsPerHour = 60 * 60;
-    if (seconds >= secondsPerHour) {
-        int delta = seconds / secondsPerHour;
-        hour = delta;
-        seconds -= delta * secondsPerHour;
-    }
-    int secondsPerMinute = 60;
-    if (seconds >= secondsPerMinute) {
-        int delta = seconds / secondsPerMinute;
-        minute = delta;
-        seconds -= delta * secondsPerMinute;
-    }
-    if (hour == 0 && minute == 0 && seconds == 0) {
-        return [NSString stringWithFormat:@"--:--"];
-    }
-    if (hour == 0) {
-        return [NSString stringWithFormat:@"%02d:%02d", minute, seconds];
-    }
-    
-    return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, minute, seconds];
-}
-
-- (NSString *)totalTimeForVideo:(NSURL *)aUrl
-{
-    AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:aUrl];
-    CMTime time = playerItem.asset.duration;
-    //Float64 sec = CMTimeGetSeconds(time);
-    int duration = (int)time.value / time.timescale;
-    return [self formatVideoDuration:duration];
-}
-
-- (UIImage *)thumbnailForVideo:(NSURL *)aUrl
-{
-    AVAsset *asset = [AVAsset assetWithURL:aUrl];
-    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-    imageGenerator.appliesPreferredTrackTransform = YES;
-    CMTime time = CMTimeMakeWithSeconds(2, 1);
-    CMTime actualTime;
-    CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:&actualTime error:NULL];
-    if (imageRef) {
-        UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
-        CGImageRelease(imageRef);
-        return thumbnail;
-    }
-    return QPImageNamed(@"default_thumbnail");
 }
 
 @end

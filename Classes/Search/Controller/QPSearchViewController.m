@@ -1,18 +1,18 @@
 //
-//  SearchViewController.m
+//  QPSearchViewController.m
 //
 //  Created by chenxing on 2017/12/28. ( https://github.com/chenxing640/QPlayer )
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "SearchViewController.h"
+#import "QPSearchViewController.h"
 #import "QPlayerController.h"
 
-@interface SearchViewController () <UITextFieldDelegate, UIScrollViewDelegate, PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
+@interface QPSearchViewController () <UITextFieldDelegate, UIScrollViewDelegate, PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
 @property (nonatomic, copy) NSString *requestUrl;
 @end
 
-@implementation SearchViewController
+@implementation QPSearchViewController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

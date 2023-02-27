@@ -8,7 +8,7 @@
 #import "LiveViewController.h"
 #import "QPlayerController.h"
 #import "QPTitleView.h"
-#import "chenxingDropListView.h"
+#import "DYFDropListView.h"
 
 @interface LiveViewController () <UITextFieldDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate, PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
 @property (nonatomic, copy) NSString *requestUrl;
@@ -222,8 +222,8 @@
 - (void)showDropListViewWithFade:(UIButton *)sender {
     sender.enabled = NO;
     
-    UINib *nib = [UINib nibWithNibName:NSStringFromClass([chenxingDropListView class]) bundle:nil];
-    chenxingDropListView *dropListView = [nib instantiateWithOwner:nil options:nil].firstObject;
+    UINib *nib = [UINib nibWithNibName:NSStringFromClass([DYFDropListView class]) bundle:nil];
+    DYFDropListView *dropListView = [nib instantiateWithOwner:nil options:nil].firstObject;
     
     dropListView.left   = 5.f;
     dropListView.top    = 5.f;
@@ -351,7 +351,7 @@
 }
 
 - (NSString *)titleMatchingWithUrl:(NSString *)url {
-    // chenxingDropListView.bundle -> DropListViewData.plist
+    // DYFDropListView.bundle -> DropListViewData.plist
     NSString *path       = [NSBundle.mainBundle pathForResource:kResourceBundle ofType:nil];
     NSString *bundlePath = [NSBundle bundleWithPath:path].bundlePath;
     NSString *filePath   = [bundlePath stringByAppendingPathComponent:kDropListDataFile];

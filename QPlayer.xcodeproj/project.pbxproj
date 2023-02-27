@@ -83,6 +83,7 @@
 		14F52216232BF1D400C866D1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F52215232BF1D400C866D1 /* libxml2.tbd */; };
 		790F5D9629A45F6100B59422 /* QPBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 790F5D9529A45F6100B59422 /* QPBaseCollectionViewCell.m */; };
 		7978348829A864FE00496962 /* QPBaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7978348629A864FE00496962 /* QPBaseWebViewController.m */; };
+		79A1249029AC76EE00667B3C /* ApplicationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A1248F29AC76EE00667B3C /* ApplicationHelper.m */; };
 		96532C621F5E814E00E66A2F /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C481F5E814E00E66A2F /* AsyncSocket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		96532C631F5E814E00E66A2F /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C4A1F5E814E00E66A2F /* DDData.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		96532C641F5E814E00E66A2F /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C4C1F5E814E00E66A2F /* DDNumber.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -246,6 +247,8 @@
 		790F5D9529A45F6100B59422 /* QPBaseCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPBaseCollectionViewCell.m; sourceTree = "<group>"; };
 		7978348629A864FE00496962 /* QPBaseWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPBaseWebViewController.m; sourceTree = "<group>"; };
 		7978348729A864FE00496962 /* QPBaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPBaseWebViewController.h; sourceTree = "<group>"; };
+		79A1248E29AC76EE00667B3C /* ApplicationHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationHelper.h; sourceTree = "<group>"; };
+		79A1248F29AC76EE00667B3C /* ApplicationHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationHelper.m; sourceTree = "<group>"; };
 		96532C471F5E814E00E66A2F /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
 		96532C481F5E814E00E66A2F /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
 		96532C491F5E814E00E66A2F /* DDData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDData.h; sourceTree = "<group>"; };
@@ -315,6 +318,7 @@
 		141B165925C93B43008C465C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				79A1248D29AC76AC00667B3C /* ApplicationHelper */,
 				141B165D25C93B43008C465C /* FileHelper */,
 				141B168E25C93B44008C465C /* HistoryManager */,
 				141B165A25C93B43008C465C /* HudUtils */,
@@ -914,6 +918,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		79A1248D29AC76AC00667B3C /* ApplicationHelper */ = {
+			isa = PBXGroup;
+			children = (
+				79A1248E29AC76EE00667B3C /* ApplicationHelper.h */,
+				79A1248F29AC76EE00667B3C /* ApplicationHelper.m */,
+			);
+			path = ApplicationHelper;
+			sourceTree = "<group>";
+		};
 		961B32F51F04D24900670B61 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
@@ -1167,6 +1180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				141B16FD25C93B46008C465C /* QPHudUtils.m in Sources */,
+				79A1249029AC76EE00667B3C /* ApplicationHelper.m in Sources */,
 				141B170D25C93B46008C465C /* string_piece.c in Sources */,
 				96532C681F5E814E00E66A2F /* HTTPConnection.m in Sources */,
 				141B171F25C93B46008C465C /* QPAboutMeViewController.m in Sources */,

@@ -15,6 +15,7 @@
 #import "QPGlobalDef.h"
 #import "QPTitleView.h"
 #import "DYFNetworkSniffer.h"
+#import "ApplicationHelper.h"
 
 #pragma mark - Category
 

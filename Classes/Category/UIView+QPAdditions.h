@@ -25,7 +25,11 @@
 @property (assign, nonatomic) CGFloat centerX;
 @property (assign, nonatomic) CGFloat centerY;
 
-// Removes the all subviews for a view.
+/// Removes the all subviews for a view.
 - (void)removeAllSubviews;
+
+/// Determines how the receiver resizes itself when its superview’s bounds change.
+- (void)autoresizing;
+- (void)autoresizing:(UIViewAutoresizing)mask;
 
 @end

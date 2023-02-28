@@ -6,37 +6,29 @@
 //
 
 #import "QPHomeViewController.h"
-
 #import "QPFileTableViewCell.h"
 #import "QPPlayerController.h"
 #import "QPLiveViewController.h"
-
 #import "QPListViewAdapter.h"
 #import "QPHomeView.h"
 
 @interface QPHomeViewController ()
-
 @property (nonatomic, strong) QPListViewAdapter *adapter;
 @property (nonatomic, strong) QPHomeView *homeView;
-
 @end
 
 @implementation QPHomeViewController
 
 - (void)loadView {
     [super loadView];
-    
     self.homeView = [[QPHomeView alloc] initWithFrame:CGRectZero];
     self.view = self.homeView;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self configureNavigationBar];
     [self addThemeStyleChangedObserver];
-    
-    
 }
 
 - (void)configureNavigationBar {
@@ -81,7 +73,6 @@
     return @[deleteRowAction];
 }
 
-
 //- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 //    if (editingStyle == UITableViewCellEditingStyleDelete) {
 //        FileModel *fileModel = self.localFileList[indexPath.row];
@@ -95,7 +86,6 @@
 //        }
 //    }
 //}
-
 
 - (void)deleteRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *fileModel = self.localFileList[indexPath.row];

@@ -40,7 +40,7 @@
 		141B172525C93B46008C465C /* QPSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B16CD25C93B45008C465C /* QPSearchViewController.m */; };
 		141B172625C93B46008C465C /* QPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B16D225C93B45008C465C /* QPTabBarController.m */; };
 		141B172725C93B46008C465C /* QPSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B16D725C93B45008C465C /* QPSettingsViewController.m */; };
-		141B172825C93B46008C465C /* LiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B16DE25C93B45008C465C /* LiveViewController.m */; };
+		141B172825C93B46008C465C /* QPLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B16DE25C93B45008C465C /* QPLiveViewController.m */; };
 		141B172925C93B46008C465C /* QPListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B16E625C93B45008C465C /* QPListViewAdapter.m */; };
 		141B172A25C93B46008C465C /* QPWKWebViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B16E725C93B45008C465C /* QPWKWebViewAdapter.m */; };
 		141B172B25C93B46008C465C /* QPAppConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B16E925C93B45008C465C /* QPAppConst.m */; };
@@ -174,8 +174,8 @@
 		141B16D225C93B45008C465C /* QPTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPTabBarController.m; sourceTree = "<group>"; };
 		141B16D625C93B45008C465C /* QPSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPSettingsViewController.h; sourceTree = "<group>"; };
 		141B16D725C93B45008C465C /* QPSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPSettingsViewController.m; sourceTree = "<group>"; };
-		141B16DD25C93B45008C465C /* LiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveViewController.h; sourceTree = "<group>"; };
-		141B16DE25C93B45008C465C /* LiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveViewController.m; sourceTree = "<group>"; };
+		141B16DD25C93B45008C465C /* QPLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPLiveViewController.h; sourceTree = "<group>"; };
+		141B16DE25C93B45008C465C /* QPLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPLiveViewController.m; sourceTree = "<group>"; };
 		141B16E425C93B45008C465C /* QPListViewAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPListViewAdapter.h; sourceTree = "<group>"; };
 		141B16E525C93B45008C465C /* QPWKWebViewAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWKWebViewAdapter.h; sourceTree = "<group>"; };
 		141B16E625C93B45008C465C /* QPListViewAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPListViewAdapter.m; sourceTree = "<group>"; };
@@ -683,8 +683,8 @@
 		141B16DC25C93B45008C465C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				141B16DD25C93B45008C465C /* LiveViewController.h */,
-				141B16DE25C93B45008C465C /* LiveViewController.m */,
+				141B16DD25C93B45008C465C /* QPLiveViewController.h */,
+				141B16DE25C93B45008C465C /* QPLiveViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1233,7 +1233,7 @@
 				141B171225C93B46008C465C /* DYFProgressView.m in Sources */,
 				141B172C25C93B46008C465C /* QPTitleView.m in Sources */,
 				965E09E61F04A85F009BBBD9 /* AppDelegate.m in Sources */,
-				141B172825C93B46008C465C /* LiveViewController.m in Sources */,
+				141B172825C93B46008C465C /* QPLiveViewController.m in Sources */,
 				1430B8B1234C3FBC00189025 /* KSYMediaPlayerManager.m in Sources */,
 				141B170025C93B46008C465C /* DYFHttpClient.m in Sources */,
 				141B172225C93B46008C465C /* QPAboutMeTableFooter.m in Sources */,

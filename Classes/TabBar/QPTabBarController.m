@@ -8,8 +8,8 @@
 #import "QPTabBarController.h"
 #import "QPBaseNavigationController.h"
 #import "QPHomeViewController.h"
-#import "SearchViewController.h"
-#import "SettingsViewController.h"
+#import "QPSearchViewController.h"
+#import "QPSettingsViewController.h"
 
 @interface QPTabBarController ()
 

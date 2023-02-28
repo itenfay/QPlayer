@@ -8,8 +8,7 @@
 #import "QPBaseWebViewController.h"
 
 @interface QPBaseWebViewController ()
-/// Declares a web view object.
-@property (nonatomic, strong) WKWebView *wkWebView;
+@property (nonatomic, strong) WKWebView *wkWebView; // Declares a web view object.
 @property (nonatomic, strong) DYFWebProgressView *progressView;
 @end
 
@@ -66,28 +65,34 @@
 }
 
 - (WKWebView *)webView {
-    [self addObserver:_wkWebView forKeyPath:@"" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
     return _wkWebView;
 }
 
-- (void)willAddProgressViewToWebView
+- (void)releaseWebView
 {
-    self.isAddedToNavBar = NO;
+    if (_wkWebView) {
+        _wkWebView = nil;
+    }
 }
 
-- (void)willAddProgressViewToNavigationBar
+- (void)addProgressViewToWebView
 {
-    self.isAddedToNavBar = YES;
+    _isAddedToNavBar = NO;
 }
 
-- (void)loadWebContents:(NSString *)urlString
+- (void)addProgressViewToNavigationBar
+{
+    _isAddedToNavBar = YES;
+}
+
+- (void)loadRequestWithUrl:(NSString *)urlString
 {
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:request];
 }
 
-- (void)loadWebUrlRequest:(NSURLRequest *)urlRequest
+- (void)loadRequest:(NSURLRequest *)urlRequest
 {
     [self.webView loadRequest:urlRequest];
 }
@@ -104,27 +109,27 @@
 
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation
 {
-    //[self adjustThemeForWebView:webView];
-    [self buildProgressView];
+    //[self adaptThemeForWebView];
+    [self showProgressView];
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
-    //[self adjustThemeForWebView:webView];
-    [self removeProgressView];
+    //[self adaptThemeForWebView];
+    [self hideProgressView];
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-    [self removeProgressView];
+    [self hideProgressView];
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-    [self removeProgressView];
+    [self hideProgressView];
 }
 
-- (void)buildProgressView
+- (void)showProgressView
 {
     if (!_progressView) {
         self.progressView.lineWidth = 2.f;
@@ -140,7 +145,7 @@
     }
 }
 
-- (void)removeProgressView
+- (void)hideProgressView
 {
     if (_progressView) {
         [self.progressView endLoading];
@@ -153,16 +158,16 @@
     _progressView = nil;
 }
 
-- (void)adjustThemeForWebView:(WKWebView *)webView
+// Deprecated
+- (void)adaptThemeForWebView
 {
-    //[webView evaluateJavaScript:@"document.body.style.backgroundColor" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+    //[_wkWebView evaluateJavaScript:@"document.body.style.backgroundColor" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
     //if (!error) {
     //    QPLog(@"result: %@", result);
     //} else {
-    //QPLog(@"error: %@, %@", @(error.code), error.localizedDescription);
+    //    QPLog(@"error: %@, %@", @(error.code), error.localizedDescription);
     //}
     //}];
-    
     NSString *bgColor   = @"";
     NSString *textColor = @"";
     
@@ -177,9 +182,9 @@
     
     // document.getElementsByTagName('body')[0].style.backgroundColor
     // document.body.style.backgroundColor
-    [webView evaluateJavaScript:[NSString stringWithFormat:@"document.body.style.backgroundColor=%@", bgColor] completionHandler:NULL];
+    [_wkWebView evaluateJavaScript:[NSString stringWithFormat:@"document.body.style.backgroundColor=%@", bgColor] completionHandler:NULL];
     // document.getElementsByTagName('body')[0].style.webkitTextFillColor
-    [webView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor=%@", textColor] completionHandler:NULL];
+    [_wkWebView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor=%@", textColor] completionHandler:NULL];
 }
 
 - (void)onGoBack
@@ -212,22 +217,14 @@
     }
 }
 
-- (void)releaseWebView
-{
-    if (_wkWebView) {
-        _wkWebView = nil;
-    }
-}
-
 - (DYFWebProgressView *)progressView
 {
     if (!_progressView) {
         CGRect frame         = CGRectZero;
         frame.origin.x       = 0.f;
         frame.size.height    = 2.f;
-        
         if (self.isAddedToNavBar) {
-            frame.origin.y   = self.navigationBar.height - 2.f;
+            frame.origin.y   = self.navigationBar.height - frame.size.height;
             frame.size.width = self.navigationBar.width;
             _progressView    = [[DYFWebProgressView alloc] initWithFrame:frame];
         } else {
@@ -239,19 +236,19 @@
     return _progressView;
 }
 
-- (UIImageView *)buildCustomToolBar
+- (UIImageView *)buildToolBar
 {
-    return [self buildCustomToolBar:@selector(toolBarItemClicked:)];
+    return [self buildToolBar:@selector(tbItemClicked:)];
 }
 
-- (UIImageView *)buildCustomToolBar:(SEL)selector
+- (UIImageView *)buildToolBar:(SEL)selector
 {
     NSArray *tempArray = @[@"web_reward_13x21", @"web_forward_13x21",
                            @"web_refresh_24x21", @"web_stop_21x21",
                            @"parse_button_blue"];
     NSMutableArray *imgNames = [tempArray mutableCopy];
     
-    if (!self.parsingButtonRequired){
+    if (!self.parsingButtonRequired) {
         [imgNames removeLastObject];
     }
     
@@ -262,7 +259,7 @@
     CGFloat btnH     = 30.f;
     
     BOOL    bVar     = self.parsingButtonRequired || !self.hidesBottomBarWhenPushed;
-    CGFloat offset   = bVar ? QPTabBarHeight : 3*vSpace;
+    CGFloat offset   = bVar ? QPTabBarHeight : (QPIsPhoneXAll ? 4 : 2)*vSpace;
     CGFloat tlbW     = btnW + 2*hSpace;
     CGFloat tlbH     = count*btnH + (count+1)*vSpace + 3*vSpace;
     CGFloat tlbX     = QPScreenWidth - tlbW - hSpace;
@@ -288,30 +285,30 @@
     }
     
     toolBar.userInteractionEnabled = YES;
-    toolBar.autoresizingMask       = (UIViewAutoresizingFlexibleLeftMargin |
-                                      UIViewAutoresizingFlexibleWidth      |
-                                      UIViewAutoresizingFlexibleTopMargin  |
-                                      UIViewAutoresizingFlexibleHeight);
-    
+    [toolBar autoresizing];
     return toolBar;
 }
 
-- (void)toolBarItemClicked:(UIButton *)sender
+- (void)tbItemClicked:(UIButton *)sender
 {
     NSUInteger index = sender.tag - 100;
     switch (index) {
-        case 0: { [self onGoBack]; }
+        case 0:
+            [self onGoBack];
             break;
-        case 1: { [self onGoForward]; }
+        case 1:
+            [self onGoForward];
             break;
-        case 2: { [self onReload]; }
+        case 2:
+            [self onReload];
             break;
-        case 3: { [self onStopLoading]; }
+        case 3:
+            [self onStopLoading];
             break;
-        case 4: { QPLog(); }
+        case 4:
+            QPLog("::");
             break;
-        default:
-            break;
+        default: break;
     }
 }
 

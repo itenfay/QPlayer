@@ -8,33 +8,33 @@
 
 #import "QPBaseViewController.h"
 
-@interface QPlayerController : QPBaseViewController
+@interface QPPlayerController : QPBaseViewController
 
-// Whether play the local video.
+/// Whether play the local video.
 @property (nonatomic, assign) BOOL isLocalVideo;
 
-// Whether the ZFPlayer play back.
+/// Whether the ZFPlayer play back.
 @property (nonatomic, assign) BOOL isZFPlayerPlayback;
 
-// Whether the ijkplayer play back.
+/// Whether the ijkplayer play back.
 @property (nonatomic, assign) BOOL isIJKPlayerPlayback;
 
-// Whether the media player play back.
+/// Whether the media player play back.
 @property (nonatomic, assign) BOOL isMediaPlayerPlayback;
 
-// The url for a video.
+/// The url for a video.
 @property (nonatomic, copy) NSString *videoUrl;
 
-// The name for a video.
+/// The name for a video.
 @property (nonatomic, copy) NSString *videoTitle;
 
-// The cover url for a video.
+/// The cover url for a video.
 @property (nonatomic, copy) NSString *coverUrl;
 
-// The placeholder cover image for a video.
+/// The placeholder cover image for a video.
 @property (nonatomic, strong) UIImage *placeholderCoverImage;
 
-// The decoding for a video. 0: soft decoding, 1: hard decoding.
+/// The decoding for a video. 0: soft decoding, 1: hard decoding.
 @property (nonatomic, assign) int videoDecoding;
 
 @end

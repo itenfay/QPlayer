@@ -6,20 +6,22 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVKit/AVKit.h>
-#import <AVFoundation/AVFoundation.h>
 #import <WebKit/WebKit.h>
 #import "QPBaseViewController.h"
 #import "DYFWebProgressView.h"
 #import "DYFNetworkSniffer.h"
+#import "OCGumbo.h"
+#import "OCGumbo+Query.h"
 
 @interface QPBaseWebViewController : QPBaseViewController <WKNavigationDelegate, WKUIDelegate>
 
 /// Wether a progress bar is added to the navigation bar.
-@property (nonatomic, assign) BOOL isAddedToNavBar;
+@property (nonatomic, assign, readonly) BOOL isAddedToNavBar;
 
 /// A collection of properties used to initialize a web view.
 - (WKWebViewConfiguration *)webViewConfiguration;
+/// An object for managing interactions between JavaScript code and your web view, and for filtering content in your web view.
+- (WKUserContentController *)userContentController;
 
 /// Initializes a web view with a specified frame.
 - (void)initWebViewWithFrame:(CGRect)frame;
@@ -29,14 +31,15 @@
 
 /// Returns a web view.
 - (WKWebView *)webView;
+/// Releases a web view.
+- (void)releaseWebView;
 
 /// Adds a progress view to a web view.
-- (void)willAddProgressViewToWebView;
+- (void)addProgressViewToWebView;
 /// Adds a progress view to a navigation bar.
-- (void)willAddProgressViewToNavigationBar;
-
+- (void)addProgressViewToNavigationBar;
 /// Removes a progress view.
-- (void)removeProgressView;
+- (void)hideProgressView;
 
 /// Navigates to the back item in the back-forward list.
 - (void)onGoBack;
@@ -47,17 +50,14 @@
 /// Stops loading all resources on the current page.
 - (void)onStopLoading;
 
-/// Releases a web view.
-- (void)releaseWebView;
-
 /// Loads the contents of a web.
-- (void)loadWebContents:(NSString *)urlString;
-/// Loads web url request.
-- (void)loadWebUrlRequest:(NSURLRequest *)urlRequest;
+- (void)loadRequestWithUrl:(NSString *)urlString;
+/// Loads web with url request.
+- (void)loadRequest:(NSURLRequest *)urlRequest;
 
-/// Builds the custom tool bar.
-- (UIImageView *)buildCustomToolBar;
-/// Builds the custom tool bar with a selector.
-- (UIImageView *)buildCustomToolBar:(SEL)selector;
+/// Builds the tool bar.
+- (UIImageView *)buildToolBar;
+/// Builds the tool bar with a selector.
+- (UIImageView *)buildToolBar:(SEL)selector;
 
 @end

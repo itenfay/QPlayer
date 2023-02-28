@@ -6,7 +6,7 @@
 //
 
 #import "QPSearchViewController.h"
-#import "QPlayerController.h"
+#import "QPPlayerController.h"
 
 @interface QPSearchViewController () <UITextFieldDelegate, UIScrollViewDelegate, PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
 @property (nonatomic, copy) NSString *requestUrl;

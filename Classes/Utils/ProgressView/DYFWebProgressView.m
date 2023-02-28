@@ -131,8 +131,7 @@
 {
     [self invalidateTimer];
     [self setProgress:1.f animated:YES];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
-                                 (int64_t)(0.25 * NSEC_PER_SEC)),
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)),
                    dispatch_get_main_queue(), ^{
         [self updateAlpha:0.f];
         [self setProgress:0.f];

@@ -181,4 +181,17 @@
     }
 }
 
+- (void)autoresizing
+{
+    self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin |
+                             UIViewAutoresizingFlexibleWidth      |
+                             UIViewAutoresizingFlexibleTopMargin  |
+                             UIViewAutoresizingFlexibleHeight);
+}
+
+- (void)autoresizing:(UIViewAutoresizing)mask
+{
+    self.autoresizingMask = mask;
+}
+
 @end

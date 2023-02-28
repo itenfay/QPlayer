@@ -1,20 +1,20 @@
 //
-//  LiveViewController.m
+//  QPLiveViewController.m
 //
 //  Created by chenxing on 2017/12/28. ( https://github.com/chenxing640/QPlayer )
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "LiveViewController.h"
+#import "QPLiveViewController.h"
 #import "QPlayerController.h"
 #import "QPTitleView.h"
 #import "DYFDropListView.h"
 
-@interface LiveViewController () <UITextFieldDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate, PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
+@interface QPLiveViewController () <UITextFieldDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate, PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
 @property (nonatomic, copy) NSString *requestUrl;
 @end
 
-@implementation LiveViewController
+@implementation QPLiveViewController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

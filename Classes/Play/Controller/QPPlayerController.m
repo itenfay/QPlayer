@@ -1,12 +1,12 @@
 //
-//  QPlayerController.m
+//  QPPlayerController.m
 //  QPlayer
 //
 //  Created by chenxing on 2017/12/28. ( https://github.com/chenxing640/QPlayer )
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPlayerController.h"
+#import "QPPlayerController.h"
 #import "QPTitleView.h"
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
@@ -18,7 +18,7 @@
  #import <ZFPlayer/KSMediaPlayerManager.h>
 */
 
-@interface QPlayerController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
+@interface QPPlayerController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) ZFPlayerController  *player;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
@@ -26,7 +26,7 @@
 
 @end
 
-@implementation QPlayerController
+@implementation QPPlayerController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

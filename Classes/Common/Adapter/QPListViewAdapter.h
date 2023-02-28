@@ -39,6 +39,6 @@
 @interface QPListViewAdapter : QPBaseAdapter <UITableViewDelegate, UITableViewDataSource>
 
 /// The data source.
-@property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, strong) NSMutableArray *dataSource;
 
 @end

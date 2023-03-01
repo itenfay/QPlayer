@@ -9,11 +9,31 @@
 
 @implementation QPBaseView
 
-- (void)autoresize {
-    self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin |
-                             UIViewAutoresizingFlexibleTopMargin  |
-                             UIViewAutoresizingFlexibleWidth      |
-                             UIViewAutoresizingFlexibleHeight);
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self setup];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self layoutUI];
+}
+
+- (void)autoresize
+{
+    [self autoresizing];
+}
+
+- (void)setup
+{
+    
+}
+
+- (void)layoutUI
+{
+    
 }
 
 @end

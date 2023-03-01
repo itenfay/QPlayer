@@ -8,15 +8,13 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 #import "QPBaseViewController.h"
-#import "DYFWebProgressView.h"
-#import "DYFNetworkSniffer.h"
+#import "QPWKWebViewAdapter.h"
 #import "OCGumbo.h"
 #import "OCGumbo+Query.h"
 
-@interface QPBaseWebViewController : QPBaseViewController <WKNavigationDelegate, WKUIDelegate>
+@interface QPBaseWebViewController : QPBaseViewController
 
-/// Wether a progress bar is added to the navigation bar.
-@property (nonatomic, assign, readonly) BOOL isAddedToNavBar;
+@property (nonatomic, strong) QPWKWebViewAdapter *adapter;
 
 /// A collection of properties used to initialize a web view.
 - (WKWebViewConfiguration *)webViewConfiguration;
@@ -25,21 +23,15 @@
 
 /// Initializes a web view with a specified frame.
 - (void)initWebViewWithFrame:(CGRect)frame;
-
 /// Initializes a web view with a specified frame and configuration.
 - (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration;
+/// Initializes a web view with a specified frame, configuration and adapter.
+- (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration adapter:(QPWKWebViewAdapter *)adapter;
 
 /// Returns a web view.
 - (WKWebView *)webView;
 /// Releases a web view.
 - (void)releaseWebView;
-
-/// Adds a progress view to a web view.
-- (void)addProgressViewToWebView;
-/// Adds a progress view to a navigation bar.
-- (void)addProgressViewToNavigationBar;
-/// Removes a progress view.
-- (void)hideProgressView;
 
 /// Navigates to the back item in the back-forward list.
 - (void)onGoBack;

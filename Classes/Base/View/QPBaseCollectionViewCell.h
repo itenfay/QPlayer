@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QPBaseCollectionViewCell : UICollectionViewCell
 
+- (void)setup;
+- (void)layoutUI;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -6,17 +6,45 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QPBaseDelegate.h"
+#import "QPBaseModel.h"
 
-@protocol QPListViewAdapterDelegate <NSObject>
+@class QPListViewAdapter;
+
+@protocol QPListViewAdapterDelegate <QPBaseDelegate>
 
 @optional
-- (void)selectCellData:(id)cellData;
-- (void)deleteCellData:(id)cellData;
+/// The number of sections in tableView.
+/// @param adapter The adapter for tableView.
+- (NSInteger)numberOfSectionsForAdapter:(QPListViewAdapter *)adapter;
+
+/// Returns a nonnegative floating-point value that specifies the height (in points) of the header for section.
+/// @param section An index number identifying a section of tableView.
+/// @param adapter The adapter for tableView.
+- (CGFloat)heightForHeaderInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter;
+
+/// Returns the view object to display at the top of the specified section
+/// @param section The index number of the section containing the header view.
+/// @param adapter The adapter for tableView.
+- (UIView *)viewForHeaderInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter;
+
+- (CGFloat)heightForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter;
+
+- (UIView *)viewForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter;
+
+- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter;
+
+- (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter;
 - (void)willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+
+- (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath;
+- (void)deselectCell:(QPBaseModel *)model AtIndexPath:(NSIndexPath *)indexPath;
+- (BOOL)deleteCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
-@protocol QPScrollViewAdapterDelegate <NSObject>
+@protocol QPScrollViewAdapterDelegate <QPBaseDelegate>
 
 @optional
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
@@ -28,7 +56,7 @@
 
 @interface QPBaseAdapter : NSObject
 
-@property (nonatomic, weak) id<QPScrollViewAdapterDelegate> scrollViewAdapterDelegate;
-@property (nonatomic, weak) id<QPListViewAdapterDelegate> listViewAdapterDelegate;
+@property (nonatomic, weak) id<QPScrollViewAdapterDelegate> scrollViewDelegate;
+@property (nonatomic, weak) id<QPListViewAdapterDelegate> listViewDelegate;
 
 @end

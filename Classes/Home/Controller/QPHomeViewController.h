@@ -6,7 +6,10 @@
 //
 
 #import "QPBaseViewController.h"
+#import "QPHomeView.h"
+#import "QPListViewAdapter.h"
+#import "QPHomePresenter.h"
 
 @interface QPHomeViewController : QPBaseViewController
-
+@property (nonatomic, strong) QPHomeView *homeView;
 @end

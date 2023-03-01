@@ -6,9 +6,9 @@
 //
 
 #import "QPSettingsViewController.h"
-#import "AboutMeViewController.h"
-#import "WifiManager.h"
-#import "TabBarController.h"
+#import "QPAboutMeViewController.h"
+#import "QPWifiManager.h"
+#import "QPTabBarController.h"
 
 #define SettingsCellHeight   50.f
 

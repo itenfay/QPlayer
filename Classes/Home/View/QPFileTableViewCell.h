@@ -7,8 +7,6 @@
 
 #import "QPBaseListViewCell.h"
 
-#define FileTableViewCellHeight 100.f
-
 @interface QPFileTableViewCell : QPBaseListViewCell
 
 /// Display thumbnail image.

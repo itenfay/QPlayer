@@ -47,4 +47,9 @@
  */
 - (void)endLoading;
 
+/**
+ Ends the loading of the progress immediately.
+ */
+- (void)endLoadingImmediately;
+
 @end

@@ -7,13 +7,9 @@
 
 #import "QPBaseDelegate.h"
 
-@class QPHomePresenter;
-
-@protocol QPModularDelegate <QPBaseDelegate>
+@protocol QPHomeViewDelegate <QPBaseDelegate>
 
 @optional
-
-- (void)loadHomeViewData:(QPHomePresenter *)presenter;
+- (void)reloadUI;
 
 @end
-

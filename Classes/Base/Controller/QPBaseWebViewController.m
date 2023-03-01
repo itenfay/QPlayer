@@ -9,7 +9,7 @@
 
 @interface QPBaseWebViewController ()
 @property (nonatomic, strong) WKWebView *wkWebView; // Declares a web view object.
-@property (nonatomic, strong) DYFWebProgressView *progressView;
+
 @end
 
 @implementation QPBaseWebViewController
@@ -28,7 +28,7 @@
     preferences.javaScriptCanOpenWindowsAutomatically = YES;
     config.preferences = preferences;
     //conf.processPool = [[WKProcessPool alloc] init];
-    config.userContentController = [[WKUserContentController alloc] init];
+    config.userContentController = self.userContentController;
     config.allowsInlineMediaPlayback = YES;
     if (@available(iOS 9.0, *)) {
         // The default value is YES.
@@ -59,9 +59,24 @@
 
 - (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration
 {
+    [self initWebViewWithFrame:frame configuration:configuration adapter:nil];
+}
+
+- (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration adapter:(QPWKWebViewAdapter *)adapter
+{
+    _adapter = adapter;
     if (!_wkWebView) {
         _wkWebView = [[WKWebView alloc] initWithFrame:frame configuration:configuration];
+        _wkWebView.UIDelegate = _adapter;
+        _wkWebView.navigationDelegate = _adapter;
     }
+}
+
+- (void)setAdapter:(QPWKWebViewAdapter *)adapter
+{
+    _adapter = adapter;
+    _wkWebView.UIDelegate = _adapter;
+    _wkWebView.navigationDelegate = _adapter;
 }
 
 - (WKWebView *)webView {
@@ -75,16 +90,6 @@
     }
 }
 
-- (void)addProgressViewToWebView
-{
-    _isAddedToNavBar = NO;
-}
-
-- (void)addProgressViewToNavigationBar
-{
-    _isAddedToNavBar = YES;
-}
-
 - (void)loadRequestWithUrl:(NSString *)urlString
 {
     NSURL *url = [NSURL URLWithString:urlString];
@@ -95,96 +100,6 @@
 - (void)loadRequest:(NSURLRequest *)urlRequest
 {
     [self.webView loadRequest:urlRequest];
-}
-
-- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
-{
-    // didStartProvisionalNavigation.
-}
-
-- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation
-{
-    // didReceiveServerRedirectForProvisionalNavigation.
-}
-
-- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation
-{
-    //[self adaptThemeForWebView];
-    [self showProgressView];
-}
-
-- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
-{
-    //[self adaptThemeForWebView];
-    [self hideProgressView];
-}
-
-- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
-{
-    [self hideProgressView];
-}
-
-- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
-{
-    [self hideProgressView];
-}
-
-- (void)showProgressView
-{
-    if (!_progressView) {
-        self.progressView.lineWidth = 2.f;
-        self.progressView.lineColor = QPColorFromRGB(248, 125, 36);
-        
-        if (self.isAddedToNavBar) {
-            [self.navigationBar addSubview:self.progressView];
-        } else {
-            [self.webView addSubview:self.progressView];
-        }
-        
-        [self.progressView startLoading];
-    }
-}
-
-- (void)hideProgressView
-{
-    if (_progressView) {
-        [self.progressView endLoading];
-        self.scheduleTask(self, @selector(releaseProgressView), nil, 0.3);
-    }
-}
-
-- (void)releaseProgressView
-{
-    _progressView = nil;
-}
-
-// Deprecated
-- (void)adaptThemeForWebView
-{
-    //[_wkWebView evaluateJavaScript:@"document.body.style.backgroundColor" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
-    //if (!error) {
-    //    QPLog(@"result: %@", result);
-    //} else {
-    //    QPLog(@"error: %@, %@", @(error.code), error.localizedDescription);
-    //}
-    //}];
-    NSString *bgColor   = @"";
-    NSString *textColor = @"";
-    
-    BOOL bValue = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
-    if (bValue && self.isDarkMode) {
-        bgColor   = @"'#1E1E1E'";
-        textColor = @"'#B4B4B4'";
-    } else {
-        bgColor   = @"'#F3F3F3'";
-        textColor = @"'#303030'";
-    }
-    
-    // document.getElementsByTagName('body')[0].style.backgroundColor
-    // document.body.style.backgroundColor
-    [_wkWebView evaluateJavaScript:[NSString stringWithFormat:@"document.body.style.backgroundColor=%@", bgColor] completionHandler:NULL];
-    // document.getElementsByTagName('body')[0].style.webkitTextFillColor
-    [_wkWebView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor=%@", textColor] completionHandler:NULL];
 }
 
 - (void)onGoBack
@@ -203,10 +118,7 @@
 
 - (void)onReload
 {
-    if (_progressView) {
-        [self.progressView endLoading];
-        _progressView = nil;
-    }
+    [_adapter hideProgressViewImmediately];
     [self.webView reload];
 }
 
@@ -215,25 +127,6 @@
     if ([self.webView isLoading]) {
         [self.webView stopLoading];
     }
-}
-
-- (DYFWebProgressView *)progressView
-{
-    if (!_progressView) {
-        CGRect frame         = CGRectZero;
-        frame.origin.x       = 0.f;
-        frame.size.height    = 2.f;
-        if (self.isAddedToNavBar) {
-            frame.origin.y   = self.navigationBar.height - frame.size.height;
-            frame.size.width = self.navigationBar.width;
-            _progressView    = [[DYFWebProgressView alloc] initWithFrame:frame];
-        } else {
-            frame.origin.y   = 0;
-            frame.size.width = self.webView.width;
-            _progressView    = [[DYFWebProgressView alloc] initWithFrame:frame];
-        }
-    }
-    return _progressView;
 }
 
 - (UIImageView *)buildToolBar

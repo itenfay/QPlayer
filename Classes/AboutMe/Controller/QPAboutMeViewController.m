@@ -1,26 +1,26 @@
 //
-//  AboutMeViewController.m
+//  QPAboutMeViewController.m
 //
 //  Created by chenxing on 2017/6/28.
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "AboutMeViewController.h"
-#import "AboutMeTableHeader.h"
-#import "AboutMeTableFooter.h"
+#import "QPAboutMeViewController.h"
+#import "QPAboutMeTableHeader.h"
+#import "QPAboutMeTableFooter.h"
 #import "QPTitleView.h"
 
 #define AboutMeTableHeaderHeight 280.f
 #define AboutMeTableCellHeight    46.f
 
-@interface AboutMeViewController () <UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
+@interface QPAboutMeViewController () <UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NSMutableArray *dataArray;
 @property (weak, nonatomic) IBOutlet UITableView *m_tableView;
 
 @end
 
-@implementation AboutMeViewController
+@implementation QPAboutMeViewController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

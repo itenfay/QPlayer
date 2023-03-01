@@ -9,7 +9,10 @@
 
 @interface QPBaseView : UIView
 
-/// It that determines how the receiver resizes itself when its superview’s bounds change.
+/// Resizes itself when its superview’s bounds change.
 - (void)autoresize;
+
+- (void)setup;
+- (void)layoutUI;
 
 @end

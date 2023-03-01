@@ -16,6 +16,7 @@
 #import "QPTitleView.h"
 #import "DYFNetworkSniffer.h"
 #import "ApplicationHelper.h"
+#import "QPBaseViewController.h"
 
 #pragma mark - Category
 

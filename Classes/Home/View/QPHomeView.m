@@ -7,56 +7,63 @@
 
 #import "QPHomeView.h"
 
+@interface QPHomeView ()
+@property (nonatomic, strong) UITableView *tableView;
+@end
+
 @implementation QPHomeView
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
     if (self) {
-        
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
 
-- (void)buildHomeView:(QPBaseAdapter *)adapter {
-    [self buildTableView:adapter];
-    [self buildMJRefreshHeader];
+- (void)setup
+{
+    self.backgroundColor = [UIColor clearColor];
 }
 
-- (void)buildTableView:(QPBaseAdapter *)adapter {
+- (UITableView *)mTableView
+{
+    return _tableView;
+}
+
+- (void)buildView
+{
+    [self setupTableView:_adapter];
+    [self setupRefreshHeader];
+}
+
+- (void)setupTableView:(QPBaseAdapter *)adapter
+{
     self.tableView.backgroundColor  = [UIColor clearColor];
     self.tableView.dataSource       = (QPListViewAdapter *)adapter;
     self.tableView.delegate         = (QPListViewAdapter *)adapter;
     self.tableView.separatorStyle   = UITableViewCellSeparatorStyleNone;
-    
-    self.tableView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin |
-                                       UIViewAutoresizingFlexibleTopMargin  |
-                                       UIViewAutoresizingFlexibleWidth      |
-                                       UIViewAutoresizingFlexibleHeight);
-    
+    [self.tableView autoresizing];
     [self addSubview:self.tableView];
 }
 
-- (void)buildMJRefreshHeader {
+- (void)setupRefreshHeader
+{
     @QPWeakify(self)
-    
     MJRefreshNormalHeader *mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [weak_self loadNewData];
     }];
     mj_header.lastUpdatedTimeLabel.hidden = YES;
-    
     self.tableView.mj_header = mj_header;
 }
 
-- (void)loadNewData {
-    //[self loadFileList];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+- (void)loadNewData
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.tableView.mj_header endRefreshing];
-        [self reloadData];
+        [self reloadUI];
     });
-}
-
-- (void)reloadData {
-    [self.tableView reloadData];
 }
 
 - (UITableView *)tableView {
@@ -67,6 +74,11 @@
         _tableView   = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     }
     return _tableView;
+}
+
+- (void)reloadUI
+{
+    [self.tableView reloadData];
 }
 
 @end

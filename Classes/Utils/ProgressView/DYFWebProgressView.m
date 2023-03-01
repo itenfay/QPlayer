@@ -138,6 +138,14 @@
     });
 }
 
+- (void)endLoadingImmediately
+{
+    [self invalidateTimer];
+    [self setProgress:1.f animated:YES];
+    [self updateAlpha:0.f];
+    [self setProgress:0.f];
+}
+
 - (void)updateAlpha:(CGFloat)alpha
 {
     self.alpha = alpha;

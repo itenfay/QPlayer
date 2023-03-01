@@ -6,8 +6,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QPBaseAdapter.h"
+#import "QPBasePresenter.h"
 
 @interface QPBaseViewController : UIViewController
+
+/// Declares a base adapter.
+@property (nonatomic, strong) QPBaseAdapter *adapter;
+/// Declares a base presenter.
+@property (nonatomic, strong) QPBasePresenter *presenter;
 
 /// The property determines whether the parsing button is required.
 @property (nonatomic, assign) BOOL parsingButtonRequired;
@@ -49,5 +56,9 @@
 
 /// Return a back button with a target and selector.
 - (UIButton *)backButtonWithTarget:(id)target selector:(SEL)selector;
+
+- (void)addLeftNavigationBarButton:(UIButton *)button;
+- (void)addRightNavigationBarButton:(UIButton *)button;
+- (void)setNavigationBarTitle:(NSString *)title;
 
 @end

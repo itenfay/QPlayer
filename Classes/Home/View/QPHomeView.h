@@ -7,9 +7,14 @@
 
 #import "QPBaseView.h"
 #import "QPListViewAdapter.h"
+#import "QPModularDelegate.h"
+#import "QPHomeListViewAdapter.h"
 
-@interface QPHomeView : QPBaseView
+@interface QPHomeView : QPBaseView <QPHomeViewDelegate>
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong, readonly) UITableView *mTableView;
+@property (nonatomic, strong) QPListViewAdapter *adapter;
+
+- (void)buildView;
 
 @end

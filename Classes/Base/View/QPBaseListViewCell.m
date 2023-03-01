@@ -9,12 +9,31 @@
 
 @implementation QPBaseListViewCell
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
+    [self setup];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self layoutUI];
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
+}
+
+- (void)setup
+{
+    
+}
+
+- (void)layoutUI
+{
+    
 }
 
 @end

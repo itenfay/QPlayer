@@ -189,6 +189,20 @@
 #define QPColorFromHex(hex)           [UIColor colorWithRed:((float)((hex & 0xFF0000) >> 16))/255.0 green:((float)((hex & 0xFF00) >> 8))/255.0 blue:((float)(hex & 0xFF))/255.0 alpha:1.0]
 #endif
 
+#ifndef QPRespondsToSelector
+#define QPRespondsToSelector(target, selector) [(target) respondsToSelector:selector]
+#endif
+
+#ifndef QPSuppressPerformSelectorLeakWarning
+#define QPSuppressPerformSelectorLeakWarning(Stuff)                 \
+do {                                                                \
+_Pragma("clang diagnostic push")                                    \
+_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+Stuff;                                                              \
+_Pragma("clang diagnostic pop")                                     \
+} while (0)
+#endif
+
 // Resolving block circular reference: __weak(arc)/__block
 #ifndef QPWeakify
 #if DEBUG

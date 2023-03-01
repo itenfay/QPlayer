@@ -9,4 +9,7 @@
 
 @interface QPBaseListViewCell : UITableViewCell
 
+- (void)setup;
+- (void)layoutUI;
+
 @end

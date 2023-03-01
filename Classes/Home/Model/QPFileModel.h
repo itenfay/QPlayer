@@ -9,25 +9,25 @@
 
 @interface QPFileModel : QPBaseModel
 
-// The size of file.
+/// The size of file.
 @property (nonatomic, assign) double fileSize;
 
-// The date of file creation.
+/// The date of file creation.
 @property (nonatomic, copy) NSString *creationDate;
 
-// The date of file modification.
+/// The date of file modification.
 @property (nonatomic, copy) NSString *modificationDate;
 
-// The path of file.
+/// The path of file.
 @property (nonatomic, copy) NSString *path;
 
-// The name of file.
+/// The name of file.
 @property (nonatomic, copy) NSString *name;
 
-// The title of file.
+/// The title of file.
 @property (nonatomic, copy) NSString *title;
 
-// The type of file.
+/// The type of file.
 @property (nonatomic, copy) NSString *fileType;
 
 @end

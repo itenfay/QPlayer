@@ -221,6 +221,39 @@
     return button;
 }
 
+- (void)addLeftNavigationBarButton:(UIButton *)button
+{
+    NSMutableArray *items = self.navigationItem.leftBarButtonItems.mutableCopy;
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+    if (items == nil) {
+        UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        spaceItem.width = 10;
+        items = @[spaceItem, item].mutableCopy;
+    } else {
+        [items addObject:item];
+    }
+    self.navigationItem.leftBarButtonItems = items;
+}
+
+- (void)addRightNavigationBarButton:(UIButton *)button
+{
+    NSMutableArray *items = self.navigationItem.rightBarButtonItems.mutableCopy;
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+    if (items == nil) {
+        UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        spaceItem.width = 10;
+        items = @[item, spaceItem].mutableCopy;
+    } else {
+        [items addObject:item];
+    }
+    self.navigationItem.rightBarButtonItems = items;
+}
+
+- (void)setNavigationBarTitle:(NSString *)title
+{
+    self.navigationItem.title = title;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

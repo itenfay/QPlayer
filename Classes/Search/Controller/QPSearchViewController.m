@@ -173,7 +173,7 @@
 }
 
 - (void)buildWebToolBar {
-    UIImageView *toolBar = [self buildCustomToolBar];
+    UIImageView *toolBar = [self buildToolBar];
     toolBar.tag = 9999;
     toolBar.alpha = 0.f;
     [self.view addSubview:toolBar];
@@ -247,7 +247,7 @@
     if (!QPlayerIsPlaying()) {
         QPlayerSavePlaying(YES);
         
-        QPlayerController *qpc    = [[QPlayerController alloc] init];
+        QPPlayerController *qpc    = [[QPPlayerController alloc] init];
         qpc.isMediaPlayerPlayback = YES;
         qpc.videoTitle            = url;
         qpc.videoUrl              = url;

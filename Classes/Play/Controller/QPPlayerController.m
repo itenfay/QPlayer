@@ -11,7 +11,6 @@
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFAVPlayerManager.h>
 #import <ZFPlayer/ZFPlayerControlView.h>
-
 #import "KSYMediaPlayerManager.h" // Conflicts with ijkplayer.
 /*
  #import <ZFPlayer/ZFIJKPlayerManager.h>
@@ -25,7 +24,8 @@
 
 @implementation QPPlayerController
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         [self setHidesBottomBarWhenPushed:YES];
@@ -35,113 +35,44 @@
     return self;
 }
 
-- (void)loadView {
-    [super loadView];
-    
-    [self addContainerView];
-    
-    [self initWebView];
-    [self buildWebToolBar];
+- (BOOL)shouldAutorotate
+{
+    return self.player.shouldAutorotate;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    QPLog(@">>> videoTitle: %@", self.videoTitle);
-    QPLog(@">>> videoUrl: %@", self.videoUrl);
-    QPLog(@">>> videoDecoding: %d", self.videoDecoding);
-    QPAppDelegate.allowOrentitaionRotation = YES;
-    
-    [self setupNavigationItems];
-    [self configureControlView];
-    [self loadDefaultRequest];
-    
-    self.scheduleTask(self, @selector(inspectWebToolBarAlpha), nil, 2.5);
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self interactivePopGestureAction];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self prepareToPlay];
-}
-
-- (void)prepareToPlay {
-    if (self.isLocalVideo && self.isZFPlayerPlayback) {
-        
-        NSURL *fileURL = [NSURL fileURLWithPath:self.videoUrl];
-        [self useZFPlayerToPlay:fileURL];
-        
-    } else if (self.isLocalVideo && self.isIJKPlayerPlayback) {
-        
-        NSURL *fileURL = [NSURL fileURLWithPath:self.videoUrl];
-        [self useIJKPlayerToPlay:fileURL];
-        
-    } else if (self.isIJKPlayerPlayback) {
-        
-        NSURL *aURL = [NSURL URLWithString:self.videoUrl];
-        [self useIJKPlayerToPlay:aURL]; // Live.
-        
-    } else if (self.isLocalVideo && self.isMediaPlayerPlayback) {
-        
-        NSURL *fileURL = [NSURL fileURLWithPath:self.videoUrl];
-        [self useKSYMediaPlayerToPlay:fileURL];
-        
-    } else if (self.isMediaPlayerPlayback) {
-        
-        NSURL *aURL = [NSURL URLWithString:self.videoUrl];
-        [self useKSYMediaPlayerToPlay:aURL]; // Live.
-        
-    } else {
-        
-        NSURL *aURL = [NSURL URLWithString:self.videoUrl];
-        [self useZFPlayerToPlay:aURL];
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    if (self.player.isFullScreen && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) {
+        return UIInterfaceOrientationMaskLandscape;
     }
+    return UIInterfaceOrientationMaskPortrait;
 }
 
-- (void)interactivePopGestureAction {
-    if (self.navigationController) {
-        self.navigationController.interactivePopGestureRecognizer.delegate = self;
-        self.navigationController.interactivePopGestureRecognizer.enabled  = YES;
-    }
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    //if (self.player.isFullScreen) {
+    //    return UIStatusBarStyleLightContent;
+    //}
+    return UIStatusBarStyleLightContent;
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    QPAppDelegate.allowOrentitaionRotation = NO;
-    
-    QPlayerSavePlaying(NO);
-    [self.player stopCurrentPlayingView];
+- (BOOL)prefersStatusBarHidden {
+    //return self.player.isStatusBarHidden;
+    return NO;
 }
 
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    
-    CGFloat cX = 0.f;
-    CGFloat cY = 0.f;
-    CGFloat cW = self.view.width;
-    CGFloat cH = cW*9/16;
-    self.containerView.frame = CGRectMake(cX, cY, cW, cH);
-    
-    self.webView.x      = self.containerView.x;
-    self.webView.y      = self.containerView.bottom;
-    self.webView.width  = self.view.width;
-    self.webView.height = self.view.height - self.containerView.height;
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationSlide;
 }
 
-- (void)setupNavigationItems {
-    self.navigationItem.hidesBackButton = YES;
-    
+- (void)configureNavigationItems {
     QPTitleView *titleView = [[QPTitleView alloc] init];
     titleView.left   = 0.f;
     titleView.top    = 0.f;
     titleView.width  = self.view.width;
     titleView.height = 36.f;
     titleView.userInteractionEnabled = YES;
-    self.navigationItem.titleView = titleView;
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backButton.width     = 30.f;
@@ -177,10 +108,101 @@
     titleLabel.top    = (titleView.height - titleLabel.height)/2;
     titleLabel.width  = portraitButton.left - titleLabel.left - 12.f;
     [titleView addSubview:titleLabel];
+    
+    self.navigationItem.titleView = titleView;
+    self.navigationItem.hidesBackButton = YES;
 }
 
-- (void)back:(UIButton *)sender {
+- (void)back:(UIButton *)sender
+{
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)loadView
+{
+    [super loadView];
+    [self addContainerView];
+    [self initWebView];
+    [self buildWebToolBar];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    QPLog(@">>> videoTitle: %@", self.videoTitle);
+    QPLog(@">>> videoUrl: %@", self.videoUrl);
+    QPLog(@">>> videoDecoding: %d", self.videoDecoding);
+    QPAppDelegate.allowOrentitaionRotation = YES;
+    
+    [self configureNavigationItems];
+    [self configureControlView];
+    [self loadDefaultRequest];
+    
+    self.scheduleTask(self, @selector(inspectWebToolBarAlpha), nil, 2.5);
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self ];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self prepareToPlay];
+}
+
+- (void)prepareToPlay
+{
+    if (self.isLocalVideo && self.isZFPlayerPlayback) {
+        NSURL *fileURL = [NSURL fileURLWithPath:self.videoUrl];
+        [self useZFPlayerToPlay:fileURL];
+    } else if (self.isLocalVideo && self.isIJKPlayerPlayback) {
+        
+        NSURL *fileURL = [NSURL fileURLWithPath:self.videoUrl];
+        [self useIJKPlayerToPlay:fileURL];
+        
+    } else if (self.isIJKPlayerPlayback) {
+        
+        NSURL *aURL = [NSURL URLWithString:self.videoUrl];
+        [self useIJKPlayerToPlay:aURL]; // Live.
+        
+    } else if (self.isLocalVideo && self.isMediaPlayerPlayback) {
+        
+        NSURL *fileURL = [NSURL fileURLWithPath:self.videoUrl];
+        [self useKSYMediaPlayerToPlay:fileURL];
+        
+    } else if (self.isMediaPlayerPlayback) {
+        
+        NSURL *aURL = [NSURL URLWithString:self.videoUrl];
+        [self useKSYMediaPlayerToPlay:aURL]; // Live.
+        
+    } else {
+        
+        NSURL *aURL = [NSURL URLWithString:self.videoUrl];
+        [self useZFPlayerToPlay:aURL];
+    }
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    QPAppDelegate.allowOrentitaionRotation = NO;
+    QPlayerSavePlaying(NO);
+    [self.player stopCurrentPlayingView];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    CGFloat cX = 0.f;
+    CGFloat cY = 0.f;
+    CGFloat cW = self.view.width;
+    CGFloat cH = cW*9/16;
+    self.containerView.frame = CGRectMake(cX, cY, cW, cH);
+    
+    self.webView.x      = self.containerView.x;
+    self.webView.y      = self.containerView.bottom;
+    self.webView.width  = self.view.width;
+    self.webView.height = self.view.height - self.containerView.height;
 }
 
 - (void)usingPortraitVideoPlayback:(UIButton *)sender {
@@ -235,10 +257,7 @@
 - (void)inspectWebToolBarAlpha {
     if (self.webToolBar.alpha > 0.f) {
         self.webToolBar.alpha = 0.f;
-        self.scheduleTask(self,
-                          @selector(cancelHidingToolBar),
-                          nil,
-                          0);
+        self.scheduleTask(self, @selector(cancelHidingToolBar), nil, 0);
     }
 }
 
@@ -257,7 +276,6 @@
 
 - (void)useZFPlayerToPlay:(NSURL *)aURL {
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init]; // playerManager
-    
     // player
     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
     
@@ -299,7 +317,6 @@
 - (void)useIJKPlayerToPlay:(NSURL *)aURL {
     NSString *urlScheme = [aURL scheme];
     QPLog(@"urlScheme: %@", urlScheme);
-    
     /*
      ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init]; // playerManager
      
@@ -442,8 +459,8 @@
 //    //[options setPlayerOptionIntValue:1 forKey:@"packet-buffering"];
 //}
 
-
-- (void)loadRequest:(NSString *)url {
+- (void)loadRequest:(NSString *)url
+{
     NSURL *aURL = [NSURL URLWithString:url];
     NSURLRequest *request = [NSURLRequest requestWithURL:aURL];
     [self.webView loadRequest:request];
@@ -535,33 +552,36 @@
 
 #pragma make - UIScrollViewDelegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     [self showToolBarWithAnimation];
     [self cancelHidingToolBar];
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
     [self delayToHideToolBar];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
     if (!decelerate) {
         [self delayToHideToolBar];
     }
 }
 
-- (void)delayToHideToolBar {
-    self.scheduleTask(self,
-                      @selector(hideToolBar),
-                      nil,
-                      6);
+- (void)delayToHideToolBar
+{
+    self.scheduleTask(self, @selector(hideToolBar), nil, 6);
 }
 
-- (void)hideToolBar {
+- (void)hideToolBar
+{
     [self hideToolBarWithAnimation];
 }
 
-- (void)showToolBarWithAnimation {
+- (void)showToolBarWithAnimation
+{
     UIImageView *toolBar = self.webToolBar;
     if (toolBar.alpha == 0.f) {
         [UIView animateWithDuration:0.5 animations:^{
@@ -570,7 +590,8 @@
     }
 }
 
-- (void)hideToolBarWithAnimation {
+- (void)hideToolBarWithAnimation
+{
     UIImageView *toolBar = self.webToolBar;
     if (toolBar.alpha == 1.f) {
         [UIView animateWithDuration:0.5 animations:^{
@@ -579,38 +600,13 @@
     }
 }
 
-- (void)cancelHidingToolBar {
+- (void)cancelHidingToolBar
+{
     self.cancelPerformingSelector(self, @selector(hideToolBar), nil);
 }
 
-- (BOOL)shouldAutorotate {
-    return self.player.shouldAutorotate;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    if (self.player.isFullScreen && self.player.orientationObserver.fullScreenMode == ZFFullScreenModeLandscape) {
-        return UIInterfaceOrientationMaskLandscape;
-    }
-    return UIInterfaceOrientationMaskPortrait;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    //if (self.player.isFullScreen) {
-    //    return UIStatusBarStyleLightContent;
-    //}
-    return UIStatusBarStyleLightContent;
-}
-
-- (BOOL)prefersStatusBarHidden {
-    //return self.player.isStatusBarHidden;
-    return NO;
-}
-
-- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
-    return UIStatusBarAnimationSlide;
-} 
-
-- (ZFPlayerControlView *)controlView {
+- (ZFPlayerControlView *)controlView
+{
     if (!_controlView) {
         _controlView = [ZFPlayerControlView new];
         _controlView.fastViewAnimated       = YES;
@@ -631,12 +627,13 @@
     return _containerView;
 }
 
-- (void)dealloc {
-    QPLog(@" >>>>>>>>>> ");
+- (void)dealloc
+{
     [self releaseWebView];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 

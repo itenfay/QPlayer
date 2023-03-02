@@ -8,6 +8,7 @@
 #import "QPBasePresenter.h"
 #import "QPWifiManager.h"
 #import "QPFileHelper.h"
+#import "QPHomeViewController.h"
 
 // Transforms two objects's title to pinying and sorts them.
 NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
@@ -24,8 +25,8 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
     return [str1 localizedCompare:str2];
 }
 
-@interface QPHomePresenter : QPBasePresenter <WebFileResourceDelegate>
-
+@interface QPHomePresenter : QPBasePresenter <WebFileResourceDelegate, QPPresenterDelegate>
+@property (nonatomic, weak) QPHomeView *view;
 @property (nonatomic, weak) QPBaseViewController *viewController;
 
 - (instancetype)initWithViewController:(QPBaseViewController *)viewController;

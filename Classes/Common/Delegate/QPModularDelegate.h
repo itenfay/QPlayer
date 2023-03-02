@@ -7,6 +7,14 @@
 
 #import "QPBaseDelegate.h"
 
+@protocol QPPresenterDelegate <QPBaseDelegate>
+- (void)setView:(NSObject *)view;
+- (void)setViewController:(UIViewController *)viewController;
+@optional
+- (void)present;
+- (void)presentWithModel:(id)model viewController:(UIViewController *)viewController;
+@end
+
 @protocol QPHomeViewDelegate <QPBaseDelegate>
 
 @optional

@@ -31,7 +31,6 @@
     [self willAddProgressViewToWebView];
     
     [self buildWebToolBar];
-    [self addThemeStyleChangedObserver];
 }
 
 - (void)viewDidLoad {
@@ -311,7 +310,7 @@
     QPLog(@"[error]: %@", errMessage);
     
     errMessage = [NSString stringWithFormat:@"An error occurred. Code is %zi", error.code];
-    [QPHudObject showErrorMessage:errMessage];
+    [QPHudUtils showErrorMessage:errMessage];
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
@@ -326,7 +325,7 @@
     QPLog(@"[error]: %@", errMessage);
     
     errMessage = [NSString stringWithFormat:@"An error occurred. Code is %zi", error.code];
-    [QPHudObject showErrorMessage:errMessage];
+    [QPHudUtils showErrorMessage:errMessage];
 }
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
@@ -398,7 +397,7 @@
             if (QPlayerDetermineWhetherToPlay()) {
                 if (![self parse80sHtmlString:aURL]) {
                     [self delayToScheduleTask:1.0 completion:^{
-                        [QPHudObject hideHUD];
+                        [QPHudUtils hideHUD];
                     }];
                 };
             }
@@ -427,7 +426,7 @@
 
 - (BOOL)parse80sHtmlString:(NSURL *)aURL {
     
-    [QPHudObject showActivityMessageInView:@"正在解析..."];
+    [QPHudUtils showActivityMessageInView:@"正在解析..."];
     
     BOOL shouldPlay = NO;
     NSURL *newURL = [aURL copy];
@@ -506,7 +505,7 @@
         return;
     }
     
-    [QPHudObject showActivityMessageInView:@"正在解析..."];
+    [QPHudUtils showActivityMessageInView:@"正在解析..."];
     
     NSString *videoTitle = self.webView.title;
     QPLog(@"videoTitle: %@", videoTitle);
@@ -518,7 +517,7 @@
     } else {
         
         [self delayToScheduleTask:1.0 completion:^{
-            [QPHudObject hideHUD];
+            [QPHudUtils hideHUD];
         }];
     }
 }
@@ -529,7 +528,7 @@
         QPlayerSavePlaying(YES);
         
         [self delayToScheduleTask:1.0 completion:^{
-            [QPHudObject hideHUD];
+            [QPHudUtils hideHUD];
             
             QPlayerController *qpc = [[QPlayerController alloc] init];
             qpc.videoTitle         = title;

@@ -6,15 +6,11 @@
 //
 
 #import "QPBaseViewController.h"
-#if __has_include(<SafariServices/SafariServices.h>)
-#import <SafariServices/SafariServices.h>
-
-@interface QPAboutMeViewController : QPBaseViewController <SFSafariViewControllerDelegate>
-#else
+#import "QPAboutMeListViewAdapter.h"
 
 @interface QPAboutMeViewController : QPBaseViewController
-#endif
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *m_tableViewBottom;
+@property (strong, nonatomic) QPAboutMeListViewAdapter *adapter;
 
 @end

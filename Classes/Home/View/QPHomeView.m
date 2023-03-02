@@ -8,7 +8,8 @@
 #import "QPHomeView.h"
 
 @interface QPHomeView ()
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UITableView *mTableView;
+@property (nonatomic, copy) HomeReloadDataBlock reloadDataBlock;
 @end
 
 @implementation QPHomeView
@@ -27,9 +28,9 @@
     self.backgroundColor = [UIColor clearColor];
 }
 
-- (UITableView *)mTableView
+- (UITableView *)tableView
 {
-    return _tableView;
+    return self.mTableView;
 }
 
 - (void)buildView
@@ -40,12 +41,15 @@
 
 - (void)setupTableView:(QPBaseAdapter *)adapter
 {
-    self.tableView.backgroundColor  = [UIColor clearColor];
-    self.tableView.dataSource       = (QPListViewAdapter *)adapter;
-    self.tableView.delegate         = (QPListViewAdapter *)adapter;
-    self.tableView.separatorStyle   = UITableViewCellSeparatorStyleNone;
-    [self.tableView autoresizing];
-    [self addSubview:self.tableView];
+    self.mTableView.backgroundColor = [UIColor clearColor];
+    self.mTableView.dataSource      = (QPListViewAdapter *)adapter;
+    self.mTableView.delegate        = (QPListViewAdapter *)adapter;
+    self.mTableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
+    self.mTableView.rowHeight       = UITableViewAutomaticDimension;
+    self.mTableView.estimatedRowHeight = 60.f;
+    self.mTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    [self.mTableView autoresizing];
+    [self addSubview:self.mTableView];
 }
 
 - (void)setupRefreshHeader
@@ -58,27 +62,30 @@
     self.tableView.mj_header = mj_header;
 }
 
-- (void)loadNewData
+- (void)reloadData:(HomeReloadDataBlock)block
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.tableView.mj_header endRefreshing];
-        [self reloadUI];
-    });
+    _reloadDataBlock = block;
 }
 
-- (UITableView *)tableView {
-    if (!_tableView) {
+- (void)loadNewData
+{
+    !_reloadDataBlock ?: _reloadDataBlock();
+}
+
+- (UITableView *)mTableView
+{
+    if (!_mTableView) {
         CGFloat tW   = QPScreenWidth;
         CGFloat tH   = self.height - QPTabBarHeight;
         CGRect frame = CGRectMake(0, 0, tW, tH);
-        _tableView   = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+        _mTableView   = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     }
-    return _tableView;
+    return _mTableView;
 }
 
 - (void)reloadUI
 {
-    [self.tableView reloadData];
+    [self.mTableView reloadData];
 }
 
 @end

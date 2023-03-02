@@ -12,10 +12,8 @@
 #import "QPSettingsViewController.h"
 
 @interface QPTabBarController ()
-
 // The property determines whether The dark interface style was truned on.
 @property (nonatomic, assign) BOOL isDarkMode;
-
 @end
 
 @implementation QPTabBarController
@@ -66,9 +64,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self updateTabBarAppearance:NO];
     [self setup];
-    [self identifyMode];
+    [self adaptThemeStyle];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -76,23 +73,6 @@
     [super viewWillAppear: animated];
     [self needsStatusBarAppearanceUpdate];
     [self needsUpdateOfSupportedInterfaceOrientations];
-}
-
-- (void)updateTabBarAppearance:(BOOL)isDark
-{
-    if (@available(iOS 13.0, *)) {
-        UITabBarAppearance *appearance = [UITabBarAppearance new];
-        /// 背景色
-        appearance.backgroundColor = isDark ? QPColorFromRGB(20, 20, 20) : UIColor.whiteColor;
-        /// 去掉半透明效果
-        appearance.backgroundEffect = nil;
-        /// 去一条阴影线
-        appearance.shadowColor = UIColor.clearColor;
-        self.tabBar.standardAppearance = appearance;
-        if (@available(iOS 15.0, *)) {
-            self.tabBar.scrollEdgeAppearance = appearance;
-        }
-    }
 }
 
 - (void)setup
@@ -133,12 +113,27 @@
     return [[QPBaseNavigationController alloc] initWithRootViewController:viewController];
 }
 
-- (void)identifyMode
+- (void)adaptTabBarAppearance:(BOOL)isDark
 {
     if (@available(iOS 13.0, *)) {
-        
+        UITabBarAppearance *appearance = [UITabBarAppearance new];
+        /// 背景色
+        appearance.backgroundColor = isDark ? QPColorFromRGB(20, 20, 20) : UIColor.whiteColor;
+        /// 去掉半透明效果
+        appearance.backgroundEffect = nil;
+        /// 去一条阴影线
+        appearance.shadowColor = UIColor.clearColor;
+        self.tabBar.standardAppearance = appearance;
+        if (@available(iOS 15.0, *)) {
+            self.tabBar.scrollEdgeAppearance = appearance;
+        }
+    }
+}
+
+- (void)adaptThemeStyle
+{
+    if (@available(iOS 13.0, *)) {
         UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
-        
         if (mode == UIUserInterfaceStyleDark) {
             // Dark Mode
             self.isDarkMode = YES;
@@ -146,50 +141,39 @@
             // Light Mode or unspecified Mode
             self.isDarkMode = NO;
         }
-        
     } else {
-        
         self.isDarkMode = NO;
     }
-    
-    [self adjustTabBarThemeStyle];
+    [self _adaptThemeStyle];
 }
 
-- (void)adjustTabBarThemeStyle
+- (void)_adaptThemeStyle
 {
-    [self updateTabBarAppearance:self.isDarkMode];
-    
-    UIColor *normalColor = self.isDarkMode ? QPColorFromRGB(200, 200, 200) : [UIColor grayColor];
-    
+    [self adaptTabBarAppearance:_isDarkMode];
+    UIColor *normalColor = _isDarkMode ? QPColorFromRGB(200, 200, 200) : [UIColor grayColor];
     UIColor *selectedColor = QPColorFromRGB(58, 60, 66);
-    if (self.isDarkMode) {
+    if (_isDarkMode) {
         selectedColor = QPColorFromRGB(39, 220, 203);
     }
     
     UIImage *bgImage = [self imageWithColor:QPColorFromRGB(188, 188, 188)];
-    if (self.isDarkMode) {
+    if (_isDarkMode) {
         bgImage = [self imageWithColor:QPColorFromRGB(88, 88, 88)];
     }
     UIImage *shadowImage = [self imageWithColor:UIColor.clearColor];
     
     UIFont *font = [UIFont boldSystemFontOfSize:13.f];
     UITabBarItem *tabBarItem = [UITabBarItem appearance];
-    
     BOOL bValue = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
     if (bValue) {
-        
         if (@available(iOS 10.0, *)) {
-            
             self.tabBar.unselectedItemTintColor = normalColor;
             self.tabBar.tintColor = selectedColor;
-            
             [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font}
                                       forState:UIControlStateNormal];
             [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font}
                                       forState:UIControlStateSelected];
-            
         } else {
-            
             [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : normalColor,
                                                  NSFontAttributeName : font}
                                       forState:UIControlStateNormal];
@@ -199,33 +183,24 @@
         }
         
         if (@available(iOS 13.0, *)) {
-            
             UITabBarAppearance *appearance = [self.tabBar.standardAppearance copy];
             appearance.backgroundImage = bgImage;
             appearance.shadowImage = shadowImage;
             [appearance configureWithTransparentBackground];
             self.tabBar.standardAppearance = appearance;
-            
         } else {
-            
             [self.tabBar setBackgroundImage:[self imageWithColor:QPColorFromRGB(188, 188, 188)]];
             [self.tabBar setShadowImage:[self imageWithColor:UIColor.clearColor]];
         }
-        
     } else {
-        
         if (@available(iOS 10.0, *)) {
-            
             self.tabBar.unselectedItemTintColor = normalColor;
             self.tabBar.tintColor = selectedColor;
-            
             [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font}
                                       forState:UIControlStateNormal];
             [tabBarItem setTitleTextAttributes:@{NSFontAttributeName : font}
                                       forState:UIControlStateSelected];
-            
         } else {
-            
             [tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName : normalColor,
                                                  NSFontAttributeName : font}
                                       forState:UIControlStateNormal];
@@ -238,7 +213,7 @@
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
-    [self identifyMode];
+    [self adaptThemeStyle];
 }
 
 - (UIImage *(^)(UIImage *image))originalImage
@@ -247,26 +222,22 @@
         UIImageRenderingMode imgRenderingMode = UIImageRenderingModeAlwaysOriginal;
         return [image imageWithRenderingMode:imgRenderingMode];
     };
-    
     return block;
 }
 
 - (UIImage *)imageWithColor:(UIColor *)color
 {
     CGRect rect = CGRectMake(0, 0, 1, 1);
-    
     UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
-    
     [color setFill];
     UIRectFill(rect);
-    
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
     return image;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 

@@ -6,9 +6,9 @@
 //
 
 #import "QPBaseListViewCell.h"
+#import "QPFileModelPresenter.h"
 
 @interface QPFileTableViewCell : QPBaseListViewCell
-
 /// Display thumbnail image.
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImgView;
 
@@ -26,5 +26,7 @@
 
 /// Display the divider.
 @property (weak, nonatomic) IBOutlet UIView *divider;
+
+@property (strong, nonatomic) QPFileModelPresenter *presenter;
 
 @end

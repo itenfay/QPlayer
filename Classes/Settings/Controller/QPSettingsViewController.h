@@ -5,8 +5,11 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseViewController.h"
+#import "QPBaseViewController.h"
+#import "QPListViewAdapter.h"
 
 @interface QPSettingsViewController : QPBaseViewController
+
+@property (nonatomic, strong) QPListViewAdapter *adapter;
 
 @end

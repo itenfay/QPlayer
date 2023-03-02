@@ -6,9 +6,9 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseViewController.h"
+#import "QPBaseWebViewController.h"
 
-@interface QPPlayerController : QPBaseViewController
+@interface QPPlayerController : QPBaseWebViewController
 
 /// Whether play the local video.
 @property (nonatomic, assign) BOOL isLocalVideo;

@@ -6,9 +6,9 @@
 //
 
 #import "QPHomePresenter.h"
-#import "QPHomeViewController.h"
 #import "QPHomeListViewAdapter.h"
 #import "QPFileTableViewCell.h"
+#import "QPPlayerController.h"
 
 @interface QPHomePresenter () <QPListViewAdapterDelegate>
 @property (nonatomic, strong) NSMutableArray *localFileList;
@@ -85,17 +85,29 @@
     [self setupFileResourceDelegate];
     [self initArray];
     if (_viewController) {
-        [self homeViewController].homeView.adapter.listViewDelegate = self;
+        QPHomeViewController *vc = [self homeViewController];
+        _view = vc.homeView;
+        _view.adapter.listViewDelegate = self;
+        @QPWeakify(self)
+        [vc.homeView reloadData:^{
+            [weak_self loadData];
+        }];
     }
+}
+
+- (void)reloadData
+{
+    [self delayToScheduleTask:1.5 completion:^{
+        [self loadData];
+    }];
 }
 
 - (void)loadData
 {
     [self loadFileList];
-    QPHomeViewController *vc = [self homeViewController];
-    [vc.homeView.adapter.dataSource removeAllObjects];
-    [vc.homeView.adapter.dataSource addObjectsFromArray:_localFileList];
-    [vc.homeView reloadUI];
+    [_view.adapter.dataSource removeAllObjects];
+    [_view.adapter.dataSource addObjectsFromArray:_localFileList];
+    [_view reloadUI];
 }
 
 #pragma mark - WebFileResourceDelegate
@@ -135,8 +147,7 @@
     [self loadFileList];
     [self loadLocalFileList];
     
-    QPHomeViewController *vc = [self homeViewController];
-    [vc.homeView reloadUI];
+    [_view reloadUI];
 }
 
 // implement this method to delete requested file and update the file list.
@@ -152,51 +163,69 @@
     [self loadFileList];
     [self loadLocalFileList];
     
-    QPHomeViewController *vc = [self homeViewController];
-    [vc.homeView reloadUI];
+    [_view reloadUI];
 }
 
 #pragma mark - QPListViewAdapterDelegate
 
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
-    return 100.f;
+    return UITableViewAutomaticDimension; //100.f;
 }
 
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
-    static NSString *cellID = @"QPFileDetailsCellIdentifier";
+    static NSString *cellID = @"QPFileCellIdentifier";
     QPHomeViewController *vc = [self homeViewController];
-    QPFileTableViewCell *cell = [vc.homeView.mTableView dequeueReusableCellWithIdentifier:cellID];
+    QPFileTableViewCell *cell = [_view.tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         cell = [[NSBundle.mainBundle loadNibNamed:NSStringFromClass([QPFileTableViewCell class]) owner:nil options:nil] firstObject];
     }
-    cell.backgroundColor = vc.isDarkMode ? QPColorFromRGB(30, 30, 30) : [UIColor whiteColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    QPFileModel *fileModel = self.localFileList[indexPath.row];
-    //[self setThumbnailForCell:cell model:fileModel];
-    
-    [cell.titleLabel setText:fileModel.title];
-    [cell.titleLabel setTextColor:vc.isDarkMode ? QPColorFromRGB(230, 230, 230) : QPColorFromRGB(30, 30, 30)];
-    [cell.titleLabel setNumberOfLines:2];
-    [cell.titleLabel setLineBreakMode:NSLineBreakByCharWrapping];
-    
-    // [self setInfoForCell:cell model:fileModel];
-    
-    [cell.dateLabel setText:fileModel.creationDate];
-    [cell.dateLabel setTextColor:vc.isDarkMode ? QPColorFromRGB(180, 180, 180) : UIColor.grayColor];
-    
-    //[self setFormatImageForCell:cell model:fileModel];
-    
-    [cell.divider setBackgroundColor:vc.isDarkMode ? QPColorFromRGB(40, 40, 40) : QPColorFromRGB(230, 230, 230)];
+    QPHomeListViewAdapter *_adapter = (QPHomeListViewAdapter *)adapter;
+    [_adapter bindModelTo:cell atIndexPath:indexPath inTableView:_view.tableView withViewController:vc];
     
     return cell;
 }
 
-- (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath
+- (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
-    
+    QPFileModel *_model = (QPFileModel *)model;
+    if (!QPlayerIsPlaying()) {
+        QPlayerSavePlaying(YES);
+        NSURL *url                = [NSURL fileURLWithPath:_model.path];
+        UIImage *thumbnail        = self.yf_videoThumbnailImage(url, 3, 107, 60);
+        QPPlayerController *qpc   = [[QPPlayerController alloc] init];
+        qpc.isLocalVideo          = YES;
+        qpc.isMediaPlayerPlayback = YES;
+        qpc.videoTitle            = _model.name;
+        qpc.videoUrl              = _model.path;
+        qpc.placeholderCoverImage = thumbnail;
+        [[self homeViewController].navigationController pushViewController:qpc animated:YES];
+    }
+}
+
+- (BOOL)deleteCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
+{
+    QPFileModel *fileModel = (QPFileModel *)model;
+    if ([QPFileHelper removeLocalFile:fileModel.name]) {
+        // Delete data for datasource, delete row from table.
+        [self.localFileList removeObjectAtIndex:indexPath.row];
+        QPHomeListViewAdapter *_adapter = (QPHomeListViewAdapter *)adapter;
+        if (_adapter) {
+            if (_view.tableView.numberOfSections > 1) {
+                NSArray *rowsArray = _adapter.dataSource[indexPath.section];
+                NSMutableArray *mRowsArray = rowsArray.mutableCopy;
+                [mRowsArray removeObjectAtIndex:indexPath.row];
+                [_adapter.dataSource replaceObjectAtIndex:indexPath.section withObject:mRowsArray];
+            } else {
+                [_adapter.dataSource removeObjectAtIndex:indexPath.row];
+            }
+        }
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - lazy load

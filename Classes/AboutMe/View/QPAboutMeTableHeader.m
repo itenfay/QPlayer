@@ -1,20 +1,21 @@
 //
-//  AboutMeTableHeader.m
+//  QPAboutMeTableHeader.m
 //
 //  Created by chenxing on 2017/6/28.
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "AboutMeTableHeader.h"
+#import "QPAboutMeTableHeader.h"
 
-@interface AboutMeTableHeader ()
+@interface QPAboutMeTableHeader ()
 
 @end
 
-@implementation AboutMeTableHeader
+@implementation QPAboutMeTableHeader
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
+- (void)setup
+{
+    [super setup];
     self.backgroundColor = UIColor.clearColor;
 }
 

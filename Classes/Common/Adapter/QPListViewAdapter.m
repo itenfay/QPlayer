@@ -26,8 +26,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView.numberOfSections > 1 && section < self.dataSource.count) {
-        NSArray *models = self.dataSource[section];
-        return models.count;
+        id obj = self.dataSource[section];
+        if ([obj isKindOfClass:NSArray.class]) {
+            NSArray *models = (NSArray *)obj;
+            return models.count;
+        }
+        return 1;
     }
     return self.dataSource.count;
 }
@@ -35,7 +39,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (QPRespondsToSelector(self.listViewDelegate, @selector(heightForHeaderInSection:forAdapter:))) {
-        [self.listViewDelegate heightForHeaderInSection:section forAdapter:self];
+        return [self.listViewDelegate heightForHeaderInSection:section forAdapter:self];
     }
     return 0;
 }
@@ -43,7 +47,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (QPRespondsToSelector(self.listViewDelegate, @selector(viewForHeaderInSection:forAdapter:))) {
-        [self.listViewDelegate viewForHeaderInSection:section forAdapter:self];
+        return [self.listViewDelegate viewForHeaderInSection:section forAdapter:self];
     }
     return nil;
 }
@@ -59,7 +63,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (QPRespondsToSelector(self.listViewDelegate, @selector(viewForFooterInSection:forAdapter:))) {
-        [self.listViewDelegate viewForFooterInSection:section forAdapter:self];
+        return [self.listViewDelegate viewForFooterInSection:section forAdapter:self];
     }
     return nil;
 }
@@ -67,9 +71,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (QPRespondsToSelector(self.listViewDelegate, @selector(heightForRowAtIndexPath:forAdapter:))) {
-        [self.listViewDelegate heightForRowAtIndexPath:indexPath forAdapter:self];
+        return [self.listViewDelegate heightForRowAtIndexPath:indexPath forAdapter:self];
     }
-    return 0;
+    return UITableViewAutomaticDimension;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -82,15 +86,15 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (QPRespondsToSelector(self.listViewDelegate, @selector(willDisplayCell:forRowAtIndexPath:))) {
-        return [self.listViewDelegate willDisplayCell:cell forRowAtIndexPath:indexPath];
+    if (QPRespondsToSelector(self.listViewDelegate, @selector(willDisplayCell:atIndexPath:forAdapter:))) {
+        [self.listViewDelegate willDisplayCell:cell atIndexPath:indexPath forAdapter:self];
     }
 }
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (QPRespondsToSelector(self.listViewDelegate, @selector(didEndDisplayingCell:forRowAtIndexPath:))) {
-        return [self.listViewDelegate didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
+    if (QPRespondsToSelector(self.listViewDelegate, @selector(didEndDisplayingCell:atIndexPath:forAdapter:))) {
+        [self.listViewDelegate didEndDisplayingCell:cell atIndexPath:indexPath forAdapter:self];
     }
 }
 
@@ -98,32 +102,40 @@
 {
     //[tableView deselectRowAtIndexPath:indexPath animated:YES];
     QPBaseModel *model = [self modelWithTableView:tableView atIndexPath:indexPath];
-    if (QPRespondsToSelector(self.listViewDelegate, @selector(selectCell:atIndexPath:))) {
-        [self.listViewDelegate selectCell:model atIndexPath:indexPath];
+    if (QPRespondsToSelector(self.listViewDelegate, @selector(selectCell:atIndexPath:forAdapter:))) {
+        [self.listViewDelegate selectCell:model atIndexPath:indexPath forAdapter:self];
     }
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     QPBaseModel *model = [self modelWithTableView:tableView atIndexPath:indexPath];
-    if (QPRespondsToSelector(self.listViewDelegate, @selector(deselectCell:AtIndexPath:))) {
-        [self.listViewDelegate deleteCell:model atIndexPath:indexPath];
+    if (QPRespondsToSelector(self.listViewDelegate, @selector(deselectCell:atIndexPath:forAdapter:))) {
+        [self.listViewDelegate deselectCell:model atIndexPath:indexPath forAdapter:self];
     }
 }
 
 - (QPBaseModel *)modelWithTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
 {
-    QPBaseModel *model;
+    QPBaseModel *model = nil;
     if (tableView.numberOfSections > 1 && indexPath.section < self.dataSource.count) {
-        NSArray *array = self.dataSource[indexPath.section];
-        model = array[indexPath.row];
+        id obj = self.dataSource[indexPath.section];
+        if ([obj isKindOfClass:NSArray.class]) {
+            NSArray *array = (NSArray *)obj;
+            if (indexPath.row < array.count) {
+                model = array[indexPath.row];
+            }
+        } else {
+            model = obj;
+        }
     } else {
         model = self.dataSource[indexPath.row];
     }
     return model;
 }
 
-- (NSMutableArray *)dataSource {
+- (NSMutableArray *)dataSource
+{
     if (!_dataSource) {
         _dataSource = [NSMutableArray arrayWithCapacity:0];
     }

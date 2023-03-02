@@ -9,9 +9,6 @@
 
 @interface QPWKWebViewAdapter ()
 @property (nonatomic, strong) DYFWebProgressView *progressView;
-@property (nonatomic, assign) BOOL mIsDarkMode;
-@property (nonatomic, weak) WKWebView *mWebView;
-@property (nonatomic, weak) UINavigationBar *mNavigationBar;
 @property (nonatomic, assign, readonly) BOOL mIsAddedToNavBar;
 @end
 
@@ -20,36 +17,6 @@
 - (BOOL)isAddedToNavBar
 {
     return _mIsAddedToNavBar;
-}
-
-- (void)setDarkMode:(BOOL)mode
-{
-    _mIsDarkMode = mode;
-}
-
-- (BOOL)isDarkMode
-{
-    return _mIsDarkMode;
-}
-
-- (void)setNavigationBar:(UINavigationBar *)navigationBar
-{
-    _mNavigationBar = navigationBar;
-}
-
-- (UINavigationBar *)navigationBar
-{
-    return _mNavigationBar;
-}
-
-- (void)setWebView:(WKWebView *)webView
-{
-    _mWebView = webView;
-}
-
-- (WKWebView *)webView
-{
-    return _mWebView;
 }
 
 - (DYFWebProgressView *)webProgressView
@@ -97,7 +64,6 @@
         } else {
             [self.webView addSubview:self.progressView];
         }
-        
         [self.progressView startLoading];
     }
 }

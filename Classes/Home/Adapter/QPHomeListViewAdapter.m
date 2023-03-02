@@ -13,6 +13,12 @@
 
 @implementation QPHomeListViewAdapter
 
+- (void)bindModelTo:(QPFileTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView withViewController:(QPBaseViewController *)viewController
+{
+    QPFileModel *model = (QPFileModel *)[self modelWithTableView:tableView atIndexPath:indexPath];
+    [cell.presenter presentWithModel:model viewController:viewController];
+}
+
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -27,6 +33,7 @@
         [weak_self deleteRowWithTableView:tableView atIndexPath:indexPath];
     }];
     UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAciton]];
+    // YES: 允许侧滑删除
     config.performsFirstActionWithFullSwipe = NO;
     return config;
 }
@@ -49,9 +56,9 @@
 
 - (void)deleteRowWithTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
 {
-    if (QPRespondsToSelector(self.listViewDelegate, @selector(deleteCell:atIndexPath:))) {
+    if (QPRespondsToSelector(self.listViewDelegate, @selector(deleteCell:atIndexPath:forAdapter:))) {
         QPBaseModel *model = [self modelWithTableView:tableView atIndexPath:indexPath];
-        if ([self.listViewDelegate deleteCell:model atIndexPath:indexPath]) {
+        if ([self.listViewDelegate deleteCell:model atIndexPath:indexPath forAdapter:self]) {
             NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
             [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
         }

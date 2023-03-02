@@ -35,12 +35,12 @@
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter;
 
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter;
-- (void)willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
-- (void)didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)willDisplayCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter;;
+- (void)didEndDisplayingCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter;;
 
-- (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath;
-- (void)deselectCell:(QPBaseModel *)model AtIndexPath:(NSIndexPath *)indexPath;
-- (BOOL)deleteCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath;
+- (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter;;
+- (void)deselectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter;;
+- (BOOL)deleteCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter;;
 
 @end
 
@@ -51,6 +51,12 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView;
+
+@end
+
+@protocol QPBaseAdapterDataBindingProcotol <QPBaseDelegate>
+
+- (void)bindModelTo:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView withViewController:(UIViewController *)viewController;
 
 @end
 

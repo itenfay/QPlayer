@@ -6,7 +6,7 @@
 //
 
 #import "QPLiveViewController.h"
-#import "QPlayerController.h"
+#import "QPPlayerController.h"
 #import "QPTitleView.h"
 #import "DYFDropListView.h"
 
@@ -504,7 +504,7 @@
         return;
     }
     
-    [QPHudObject showActivityMessageInView:@"正在解析..."];
+    [QPHudUtils showActivityMessageInView:@"正在解析..."];
     
     NSString *videoTitle = self.webView.title;
     QPLog(@"videoTitle: %@", videoTitle);
@@ -512,14 +512,14 @@
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
         
         [self delayToScheduleTask:1.0 completion:^{
-            [QPHudObject hideHUD];
+            [QPHudUtils hideHUD];
             [self playVideoWithTitle:videoTitle urlString:url];
         }];
         
     } else {
         
         [self delayToScheduleTask:1.0 completion:^{
-            [QPHudObject hideHUD];
+            [QPHudUtils hideHUD];
         }];
     }
 }

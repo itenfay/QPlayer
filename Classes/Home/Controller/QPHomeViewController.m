@@ -16,7 +16,6 @@
 
 - (void)loadView
 {
-    [super loadView];
     CGRect frame = CGRectMake(0, 0, QPScreenWidth, QPScreenHeight - QPStatusBarAndNavigationBarHeight);
     self.homeView = [[QPHomeView alloc] initWithFrame:frame];
     self.view = self.homeView;
@@ -26,12 +25,12 @@
 {
     [super viewDidLoad];
     [self configureNavigationBar];
-    [self addThemeStyleChangedObserver];
     
     self.homeView.adapter = [[QPHomeListViewAdapter alloc] init];
     [self.homeView buildView];
     
     QPHomePresenter *presenter = [[QPHomePresenter alloc] init];
+    self.presenter = presenter;
     [presenter loadData];
 }
 

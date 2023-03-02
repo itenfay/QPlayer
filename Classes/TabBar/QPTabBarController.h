@@ -9,6 +9,6 @@
 
 @interface QPTabBarController : UITabBarController
 
-- (void)adjustTabBarThemeStyle;
+- (void)adaptThemeStyle;
 
 @end

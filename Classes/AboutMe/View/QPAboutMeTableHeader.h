@@ -1,14 +1,13 @@
 //
-//  AboutMeTableHeader.h
+//  QPAboutMeTableHeader.h
 //
 //  Created by chenxing on 2017/6/28.
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "BaseView.h"
+#import "QPBaseView.h"
 
-@interface AboutMeTableHeader : BaseView
-
+@interface QPAboutMeTableHeader : QPBaseView
 // UI Widget.
 @property (weak, nonatomic) IBOutlet UIImageView *logoBgImgView;
 @property (weak, nonatomic) IBOutlet UILabel *briefIntroLabel;

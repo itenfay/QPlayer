@@ -6,13 +6,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "QPBaseAdapter.h"
 #import "QPBasePresenter.h"
 
 @interface QPBaseViewController : UIViewController
 
-/// Declares a base adapter.
-@property (nonatomic, strong) QPBaseAdapter *adapter;
 /// Declares a base presenter.
 @property (nonatomic, strong) QPBasePresenter *presenter;
 
@@ -44,6 +41,9 @@
 - (void)adaptDarkTheme;
 /// Can override this method.
 - (void)adaptNavigationBarAppearance:(BOOL)isDark;
+
+/// Whether to enable the gesture recognizer responsible for popping the top view controller off the navigation stack.
+- (void)enableInteractivePopGesture:(BOOL)enabled;
 
 /// Return a navigation bar.
 - (UINavigationBar *)navigationBar;

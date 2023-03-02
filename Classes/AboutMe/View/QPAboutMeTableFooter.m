@@ -1,21 +1,21 @@
 //
-//  AboutMeTableFooter.m
+//  QPAboutMeTableFooter.m
 //
 //  Created by chenxing on 2017/6/28.
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "AboutMeTableFooter.h"
+#import "QPAboutMeTableFooter.h"
 
-@interface AboutMeTableFooter ()
+@interface QPAboutMeTableFooter ()
 @property (nonatomic, copy) AMFooterActionHandler aHandler;
 @end
 
-@implementation AboutMeTableFooter
+@implementation QPAboutMeTableFooter
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    QPLog(@" >>>>>>>>>> ");
+- (void)setup
+{
+    [super setup];
     self.backgroundColor = UIColor.clearColor;
 }
 
@@ -24,13 +24,11 @@
 }
 
 - (IBAction)gotoJianShu:(id)sender {
-    QPLog(@" >>>>>>>>>> ");
     AMFooterActionType type = AMFooterActionTypeJianShu;
     !self.aHandler ?: self.aHandler(type);
 }
 
 - (IBAction)gotoMyBlog:(id)sender {
-    QPLog(@" >>>>>>>>>> ");
     AMFooterActionType type = AMFooterActionTypeBlog;
     !self.aHandler ?: self.aHandler(type);
 }

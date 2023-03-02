@@ -16,14 +16,11 @@
 /*
  #import <ZFPlayer/ZFIJKPlayerManager.h>
  #import <ZFPlayer/KSMediaPlayerManager.h>
-*/
-
+ */
 @interface QPPlayerController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
-
 @property (nonatomic, strong) ZFPlayerController  *player;
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 @property (nonatomic, strong) UIImageView         *containerView;
-
 @end
 
 @implementation QPPlayerController
@@ -49,11 +46,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    QPLog(@" >>>>>>>>>> videoTitle: %@", self.videoTitle);
-    QPLog(@" >>>>>>>>>> videoUrl: %@", self.videoUrl);
-    QPLog(@" >>>>>>>>>> videoDecoding: %d", self.videoDecoding);
-    
+    QPLog(@">>> videoTitle: %@", self.videoTitle);
+    QPLog(@">>> videoUrl: %@", self.videoUrl);
+    QPLog(@">>> videoDecoding: %d", self.videoDecoding);
     QPAppDelegate.allowOrentitaionRotation = YES;
     
     [self setupNavigationItems];
@@ -227,7 +222,7 @@
 }
 
 - (void)buildWebToolBar {
-    UIImageView *toolBar = [self buildCustomToolBar];
+    UIImageView *toolBar = [self buildToolBar];
     toolBar.tag = 888;
     toolBar.alpha = 0.f;
     [self.view addSubview:toolBar];
@@ -306,46 +301,46 @@
     QPLog(@"urlScheme: %@", urlScheme);
     
     /*
-    ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init]; // playerManager
-    
-    // Invalid, player hasn't been initialized yet.
-    //[playerManager.player setPlayerOptionIntValue:self.videoDecoding forKey:@"videotoolbox"];
-    //if ([urlScheme isEqualToString:@"rtsp"]) {
-    //    [playerManager.player setFormatOptionValue:@"tcp" forKey:@"rtsp_transport"];
-    //}
-    
-    // player
-    self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
-    
-    self.player.controlView    = self.controlView;
-    self.player.WWANAutoPlay   = YES;
-    self.player.shouldAutoPlay = YES;
-    self.player.assetURL       = aURL;
-    
-    self.player.playerApperaPercent      = 0.0;
-    self.player.playerDisapperaPercent   = 1.0;
-    //self.player.statusBarHidden        = NO;
-    self.player.pauseWhenAppResignActive = YES;
-    
-    // The old version.
-    // Force landscape full fcreen.
-    //[self.player enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
-    
-    @weakify(self)
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        @strongify(self)
-        [self setNeedsStatusBarAppearanceUpdate];
-        [UIViewController attemptRotationToDeviceOrientation];
-    };
-    
-    self.player.playerDidToEnd = ^(id  _Nonnull asset) {
-        QPLog(@"%s", __func__);
-    };
-    
-    self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, id _Nonnull error) {
-        QPLog(@"%s, error: %@", __func__, error);
-    };
-    */
+     ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init]; // playerManager
+     
+     // Invalid, player hasn't been initialized yet.
+     //[playerManager.player setPlayerOptionIntValue:self.videoDecoding forKey:@"videotoolbox"];
+     //if ([urlScheme isEqualToString:@"rtsp"]) {
+     //    [playerManager.player setFormatOptionValue:@"tcp" forKey:@"rtsp_transport"];
+     //}
+     
+     // player
+     self.player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:self.containerView];
+     
+     self.player.controlView    = self.controlView;
+     self.player.WWANAutoPlay   = YES;
+     self.player.shouldAutoPlay = YES;
+     self.player.assetURL       = aURL;
+     
+     self.player.playerApperaPercent      = 0.0;
+     self.player.playerDisapperaPercent   = 1.0;
+     //self.player.statusBarHidden        = NO;
+     self.player.pauseWhenAppResignActive = YES;
+     
+     // The old version.
+     // Force landscape full fcreen.
+     //[self.player enterLandscapeFullScreen:UIInterfaceOrientationLandscapeRight animated:YES];
+     
+     @weakify(self)
+     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+     @strongify(self)
+     [self setNeedsStatusBarAppearanceUpdate];
+     [UIViewController attemptRotationToDeviceOrientation];
+     };
+     
+     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
+     QPLog(@"%s", __func__);
+     };
+     
+     self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, id _Nonnull error) {
+     QPLog(@"%s, error: %@", __func__, error);
+     };
+     */
 }
 
 - (void)useKSYMediaPlayerToPlay:(NSURL *)aURL {
@@ -384,9 +379,9 @@
     [self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:NO completion:NULL];
     
     //self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        //@zf_strongify(self)
-        //[self setNeedsStatusBarAppearanceUpdate];
-        //[UIViewController attemptRotationToDeviceOrientation];
+    //@zf_strongify(self)
+    //[self setNeedsStatusBarAppearanceUpdate];
+    //[UIViewController attemptRotationToDeviceOrientation];
     //};
     
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
@@ -398,56 +393,55 @@
     };
 }
 
-/*
-- (void)configureIJKFFOptions:(IJKFFOptions *)options {
-    // 帧速率（fps）可以改，确认非标准帧率会导致音画不同步，所以只能设定为15或者29.97）
-    [options setPlayerOptionIntValue:29.97 forKey:@"r"];
-    // 设置音量大小，256为标准音量。（要设置成两倍音量时则输入512，依此类推)
-    [options setPlayerOptionIntValue:512 forKey:@"vol"];
-    // 静音设置
-    [options setPlayerOptionValue:@"1" forKey:@"an"];
-    
-    // 最大fps
-    [options setPlayerOptionIntValue:30 forKey:@"max-fps"];
-    // 跳帧开关
-    [options setPlayerOptionIntValue:0 forKey:@"framedrop"];
-    // 开启硬编码（默认是 0 ：软解）
-    [options setPlayerOptionIntValue:self.videoDecoding forKey:@"videotoolbox"];
-    
-    // 指定最大宽度
-    [options setPlayerOptionIntValue:960 forKey:@"videotoolbox-max-frame-width"];
-    // 自动转屏开关
-    [options setFormatOptionIntValue:0 forKey:@"auto_convert"];
-    
-    // 重连开启 BOOL
-    [options setFormatOptionIntValue:1 forKey:@"reconnect"];
-    // 超时时间，timeout参数只对http设置有效
-    // 若果你用rtmp设置timeout，ijkplayer内部会忽略timeout参数。
-    // rtmp的timeout参数含义和http的不一样。
-    [options setFormatOptionIntValue:30 * 1000 * 1000 forKey:@"timeout"];
-    
-    // 播放前的探测Size，默认是1M, 改小一点会出画面更快
-    [options setFormatOptionIntValue:1024 * 16 forKey:@"probesize"];
-    // 开启环路滤波（0比48清楚，但解码开销大，48基本没有开启环路滤波，清晰度低，解码开销小）
-    [options setCodecOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter"];
-    [options setCodecOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame"];
-    
-    // param for living
-    // 如果使用rtsp协议，可以优先用tcp（默认udp）
-    [options setFormatOptionValue:@"tcp" forKey:@"rtsp_transport"];
-    // 最大缓存大小是3秒，可以依据自己的需求修改
-    [options setPlayerOptionIntValue:3000 forKey:@"max_cached_duration"];
-    // 无限读
-    [options setPlayerOptionIntValue:1 forKey:@"infbuf"];
-    // 关闭播放器缓冲 (如果频繁卡顿，可以保留缓冲区，不设置默认为1)
-    [options setPlayerOptionIntValue:0 forKey:@"packet-buffering"];
-    
-    // param for playback
-    //[options setPlayerOptionIntValue:0 forKey:@"max_cached_duration"];
-    //[options setPlayerOptionIntValue:0 forKey:@"infbuf"];
-    //[options setPlayerOptionIntValue:1 forKey:@"packet-buffering"];
-}
-*/
+//- (void)configureIJKFFOptions:(IJKFFOptions *)options {
+//    // 帧速率（fps）可以改，确认非标准帧率会导致音画不同步，所以只能设定为15或者29.97）
+//    [options setPlayerOptionIntValue:29.97 forKey:@"r"];
+//    // 设置音量大小，256为标准音量。（要设置成两倍音量时则输入512，依此类推)
+//    [options setPlayerOptionIntValue:512 forKey:@"vol"];
+//    // 静音设置
+//    [options setPlayerOptionValue:@"1" forKey:@"an"];
+//
+//    // 最大fps
+//    [options setPlayerOptionIntValue:30 forKey:@"max-fps"];
+//    // 跳帧开关
+//    [options setPlayerOptionIntValue:0 forKey:@"framedrop"];
+//    // 开启硬编码（默认是 0 ：软解）
+//    [options setPlayerOptionIntValue:self.videoDecoding forKey:@"videotoolbox"];
+//
+//    // 指定最大宽度
+//    [options setPlayerOptionIntValue:960 forKey:@"videotoolbox-max-frame-width"];
+//    // 自动转屏开关
+//    [options setFormatOptionIntValue:0 forKey:@"auto_convert"];
+//
+//    // 重连开启 BOOL
+//    [options setFormatOptionIntValue:1 forKey:@"reconnect"];
+//    // 超时时间，timeout参数只对http设置有效
+//    // 若果你用rtmp设置timeout，ijkplayer内部会忽略timeout参数。
+//    // rtmp的timeout参数含义和http的不一样。
+//    [options setFormatOptionIntValue:30 * 1000 * 1000 forKey:@"timeout"];
+//
+//    // 播放前的探测Size，默认是1M, 改小一点会出画面更快
+//    [options setFormatOptionIntValue:1024 * 16 forKey:@"probesize"];
+//    // 开启环路滤波（0比48清楚，但解码开销大，48基本没有开启环路滤波，清晰度低，解码开销小）
+//    [options setCodecOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter"];
+//    [options setCodecOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame"];
+//
+//    // param for living
+//    // 如果使用rtsp协议，可以优先用tcp（默认udp）
+//    [options setFormatOptionValue:@"tcp" forKey:@"rtsp_transport"];
+//    // 最大缓存大小是3秒，可以依据自己的需求修改
+//    [options setPlayerOptionIntValue:3000 forKey:@"max_cached_duration"];
+//    // 无限读
+//    [options setPlayerOptionIntValue:1 forKey:@"infbuf"];
+//    // 关闭播放器缓冲 (如果频繁卡顿，可以保留缓冲区，不设置默认为1)
+//    [options setPlayerOptionIntValue:0 forKey:@"packet-buffering"];
+//
+//    // param for playback
+//    //[options setPlayerOptionIntValue:0 forKey:@"max_cached_duration"];
+//    //[options setPlayerOptionIntValue:0 forKey:@"infbuf"];
+//    //[options setPlayerOptionIntValue:1 forKey:@"packet-buffering"];
+//}
+
 
 - (void)loadRequest:(NSString *)url {
     NSURL *aURL = [NSURL URLWithString:url];
@@ -644,7 +638,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

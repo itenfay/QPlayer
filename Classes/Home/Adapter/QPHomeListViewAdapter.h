@@ -6,7 +6,8 @@
 //
 
 #import "QPListViewAdapter.h"
+#import "QPFileTableViewCell.h"
 
-@interface QPHomeListViewAdapter : QPListViewAdapter
+@interface QPHomeListViewAdapter : QPListViewAdapter <QPBaseAdapterDataBindingProcotol>
 
 @end

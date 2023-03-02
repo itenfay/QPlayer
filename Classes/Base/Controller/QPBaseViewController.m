@@ -67,6 +67,7 @@
     [super viewDidLoad];
     [self needsStatusBarAppearanceUpdate];
     [self needsUpdateOfSupportedInterfaceOrientations];
+    [self addThemeStyleChangedObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -172,6 +173,13 @@
     }
 }
 
+- (void)enableInteractivePopGesture:(BOOL)enabled
+{
+    UINavigationController *nc = self.navigationController;
+    if (!nc) { return; }
+    nc.interactivePopGestureRecognizer.enabled  = enabled;
+}
+
 - (UINavigationBar *)navigationBar
 {
     if (self.navigationController) {
@@ -263,6 +271,7 @@
 - (void)dealloc
 {
     QPLog(@"::");
+    [self removeThemeStyleChangedObserver];
 }
 
 @end

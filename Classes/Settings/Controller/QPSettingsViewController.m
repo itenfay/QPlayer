@@ -99,14 +99,14 @@
 
 - (void)adaptThemeStyle
 {
-    [self.tableView reloadData];
     [super adaptThemeStyle];
+    [self.tableView reloadData];
 }
 
 - (void)dealloc
 {
-    [self stopMonitoringNetworkChanges];
     [self removeThemeStyleChangedObserver];
+    [self stopMonitoringNetworkChanges];
 }
 
 - (void)didReceiveMemoryWarning

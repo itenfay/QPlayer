@@ -12,8 +12,7 @@
 #import "QPSettingsViewController.h"
 
 @interface QPTabBarController ()
-// The property determines whether The dark interface style was truned on.
-@property (nonatomic, assign) BOOL isDarkMode;
+
 @end
 
 @implementation QPTabBarController
@@ -65,7 +64,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
-    [self adaptThemeStyle];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -73,6 +71,7 @@
     [super viewWillAppear: animated];
     [self needsStatusBarAppearanceUpdate];
     [self needsUpdateOfSupportedInterfaceOrientations];
+    [self adaptThemeStyle];
 }
 
 - (void)setup
@@ -134,20 +133,18 @@
 {
     if (@available(iOS 13.0, *)) {
         UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
-        if (mode == UIUserInterfaceStyleDark) {
-            // Dark Mode
-            self.isDarkMode = YES;
-        } else if (mode == UIUserInterfaceStyleLight) {
-            // Light Mode or unspecified Mode
-            self.isDarkMode = NO;
+        if (mode == UIUserInterfaceStyleDark) { // Dark Mode
+            _isDarkMode = YES;
+        } else if (mode == UIUserInterfaceStyleLight) { // Light Mode
+            _isDarkMode = NO;
         }
-    } else {
-        self.isDarkMode = NO;
+    } else { // unspecified Mode
+        _isDarkMode = NO;
     }
-    [self _adaptThemeStyle];
+    [self updateThemeStyle];
 }
 
-- (void)_adaptThemeStyle
+- (void)updateThemeStyle
 {
     [self adaptTabBarAppearance:_isDarkMode];
     UIColor *normalColor = _isDarkMode ? QPColorFromRGB(200, 200, 200) : [UIColor grayColor];

@@ -1,16 +1,17 @@
 //
-//  QPSearchWebViewAdapter.h
+//  QPAdvancedSearchPresenter.h
 //  QPlayer
 //
 //  Created by chenxing on 2023/3/2.
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPWKWebViewAdapter.h"
+#import "QPSearchPresenter.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QPSearchWebViewAdapter : QPWKWebViewAdapter
+@interface QPAdvancedSearchPresenter : QPSearchPresenter
+
 
 @end
 

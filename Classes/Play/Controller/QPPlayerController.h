@@ -7,34 +7,16 @@
 //
 
 #import "QPBaseWebViewController.h"
+#import "QPPlayerModel.h"
+#import "QPPlayerPresenter.h"
 
 @interface QPPlayerController : QPBaseWebViewController
 
-/// Whether play the local video.
-@property (nonatomic, assign) BOOL isLocalVideo;
+@property (nonatomic, strong) QPPlayerModel *model;
 
-/// Whether the ZFPlayer play back.
-@property (nonatomic, assign) BOOL isZFPlayerPlayback;
+- (instancetype)initWithModel:(QPPlayerModel *)model;
 
-/// Whether the ijkplayer play back.
-@property (nonatomic, assign) BOOL isIJKPlayerPlayback;
-
-/// Whether the media player play back.
-@property (nonatomic, assign) BOOL isMediaPlayerPlayback;
-
-/// The url for a video.
-@property (nonatomic, copy) NSString *videoUrl;
-
-/// The name for a video.
-@property (nonatomic, copy) NSString *videoTitle;
-
-/// The cover url for a video.
-@property (nonatomic, copy) NSString *coverUrl;
-
-/// The placeholder cover image for a video.
-@property (nonatomic, strong) UIImage *placeholderCoverImage;
-
-/// The decoding for a video. 0: soft decoding, 1: hard decoding.
-@property (nonatomic, assign) int videoDecoding;
+- (UIImageView *)containerView;
+- (ZFPlayerControlView *)controlView;
 
 @end

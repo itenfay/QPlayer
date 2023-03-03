@@ -18,3 +18,5 @@ NSString *const kThemeStyleOnOff = @"kThemeStyleOnOff";
 NSString *const kThemeStyleDidChangeNotification = @"kThemeStyleDidChangeNotification";
 
 NSString *const kCarrierNetworkAllowed = @"kCarrierNetworkAllowed";
+
+NSString *const kPlayerPictureInPictureEnabled = @"kPlayerPictureInPictureEnabled";

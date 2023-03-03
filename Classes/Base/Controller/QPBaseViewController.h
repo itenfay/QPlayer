@@ -48,6 +48,8 @@
 /// Return a navigation bar.
 - (UINavigationBar *)navigationBar;
 /// Configure a navigation bar.
+- (void)configureNavigationBar;
+/// Configure a navigation bar.
 - (void)configNavigaitonBar:(UIImage *)backgroundImage titleTextAttributes:(NSDictionary<NSAttributedStringKey, id> *)titleTextAttributes;
 /// Configure a navigation bar.
 - (void)configNavigaitonBar:(UIImage *)backgroundImage shadowImage:(UIImage *)shadowImage titleTextAttributes:(NSDictionary<NSAttributedStringKey, id> *)titleTextAttributes;
@@ -57,6 +59,7 @@
 /// Return a back button with a target and selector.
 - (UIButton *)backButtonWithTarget:(id)target selector:(SEL)selector;
 
+- (void)setNavigationTitleView:(UIView *)titleView;
 - (void)addLeftNavigationBarButton:(UIButton *)button;
 - (void)addRightNavigationBarButton:(UIButton *)button;
 - (void)setNavigationBarTitle:(NSString *)title;

@@ -104,6 +104,16 @@ QP_STATIC_INLINE BOOL QPlayerCarrierNetworkAllowed()
     return [QPlayerExtractValue(kCarrierNetworkAllowed) boolValue];
 }
 
+QP_STATIC_INLINE void QPlayerSetPictureInPictureEnabled(BOOL value)
+{
+    QPlayerStoreValue(kPlayerPictureInPictureEnabled, [NSNumber numberWithBool:value]);
+}
+
+QP_STATIC_INLINE BOOL QPlayerPictureInPictureEnabled()
+{
+    return [QPlayerExtractValue(kPlayerPictureInPictureEnabled) boolValue];
+}
+
 QP_STATIC_INLINE NSString *QPlayerMatchingIconName(NSString *ext)
 {
     NSString *iconName = nil;

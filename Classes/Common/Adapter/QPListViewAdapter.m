@@ -13,6 +13,33 @@
 
 @implementation QPListViewAdapter
 
+- (NSMutableArray *)dataSource
+{
+    if (!_dataSource) {
+        _dataSource = [NSMutableArray arrayWithCapacity:0];
+    }
+    return _dataSource;
+}
+
+- (QPBaseModel *)modelWithTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    QPBaseModel *model = nil;
+    if (tableView.numberOfSections > 1 && indexPath.section < self.dataSource.count) {
+        id obj = self.dataSource[indexPath.section];
+        if ([obj isKindOfClass:NSArray.class]) {
+            NSArray *array = (NSArray *)obj;
+            if (indexPath.row < array.count) {
+                model = array[indexPath.row];
+            }
+        } else {
+            model = obj;
+        }
+    } else {
+        model = self.dataSource[indexPath.row];
+    }
+    return model;
+}
+
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -115,31 +142,70 @@
     }
 }
 
-- (QPBaseModel *)modelWithTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    QPBaseModel *model = nil;
-    if (tableView.numberOfSections > 1 && indexPath.section < self.dataSource.count) {
-        id obj = self.dataSource[indexPath.section];
-        if ([obj isKindOfClass:NSArray.class]) {
-            NSArray *array = (NSArray *)obj;
-            if (indexPath.row < array.count) {
-                model = array[indexPath.row];
-            }
-        } else {
-            model = obj;
-        }
-    } else {
-        model = self.dataSource[indexPath.row];
+    if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewDidScroll:forAdapter:))) {
+        [self.scrollViewDelegate scrollViewDidScroll:scrollView forAdapter:self];
     }
-    return model;
 }
 
-- (NSMutableArray *)dataSource
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if (!_dataSource) {
-        _dataSource = [NSMutableArray arrayWithCapacity:0];
+    if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewWillBeginDragging:forAdapter:))) {
+        [self.scrollViewDelegate scrollViewWillBeginDragging:scrollView forAdapter:self];
     }
-    return _dataSource;
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:forAdapter:))) {
+        [self.scrollViewDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset forAdapter:self];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewDidEndDragging:willDecelerate:forAdapter:))) {
+        [self.scrollViewDelegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate forAdapter:self];
+    }
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewWillBeginDecelerating:forAdapter:))) {
+        [self.scrollViewDelegate scrollViewWillBeginDecelerating:scrollView forAdapter:self];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewDidEndDecelerating:forAdapter:))) {
+        [self.scrollViewDelegate scrollViewDidEndDecelerating:scrollView forAdapter:self];
+    }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewDidEndScrollingAnimation:forAdapter:))) {
+        [self.scrollViewDelegate scrollViewDidEndScrollingAnimation:scrollView forAdapter:self];
+    }
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewShouldScrollToTop:forAdapter:))) {
+        return [self.scrollViewDelegate scrollViewShouldScrollToTop:scrollView forAdapter:self];
+    }
+    return YES;
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewDidScrollToTop:forAdapter:))) {
+        [self.scrollViewDelegate scrollViewDidScrollToTop:scrollView forAdapter:self];
+    }
 }
 
 @end

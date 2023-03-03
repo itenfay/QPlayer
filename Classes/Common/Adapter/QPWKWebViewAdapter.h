@@ -9,17 +9,25 @@
 #import <WebKit/WebKit.h>
 #import "QPBaseDelegate.h"
 #import "DYFWebProgressView.h"
+#import "QPBaseAdapter.h"
 
 @protocol QPWKWebViewAdapterDelegate <QPBaseDelegate>
 
 @end
 
-@interface QPWKWebViewAdapter : NSObject <WKNavigationDelegate, WKUIDelegate>
+@interface QPWKWebViewAdapter : QPBaseWebAdapter <WKNavigationDelegate, WKUIDelegate, UIScrollViewDelegate>
 @property (nonatomic, assign) BOOL isDarkMode;
 @property (nonatomic, weak) WKWebView *webView;
 @property (nonatomic, weak) UINavigationBar *navigationBar;
+@property (nonatomic, weak) UIView *toolBar;
 
-/// Return Wether a progress bar is added to the navigation bar.
+- (instancetype)initWithWebView:(WKWebView *)webView navigationBar:(UINavigationBar *)navigationBar;
+- (instancetype)initWithWebView:(WKWebView *)webView navigationBar:(UINavigationBar *)navigationBar toolBar:(UIView *)toolBar;
+
+/// Inspects the alpha of tool bar.
+- (void)inspectToolBarAlpha;
+
+/// Returns Wether a progress bar is added to the navigation bar.
 - (BOOL)isAddedToNavBar;
 
 /// Adds a progress view to a web view.
@@ -28,7 +36,7 @@
 - (void)addProgressViewToNavigationBar;
 
 /// Gets a web progress view.
-- (DYFWebProgressView *)webProgressView;
+- (DYFWebProgressView *)progressView;
 /// Shows a web progress view.
 - (void)showProgressView;
 /// Hides a web progress view.

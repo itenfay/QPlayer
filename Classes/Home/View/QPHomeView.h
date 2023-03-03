@@ -14,8 +14,9 @@ typedef void(^HomeReloadDataBlock)();
 
 @interface QPHomeView : QPBaseView <QPHomeViewDelegate>
 
-@property (nonatomic, strong, readonly) UITableView *tableView;
 @property (nonatomic, strong) QPListViewAdapter *adapter;
+
+- (UITableView *)tableView;
 
 - (void)buildView;
 - (void)reloadData:(HomeReloadDataBlock)block;

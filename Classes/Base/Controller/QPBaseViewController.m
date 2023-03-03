@@ -141,18 +141,19 @@
 
 - (void)adaptLightTheme
 {
+    _isDarkMode = NO;
     [self adaptNavigationBarAppearance:NO];
     [self setupNavigationBarLightStyle];
     self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
-    _isDarkMode = NO;
+    
 }
 
 - (void)adaptDarkTheme
 {
+    _isDarkMode = YES;
     [self adaptNavigationBarAppearance:YES];
     [self setupNavigationBarDarkStyle];
     self.view.backgroundColor = QPColorFromRGB(30, 30, 30);
-    _isDarkMode = YES;
 }
 
 - (void)adaptNavigationBarAppearance:(BOOL)isDark
@@ -186,6 +187,11 @@
         return self.navigationController.navigationBar;
     }
     return nil;
+}
+
+- (void)configureNavigationBar
+{
+    
 }
 
 - (void)configNavigaitonBar:(UIImage *)backgroundImage titleTextAttributes:(NSDictionary<NSAttributedStringKey, id> *)titleTextAttributes
@@ -227,6 +233,11 @@
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 20);
     return button;
+}
+
+- (void)setNavigationTitleView:(UIView *)titleView
+{
+    self.navigationItem.titleView = titleView;
 }
 
 - (void)addLeftNavigationBarButton:(UIButton *)button

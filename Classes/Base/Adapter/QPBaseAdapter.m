@@ -10,3 +10,11 @@
 @implementation QPBaseAdapter
 
 @end
+
+@implementation QPBaseWebAdapter
+
+@end
+
+@implementation QPBaseListViewAdapter
+
+@end

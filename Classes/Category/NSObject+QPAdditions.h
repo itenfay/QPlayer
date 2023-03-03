@@ -56,4 +56,16 @@
  */
 - (int (^)(NSURL *url))yf_videoDuration;
 
+/// Returns a new version of the image that uses always template mode.
+- (UIImage *)yf_imageRenderingAlwaysTemplate:(NSString *)name;
+
+/// Returns a main window.
+- (UIWindow *)yf_mainWindow;
+
+/// Returns a current view controller.
+- (UIViewController *)yf_currentViewController;
+
+/// Queries and returns a current view controller from a view controller.
+- (UIViewController *)yf_queryCurrentViewControllerFrom:(UIViewController *)viewController;
+
 @end

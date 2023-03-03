@@ -36,6 +36,7 @@
 
 - (void)configureNavigationBar
 {
+    [super configureNavigationBar];
     [self setNavigationBarTitle:@"本地资源"];
     
     UIButton *liveButton = [UIButton buttonWithType:UIButtonTypeCustom];

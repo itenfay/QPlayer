@@ -43,16 +43,20 @@
     [vc.adapter.dataSource addObject:model1];
     
     QPSettingsModel *model2 = [QPSettingsModel new];
-    model2.title = @"允许运营商网络播放";
+    model2.title = @"开启画中画";
     [vc.adapter.dataSource addObject:model2];
     
     QPSettingsModel *model3 = [QPSettingsModel new];
-    model3.title = @"WiFi 文件传输";
+    model3.title = @"允许运营商网络播放";
     [vc.adapter.dataSource addObject:model3];
     
     QPSettingsModel *model4 = [QPSettingsModel new];
-    model4.title = @"更改端口";
+    model4.title = @"WiFi 文件传输";
     [vc.adapter.dataSource addObject:model4];
+    
+    QPSettingsModel *model5 = [QPSettingsModel new];
+    model5.title = @"更改端口";
+    [vc.adapter.dataSource addObject:model5];
     
     [_view reloadData];
 }
@@ -61,9 +65,9 @@
 {
     BOOL status = QPWifiManager.shared.serverStatus;
     if (!status || ![DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
-        return 4;
+        return 5;
     }
-    return 5;
+    return 6;
 }
 
 //- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -77,8 +81,10 @@
 //        return 1;
 //    } else if (section == 4) {
 //        return 1;
-//    } else {
+//    } else if (section == 5) {
 //        return 1;
+//    } else {
+//        return 0;
 //    }
 //}
 
@@ -89,7 +95,7 @@
 
 - (CGFloat)heightForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
 {
-    if (section == 0 || section == 1) {
+    if (section == 0 || section == 1 || section == 2) {
         return 0.1f;
     }
     //BOOL status = [[QPWifiManager shared] serverStatus];
@@ -108,6 +114,7 @@
 {
     NSArray *headerTitles = @[@"开启后，将与手机设置保持一致的深色或浅色模式",
                               @"显示网络连接状态",
+                              @"开启后，可以享用画中画播放",
                               @"播放设置",
                               @"开启后，可以享用 WiFi 文件传输服务",
                               @"打开电脑浏览器，输入以下网址进行访问"];
@@ -132,7 +139,7 @@
 
 - (UIView *)viewForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
 {
-    if (section == 0 || section == 1)
+    if (section == 0 || section == 1 || section == 2)
         return nil;
     NSArray *footerDescs = @[@"开启后，可以使用流量在线观看视频，注意网页播放器仍可使用流量播放。",
                              @"支持 MP4,MOV,AVI,FLV,MKV,WMV,M4V,RMVB,MP3 等主流媒体格式，支持 HTTP,RTMP,RSTP,HLS 等流媒体或直播播放。",
@@ -152,7 +159,7 @@
     titleLabel.textAlignment   = NSTextAlignmentLeft;
     titleLabel.numberOfLines   = 2;
     titleLabel.lineBreakMode   = NSLineBreakByWordWrapping;
-    titleLabel.text            = footerDescs[section - 2];
+    titleLabel.text            = footerDescs[section - 3];
     [footerView addSubview:titleLabel];
     
     return footerView;
@@ -176,10 +183,10 @@
     NSMutableArray *dataArray = [self settingsController].adapter.dataSource;
     if (indexPath.section < dataArray.count) {
         QPSettingsModel *model = dataArray[indexPath.section];
-        if (indexPath.section == 4) {
-            cell.textLabel.text = model.title;
-        } else {
+        if (indexPath.section == 5) {
             cell.detailTextLabel.text = model.title;
+        } else {
+            cell.textLabel.text = model.title;
         }
     }
     cell.textLabel.textColor = _viewController.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
@@ -198,18 +205,27 @@
         //cell.textLabel.text = @"当前网络连接状态";
         cell.detailTextLabel.text = DYFNetworkSniffer.sharedSniffer.statusFlags;
         cell.detailTextLabel.font = [UIFont systemFontOfSize:16.f];
-        
     } else if (indexPath.section == 2) {
-        //cell.textLabel.text = @"允许运营商网络播放";
+        //cell.textLabel.text = @"开启画中画";
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = SettingsCellHeight/2.0;
-        sw.on        = QPlayerCarrierNetworkAllowed();
+        sw.on        = QPlayerPictureInPictureEnabled();
         sw.tag       = 9;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         
         [cell.contentView addSubview:sw];
     } else if (indexPath.section == 3) {
+        //cell.textLabel.text = @"允许运营商网络播放";
+        UISwitch *sw = [[UISwitch alloc] init];
+        sw.left      = QPScreenWidth - 70.f;
+        sw.centerY   = SettingsCellHeight/2.0;
+        sw.on        = QPlayerCarrierNetworkAllowed();
+        sw.tag       = 8;
+        [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
+        
+        [cell.contentView addSubview:sw];
+    } else if (indexPath.section == 4) {
         //cell.textLabel.text = @"WiFi 文件传输";
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
@@ -222,7 +238,7 @@
             sw.on = NO;
         }
         [cell.contentView addSubview:sw];
-    } else if (indexPath.section == 4) {
+    } else if (indexPath.section == 5) {
         cell.textLabel.text = [NSString stringWithFormat:@"http://%@:%d", [QPWifiManager shared].httpServer.hostName, [QPWifiManager shared].httpServer.port];
         //cell.detailTextLabel.text = @"更改端口";
         cell.detailTextLabel.font = [UIFont systemFontOfSize:16.f];
@@ -246,6 +262,13 @@
             [tbc adaptThemeStyle];
         }
     } else if (sender.tag == 9) {
+        QPlayerSetPictureInPictureEnabled(sender.isOn);
+        if (sender.isOn) {
+            [QPHudUtils showTipMessageInView:@"已开启画中画"];
+        } else {
+            [QPHudUtils showTipMessageInView:@"已关闭画中画"];
+        }
+    } else if (sender.tag == 8) {
         QPlayerSetCarrierNetworkAllowed(sender.isOn);
         if (sender.isOn) {
             [QPHudUtils showTipMessageInView:@"已开启"];
@@ -275,7 +298,7 @@
 - (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
     [_view deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 4) {
+    if (indexPath.section == 5) {
         if (indexPath.row == 0) {
             [self onChangePort:nil];
         }
@@ -284,7 +307,7 @@
 
 - (void)onChangePort:(UIButton *)sender
 {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"是否切换端口？" message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *destructiveAction = [UIAlertAction actionWithTitle:@"使用 8080 端口" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [self onConfigurePort:YES];
     }];
@@ -310,6 +333,5 @@
     }
     [self.view reloadData];
 }
-
 
 @end

@@ -9,7 +9,7 @@
 #import "QPBaseModel.h"
 #import "QPBaseAdapter.h"
 
-@interface QPListViewAdapter : QPBaseAdapter <UITableViewDelegate, UITableViewDataSource>
+@interface QPListViewAdapter : QPBaseListViewAdapter <UITableViewDelegate, UITableViewDataSource>
 
 /// The data source.
 @property (nonatomic, strong) NSMutableArray *dataSource;

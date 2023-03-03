@@ -193,15 +193,15 @@
 {
     QPFileModel *_model = (QPFileModel *)model;
     if (!QPlayerIsPlaying()) {
-        QPlayerSavePlaying(YES);
-        NSURL *url                = [NSURL fileURLWithPath:_model.path];
-        UIImage *thumbnail        = self.yf_videoThumbnailImage(url, 3, 107, 60);
-        QPPlayerController *qpc   = [[QPPlayerController alloc] init];
-        qpc.isLocalVideo          = YES;
-        qpc.isMediaPlayerPlayback = YES;
-        qpc.videoTitle            = _model.name;
-        qpc.videoUrl              = _model.path;
-        qpc.placeholderCoverImage = thumbnail;
+        NSURL *url                  = [NSURL fileURLWithPath:_model.path];
+        UIImage *thumbnail          = self.yf_videoThumbnailImage(url, 3, 107, 60);
+        QPPlayerModel *model        = [[QPPlayerModel alloc] init];
+        model.isLocalVideo          = YES;
+        model.isMediaPlayerPlayback = YES;
+        model.videoTitle            = _model.name;
+        model.videoUrl              = _model.path;
+        model.placeholderCoverImage = thumbnail;
+        QPPlayerController *qpc     = [[QPPlayerController alloc] initWithModel:model];
         [[self homeViewController].navigationController pushViewController:qpc animated:YES];
     }
 }

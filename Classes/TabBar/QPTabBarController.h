@@ -9,6 +9,9 @@
 
 @interface QPTabBarController : UITabBarController
 
+// Whether The dark interface style was truned on.
+@property (nonatomic, assign, readonly) BOOL isDarkMode;
+
 - (void)adaptThemeStyle;
 
 @end

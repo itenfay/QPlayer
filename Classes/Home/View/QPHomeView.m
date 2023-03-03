@@ -8,7 +8,7 @@
 #import "QPHomeView.h"
 
 @interface QPHomeView ()
-@property (nonatomic, strong) UITableView *mTableView;
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, copy) HomeReloadDataBlock reloadDataBlock;
 @end
 
@@ -28,11 +28,6 @@
     self.backgroundColor = [UIColor clearColor];
 }
 
-- (UITableView *)tableView
-{
-    return self.mTableView;
-}
-
 - (void)buildView
 {
     [self setupTableView:_adapter];
@@ -41,15 +36,15 @@
 
 - (void)setupTableView:(QPBaseAdapter *)adapter
 {
-    self.mTableView.backgroundColor = [UIColor clearColor];
-    self.mTableView.dataSource      = (QPListViewAdapter *)adapter;
-    self.mTableView.delegate        = (QPListViewAdapter *)adapter;
-    self.mTableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
-    self.mTableView.rowHeight       = UITableViewAutomaticDimension;
-    self.mTableView.estimatedRowHeight = 60.f;
-    self.mTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    [self.mTableView autoresizing];
-    [self addSubview:self.mTableView];
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.dataSource      = (QPListViewAdapter *)adapter;
+    self.tableView.delegate        = (QPListViewAdapter *)adapter;
+    self.tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
+    self.tableView.rowHeight       = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 60.f;
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    [self.tableView autoresizing];
+    [self addSubview:self.tableView];
 }
 
 - (void)setupRefreshHeader
@@ -72,20 +67,20 @@
     !_reloadDataBlock ?: _reloadDataBlock();
 }
 
-- (UITableView *)mTableView
+- (UITableView *)tableView
 {
-    if (!_mTableView) {
+    if (!_tableView) {
         CGFloat tW   = QPScreenWidth;
         CGFloat tH   = self.height - QPTabBarHeight;
         CGRect frame = CGRectMake(0, 0, tW, tH);
-        _mTableView   = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+        _tableView   = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     }
-    return _mTableView;
+    return _tableView;
 }
 
 - (void)reloadUI
 {
-    [self.mTableView reloadData];
+    [self.tableView reloadData];
 }
 
 @end

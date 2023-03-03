@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QPAboutMeListViewAdapter : QPListViewAdapter <QPBaseAdapterDataBindingProcotol>
+@interface QPAboutMeListViewAdapter : QPListViewAdapter <QPListViewDataBindingProcotol>
 
 @end
 

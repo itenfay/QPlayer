@@ -13,3 +13,4 @@ FOUNDATION_EXPORT NSString *const kWriteThemeStyleFlagOnceOnly;
 FOUNDATION_EXPORT NSString *const kThemeStyleOnOff;
 FOUNDATION_EXPORT NSString *const kThemeStyleDidChangeNotification;
 FOUNDATION_EXPORT NSString *const kCarrierNetworkAllowed;
+FOUNDATION_EXPORT NSString *const kPlayerPictureInPictureEnabled;

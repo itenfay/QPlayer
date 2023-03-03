@@ -118,8 +118,8 @@
 
 - (void)adaptThemeStyle
 {
-    [self.m_tableView reloadData];
     [super adaptThemeStyle];
+    [self.m_tableView reloadData];
 }
 
 @end

@@ -146,10 +146,62 @@
     return VideoDurationBlock;
 }
 
-- (UIImage *)xc:(NSString *)name  {
+- (UIImage *)yf_imageRenderingAlwaysTemplate:(NSString *)name
+{
     UIImage *image = QPImageNamed(name);
-    UIImage *newImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    return newImage;
+    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+}
+
+- (UIWindow *)yf_mainWindow
+{
+    UIWindow *window;
+    NSMutableArray<UIWindow *> *windowArray = [NSMutableArray arrayWithCapacity:0];
+    UIApplication *sharedApp = UIApplication.sharedApplication;
+    if (@available(iOS 13.0, *)) {
+        NSMutableArray<UIWindowScene *> *sceneArray = [NSMutableArray arrayWithCapacity:0];
+        for (UIScene *scene in sharedApp.connectedScenes) {
+            if (scene.activationState == UISceneActivationStateForegroundActive &&
+                [scene isKindOfClass:UIWindowScene.class]) {
+                [sceneArray addObject:(UIWindowScene *)scene];
+            }
+        }
+        UIWindowScene *scene = sceneArray.firstObject;
+        for (UIWindow *w in scene.windows) {
+            if (w.isKeyWindow) { [windowArray addObject:w]; }
+        }
+    } else {
+        for (UIWindow *w in sharedApp.windows) {
+            if (w.isKeyWindow) { [windowArray addObject:w]; }
+        }
+    }
+    window = windowArray.firstObject;
+    return window;
+}
+
+- (UIViewController *)yf_currentViewController
+{
+    UIWindow *window = [self yf_mainWindow];
+    return [self yf_queryCurrentViewControllerFrom:window.rootViewController];
+}
+
+- (UIViewController *)yf_queryCurrentViewControllerFrom:(UIViewController *)viewController
+{
+    UIViewController *vc = viewController;
+    while (1) {
+        if (vc.presentedViewController) {
+            vc = vc.presentedViewController;
+        } else if ([vc isKindOfClass:UITabBarController.class]) {
+            vc = ((UITabBarController *)vc).selectedViewController;
+        } else if ([vc isKindOfClass:UINavigationController.class]) {
+            vc = ((UINavigationController *)vc).visibleViewController;
+        } else {
+            if (vc.childViewControllers.count > 0) {
+                vc = vc.childViewControllers.lastObject;
+            }
+            break;
+        }
+    }
+    return vc;
 }
 
 @end

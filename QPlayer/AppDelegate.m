@@ -36,11 +36,11 @@
 
 - (void)controlLog
 {
-#ifdef DEBUG
+    #ifdef DEBUG
     [ZFPlayerLogManager setLogEnable:YES];
-#else
+    #else
     [ZFPlayerLogManager setLogEnable:NO];
-#endif
+    #endif
 }
 
 - (void)setupConfiguration

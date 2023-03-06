@@ -1,15 +1,15 @@
 //
-//  HistoryArchive.m
+//  QPHistoryArchive.m
 //
 //  Created by chenxing on 2017/9/1.
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "HistoryArchive.h"
+#import "QPHistoryArchive.h"
 
 static NSString *const kHistoryArchiveKey = @"QPlayerHistoryArchive";
 
-@implementation HistoryArchive
+@implementation QPHistoryArchive
 
 - (NSString *)cacheDir
 {

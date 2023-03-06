@@ -9,16 +9,19 @@
 
 @implementation DYFDropListViewCell
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
     [self setNeedsUpdateConstraints];
 }
 
-- (void)updateConstraints {
+- (void)updateConstraints
+{
     [super updateConstraints];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
 }
 

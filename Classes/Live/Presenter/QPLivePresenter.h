@@ -6,11 +6,11 @@
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPBasePresenter.h"
+#import "QPSearchPresenter.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QPLivePresenter : QPBasePresenter
+@interface QPLivePresenter : QPSearchPresenter
 
 @end
 

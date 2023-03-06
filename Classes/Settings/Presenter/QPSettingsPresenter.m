@@ -230,7 +230,7 @@
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = SettingsCellHeight/2.0;
-        sw.tag       = 8;
+        sw.tag       = 6;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         if ([DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
             sw.on = [QPWifiManager shared].serverStatus;
@@ -287,7 +287,7 @@
             [[QPWifiManager shared] operateServer:NO];
         }
         BOOL status = [QPWifiManager shared].serverStatus;
-        QPLog(@">>> [Server] status: %d, %@", status, status ?
+        QPLog(@":: [Server] status: %d, %@", status, status ?
               [NSString stringWithFormat:@"http://%@:%d",
                [QPWifiManager shared].httpServer.hostName,
                [QPWifiManager shared].httpServer.port] : @"The server didn't open.");

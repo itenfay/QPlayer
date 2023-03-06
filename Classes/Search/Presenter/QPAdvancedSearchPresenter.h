@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QPAdvancedSearchPresenter : QPSearchPresenter
 
-
 @end
 
 NS_ASSUME_NONNULL_END

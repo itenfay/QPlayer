@@ -78,7 +78,7 @@
     self.player.pauseWhenAppResignActive = YES;
     //self.player.resumePlayRecord = YES;
     
-    @zf_weakify(self)
+    //@zf_weakify(self)
     vc.controlView.backBtnClickCallback = ^{
         //@zf_strongify(self)
         //[self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:YES completion:NULL];

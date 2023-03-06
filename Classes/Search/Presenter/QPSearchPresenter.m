@@ -64,36 +64,14 @@
 //                                     @"https://m.imooc.com/",
 //                                     @"https://m.study.163.com/",
 //                                     @"https://www.jikexueyuan.com/"];
-- (void)presentSearchViewController
+- (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches
 {
     PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:@[] searchBarPlaceholder:@"请输入要搜索的内容或网址" didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
         //QPLog(@":: searchText=%@", searchText);
     }];
     searchViewController.delegate    = self;
     searchViewController.dataSource  = self;
-    searchViewController.hotSearches = @[@"https://m.v.qq.com/",
-                                         @"https://m.mgtv.com/",
-                                         @"https://m.iqiyi.com/",
-                                         @"https://www.youku.com/",
-                                         @"https://m.tv.sohu.com/",
-                                         @"https://m.pptv.com/",
-                                         @"https://m.le.com/",
-                                         @"https://m.mtime.cn/",
-                                         
-                                         @"https://m.ixigua.com/",
-                                         @"https://v.ifeng.com/",
-                                         @"https://haokan.baidu.com/",
-                                         @"https://www.pearvideo.com/?from=intro",
-                                         @"http://ten.budejie.com/video/",
-                                         @"https://m.ku6.com/index",
-                                         
-                                         @"https://www.y80s.net/",
-                                         
-                                         @"https://xw.qq.com/m/sports/index.htm",
-                                         @"https://m.live.qq.com/",
-                                         @"https://sports.sina.cn/?from=wap",
-                                         @"https://m.sohu.com/z/"];
-    
+    searchViewController.hotSearches = hotSearches;
     searchViewController.searchBar.tintColor = UIColor.blueColor;
     searchViewController.searchHistoriesCachePath = VIDEO_SEARCH_HISTORY_CACHE_PATH;
     searchViewController.hotSearchStyle = PYHotSearchStyleColorfulTag;
@@ -192,9 +170,9 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 {
     QPLog(@":: searchText=%@", searchText);
     //Send request to get a search suggestions
-    //NSMutableArray *searchSuggestionsM = [NSMutableArray array];
+    //NSMutableArray *searchSuggestions = [NSMutableArray array];
     // Refresh and display the search suggustions
-    //self.searchSuggestions = searchSuggestionsM;
+    //self.searchSuggestions = searchSuggestions;
 }
 
 @end

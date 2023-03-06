@@ -85,12 +85,16 @@
     self.adapter = [[QPWKWebViewAdapter alloc] initWithWebView:self.webView navigationBar:self.navigationBar];
     self.adapter.toolBar = [self webToolBar];
     [self.adapter addProgressViewToWebView];
+    @QPWeakify(self)
+    [self.adapter observeUrlLink:^(NSString *url) {
+        weak_self.titleView.text = url;
+    }];
 }
 
 - (void)adaptTitleViewStyle:(BOOL)isDark {
     self.titleView.backgroundColor = isDark ? UIColor.blackColor : UIColor.whiteColor;
     self.titleView.textColor = isDark ? UIColor.whiteColor : UIColor.blackColor;
-    self.titleView.font = [UIFont systemFontOfSize:16.f];
+    self.titleView.font = [UIFont systemFontOfSize:15.f];
     NSString *title = @"请输入要搜索的内容或网址";
     UIFont *font = [UIFont systemFontOfSize:15.f];
     if (isDark) {
@@ -117,8 +121,8 @@
     CGRect frame = CGRectMake(0, 0, QPScreenWidth, kH);
     [self initWebViewWithFrame:frame];
     
-    self.webView.backgroundColor     = UIColor.clearColor; //QPColorFromRGB(243, 243, 243);
-    self.webView.opaque              = NO;
+    self.webView.backgroundColor = UIColor.clearColor; //QPColorFromRGB(243, 243, 243);
+    self.webView.opaque          = NO;
     
     self.webView.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.webView autoresizing];
@@ -168,13 +172,10 @@
     if (text.length > 0) {
         NSString *tempStr = [text lowercaseString];
         NSString *url = @"";
-        if ([tempStr hasPrefix:@"https"] ||
-            [tempStr hasPrefix:@"http"]) {
+        if ([tempStr hasPrefix:@"https"] || [tempStr hasPrefix:@"http"]) {
             url = text;
-        } else if ([tempStr hasPrefix:@"www."] ||
-                   [tempStr hasPrefix:@"m."]   ||
-                   [tempStr hasSuffix:@".com"] ||
-                   [tempStr hasSuffix:@".cc"]) {
+        } else if ([tempStr hasPrefix:@"www."] || [tempStr hasPrefix:@"m."] ||
+                   [tempStr hasSuffix:@".com"] || [tempStr hasSuffix:@".cc"]) {
             url = [NSString stringWithFormat:@"https://%@", text];
         } else {
             NSString *bdUrl = @"https://www.baidu.com/";
@@ -188,6 +189,7 @@
 - (void)showVideoController
 {
     QPAdvancedSearchController *advancedSearchController = [[QPAdvancedSearchController alloc] init];
+    advancedSearchController.hidesBottomBarWhenPushed = YES;
     //[self.navigationController showViewController:advancedSearchController sender:self];
     [self.navigationController pushViewController:advancedSearchController animated:true];
 }

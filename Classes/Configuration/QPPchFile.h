@@ -32,9 +32,9 @@
 #import "MJRefresh.h"
 #import "SVBlurView.h"
 #import "MBProgressHUD+JDragon.h"
-#import "UIImage+ImageEffects.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
 #import "PYSearch.h"
+#import "DYFProgressView.h"
 #import "DYFWebProgressView.h"
 
 #import <ZFPlayer/ZFPlayer.h>

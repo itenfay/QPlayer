@@ -1,5 +1,5 @@
 //
-//  HistoryArchive.h
+//  QPHistoryArchive.h
 //
 //  Created by chenxing on 2017/9/1.
 //  Copyright © 2017 chenxing. All rights reserved.
@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface HistoryArchive : NSObject
+@interface QPHistoryArchive : NSObject
 
 // 保存数组与归档
 - (void)saveArray:(NSArray *)array;

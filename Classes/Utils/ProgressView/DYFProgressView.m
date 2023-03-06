@@ -74,7 +74,6 @@
     _animationDuration        = 0.25f;
     _fadeAnimationDuration    = 0.25f;
     _fadeOutAnimationDuration = 0.1f;
-    
     self.progress = 0;
 }
 
@@ -116,7 +115,7 @@
 - (void)setProgress:(double)progress animated:(BOOL)animated
 {
     BOOL change = progress > 0.0;
-    [UIView animateWithDuration:(change && animated) ? _animationDuration : 0.0 animations:^{
+    [UIView animateWithDuration:(change && animated) ? _animationDuration:0.0 animations:^{
         CGRect frame            = self.progressView.frame;
         frame.size.width        = progress * self.bounds.size.width;
         self.progressView.frame = frame;
@@ -126,7 +125,7 @@
     }];
     
     if (progress >= 1.0) {
-        [UIView animateWithDuration:animated ? _animationDuration : 0.0 delay:_fadeOutAnimationDuration options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [UIView animateWithDuration:animated ? _animationDuration:0.0 delay:_fadeOutAnimationDuration options:UIViewAnimationOptionCurveEaseInOut animations:^{
             self.progressView.alpha = 0.0;
         } completion:^(BOOL finished) {
             [self clearBackgroundColor];
@@ -135,7 +134,7 @@
             self.progressView.frame = frame;
         }];
     } else {
-        [UIView animateWithDuration:animated ? _fadeAnimationDuration : 0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [UIView animateWithDuration:animated ? _fadeAnimationDuration:0.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             self.progressView.alpha = 1.0;
         } completion:nil];
     }

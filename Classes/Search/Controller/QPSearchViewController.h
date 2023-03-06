@@ -14,5 +14,6 @@
 - (UIImageView *)webToolBar;
 - (void)configureWebViewAdapter;
 - (void)loadWebContents;
+- (void)adaptTitleViewStyle:(BOOL)isDark;
 
 @end

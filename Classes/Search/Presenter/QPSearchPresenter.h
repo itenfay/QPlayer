@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) QPBaseViewController *viewController;
 
 - (void)playVideoWithUrl:(NSString *)url;
-- (void)presentSearchViewController;
+- (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches;
 
 @end
 

@@ -25,7 +25,7 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    QPLog(@">>> ");
+    QPLog(@"::");
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -61,51 +61,51 @@
 - (void)loadView
 {
     [super loadView];
-    QPLog(@">>> ");
+    QPLog(@"::");
     [self prepareToRenderScreen];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    QPLog(@">>> ");
+    QPLog(@"::");
     self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    QPLog(@">>> ");
+    QPLog(@"::");
 }
 
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    QPLog(@">>> ");
+    QPLog(@"::");
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    QPLog(@">>> ");
+    QPLog(@"::");
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    QPLog(@">>> ");
+    QPLog(@"::");
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    QPLog(@">>> ");
+    QPLog(@"::");
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    QPLog(@">>> ");
+    QPLog(@"::");
 }
 
 - (void)prepareToRenderScreen

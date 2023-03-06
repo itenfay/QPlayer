@@ -11,19 +11,7 @@
 #import "QPHomeViewController.h"
 
 // Transforms two objects's title to pinying and sorts them.
-NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
-{
-    NSMutableString *str1 = [[NSMutableString alloc] initWithString:o1.name];
-    if (CFStringTransform((__bridge CFMutableStringRef)str1,
-                          0,
-                          kCFStringTransformMandarinLatin, NO)) {}
-    NSMutableString *str2 = [[NSMutableString alloc] initWithString:o2.name];
-    if (CFStringTransform((__bridge CFMutableStringRef)str2,
-                          0,
-                          kCFStringTransformMandarinLatin,
-                          NO)) {}
-    return [str1 localizedCompare:str2];
-}
+FOUNDATION_EXTERN NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context);
 
 @interface QPHomePresenter : QPBasePresenter <WebFileResourceDelegate, QPPresenterDelegate>
 @property (nonatomic, weak) QPHomeView *view;

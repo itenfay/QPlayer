@@ -5,8 +5,8 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseWebViewController.h"
+#import "QPSearchViewController.h"
 
-@interface QPLiveViewController : QPBaseWebViewController
+@interface QPLiveViewController : QPSearchViewController
 
 @end

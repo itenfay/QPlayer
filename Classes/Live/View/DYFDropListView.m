@@ -9,15 +9,18 @@
 #import "DYFDropListModel.h"
 
 // Transforms two objects's title to pinying and sorts them.
-NSInteger sortObjects(DYFDropListModel *obj1, DYFDropListModel *obj2, void *context) {
+NSInteger sortObjects(DYFDropListModel *obj1, DYFDropListModel *obj2, void *context)
+{
     NSMutableString *str1 = [[NSMutableString alloc] initWithString:obj1.m_title];
-    if (CFStringTransform((__bridge CFMutableStringRef)str1, 0, kCFStringTransformMandarinLatin, NO)) {
+    if (CFStringTransform((__bridge CFMutableStringRef)str1,
+                          0,
+                          kCFStringTransformMandarinLatin, NO)) {
     }
-    
     NSMutableString *str2 = [[NSMutableString alloc] initWithString:obj2.m_title];
-    if (CFStringTransform((__bridge CFMutableStringRef)str2, 0,     kCFStringTransformMandarinLatin, NO)) {
+    if (CFStringTransform((__bridge CFMutableStringRef)str2,
+                          0,
+                          kCFStringTransformMandarinLatin, NO)) {
     }
-    
     return [str1 localizedCompare:str2];
 }
 
@@ -25,33 +28,28 @@ NSString *const kResourceBundle   = @"DYFDropListView.bundle";
 NSString *const kDropListDataFile = @"DropListViewData.plist";
 
 @interface DYFDropListView () <UITableViewDelegate, UITableViewDataSource>
-
 @property (strong, nonatomic) NSMutableArray *dataArray;
 @property ( copy , nonatomic) DropListViewOnCloseHandler onCloseHandler;
 @property ( copy , nonatomic) DropListViewOnSelectRowHandler onSelectRowHandler;
 @property (assign, nonatomic) BOOL isDarkMode;
-
 @end
 
 @implementation DYFDropListView
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
-    QPLog(@" >>>>>>>>>> ");
     self.backgroundColor = UIColor.clearColor;
-    
     [self setupCorner];
-    [self setupMtableView];
+    [self setupTableView];
     [self setupCloseButton];
-    [self identifyMode];
-    
+    [self adaptThemeStyle];
     [self preLoadData];
 }
 
-- (IBAction)onClose:(id)sender {
-    QPLog(@" >>>>>>>>>> ");
+- (IBAction)onClose:(id)sender
+{
     self.alpha = 1.f;
-    
     [UIView animateWithDuration:0.5 animations:^{
         self.alpha = 0.f;
     } completion:^(BOOL finished) {
@@ -59,35 +57,37 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
             [self removeFromSuperview];
         }
     }];
-    
     !self.onCloseHandler ?: self.onCloseHandler();
 }
 
-- (NSMutableArray *)dataArray {
+- (NSMutableArray *)dataArray
+{
     if (!_dataArray) {
         _dataArray = [NSMutableArray arrayWithCapacity:0];
     }
     return _dataArray;
 }
 
-- (void)setupCorner {
+- (void)setupCorner
+{
     self.m_visualEffectView.layer.cornerRadius = 15.f;
     self.m_visualEffectView.layer.masksToBounds = YES;
 }
 
-- (void)setupMtableView {
+- (void)setupTableView
+{
     self.m_tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
     self.m_tableView.backgroundColor = UIColor.clearColor;
-    
     self.m_tableView.delegate   = self;
     self.m_tableView.dataSource = self;
 }
 
-- (void)setupCloseButton {
+- (void)setupCloseButton
+{
     self.closeButton.backgroundColor = UIColor.clearColor;
     
     // BGC: QPColorFromRGB(242, 82, 81), BC: QPColorFromRGB(254, 194, 49)
-    CGRect     rect  = self.closeButton.bounds;
+    CGRect    rect   = self.closeButton.bounds;
     CGFloat   radius = rect.size.height/2;
     UIImage *bgImage = [self colorImage:rect
                            cornerRadius:radius
@@ -105,22 +105,23 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     //self.closeButton.tintColor = [UIColor colorWithWhite:1.0 alpha:0.9];
 }
 
-- (void)preLoadData {
+- (void)preLoadData
+{
     [self.dataArray removeAllObjects];
     [self onLoadData];
 }
 
-- (void)onLoadData {
-    [QPHudObject showActivityMessageInWindow:@"正在加载数据..."];
+- (void)onLoadData
+{
+    [QPHudUtils showActivityMessageInWindow:@"正在加载数据..."];
     
     // DYFDropListView.bundle -> DropListViewData.plist
     NSString *path       = [NSBundle.mainBundle pathForResource:kResourceBundle ofType:nil];
     NSString *bundlePath = [NSBundle bundleWithPath:path].bundlePath;
     NSString *filePath   = [bundlePath stringByAppendingPathComponent:kDropListDataFile];
-    QPLog(@" >>>>>>>>>> filePath: %@", filePath);
+    QPLog(@":: filePath=%@", filePath);
     
     //NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    
     //NSEnumerator *enumerator = [dict keyEnumerator];
     //id key;
     //while ((key = [enumerator nextObject]) != nil) {
@@ -134,67 +135,66 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     //}
     
     //[self.dataArray sortUsingFunction:sortObjects context:NULL];
-    
     NSArray *tvList = [NSArray arrayWithContentsOfFile:filePath];
-    
     NSEnumerator *enumerator = [tvList objectEnumerator];
     id obj;
     while ((obj = [enumerator nextObject]) != nil) {
-        
         NSDictionary *dict = (NSDictionary *)obj;
-        
         DYFDropListModel *model = [[DYFDropListModel alloc] init];
         model.m_title = dict.allKeys.firstObject;
         model.m_content = dict.allValues.firstObject;
-        
         [self.dataArray addObject:model];
     }
     
     [self delayToScheduleTask:1.0 completion:^{
-        [QPHudObject hideHUD];
+        [QPHudUtils hideHUD];
     }];
 }
 
-- (void)onCloseAction:(DropListViewOnCloseHandler)completionHandler {
+- (void)onCloseAction:(DropListViewOnCloseHandler)completionHandler
+{
     self.onCloseHandler = completionHandler;
 }
 
-- (void)onSelectRow:(DropListViewOnSelectRowHandler)completionHandler {
+- (void)onSelectRow:(DropListViewOnSelectRowHandler)completionHandler
+{
     self.onSelectRowHandler = completionHandler;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return self.dataArray.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return DropListViewCellHeight;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellID = @"DropListViewCellID";
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellID = @"DropListViewCellIdentifier";
     
     DYFDropListViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         UINib *nib = [UINib nibWithNibName:NSStringFromClass([DYFDropListViewCell class]) bundle:nil];
         cell = [nib instantiateWithOwner:nil options:nil].firstObject;
     }
+    cell.contentView.backgroundColor = UIColor.clearColor;
+    cell.backgroundColor = UIColor.clearColor;
+    cell.selectionStyle  = UITableViewCellSelectionStyleGray;
     
     cell.left   = 0.f;
     cell.top    = 0.f;
     cell.width  = self.width;
     cell.height = DropListViewCellHeight;
     
-    cell.contentView.backgroundColor = UIColor.clearColor;
-    cell.backgroundColor = UIColor.clearColor;
-    cell.selectionStyle  = UITableViewCellSelectionStyleGray;
-    
     DYFDropListModel *model = self.dataArray[indexPath.row];
-    
     cell.m_titleLabel.text = model.m_title;
     cell.m_titleLabel.textColor = self.isDarkMode ? QPColorFromRGB(230, 230, 230) : QPColorFromRGB(50, 50, 50);
     cell.m_titleLabel.font = [UIFont systemFontOfSize:13];
@@ -208,28 +208,27 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     DYFDropListModel *model = self.dataArray[indexPath.row];
-    QPLog(@" >>>>>>>>>> title: %@",   model.m_title);
-    QPLog(@" >>>>>>>>>> content: %@", model.m_content);
+    QPLog(@":: title=%@, content=%@", model.m_title, model.m_content);
     
     !self.onSelectRowHandler ?:
     self.onSelectRowHandler(indexPath.row, model.m_title, model.m_content);
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-    [self identifyMode];
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [self adaptThemeStyle];
     [self.m_tableView reloadData];
 }
 
-- (void)identifyMode {
-    
+- (void)adaptThemeStyle
+{
     if (@available(iOS 13.0, *)) {
-        
         UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
-        
         if (mode == UIUserInterfaceStyleDark) {
             // Dark Mode
             self.isDarkMode = YES;
@@ -239,9 +238,7 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
             self.isDarkMode = NO;
             self.m_visualEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
         }
-        
     } else {
-        
         self.isDarkMode = NO;
         self.m_visualEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     }

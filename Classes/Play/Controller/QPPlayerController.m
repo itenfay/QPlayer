@@ -149,9 +149,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    QPLog(@">>> videoTitle: %@", self.model.videoTitle);
-    QPLog(@">>> videoUrl: %@", self.model.videoUrl);
-    QPLog(@">>> videoDecoding: %d", self.model.videoDecoding);
+    QPLog(@":: videoTitle: %@", self.model.videoTitle);
+    QPLog(@":: videoUrl: %@", self.model.videoUrl);
+    QPLog(@":: videoDecoding: %d", self.model.videoDecoding);
     [self configureNavigationBar];
     
     QPPlayerPresenter *presenter = [[QPPlayerPresenter alloc] init];

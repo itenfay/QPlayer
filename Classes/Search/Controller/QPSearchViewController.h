@@ -5,15 +5,8 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseWebViewController.h"
+#import "QPWebController.h"
 
-@interface QPSearchViewController : QPBaseWebViewController <UITextFieldDelegate>
-
-- (void)loadDefaultRequest;
-- (UITextField *)titleView;
-- (UIImageView *)webToolBar;
-- (void)configureWebViewAdapter;
-- (void)loadWebContents;
-- (void)adaptTitleViewStyle:(BOOL)isDark;
+@interface QPSearchViewController : QPWebController
 
 @end

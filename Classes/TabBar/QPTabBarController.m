@@ -131,15 +131,20 @@
 
 - (void)adaptThemeStyle
 {
-    if (@available(iOS 13.0, *)) {
-        UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
-        if (mode == UIUserInterfaceStyleDark) { // Dark Mode
-            _isDarkMode = YES;
-        } else if (mode == UIUserInterfaceStyleLight) { // Light Mode
+    BOOL ret = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
+    if (!ret) {
+        _isDarkMode = NO;
+    } else {
+        if (@available(iOS 13.0, *)) {
+            UIUserInterfaceStyle mode = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+            if (mode == UIUserInterfaceStyleDark) { // Dark Mode
+                _isDarkMode = YES;
+            } else if (mode == UIUserInterfaceStyleLight) { // Light Mode
+                _isDarkMode = NO;
+            }
+        } else { // unspecified Mode
             _isDarkMode = NO;
         }
-    } else { // unspecified Mode
-        _isDarkMode = NO;
     }
     [self updateThemeStyle];
 }

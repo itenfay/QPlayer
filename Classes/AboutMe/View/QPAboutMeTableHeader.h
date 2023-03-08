@@ -15,6 +15,5 @@
 // Layout Constraint.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *logoBgImgViewTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *logoBgImgViewHeight;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *briefIntroLabelHeight;
 
 @end

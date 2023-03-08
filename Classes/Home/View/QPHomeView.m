@@ -50,11 +50,12 @@
 - (void)setupRefreshHeader
 {
     @QPWeakify(self)
-    MJRefreshNormalHeader *mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    [self.tableView setupRefreshHeader:^{
         [weak_self loadNewData];
     }];
-    mj_header.lastUpdatedTimeLabel.hidden = YES;
-    self.tableView.mj_header = mj_header;
+    [self delayToScheduleTask:1.2 completion:^{
+        [self endRefreshing];
+    }];
 }
 
 - (void)reloadData:(HomeReloadDataBlock)block
@@ -76,6 +77,13 @@
         _tableView   = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     }
     return _tableView;
+}
+
+- (void)endRefreshing
+{
+    if ([self.tableView isRefreshing:QPRefreshPositionHeader]) {
+        [self.tableView endRefreshing:QPRefreshPositionHeader];
+    }
 }
 
 - (void)reloadUI

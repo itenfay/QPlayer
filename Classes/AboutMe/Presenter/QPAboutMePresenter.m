@@ -12,7 +12,7 @@
 #import "QPAboutMeTableHeader.h"
 #import "QPAboutMeTableFooter.h"
 
-#define AboutMeTableHeaderHeight 280.f
+#define AboutMeTableHeaderHeight 300.f
 #define AboutMeTableCellHeight    46.f
 
 @implementation QPAboutMePresenter
@@ -74,88 +74,46 @@
 //    }
 //}
 
-- (CGFloat)heightForHeaderInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
+- (void)configTableViewHeaderFooter
 {
-    if (section == 0) {
-        return AboutMeTableHeaderHeight;
-    }
-    return 0.01f;
-}
-
-- (CGFloat)heightForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
-{
-    if (section == 0) {
-        NSUInteger nums = [self aboutMeController].adapter.dataSource.count;
-        CGFloat headerH = AboutMeTableHeaderHeight;
-        CGFloat cellH   = AboutMeTableCellHeight;
-        return _view.height - headerH - nums*cellH;
-    }
-    return 0.01f;
-}
-
-- (UIView *)viewForHeaderInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
-{
-    if (section == 0) {
-        UINib *nib = [UINib nibWithNibName:NSStringFromClass([QPAboutMeTableHeader class]) bundle:NSBundle.mainBundle];
-        QPAboutMeTableHeader *header = [nib instantiateWithOwner:nil options:nil].firstObject;
-        
-        CGFloat headerH = AboutMeTableHeaderHeight;
-        header.left     = 0.f;
-        header.top      = 0.f;
-        header.width    = self.view.width;
-        header.height   = headerH;
-        
-        header.logoBgImgView.backgroundColor = UIColor.clearColor;
-        UIImage *cornerImage = [self colorImage:header.logoBgImgView.bounds
-                                   cornerRadius:15
-                                 backgroudColor:QPColorFromRGB(39, 220, 203)
-                                    borderWidth:0
-                                    borderColor:nil];
-        header.logoBgImgView.image = cornerImage;
-        
-        NSString *intro = [QPInfoDictionary objectForKey:@"QPlyerDesc"];
-        UILabel *label  = header.briefIntroLabel;
-        UIFont  *font   = [UIFont systemFontOfSize:13.f];
-        CGFloat labH    = label.yf_heightToFit(intro, label.width, font);
-        label.textAlignment = NSTextAlignmentLeft;
-        label.textColor = [self aboutMeController].isDarkMode ? QPColorFromRGB(160, 160, 160) : QPColorFromRGB(96, 96, 96);
-        label.lineBreakMode = NSLineBreakByCharWrapping;
-        
-        header.briefIntroLabelHeight.constant = labH;
-        CGFloat bgImgVH = header.logoBgImgViewHeight.constant;
-        header.logoBgImgViewTop.constant = (headerH - bgImgVH - labH - 20)/2;
-        return header;
-    }
-    return nil;
-}
-
-- (UIView *)viewForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
-{
-    if (section == 0) {
-        UINib *nib = [UINib nibWithNibName:NSStringFromClass([QPAboutMeTableFooter class]) bundle:NSBundle.mainBundle];
-        QPAboutMeTableFooter *footer = [nib instantiateWithOwner:nil options:nil].firstObject;
-        
-        NSUInteger count = [self aboutMeController].adapter.dataSource.count;
-        CGFloat headerH  = AboutMeTableHeaderHeight;
-        CGFloat cellH    = AboutMeTableCellHeight;
-        footer.left      = 0.f;
-        footer.top       = 0.f;
-        footer.width     = self.view.width;
-        footer.height    = self.view.height - headerH - count*cellH;
-        
-        @QPWeakify(self)
-        [footer onAct:^(AMFooterActionType type) {
-            if (type == AMFooterActionTypeJianShu) {
-                NSString *myJSUrl = [QPInfoDictionary objectForKey:@"MyJianShuUrl"];
-                [weak_self presentWebViewWithUrl:myJSUrl];
-            } else {
-                NSString *blogUrl = [QPInfoDictionary objectForKey:@"MyBlogUrl"];
-                [weak_self presentWebViewWithUrl:blogUrl];
-            }
-        }];
-        return footer;
-    }
-    return nil;
+    UINib *headerNib = [UINib nibWithNibName:NSStringFromClass([QPAboutMeTableHeader class]) bundle:NSBundle.mainBundle];
+    QPAboutMeTableHeader *header = [headerNib instantiateWithOwner:nil options:nil].firstObject;
+    header.left = header.top = 0.f;
+    header.width = self.view.width;
+    header.height = AboutMeTableHeaderHeight;
+    header.logoBgImgView.backgroundColor = UIColor.clearColor;
+    UIImage *cornerImage = [self colorImage:CGRectMake(0, 0, 120, 120)
+                               cornerRadius:15
+                             backgroudColor:QPColorFromRGB(39, 220, 203)
+                                borderWidth:0
+                                borderColor:nil];
+    header.logoBgImgView.image = cornerImage;
+    
+    NSString *intro = [QPInfoDictionary objectForKey:@"QPlyerDesc"];
+    header.briefIntroLabel.textAlignment = NSTextAlignmentLeft;
+    header.briefIntroLabel.textColor = [self aboutMeController].isDarkMode ? QPColorFromRGB(160, 160, 160) : QPColorFromRGB(96, 96, 96);
+    header.briefIntroLabel.text = intro;
+    _view.tableHeaderView = header;
+    
+    NSUInteger count = [self aboutMeController].adapter.dataSource.count;
+    UINib *footerNib = [UINib nibWithNibName:NSStringFromClass([QPAboutMeTableFooter class]) bundle:NSBundle.mainBundle];
+    QPAboutMeTableFooter *footer = [footerNib instantiateWithOwner:nil options:nil].firstObject;
+    CGFloat cellH    = AboutMeTableCellHeight;
+    footer.left      = 0.f;
+    footer.top       = 0.f;
+    footer.width     = self.view.width;
+    footer.height    = self.view.height - header.height - count*cellH - 10;
+    _view.tableFooterView = footer;
+    @QPWeakify(self)
+    [footer onAct:^(AMFooterActionType type) {
+        if (type == AMFooterActionTypeJianShu) {
+            NSString *url = [QPInfoDictionary objectForKey:@"MyJianShuUrl"];
+            [weak_self presentWebViewWithUrl:url];
+        } else {
+            NSString *url = [QPInfoDictionary objectForKey:@"MyBlogUrl"];
+            [weak_self presentWebViewWithUrl:url];
+        }
+    }];
 }
 
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter

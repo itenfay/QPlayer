@@ -121,17 +121,17 @@
 - (void)adaptThemeStyle
 {
     BOOL ret = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
-    if (ret) {
-        if (@available(iOS 13.0, *)) {
-            UIUserInterfaceStyle style = UITraitCollection.currentTraitCollection.userInterfaceStyle;
-            if (style == UIUserInterfaceStyleDark) {
-                // Dark Mode
-                [self adaptDarkTheme];
-            } else if (style == UIUserInterfaceStyleLight) {
-                // Light Mode or unspecified Mode
-                [self adaptLightTheme];
-            }
-        } else {
+    if (!ret) {
+        [self adaptLightTheme];
+        return;
+    }
+    if (@available(iOS 13.0, *)) {
+        UIUserInterfaceStyle style = UITraitCollection.currentTraitCollection.userInterfaceStyle;
+        if (style == UIUserInterfaceStyleDark) {
+            // Dark Mode
+            [self adaptDarkTheme];
+        } else if (style == UIUserInterfaceStyleLight) {
+            // Light Mode or unspecified Mode
             [self adaptLightTheme];
         }
     } else {
@@ -145,7 +145,6 @@
     [self adaptNavigationBarAppearance:NO];
     [self setupNavigationBarLightStyle];
     self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
-    
 }
 
 - (void)adaptDarkTheme
@@ -191,7 +190,7 @@
 
 - (void)configureNavigationBar
 {
-    
+    QPLog("::");
 }
 
 - (void)configNavigaitonBar:(UIImage *)backgroundImage titleTextAttributes:(NSDictionary<NSAttributedStringKey, id> *)titleTextAttributes

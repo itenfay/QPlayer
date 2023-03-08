@@ -26,56 +26,22 @@
 
 - (void)configureNavigationBar
 {
-    self.navigationItem.hidesBackButton = YES;
-    QPTitleView *titleView = [[QPTitleView alloc] init];
-    //titleView.backgroundColor = UIColor.redColor;
-    titleView.left   = 0.f;
-    titleView.top    = 0.f;
-    titleView.width  = self.view.width;
-    titleView.height = 36.f;
-    titleView.userInteractionEnabled = YES;
+    [self setNavigationBarTitle:@"关于我"];
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backButton.width     = 30.f;
     backButton.height    = 30.f;
     backButton.left      = 0.f;
-    backButton.top       = (titleView.height - backButton.height)/2;
+    backButton.top       = 0.f;
     [backButton setImage:QPImageNamed(@"back_normal_white") forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 12);
-    [titleView addSubview:backButton];
-    
-    UILabel *titleLabel        = [[UILabel alloc] init];
-    titleLabel.backgroundColor = UIColor.clearColor;
-    titleLabel.font            = [UIFont boldSystemFontOfSize:17.f];
-    titleLabel.textColor       = UIColor.whiteColor;
-    titleLabel.textAlignment   = NSTextAlignmentCenter;
-    titleLabel.tag             = 668;
-    titleLabel.height = 30.f;
-    titleLabel.left   = backButton.right - 12.f;
-    titleLabel.top    = (titleView.height - titleLabel.height)/2;
-    titleLabel.width  = titleView.right - titleLabel.left - 2*16.f;
-    [titleView addSubview:titleLabel];
-    
-    self.navigationItem.titleView = titleView;
-    [self setupTextForTitleLabel:@"关于我"];
+    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10);
+    [self addLeftNavigationBarButton:backButton];
 }
 
 - (void)back:(UIButton *)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)setupTextForTitleLabel:(NSString *)text
-{
-    UILabel *titleLabel = [self.navigationItem.titleView viewWithTag:668];
-    titleLabel.text = text;
-}
-
-- (NSString *)textForTitleLabel
-{
-    UILabel *titleLabel = [self.navigationItem.titleView viewWithTag:668];
-    return titleLabel.text;
 }
 
 - (void)viewDidLoad
@@ -95,6 +61,11 @@
     [presenter loadData];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -107,19 +78,31 @@
     self.m_tableViewBottom.constant = QPViewSafeBottomMargin;
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [self updateTableViewHeaderFooter];
+}
+
 - (void)setupTableView
 {
     self.m_tableView.backgroundColor = UIColor.clearColor;
     self.m_tableView.delegate = _adapter;
     self.m_tableView.dataSource = _adapter;
-    //self.m_tableView.rowHeight = UITableViewAutomaticDimension;
-    //self.m_tableView.estimatedRowHeight = 40.f;
+    self.m_tableView.rowHeight = UITableViewAutomaticDimension;
+    self.m_tableView.estimatedRowHeight = 46.f;
 }
 
 - (void)adaptThemeStyle
 {
     [super adaptThemeStyle];
     [self.m_tableView reloadData];
+    [self updateTableViewHeaderFooter];
+}
+
+- (void)updateTableViewHeaderFooter
+{
+    QPAboutMePresenter *presenter = (QPAboutMePresenter *)self.presenter;
+    [presenter configTableViewHeaderFooter];
 }
 
 @end

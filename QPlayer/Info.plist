@@ -92,6 +92,8 @@
 	<string>QPlayer 是一款不容你错过的视频播放器，支持 M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3 等主流媒体格式，支持 WiFi 文件传输，可以随时随地观看本地视频。聚合了多个直播、视频和短视频平台，可以在线观看直播、视频和短视频，同时支持 HTTP、RTMP、RTSP、HLS 等流媒体播放。</string>
 	<key>TecentVideoUrl</key>
 	<string>https://m.v.qq.com/</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen.storyboard</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

@@ -14,7 +14,7 @@
 
 #define SettingsCellHeight   50.f
 #define SectionHeaderHeight  40.f
-#define SectionFooterHeight  45.f
+#define SectionFooterHeight  60.f
 #define BaseTopMargin         5.f
 #define BaseLeftMargin       10.f
 
@@ -63,11 +63,12 @@
 
 - (NSInteger)numberOfSectionsForAdapter:(QPListViewAdapter *)adapter
 {
+    NSMutableArray *dataArray = [self settingsController].adapter.dataSource;
     BOOL status = QPWifiManager.shared.serverStatus;
     if (!status || ![DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
-        return 5;
+        return dataArray.count - 1;
     }
-    return 6;
+    return dataArray.count;
 }
 
 //- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -88,27 +89,27 @@
 //    }
 //}
 
-- (CGFloat)heightForHeaderInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
-{
-    return SectionHeaderHeight;
-}
+//- (CGFloat)heightForHeaderInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
+//{
+//    return SectionHeaderHeight;
+//}
 
-- (CGFloat)heightForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
-{
-    if (section == 0 || section == 1 || section == 2) {
-        return 0.1f;
-    }
-    //BOOL status = [[QPWifiManager shared] serverStatus];
-    //if (section == 1 && status) {
-    //    return 0.1f;
-    //}
-    return SectionFooterHeight;
-}
+//- (CGFloat)heightForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
+//{
+//    //if (section == 0 || section == 1 || section == 2) {
+//    //    return 0.01f;
+//    //}
+//    //BOOL status = [[QPWifiManager shared] serverStatus];
+//    //if (section == 1 && status) {
+//    //    return 0.01f;
+//    //}
+//    //return SectionFooterHeight;
+//}
 
-- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
-{
-    return SettingsCellHeight;
-}
+//- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
+//{
+//    return SettingsCellHeight;
+//}
 
 - (UIView *)viewForHeaderInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
 {
@@ -118,49 +119,61 @@
                               @"播放设置",
                               @"开启后，可以享用 WiFi 文件传输服务",
                               @"打开电脑浏览器，输入以下网址进行访问"];
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, SectionHeaderHeight)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, 0)];
     headerView.backgroundColor = [UIColor clearColor];
     
-    CGFloat tX = 2*BaseLeftMargin;
-    CGFloat tY = headerView.height/2.0 - BaseTopMargin;
-    CGFloat tW = headerView.width - 2*tX;
-    CGFloat tH = headerView.height/2.0;
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(tX, tY, tW, tH)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     titleLabel.backgroundColor = UIColor.clearColor;
     titleLabel.font            = [UIFont systemFontOfSize:13.f];
     titleLabel.textColor       = _viewController.isDarkMode ? QPColorFromRGB(160, 160, 160) : QPColorFromRGB(96, 96, 96);
     titleLabel.textAlignment   = NSTextAlignmentLeft;
+    titleLabel.numberOfLines   = 0;
     titleLabel.text            = headerTitles[section];
     [headerView addSubview:titleLabel];
+    
+    CGFloat tX = 2*BaseLeftMargin;
+    CGFloat tW = headerView.width - 2*tX;
+    CGFloat tH = titleLabel.yf_heightToFit(titleLabel.text, tW, titleLabel.font);
+    CGFloat tY = 1.5*BaseTopMargin;
+    titleLabel.left = tX;
+    titleLabel.top = tY;
+    titleLabel.width = tW;
+    titleLabel.height = tH;
+    headerView.height = 2*(tH + BaseTopMargin);
     
     return headerView;
 }
 
 - (UIView *)viewForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
 {
-    if (section == 0 || section == 1 || section == 2)
+    if (section == 0 || section == 1 || section == 2) {
         return nil;
+    }
     NSArray *footerDescs = @[@"开启后，可以使用流量在线观看视频，注意网页播放器仍可使用流量播放。",
                              @"支持 MP4,MOV,AVI,FLV,MKV,WMV,M4V,RMVB,MP3 等主流媒体格式，支持 HTTP,RTMP,RSTP,HLS 等流媒体或直播播放。",
                              @"上传媒体文件时，确保电脑和手机在同一 WiFi 环境并且不要关闭本应用也不要锁屏。"];
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, SectionFooterHeight)];
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, QPScreenWidth, 0)];
     footerView.backgroundColor = [UIColor clearColor];
     
-    CGFloat tX = 2*BaseLeftMargin;
-    CGFloat tY = BaseTopMargin;
-    CGFloat tW = footerView.width - 2*tX;
-    CGFloat tH = footerView.height*7/9.0;
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(tX, tY, tW, tH)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     titleLabel.backgroundColor = UIColor.clearColor;
     titleLabel.font            = [UIFont systemFontOfSize:13.f];
     titleLabel.textColor       = _viewController.isDarkMode ? QPColorFromRGB(160, 160, 160) : QPColorFromRGB(96, 96, 96);
     titleLabel.textAlignment   = NSTextAlignmentLeft;
-    titleLabel.numberOfLines   = 2;
+    titleLabel.numberOfLines   = 0;
     titleLabel.lineBreakMode   = NSLineBreakByWordWrapping;
     titleLabel.text            = footerDescs[section - 3];
     [footerView addSubview:titleLabel];
+    
+    CGFloat tX = 2*BaseLeftMargin;
+    CGFloat tY = BaseTopMargin;
+    CGFloat tW = footerView.width - 2*tX;
+    CGFloat tH = titleLabel.yf_heightToFit(titleLabel.text, tW, titleLabel.font);
+    titleLabel.left = tX;
+    titleLabel.top = tY;
+    titleLabel.width = tW;
+    titleLabel.height = tH;
+    footerView.height = 2*(tH + BaseTopMargin);
     
     return footerView;
 }

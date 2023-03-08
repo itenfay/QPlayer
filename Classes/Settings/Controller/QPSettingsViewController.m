@@ -38,15 +38,14 @@
 
 - (void)configureNavigationBar
 {
+    [self setNavigationBarTitle:@"设置"];
+    
     UIButton *infoBtn = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     infoBtn.frame = CGRectMake(0, 0, 20, 20);
     infoBtn.tintColor = UIColor.whiteColor;
     [infoBtn addTarget:self action:@selector(viewMyInfor:) forControlEvents:UIControlEventTouchUpInside];
     infoBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 2, 0, -2);
-    
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:infoBtn];
-    self.navigationItem.rightBarButtonItems = @[rightItem];
-    self.navigationItem.title = @"设置";
+    [self addRightNavigationBarButton:infoBtn];
 }
 
 - (void)viewDidLoad
@@ -91,9 +90,12 @@
     self.tableView.dataSource       = _adapter;
     self.tableView.delegate         = _adapter;
     self.tableView.separatorStyle   = UITableViewCellSeparatorStyleNone;
-    //self.tableView.rowHeight        = UITableViewAutomaticDimension;
-    //self.tableView.estimatedRowHeight = 60.f;
-    //[self.tableView autoresizing];
+    self.tableView.rowHeight        = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 50.f;
+    self.tableView.estimatedSectionHeaderHeight = 30.f;
+    self.tableView.estimatedSectionFooterHeight = 50.f;
+    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    [self.tableView autoresizing];
     [self.view addSubview:self.tableView];
 }
 

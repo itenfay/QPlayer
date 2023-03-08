@@ -40,7 +40,7 @@
     return size.height;
 }
 
-- (CGFloat (^)(NSAttributedString *, CGFloat, UIFont *))yf_heightToFitA
+- (CGFloat (^)(NSAttributedString *, CGFloat, UIFont *))yf_attributedTextHeightToFit
 {
     __weak typeof(self) weakSelf = self;
     CGFloat (^block)(NSAttributedString *, CGFloat, UIFont *) = ^CGFloat (NSAttributedString *attributedText, CGFloat limitedWidth, UIFont *font) {

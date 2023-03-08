@@ -30,43 +30,12 @@
 - (void)loadView
 {
     [super loadView];
+    [self addPlayButton];
     self.webView.height = self.view.height;
 }
 
 - (void)configureNavigationBar
 {
-    self.navigationItem.hidesBackButton = YES;
-    
-    QPTitleView *titleView = [[QPTitleView alloc] init];
-    //titleView.backgroundColor = UIColor.redColor;
-    titleView.left   = 0.f;
-    titleView.top    = 0.f;
-    titleView.width  = self.view.width;
-    titleView.height = 36.f;
-    titleView.userInteractionEnabled = YES;
-    self.navigationItem.titleView = titleView;
-    
-    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.width     = 30.f;
-    backButton.height    = 30.f;
-    backButton.left      = 0.f;
-    backButton.top       = (titleView.height - backButton.height)/2;
-    [backButton setImage:QPImageNamed(@"back_normal_white") forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 12);
-    [titleView addSubview:backButton];
-    
-    UIButton *historyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    historyButton.width     = 30.f;
-    historyButton.height    = 30.f;
-    historyButton.right     = titleView.right - 12.f; // The margin is 12.
-    historyButton.top       = (titleView.height - historyButton.height)/2;
-    historyButton.showsTouchWhenHighlighted = YES;
-    [historyButton setImage:QPImageNamed(@"history_white") forState:UIControlStateNormal];
-    [historyButton addTarget:self action:@selector(onSearch:) forControlEvents:UIControlEventTouchUpInside];
-    //historyButton.imageEdgeInsets = UIEdgeInsetsMake(0, -6, 0, 6);
-    [titleView addSubview:historyButton];
-    
     UIView *tfLeftView         = [[UIView alloc] init];
     tfLeftView.frame           = CGRectMake(0, 0, 26, 26);
     UIImageView *searchImgView = [[UIImageView alloc] init];
@@ -75,31 +44,41 @@
     searchImgView.contentMode  = UIViewContentModeScaleToFill;
     [tfLeftView addSubview:searchImgView];
     
-    UITextField *textField    = [[UITextField alloc] init];
+    UITextField *textField    = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
     textField.borderStyle     = UITextBorderStyleRoundedRect;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.returnKeyType   = UIReturnKeyGo;
     textField.delegate        = self;
-    textField.font            = [UIFont systemFontOfSize:16.f];
+    textField.font            = [UIFont systemFontOfSize:15.f];
     textField.leftView        = tfLeftView;
     textField.leftViewMode    = UITextFieldViewModeAlways;
-    textField.tag             = 68;
+    [self setNavigationTitleView:textField];
     
-    textField.height = 30.f;
-    textField.left   = backButton.right - 8.f;
-    textField.top    = (titleView.height - textField.height)/2;
-    textField.width  = historyButton.left - textField.left;
-    [titleView addSubview:textField];
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.width     = 30.f;
+    backButton.height    = 30.f;
+    backButton.left      = 0.f;
+    backButton.top       = 0.f;
+    [backButton setImage:QPImageNamed(@"back_normal_white") forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10);
+    [self addLeftNavigationBarButton:backButton];
+    
+    UIButton *historyButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    historyButton.width     = 30.f;
+    historyButton.height    = 30.f;
+    historyButton.right     = 0.f;
+    historyButton.top       = 0.f;
+    historyButton.showsTouchWhenHighlighted = YES;
+    [historyButton setImage:QPImageNamed(@"history_white") forState:UIControlStateNormal];
+    [historyButton addTarget:self action:@selector(onSearch:) forControlEvents:UIControlEventTouchUpInside];
+    historyButton.imageEdgeInsets = UIEdgeInsetsMake(0, 8, 0, -8);
+    [self addRightNavigationBarButton:historyButton];
 }
 
 - (void)back:(UIButton *)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (UITextField *)titleView
-{
-    return (UITextField *)[self.navigationItem.titleView viewWithTag:68];
 }
 
 - (void)viewDidLoad
@@ -110,11 +89,6 @@
     presenter.viewController = self;
     self.presenter = presenter;
     self.adapter.scrollViewDelegate = presenter;
-    
-    [self loadDefaultRequest];
-    [self delayToScheduleTask:2 completion:^{
-        [self.adapter inspectToolBarAlpha];
-    }];
 }
 
 - (void)configureWebViewAdapter
@@ -134,11 +108,6 @@
 {
     [super viewDidAppear:animated];
     [self enableInteractivePopGesture:YES];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
 }
 
 - (void)adaptTitleViewStyle:(BOOL)isDark
@@ -189,8 +158,8 @@
 - (void)loadDefaultRequest
 {
     NSString *url = [QPInfoDictionary objectForKey:@"InkeHotLiveUrl"];
-    self.titleView.text = url;
-    [self loadRequestWithUrl:url];
+    self.titleView.text = @"https://www.baidu.com";
+    [self loadRequestWithUrl: @"https://www.baidu.com"];
 }
 
 - (void)loadWebContents

@@ -7,7 +7,6 @@
 //
 
 #import "QPSearchViewController.h"
-#import "QPPlayerController.h"
 #import "QPAdvancedSearchPresenter.h"
 #import "QPAdvancedSearchWebViewAdapter.h"
 

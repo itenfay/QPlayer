@@ -68,7 +68,7 @@
     if (QPRespondsToSelector(self.listViewDelegate, @selector(heightForHeaderInSection:forAdapter:))) {
         return [self.listViewDelegate heightForHeaderInSection:section forAdapter:self];
     }
-    return 0;
+    return UITableViewAutomaticDimension;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -84,7 +84,7 @@
     if (QPRespondsToSelector(self.listViewDelegate, @selector(heightForFooterInSection:forAdapter:))) {
         [self.listViewDelegate heightForFooterInSection:section forAdapter:self];
     }
-    return 0;
+    return UITableViewAutomaticDimension;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section

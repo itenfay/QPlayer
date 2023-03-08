@@ -22,40 +22,6 @@
 
 - (void)configureNavigationBar
 {
-    self.navigationItem.hidesBackButton = YES;
-    
-    QPTitleView *titleView = [[QPTitleView alloc] init];
-    //titleView.backgroundColor = UIColor.redColor;
-    titleView.left   = 0.f;
-    titleView.top    = 0.f;
-    titleView.width  = self.view.width;
-    titleView.height = 36.f;
-    titleView.userInteractionEnabled = YES;
-    self.navigationItem.titleView = titleView;
-    
-    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.width     = 30.f;
-    backButton.height    = 30.f;
-    backButton.left      = 0.f;
-    backButton.top       = (titleView.height - backButton.height)/2;
-    [backButton setImage:QPImageNamed(@"back_normal_white") forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 12);
-    [titleView addSubview:backButton];
-    
-    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    rightBtn.width     = 30.f;
-    rightBtn.height    = 30.f;
-    rightBtn.right     = titleView.right - 12.f; // The margin is 12.
-    rightBtn.top       = (titleView.height - rightBtn.height)/2;
-    rightBtn.showsTouchWhenHighlighted = YES;
-    [rightBtn setTitle:@"搜索" forState:UIControlStateNormal];
-    [rightBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
-    [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rightBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-    [rightBtn addTarget:self action:@selector(onSearch:) forControlEvents:UIControlEventTouchUpInside];
-    [titleView addSubview:rightBtn];
-    
     UIView *tfLeftView         = [[UIView alloc] init];
     tfLeftView.frame           = CGRectMake(0, 0, 26, 26);
     UIImageView *searchImgView = [[UIImageView alloc] init];
@@ -72,23 +38,34 @@
     textField.font            = [UIFont systemFontOfSize:15.f];
     textField.leftView        = tfLeftView;
     textField.leftViewMode    = UITextFieldViewModeAlways;
-    textField.tag             = 66;
+    [self setNavigationTitleView:textField];
     
-    textField.height = 30.f;
-    textField.left   = backButton.right - 8.f;
-    textField.top    = (titleView.height - textField.height)/2;
-    textField.width  = rightBtn.left - textField.left;
-    [titleView addSubview:textField];
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.width     = 30.f;
+    backButton.height    = 30.f;
+    backButton.left      = 0.f;
+    backButton.top       = 0.f;
+    [backButton setImage:QPImageNamed(@"back_normal_white") forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10);
+    [self addLeftNavigationBarButton:backButton];
+    
+    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightBtn.width     = 30.f;
+    rightBtn.height    = 30.f;
+    rightBtn.left      = 0.f;
+    rightBtn.top       = 0.f;
+    [rightBtn setTitle:@"搜索" forState:UIControlStateNormal];
+    [rightBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
+    [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [rightBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [rightBtn addTarget:self action:@selector(onSearch:) forControlEvents:UIControlEventTouchUpInside];
+    [self addRightNavigationBarButton:rightBtn];
 }
 
 - (void)back:(UIButton *)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (UITextField *)titleView
-{
-    return (UITextField *)[self.navigationItem.titleView viewWithTag:66];
 }
 
 - (void)viewDidLoad
@@ -99,11 +76,6 @@
     presenter.viewController = self;
     self.presenter = presenter;
     self.adapter.scrollViewDelegate = presenter;
-    
-    [self loadDefaultRequest];
-    [self delayToScheduleTask:2 completion:^{
-        [self.adapter inspectToolBarAlpha];
-    }];
 }
 
 - (void)configureWebViewAdapter
@@ -121,9 +93,9 @@
 
 - (void)loadDefaultRequest
 {
-    NSString *aUrl = [QPInfoDictionary objectForKey:@"TecentVideoUrl"];
-    self.titleView.text = aUrl;
-    [self loadRequestWithUrl:aUrl];
+    NSString *url = [QPInfoDictionary objectForKey:@"TecentVideoUrl"];
+    self.titleView.text = @"https://www.baidu.com";
+    [self loadRequestWithUrl: @"https://www.baidu.com"];
 }
 
 - (void)loadWebContents

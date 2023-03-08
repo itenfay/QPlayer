@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) QPBaseViewController *viewController;
 
 - (void)loadData;
+- (void)configTableViewHeaderFooter;
 
 @end
 

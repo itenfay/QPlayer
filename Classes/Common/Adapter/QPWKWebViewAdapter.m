@@ -206,7 +206,7 @@
     //[self adaptThemeForWebView];
     [self hideProgressView];
     //[webView evaluateJavaScript:@"document.querySelector('video').currentSrc;" completionHandler:^(id result, NSError *error) {
-        // result will contain the video url
+    // result will contain the video url
     //}];
 }
 
@@ -232,15 +232,15 @@
     [QPHudUtils showErrorMessage:errMsg];
 }
 
-//- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
-//{
-//    NSString *url = navigationAction.request.URL.absoluteString;
-//    QPLog(@":: url=%@", url);
-//    if (navigationAction.targetFrame == nil || !navigationAction.targetFrame.isMainFrame) {
-//        [webView loadRequest:navigationAction.request];
-//    }
-//    return nil;
-//}
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
+{
+    NSString *url = navigationAction.request.URL.absoluteString;
+    QPLog(@":: url=%@", url);
+    if (navigationAction.targetFrame == nil || !navigationAction.targetFrame.isMainFrame) {
+        [webView loadRequest:navigationAction.request];
+    }
+    return nil;
+}
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {

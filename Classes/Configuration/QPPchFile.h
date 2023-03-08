@@ -24,7 +24,7 @@
 #import "NSObject+QPAdditions.h"
 #import "UILabel+QPAdditions.h"
 #import "UIView+QPAdditions.h"
-#import "UIViewController+QPAdditions.h"
+#import "UIScrollView+QPAdditions.h"
 
 #pragma mark - Third
 
@@ -41,5 +41,6 @@
 #import <ZFPlayer/ZFLandscapeRotationManager.h>
 #import <ZFPlayer/ZFLandscapeRotationManager_iOS15.h>
 #import <ZFPlayer/ZFLandscapeRotationManager_iOS16.h>
+#import <MJRefresh/MJRefresh.h>
 
 #endif /* QPPchFile_h */

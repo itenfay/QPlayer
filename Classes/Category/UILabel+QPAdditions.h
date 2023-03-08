@@ -19,6 +19,6 @@
 - (CGFloat)yf_heightWithAttributedText:(NSAttributedString *)attributedText limitedWidth:(CGFloat)limitedWidth font:(UIFont *)font;
 
 // Return a block with a attributed text, limited width and font, it returns a fit height.
-- (CGFloat (^)(NSAttributedString *attributedText, CGFloat limitedWidth, UIFont *font))yf_heightToFitA;
+- (CGFloat (^)(NSAttributedString *attributedText, CGFloat limitedWidth, UIFont *font))yf_attributedTextHeightToFit;
 
 @end

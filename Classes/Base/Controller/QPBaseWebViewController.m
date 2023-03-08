@@ -140,7 +140,6 @@
                            @"web_refresh_24x21", @"web_stop_21x21",
                            @"parse_button_blue"];
     NSMutableArray *imgNames = [tempArray mutableCopy];
-    
     if (!self.parsingButtonRequired) {
         [imgNames removeLastObject];
     }
@@ -150,7 +149,6 @@
     CGFloat vSpace   = 5.f;
     CGFloat btnW     = 30.f;
     CGFloat btnH     = 30.f;
-    
     BOOL    bVar     = self.parsingButtonRequired || !self.hidesBottomBarWhenPushed;
     CGFloat offset   = bVar ? QPTabBarHeight : (QPIsPhoneXAll ? 4 : 2)*vSpace;
     CGFloat tlbW     = btnW + 2*hSpace;
@@ -166,7 +164,6 @@
                                 backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
                                    borderWidth:0.f
                                    borderColor:nil];
-    
     for (NSUInteger i = 0; i < count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame     = CGRectMake(hSpace, (i+1)*vSpace+i*btnH, btnW, btnH);
@@ -179,6 +176,7 @@
     
     toolBar.userInteractionEnabled = YES;
     [toolBar autoresizing];
+    
     return toolBar;
 }
 

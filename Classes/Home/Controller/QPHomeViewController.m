@@ -41,7 +41,7 @@
     
     UIButton *liveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     liveButton.frame = CGRectMake(0, 0, 30, 30);
-    [liveButton setTitle:@"LIVE" forState:UIControlStateNormal];
+    [liveButton setTitle:@"Live" forState:UIControlStateNormal];
     [liveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
     [liveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [liveButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];

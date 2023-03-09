@@ -58,6 +58,9 @@
 
 /// Returns a new version of the image that uses always template mode.
 - (UIImage *)yf_imageRenderingAlwaysTemplate:(NSString *)name;
+- (UIImage *(^)(UIImage *image))yf_originalImage;
+- (UIImage *)yf_imageWithColor:(UIColor *)color;
+- (UIImage *)yf_imageWithColor:(UIColor *)color rect:(CGRect)rect;
 
 /// Returns a main window.
 - (UIWindow *)yf_mainWindow;
@@ -67,5 +70,6 @@
 
 /// Queries and returns a current view controller from a view controller.
 - (UIViewController *)yf_queryCurrentViewControllerFrom:(UIViewController *)viewController;
+
 
 @end

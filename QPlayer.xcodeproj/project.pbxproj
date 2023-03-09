@@ -108,6 +108,8 @@
 		799A919929B709E9007735F0 /* QPWebPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 799A919829B709E8007735F0 /* QPWebPresenter.m */; };
 		799A919C29B709F4007735F0 /* QPWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = 799A919A29B709F4007735F0 /* QPWebController.m */; };
 		79A1249029AC76EE00667B3C /* ApplicationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A1248F29AC76EE00667B3C /* ApplicationHelper.m */; };
+		79A466D729B9D2E2009417EB /* QPWebPlaybackContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A466D629B9D2E2009417EB /* QPWebPlaybackContext.m */; };
+		79A466DB29B9D34C009417EB /* QPBaseContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A466DA29B9D34C009417EB /* QPBaseContext.m */; };
 		96532C621F5E814E00E66A2F /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C481F5E814E00E66A2F /* AsyncSocket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		96532C631F5E814E00E66A2F /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C4A1F5E814E00E66A2F /* DDData.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		96532C641F5E814E00E66A2F /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C4C1F5E814E00E66A2F /* DDNumber.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -318,6 +320,10 @@
 		799A919B29B709F4007735F0 /* QPWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebController.h; sourceTree = "<group>"; };
 		79A1248E29AC76EE00667B3C /* ApplicationHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationHelper.h; sourceTree = "<group>"; };
 		79A1248F29AC76EE00667B3C /* ApplicationHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationHelper.m; sourceTree = "<group>"; };
+		79A466D529B9D2E2009417EB /* QPWebPlaybackContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPWebPlaybackContext.h; sourceTree = "<group>"; };
+		79A466D629B9D2E2009417EB /* QPWebPlaybackContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPWebPlaybackContext.m; sourceTree = "<group>"; };
+		79A466D929B9D34C009417EB /* QPBaseContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPBaseContext.h; sourceTree = "<group>"; };
+		79A466DA29B9D34C009417EB /* QPBaseContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPBaseContext.m; sourceTree = "<group>"; };
 		96532C471F5E814E00E66A2F /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
 		96532C481F5E814E00E66A2F /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
 		96532C491F5E814E00E66A2F /* DDData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDData.h; sourceTree = "<group>"; };
@@ -534,6 +540,7 @@
 			isa = PBXGroup;
 			children = (
 				1438F68D25CC5281000CC65D /* Adapter */,
+				79A466D829B9D33F009417EB /* Context */,
 				1438F68125CC5280000CC65D /* Controller */,
 				1438F68B25CC5281000CC65D /* Delegate */,
 				1438F67B25CC5280000CC65D /* Model */,
@@ -1047,6 +1054,7 @@
 		799A919429B7099E007735F0 /* Web */ = {
 			isa = PBXGroup;
 			children = (
+				79A466D429B9D283009417EB /* Context */,
 				799A919629B7099E007735F0 /* Controller */,
 				799A919529B7099E007735F0 /* Presenter */,
 			);
@@ -1078,6 +1086,24 @@
 				79A1248F29AC76EE00667B3C /* ApplicationHelper.m */,
 			);
 			path = ApplicationHelper;
+			sourceTree = "<group>";
+		};
+		79A466D429B9D283009417EB /* Context */ = {
+			isa = PBXGroup;
+			children = (
+				79A466D529B9D2E2009417EB /* QPWebPlaybackContext.h */,
+				79A466D629B9D2E2009417EB /* QPWebPlaybackContext.m */,
+			);
+			path = Context;
+			sourceTree = "<group>";
+		};
+		79A466D829B9D33F009417EB /* Context */ = {
+			isa = PBXGroup;
+			children = (
+				79A466D929B9D34C009417EB /* QPBaseContext.h */,
+				79A466DA29B9D34C009417EB /* QPBaseContext.m */,
+			);
+			path = Context;
 			sourceTree = "<group>";
 		};
 		961B32F51F04D24900670B61 /* Vendor */ = {
@@ -1356,6 +1382,7 @@
 				1438F69225CC5282000CC65D /* QPBaseNavigationController.m in Sources */,
 				96532C631F5E814E00E66A2F /* DDData.m in Sources */,
 				141B173925C93CC7008C465C /* UIView+QPAdditions.m in Sources */,
+				79A466D729B9D2E2009417EB /* QPWebPlaybackContext.m in Sources */,
 				141B172925C93B46008C465C /* QPListViewAdapter.m in Sources */,
 				141B171025C93B46008C465C /* DYFNetworkSniffer.m in Sources */,
 				141B170725C93B46008C465C /* utf8.c in Sources */,
@@ -1370,6 +1397,7 @@
 				141B172725C93B46008C465C /* QPSettingsViewController.m in Sources */,
 				141B171125C93B46008C465C /* QPHistoryArchive.m in Sources */,
 				141B172A25C93B46008C465C /* QPWKWebViewAdapter.m in Sources */,
+				79A466DB29B9D34C009417EB /* QPBaseContext.m in Sources */,
 				141B173A25C93CC7008C465C /* UILabel+QPAdditions.m in Sources */,
 				1438F69625CC5282000CC65D /* QPBaseAdapter.m in Sources */,
 				799A919929B709E9007735F0 /* QPWebPresenter.m in Sources */,

@@ -76,6 +76,7 @@
     presenter.viewController = self;
     self.presenter = presenter;
     self.adapter.scrollViewDelegate = presenter;
+    self.adapter.delegate = presenter;
 }
 
 - (void)configureWebViewAdapter
@@ -86,16 +87,16 @@
     self.adapter.toolBar = self.webToolBar;
     [self.adapter addProgressViewToWebView];
     @QPWeakify(self)
-    [self.adapter observeUrlLink:^(NSString *url) {
-        weak_self.titleView.text = url;
+    [self.adapter observeUrlLink:^(NSURL *url) {
+        weak_self.titleView.text = url.absoluteString;
     }];
 }
 
 - (void)loadDefaultRequest
 {
     NSString *url = [QPInfoDictionary objectForKey:@"TecentVideoUrl"];
-    self.titleView.text = @"https://www.baidu.com";
-    [self loadRequestWithUrl: @"https://www.baidu.com"];
+    self.titleView.text = url;
+    [self loadRequestWithUrl:@"https://www.baidu.com"];
 }
 
 - (void)loadWebContents
@@ -150,27 +151,29 @@
                                              @"https://m.sohu.com/z/"]];
 }
 
-//- (void)addObserver {
+//- (void)addObserver
+//{
 //    // 进入全屏监听
-//    [QPNotiDefaultCenter addObserver:self selector:@selector(onBeginFullScreen:) name:UIWindowDidBecomeVisibleNotification object:nil];
+//    [QPNotiDefaultCenter addObserver:self selector:@selector(enterFullScreen:) name:UIWindowDidBecomeVisibleNotification object:nil];
 //    // 退出全屏监听
-//    [QPNotiDefaultCenter addObserver:self selector:@selector(onEndFullScreen:) name:UIWindowDidBecomeHiddenNotification object:nil];
+//    [QPNotiDefaultCenter addObserver:self selector:@selector(exitFullScreen:) name:UIWindowDidBecomeHiddenNotification object:nil];
 //}
 
-//- (void)removeObserver {
+//- (void)removeObserver
+//{
 //    [QPNotiDefaultCenter removeObserver:self name:UIWindowDidBecomeVisibleNotification object:nil];
 //    [QPNotiDefaultCenter removeObserver:self name:UIWindowDidBecomeHiddenNotification  object:nil];
 //}
 
-// 进入全屏
-//- (void)onBeginFullScreen:(NSNotification *)noti {
+//- (void)enterFullScreen:(NSNotification *)noti
+//{
 //    QPLog("::");
 //    if (@available(iOS 9.0, *)) {}
 //    [self setNeedsStatusBarAppearanceUpdate];
 //}
 
-//  退出全屏
-//- (void)onEndFullScreen:(NSNotification *)noti {
+//- (void)exitFullScreen:(NSNotification *)noti
+//{
 //    QPLog("::");
 //    if (@available(iOS 9.0, *)) {}
 //    [QPSharedApp setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];

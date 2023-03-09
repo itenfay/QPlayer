@@ -9,8 +9,6 @@
 #import <WebKit/WebKit.h>
 #import "QPBaseViewController.h"
 #import "QPWKWebViewAdapter.h"
-#import "OCGumbo.h"
-#import "OCGumbo+Query.h"
 
 @interface QPBaseWebViewController : QPBaseViewController
 
@@ -47,9 +45,13 @@
 /// Loads web with url request.
 - (void)loadRequest:(NSURLRequest *)urlRequest;
 
-/// Builds the tool bar.
+/// Builds a tool bar.
 - (UIImageView *)buildToolBar;
-/// Builds the tool bar with a selector.
+/// Builds a tool bar with a selector.
 - (UIImageView *)buildToolBar:(SEL)selector;
+/// Builds a vertical tool bar.
+- (UIImageView *)buildVerticalToolBar;
+/// Builds a vertical tool bar with a selector.
+- (UIImageView *)buildVerticalToolBar:(SEL)selector;
 
 @end

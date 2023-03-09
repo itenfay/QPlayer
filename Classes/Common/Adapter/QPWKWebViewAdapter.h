@@ -7,23 +7,21 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
-#import "QPBaseDelegate.h"
-#import "DYFWebProgressView.h"
 #import "QPBaseAdapter.h"
+#import "DYFWebProgressView.h"
 
-typedef void(^ObserveUrlLinkBlock)(NSString *url);
-
-@protocol QPWKWebViewAdapterDelegate <QPBaseDelegate>
-
-@end
+typedef void(^ObserveUrlLinkBlock)(NSURL *url);
 
 @interface QPWKWebViewAdapter : QPBaseWebAdapter <WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler, UIScrollViewDelegate>
 @property (nonatomic, assign) BOOL isDarkMode;
 @property (nonatomic, weak) WKWebView *webView;
 @property (nonatomic, weak) UINavigationBar *navigationBar;
 @property (nonatomic, weak) UIView *toolBar;
-@property (nonatomic, copy, readonly) NSString *urlLink;
+@property (nonatomic, copy, readonly) NSURL *requestURL;
 
+@property (nonatomic, weak) id<QPWKWebViewAdapterDelegate> delegate;
+
+- (instancetype)initWithWebView:(WKWebView *)webView;
 - (instancetype)initWithWebView:(WKWebView *)webView navigationBar:(UINavigationBar *)navigationBar;
 - (instancetype)initWithWebView:(WKWebView *)webView navigationBar:(UINavigationBar *)navigationBar toolBar:(UIView *)toolBar;
 
@@ -46,6 +44,9 @@ typedef void(^ObserveUrlLinkBlock)(NSString *url);
 - (void)hideProgressView;
 /// Hides a web progress view immediately.
 - (void)hideProgressViewImmediately;
+
+/// Override.
+- (void)adaptThemeForWebView;
 
 /// Observes the current url link.
 - (void)observeUrlLink:(ObserveUrlLinkBlock)block;

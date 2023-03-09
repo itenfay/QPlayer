@@ -136,26 +136,52 @@
 
 - (UIImageView *)buildToolBar:(SEL)selector
 {
-    NSArray *tempArray = @[@"web_reward_13x21", @"web_forward_13x21",
-                           @"web_refresh_24x21", @"web_stop_21x21",
-                           @"parse_button_blue"];
-    NSMutableArray *imgNames = [tempArray mutableCopy];
-    if (!self.parsingButtonRequired) {
-        [imgNames removeLastObject];
+    return [self buildAndLayoutToolBar:selector isVertical:NO];
+}
+
+- (UIImageView *)buildVerticalToolBar
+{
+    return [self buildVerticalToolBar:@selector(tbItemClicked:)];
+}
+
+- (UIImageView *)buildVerticalToolBar:(SEL)selector
+{
+    return [self buildAndLayoutToolBar:selector isVertical:YES];
+}
+
+- (UIImageView *)buildAndLayoutToolBar:(SEL)selector isVertical:(BOOL)isVertical
+{
+    NSMutableArray *items = @[@"web_reward_13x21", @"web_forward_13x21",
+                              @"web_refresh_24x21", @"web_stop_21x21",
+                              @"parse_button_blue"].mutableCopy;
+    if (!self.parsingButtonRequired) { [items removeLastObject]; }
+    BOOL bVal;
+    if (isVertical) {
+        bVal = self.parsingButtonRequired || !self.hidesBottomBarWhenPushed;
+    } else {
+        bVal = !self.hidesBottomBarWhenPushed;
     }
     
-    NSUInteger count = imgNames.count;
+    NSUInteger count = items.count;
     CGFloat hSpace   = 10.f;
-    CGFloat vSpace   = 5.f;
+    CGFloat vSpace   = isVertical ? 5.f : 8.f;
     CGFloat btnW     = 30.f;
     CGFloat btnH     = 30.f;
-    BOOL    bVar     = self.parsingButtonRequired || !self.hidesBottomBarWhenPushed;
-    CGFloat offset   = bVar ? QPTabBarHeight : (QPIsPhoneXAll ? 4 : 2)*vSpace;
+    CGFloat offset   = bVal ? QPTabBarHeight : (QPIsPhoneXAll ? 4 : 2)*vSpace;
     CGFloat tlbW     = btnW + 2*hSpace;
-    CGFloat tlbH     = count*btnH + (count+1)*vSpace + 3*vSpace;
+    CGFloat tlbH     = count*btnH + (count+1)*vSpace + 4*vSpace;
     CGFloat tlbX     = QPScreenWidth - tlbW - hSpace;
-    CGFloat tlbY     = self.view.height - offset - tlbH - 3*vSpace;
+    CGFloat tlbY     = self.view.height - offset - tlbH - 2*vSpace;
     CGRect  tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
+    
+    if (!isVertical) {
+        tlbX = hSpace;
+        tlbW = self.view.width - 2*tlbX;
+        tlbH = btnH + 2*vSpace;
+        tlbY = self.view.height - offset - tlbH - (bVal ? 2*vSpace : 0);
+        tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
+        btnW = (tlbW - (count+1)*hSpace)/count;
+    }
     
     UIImageView *toolBar    = [[UIImageView alloc] initWithFrame:tlbFrame];
     toolBar.backgroundColor = [UIColor clearColor];
@@ -164,12 +190,17 @@
                                 backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
                                    borderWidth:0.f
                                    borderColor:nil];
+    
     for (NSUInteger i = 0; i < count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame     = CGRectMake(hSpace, (i+1)*vSpace+i*btnH, btnW, btnH);
-        button.tag       = 100 + i;
+        if (isVertical) {
+            button.frame = CGRectMake(hSpace, (i+1)*vSpace+i*btnH, btnW, btnH);
+        } else {
+            button.frame = CGRectMake((i+1)*vSpace+i*btnW, 0.8*vSpace, btnW, btnH);
+        }
+        button.tag = 100 + i;
         button.showsTouchWhenHighlighted = YES;
-        [button setImage:QPImageNamed(imgNames[i]) forState:UIControlStateNormal];
+        [button setImage:QPImageNamed(items[i]) forState:UIControlStateNormal];
         [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
         [toolBar addSubview:button];
     }
@@ -184,21 +215,11 @@
 {
     NSUInteger index = sender.tag - 100;
     switch (index) {
-        case 0:
-            [self onGoBack];
-            break;
-        case 1:
-            [self onGoForward];
-            break;
-        case 2:
-            [self onReload];
-            break;
-        case 3:
-            [self onStopLoading];
-            break;
-        case 4:
-            QPLog("::");
-            break;
+        case 0: [self onGoBack]; break;
+        case 1: [self onGoForward]; break;
+        case 2: [self onReload]; break;
+        case 3: [self onStopLoading]; break;
+        case 4: QPLog("::"); break;
         default: break;
     }
 }

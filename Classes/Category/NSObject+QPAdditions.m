@@ -69,7 +69,11 @@
     return cancelBlock;
 }
 
-- (UIImage *)colorImage:(CGRect)rect cornerRadius:(CGFloat)cornerRadius backgroudColor:(UIColor *)backgroudColor borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor
+- (UIImage *)colorImage:(CGRect)rect
+           cornerRadius:(CGFloat)cornerRadius
+         backgroudColor:(UIColor *)backgroudColor
+            borderWidth:(CGFloat)borderWidth
+            borderColor:(UIColor *)borderColor
 {
     UIImage *newImage  = nil;
     CGRect mRect       = rect;
@@ -152,6 +156,36 @@
     return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
+- (UIImage *(^)(UIImage *image))yf_originalImage
+{
+    UIImage *(^block)(UIImage *image) = ^UIImage *(UIImage *image) {
+        UIImageRenderingMode imgRenderingMode = UIImageRenderingModeAlwaysOriginal;
+        return [image imageWithRenderingMode:imgRenderingMode];
+    };
+    return block;
+}
+
+- (UIImage *)yf_imageWithColor:(UIColor *)color
+{
+    CGRect rect = CGRectMake(0, 0, 1, 1);
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+    [color setFill];
+    UIRectFill(rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+- (UIImage *)yf_imageWithColor:(UIColor *)color rect:(CGRect)rect
+{
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+    [color setFill];
+    UIRectFill(rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
 - (UIWindow *)yf_mainWindow
 {
     UIWindow *window;
@@ -188,12 +222,12 @@
 {
     UIViewController *vc = viewController;
     while (1) {
-        if (vc.presentedViewController) {
-            vc = vc.presentedViewController;
-        } else if ([vc isKindOfClass:UITabBarController.class]) {
+        if ([vc isKindOfClass:UITabBarController.class]) {
             vc = ((UITabBarController *)vc).selectedViewController;
         } else if ([vc isKindOfClass:UINavigationController.class]) {
             vc = ((UINavigationController *)vc).visibleViewController;
+        } else if (vc.presentedViewController) {
+            vc = vc.presentedViewController;
         } else {
             if (vc.childViewControllers.count > 0) {
                 vc = vc.childViewControllers.lastObject;

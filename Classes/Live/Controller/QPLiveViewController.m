@@ -99,8 +99,8 @@
     self.adapter.toolBar = self.webToolBar;
     [self.adapter addProgressViewToWebView];
     @QPWeakify(self)
-    [self.adapter observeUrlLink:^(NSString *url) {
-        weak_self.titleView.text = url;
+    [self.adapter observeUrlLink:^(NSURL *url) {
+        weak_self.titleView.text = url.absoluteString;
     }];
 }
 
@@ -126,40 +126,41 @@
 
 - (void)addPlayButton {
     UIButton *playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    playBtn.width  = 60;
-    playBtn.height = 60;
-    playBtn.left   = -20;
-    playBtn.top    = (self.webView.height - playBtn.height - QPStatusBarAndNavigationBarHeight)/2;
+    playBtn.width  = 30; //60;
+    playBtn.height = 30; //60;
+    playBtn.left   = 0; //-20;
+    playBtn.top    = 0; //(self.webView.height - playBtn.height - QPStatusBarAndNavigationBarHeight)/2;
     playBtn.backgroundColor = UIColor.clearColor;
     playBtn.tag    = 10;
-    playBtn.titleLabel.font = [UIFont boldSystemFontOfSize:13.f];
-    playBtn.titleLabel.numberOfLines = 2;
-    playBtn.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    UIImage *bgImage = [self colorImage:playBtn.bounds
-                           cornerRadius:15.0
-                         backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
-                            borderWidth:0
-                            borderColor:nil];
-    [playBtn setBackgroundImage:bgImage forState:UIControlStateNormal];
-    [playBtn setTitle:@"电视\n TV" forState:UIControlStateNormal];
+    playBtn.titleLabel.font = [UIFont boldSystemFontOfSize:15.f];
+    //playBtn.titleLabel.numberOfLines = 2;
+    //playBtn.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    //UIImage *bgImage = [self colorImage:playBtn.bounds
+    //                       cornerRadius:15.0
+    //                     backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
+    //                        borderWidth:0
+    //                        borderColor:nil];
+    //[playBtn setBackgroundImage:bgImage forState:UIControlStateNormal];
+    [playBtn setTitle:@"TV" forState:UIControlStateNormal];
     [playBtn setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     [playBtn setTitleColor:UIColor.grayColor forState:UIControlStateHighlighted];
     [playBtn setTitleShadowColor:UIColor.brownColor forState:UIControlStateNormal];
-    [playBtn setTitleEdgeInsets:UIEdgeInsetsMake(10, 20, 10, 10)];
+    [playBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 8, 0, -8)];
+    //[playBtn setTitleEdgeInsets:UIEdgeInsetsMake(10, 20, 10, 10)];
     [playBtn addTarget:self action:@selector(showDropListView:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:playBtn];
+    [self addRightNavigationBarButton:playBtn];
 }
 
 - (UIButton *)playButton
 {
-    return (UIButton *)[self.view viewWithTag:10];
+    return (UIButton *)[self.navigationBar viewWithTag:10];
 }
 
 - (void)loadDefaultRequest
 {
     NSString *url = [QPInfoDictionary objectForKey:@"InkeHotLiveUrl"];
-    self.titleView.text = @"https://www.baidu.com";
-    [self loadRequestWithUrl: @"https://www.baidu.com"];
+    self.titleView.text = url;
+    [self loadRequestWithUrl:@"https://www.baidu.com"];
 }
 
 - (void)loadWebContents
@@ -174,7 +175,8 @@
             if (QPlayerDetermineWhetherToPlay()) {
                 self.titleView.text = url = text;
                 NSString *title = [self titleMatchingWithUrl:url];
-                //[self playVideoWithTitle:title urlString:url];
+                QPLivePresenter *presenter = (QPLivePresenter *)self.presenter;
+                [presenter.playbackContext playVideoWithTitle:title urlString:url usingMediaPlayer:YES];
             }
             return;
         } else if ([tempStr hasPrefix:@"https"] || [tempStr hasPrefix:@"http"]) {
@@ -211,7 +213,6 @@
 - (void)showDropListView:(UIButton *)sender
 {
     sender.enabled = NO;
-    
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([DYFDropListView class]) bundle:nil];
     DYFDropListView *dropListView = [nib instantiateWithOwner:nil options:nil].firstObject;
     dropListView.left   = 5.f;
@@ -224,7 +225,7 @@
     
     //dropListView.alpha = 0.f;
     dropListView.left = -self.view.width;
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         //dropListView.alpha = 1.f;
         dropListView.left = 5.f;
     } completion:^(BOOL finished) {}];
@@ -234,9 +235,10 @@
         @QPStrongify(self)
         strong_self.playButton.enabled = YES;
         if (QPlayerDetermineWhetherToPlay()) {
-            NSString *aUrl = [content copy];
-            strong_self.titleView.text = [content copy];
-            //[strong_self playVideoWithTitle:[title copy] urlString:aUrl];
+            NSString *urlString = [content copy];
+            strong_self.titleView.text = urlString;
+            QPLivePresenter *presenter = (QPLivePresenter *)strong_self.presenter;
+            [presenter.playbackContext playVideoWithTitle:title urlString:urlString usingMediaPlayer:YES];
         }
     }];
     

@@ -52,8 +52,8 @@
     self.adapter.toolBar = [self webToolBar];
     [self.adapter addProgressViewToWebView];
     @QPWeakify(self)
-    [self.adapter observeUrlLink:^(NSString *url) {
-        weak_self.titleView.text = url;
+    [self.adapter observeUrlLink:^(NSURL *url) {
+        weak_self.titleView.text = url.absoluteString;
     }];
 }
 

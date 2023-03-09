@@ -53,9 +53,6 @@
     [self.tableView setupRefreshHeader:^{
         [weak_self loadNewData];
     }];
-    [self delayToScheduleTask:1.2 completion:^{
-        [self endRefreshing];
-    }];
 }
 
 - (void)reloadData:(HomeReloadDataBlock)block
@@ -65,6 +62,9 @@
 
 - (void)loadNewData
 {
+    [self delayToScheduleTask:1.2 completion:^{
+        [self endRefreshing];
+    }];
     !_reloadDataBlock ?: _reloadDataBlock();
 }
 

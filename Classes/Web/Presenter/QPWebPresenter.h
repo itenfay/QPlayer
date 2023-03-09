@@ -8,12 +8,15 @@
 
 #import "QPBasePresenter.h"
 #import "QPBaseAdapter.h"
+#import "QPWebPlaybackContext.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QPWebPresenter : QPBasePresenter <QPPresenterDelegate, QPScrollViewAdapterDelegate>
+@interface QPWebPresenter : QPBasePresenter <QPPresenterDelegate, QPScrollViewAdapterDelegate, QPWKWebViewAdapterDelegate>
 @property (nonatomic, weak) UIView *view;
 @property (nonatomic, weak) QPBaseViewController *viewController;
+
+@property (nonatomic, strong) QPWebPlaybackContext *playbackContext;
 
 - (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches;
 - (void)playVideoWithUrl:(NSString *)url;

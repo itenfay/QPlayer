@@ -16,6 +16,13 @@
 
 @implementation QPWebPresenter
 
+- (void)setViewController:(QPBaseViewController *)viewController
+{
+    _viewController = viewController;
+    QPBaseWebViewController *webVC = (QPBaseWebViewController *)_viewController;
+    _playbackContext = [[QPWebPlaybackContext alloc] initWithAdapter:webVC.adapter viewController:_viewController];
+}
+
 //searchViewController.hotSearches = @[@"https://www.baidu.com/",
 //                                     @"https://wap.sogou.com/",
 //                                     @"https://m.so.com/",
@@ -64,6 +71,7 @@
     searchViewController.searchHistoriesCachePath = VIDEO_SEARCH_HISTORY_CACHE_PATH;
     searchViewController.hotSearchStyle = PYHotSearchStyleColorfulTag;
     searchViewController.searchHistoryStyle = PYSearchHistoryStyleDefault;
+    searchViewController.cancelButton.titleLabel.font = [UIFont systemFontOfSize:13.f weight:UIFontWeightMedium];
     
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:searchViewController];
     [nc.navigationBar setShadowImage:[UIImage new]];
@@ -90,7 +98,7 @@
         nc.navigationBar.scrollEdgeAppearance = appearance;
     }
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    nc.modalPresentationStyle = UIModalPresentationFullScreen;
+    //nc.modalPresentationStyle = UIModalPresentationFullScreen;
     [_viewController presentViewController:nc animated:YES completion:nil];
 }
 
@@ -174,6 +182,29 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
     //NSMutableArray *searchSuggestions = [NSMutableArray array];
     // Refresh and display the search suggustions
     //self.searchSuggestions = searchSuggestions;
+}
+
+#pragma mark - QPWKWebViewAdapterDelegate
+
+- (void)adapter:(QPWKWebViewAdapter *)adapter didStartProvisionalNavigation:(WKNavigation *)navigation
+{
+    QPLog(@"::");
+}
+
+- (void)adapter:(QPWKWebViewAdapter *)adapter didFinishNavigation:(WKNavigation *)navigation
+{
+    QPLog(@"::");
+    [_playbackContext evaluateJavaScriptForVideoSrc];
+}
+
+- (void)adapter:(QPWKWebViewAdapter *)adapter decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+    QPLog(@"::");
+    if ([_playbackContext canAllowNavigation:adapter.webView.URL]) {
+        decisionHandler(WKNavigationActionPolicyAllow);
+    } else {
+        decisionHandler(WKNavigationActionPolicyCancel);
+    }
 }
 
 @end

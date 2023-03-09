@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 #import "QPBaseDelegate.h"
 #import "QPBaseModel.h"
 
@@ -65,6 +66,26 @@
 /// return a yes if you want to scroll to the top. if not defined, assumes YES
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView forAdapter:(QPBaseAdapter *)adapter;
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView forAdapter:(QPBaseAdapter *)adapter;
+
+@end
+
+@class QPWKWebViewAdapter;
+
+@protocol QPWKWebViewAdapterDelegate <QPBaseDelegate>
+
+@optional
+- (void)adapter:(QPWKWebViewAdapter *)adapter didStartProvisionalNavigation:(WKNavigation *)navigation;
+- (void)adapter:(QPWKWebViewAdapter *)adapter didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation;
+- (void)adapter:(QPWKWebViewAdapter *)adapter didCommitNavigation:(WKNavigation *)navigation;
+- (void)adapter:(QPWKWebViewAdapter *)adapter didFinishNavigation:(WKNavigation *)navigation;
+- (void)adapter:(QPWKWebViewAdapter *)adapter didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error;
+- (void)adapter:(QPWKWebViewAdapter *)adapter didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error;
+- (WKWebView *)adapter:(QPWKWebViewAdapter *)adapter createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures;
+- (void)adapter:(QPWKWebViewAdapter *)adapter decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
+- (void)adapter:(QPWKWebViewAdapter *)adapter didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *))completionHandler;
+- (void)adapter:(QPWKWebViewAdapter *)adapter decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler;
+- (void)adapter:(QPWKWebViewAdapter *)adapter runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString *))completionHandler;
+- (void)adapter:(QPWKWebViewAdapter *)adapter userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message;
 
 @end
 

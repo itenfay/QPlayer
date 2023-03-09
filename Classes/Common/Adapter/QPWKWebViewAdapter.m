@@ -11,13 +11,19 @@
 @property (nonatomic, strong) DYFProgressView *progressView;
 @property (nonatomic, assign, readonly) BOOL mIsAddedToNavBar;
 @property (nonatomic, copy) ObserveUrlLinkBlock linkBlock;
+@property (nonatomic, assign) BOOL didScroll;
 @end
 
 @implementation QPWKWebViewAdapter
 
 - (instancetype)init
 {
-    return [self initWithWebView:nil navigationBar:nil];
+    return [self initWithWebView:nil];
+}
+
+- (instancetype)initWithWebView:(WKWebView *)webView
+{
+    return [self initWithWebView:webView navigationBar:nil];
 }
 
 - (instancetype)initWithWebView:(WKWebView *)webView navigationBar:(UINavigationBar *)navigationBar
@@ -78,7 +84,7 @@
 
 - (void)showProgressView
 {
-    if (!_progressView) {
+    if (_progressView) {
         return;
     }
     // Web progress view: self.progressView.lineWidth
@@ -105,7 +111,7 @@
         return;
     }
     //[self.progressView endLoading];
-    self.scheduleTask(self, @selector(resetProgressView), nil, 0.2);
+    self.scheduleTask(self, @selector(resetProgressView), nil, 0.3);
 }
 
 - (void)hideProgressViewImmediately
@@ -142,9 +148,9 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"estimatedProgress"]) {
+        //QPLog(":: estimatedProgress: %.2f", self.webView.estimatedProgress);
         double estimatedProgress = [change[NSKeyValueChangeNewKey] doubleValue];
         QPLog(":: estimatedProgress: %.2f", estimatedProgress);
-        //QPLog(":: estimatedProgress: %.2f", self.webView.estimatedProgress);
         [_progressView setProgress:estimatedProgress animated:YES];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -156,9 +162,9 @@
 {
     //[self.webView evaluateJavaScript:@"document.body.style.backgroundColor" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
     //if (!error) {
-    //    QPLog(@"result: %@", result);
+    //    QPLog(@":: result=%@", result);
     //} else {
-    //    QPLog(@"error: %@, %@", @(error.code), error.localizedDescription);
+    //    QPLog(@":: error=%@, %@", @(error.code), error.localizedDescription);
     //}
     //}];
     NSString *bgColor   = @"";
@@ -182,37 +188,68 @@
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
-    NSString *url = webView.URL.absoluteString;
+    NSURL *url = webView.URL;
     QPLog(@":: url=%@", url);
+    _requestURL = url.copy;
     !self.linkBlock ?: self.linkBlock(url);
-    _urlLink = url.copy;
     [self showProgressView];
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:didStartProvisionalNavigation:))) {
+        [self.delegate adapter:self didStartProvisionalNavigation:navigation];
+    }
 }
 
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation
 {
-    QPLog(":: url=%@", webView.URL);
+    NSURL *url = webView.URL;
+    QPLog(":: url=%@", url);
+    _requestURL = url.copy;
+    !self.linkBlock ?: self.linkBlock(url);
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:didReceiveServerRedirectForProvisionalNavigation:))) {
+        [self.delegate adapter:self didReceiveServerRedirectForProvisionalNavigation:navigation];
+    }
 }
 
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation
 {
-    QPLog(":: url=%@", webView.URL);
+    NSURL *url = webView.URL;
+    QPLog(":: url=%@", url);
+    _requestURL = url.copy;
+    !self.linkBlock ?: self.linkBlock(url);
     //[self adaptThemeForWebView];
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:didCommitNavigation:))) {
+        [self.delegate adapter:self didCommitNavigation:navigation];
+    }
 }
 
+// Gets the label of `video`.
+//[webView evaluateJavaScript:@"document.querySelector('video').currentSrc;" completionHandler:^(id result, NSError *error) {
+// result will contain the video url
+//}];
+//[self evaluateJavaScript:webView];
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
-    QPLog(":: url=%@", webView.URL);
-    //[self adaptThemeForWebView];
+    NSURL *url = webView.URL;
+    QPLog(":: url=%@", url);
+    _requestURL = url.copy;
+    !self.linkBlock ?: self.linkBlock(url);
     [self hideProgressView];
-    //[webView evaluateJavaScript:@"document.querySelector('video').currentSrc;" completionHandler:^(id result, NSError *error) {
-    // result will contain the video url
-    //}];
+    //[self adaptThemeForWebView];
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:didFinishNavigation:))) {
+        [self.delegate adapter:self didFinishNavigation:navigation];
+    }
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
+    NSURL *url = webView.URL;
+    QPLog(":: url=%@", url);
+    _requestURL = url.copy;
+    !self.linkBlock ?: self.linkBlock(url);
     [self hideProgressView];
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:didFailProvisionalNavigation:withError:))) {
+        [self.delegate adapter:self didFailProvisionalNavigation:navigation withError:error];
+        return;
+    }
     if (error.code == NSURLErrorCancelled || error.code == NSURLErrorUnsupportedURL) {
         return;
     }
@@ -223,7 +260,15 @@
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
+    NSURL *url = webView.URL;
+    QPLog(":: url=%@", url);
+    _requestURL = url.copy;
+    !self.linkBlock ?: self.linkBlock(url);
     [self hideProgressView];
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:didFailNavigation:withError:))) {
+        [self.delegate adapter:self didFailNavigation:navigation withError:error];
+        return;
+    }
     if (error.code == NSURLErrorCancelled || error.code == NSURLErrorUnsupportedURL) {
         return;
     }
@@ -234,8 +279,13 @@
 
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
 {
-    NSString *url = navigationAction.request.URL.absoluteString;
-    QPLog(@":: url=%@", url);
+    NSURL *url = navigationAction.request.URL;
+    QPLog(":: url=%@", url);
+    _requestURL = url.copy;
+    !self.linkBlock ?: self.linkBlock(url);
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:createWebViewWithConfiguration:forNavigationAction:windowFeatures:))) {
+        return [self.delegate adapter:self createWebViewWithConfiguration:configuration forNavigationAction:navigationAction windowFeatures:windowFeatures];
+    }
     if (navigationAction.targetFrame == nil || !navigationAction.targetFrame.isMainFrame) {
         [webView loadRequest:navigationAction.request];
     }
@@ -244,26 +294,34 @@
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    NSString *url = navigationAction.request.URL.absoluteString;
-    QPLog(@":: url=%@", url);
+    NSURL *url = navigationAction.request.URL;
+    QPLog(":: url=%@", url);
+    _requestURL = url.copy;
+    !self.linkBlock ?: self.linkBlock(url);
+    
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:decidePolicyForNavigationAction:decisionHandler:))) {
+        [self.delegate adapter:self decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
+        return;
+    }
     
     // Method NO.1: resolve the problem about '_blank'.
     //if (navigationAction.targetFrame == nil) {
     //    [webView loadRequest:navigationAction.request];
     //}
     
-    if ([url isEqualToString:@"about:blank"]) {
+    if ([url.absoluteString isEqualToString:@"about:blank"]) {
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
-    } else {
-        !self.linkBlock ?: self.linkBlock(url);
-        _urlLink = url.copy;
     }
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler
 {
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:decidePolicyForNavigationResponse:decisionHandler:))) {
+        [self.delegate adapter:self decidePolicyForNavigationResponse:navigationResponse decisionHandler:decisionHandler];
+        return;
+    }
     decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
@@ -291,22 +349,30 @@
 - (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler
 {
     QPLog(@":: prompt=%@, defaultText=%@", prompt, defaultText);
-    if ([prompt isEqualToString:@"xxxxxx"]) {
-        completionHandler(@"");
-    } else {
-        completionHandler(nil);
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:))) {
+        [self.delegate adapter:self runJavaScriptTextInputPanelWithPrompt:prompt defaultText:defaultText initiatedByFrame:frame completionHandler:completionHandler];
+        return;
     }
+    completionHandler(defaultText);
 }
 
-//- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler
-//{
-//    completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
-//}
+- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler
+{
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:didReceiveAuthenticationChallenge:completionHandler:))) {
+        [self.delegate adapter:self didReceiveAuthenticationChallenge:challenge completionHandler:completionHandler];
+        return;
+    }
+    completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+}
 
 #pragma mark - WKScriptMessageHandler
 
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message
 {
+    if (QPRespondsToSelector(self.delegate, @selector(adapter:userContentController:didReceiveScriptMessage:))) {
+        [self.delegate adapter:self userContentController:userContentController didReceiveScriptMessage:message];
+        return;
+    }
     QPLog(@":: message=%@", message);
 }
 
@@ -346,7 +412,6 @@
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
-    [self hideToolBarAfterDelay];
     if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewWillBeginDecelerating:forAdapter:))) {
         [self.scrollViewDelegate scrollViewWillBeginDecelerating:scrollView forAdapter:self];
     }
@@ -354,6 +419,7 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    [self hideToolBarAfterDelay];
     if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewDidEndDecelerating:forAdapter:))) {
         [self.scrollViewDelegate scrollViewDidEndDecelerating:scrollView forAdapter:self];
     }
@@ -388,21 +454,19 @@
 
 - (void)showToolBar
 {
+    _didScroll = YES;
     [self cancelHidingToolBar];
-    if (self.toolBar.alpha == 0.f) {
-        [UIView animateWithDuration:0.5 animations:^{
-            self.toolBar.alpha = 1.f;
-        }];
-    }
+    [UIView animateWithDuration:0.5 animations:^{
+        self.toolBar.alpha = 1.f;
+    }];
 }
 
 - (void)hideToolBar
 {
-    if (self.toolBar.alpha == 1.f) {
-        [UIView animateWithDuration:0.5 animations:^{
-            self.toolBar.alpha = 0.f;
-        }];
-    }
+    _didScroll = NO;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.toolBar.alpha = 0.f;
+    }];
 }
 
 - (void)cancelHidingToolBar
@@ -412,7 +476,8 @@
 
 - (void)inspectToolBarAlpha
 {
-    if (self.toolBar.alpha > 0.f) {
+    if (!_didScroll) { return; }
+    if (self.toolBar.alpha > 0) {
         self.toolBar.alpha = 0.f;
         [self cancelHidingToolBar];
     }
@@ -420,10 +485,10 @@
 
 - (void)dealloc
 {
+    QPLog("::");
     [_progressView removeFromSuperview];
     _progressView = nil;
     [self.webView removeObserver:self forKeyPath:@"estimatedProgress"];
-    QPLog("::");
 }
 
 @end

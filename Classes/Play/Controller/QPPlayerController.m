@@ -53,7 +53,7 @@
 
 - (instancetype)initWithModel:(QPPlayerModel *)model
 {
-    if (self = [super initWithNibName:nil bundle:nil]) {
+    if (self = [super init]) {
         self.model = model;
         self.model.videoDecoding = 0;
         self.parsingButtonRequired = NO;

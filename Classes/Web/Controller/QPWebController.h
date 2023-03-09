@@ -9,11 +9,22 @@
 
 @interface QPWebController : QPBaseWebViewController <UITextFieldDelegate>
 
+/// Override
 - (void)loadDefaultRequest;
+
+/// Override
 - (UITextField *)titleView;
+
+/// Override
 - (UIImageView *)webToolBar;
+
+/// Override
 - (void)configureWebViewAdapter;
+
+/// Override
 - (void)loadWebContents;
+
+/// Override
 - (void)adaptTitleViewStyle:(BOOL)isDark;
 
 @end

@@ -98,8 +98,8 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 {
     [self setupFileResourceDelegate];
     [self initArray];
-    if (_viewController) {
-        QPHomeViewController *vc = [self homeViewController];
+    QPHomeViewController *vc = [self homeViewController];
+    if (vc) {
         _view = vc.homeView;
         _view.adapter.listViewDelegate = self;
         @QPWeakify(self)
@@ -129,18 +129,21 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 // number of the files.
 - (NSInteger)numberOfFiles
 {
+    QPLog("::");
     return [self.fileList count];
 }
 
 // the file name by the index.
 - (NSString *)fileNameAtIndex:(NSInteger)index
 {
+    QPLog("::");
     return [self.fileList objectAtIndex:index];
 }
 
 // provide full file path by given file name.
 - (NSString *)filePathForFileName:(NSString *)filename
 {
+    QPLog("::");
     return QPAppendingPathComponent([QPFileHelper cachePath], filename);
 }
 
@@ -149,6 +152,7 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 // it to proper location and update the file list.
 - (void)newFileDidUpload:(NSString *)name inTempPath:(NSString *)tmpPath
 {
+    QPLog("::");
     if (name == nil || tmpPath == nil) return;
     
     NSString *path = QPAppendingPathComponent([QPFileHelper cachePath], name);
@@ -167,6 +171,7 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 // implement this method to delete requested file and update the file list.
 - (void)fileShouldDelete:(NSString *)fileName
 {
+    QPLog("::");
     NSString *path = [self filePathForFileName:fileName];
     NSError *error = nil;
     
@@ -211,7 +216,7 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
         UIImage *thumbnail          = self.yf_videoThumbnailImage(url, 3, 107, 60);
         QPPlayerModel *model        = [[QPPlayerModel alloc] init];
         model.isLocalVideo          = YES;
-        model.isMediaPlayerPlayback = YES;
+        model.isZFPlayerPlayback    = YES;
         model.videoTitle            = _model.name;
         model.videoUrl              = _model.path;
         model.placeholderCoverImage = thumbnail;

@@ -16,7 +16,7 @@ static inline NSString *QPFCacheDirpath()
         NSError *error = nil;
         [QPFileMgr createDirectoryAtPath:cachePath withIntermediateDirectories:YES attributes:nil error:&error];
         if (error) {
-            QPLog(@"[createDirectoryAtPath: ...] error: %@", error);
+            QPLog(@"[createDirectoryAtPath] error: %@", error);
             return nil;
         }
     }
@@ -55,9 +55,7 @@ static inline NSString *QPFCacheDirpath()
         if (components.count > 0) {
             fm.fileType = [components lastObject];
         }
-        
         fm.title = fm.name;
-        
         [filesArray addObject:fm];
     }
     
@@ -79,6 +77,7 @@ static inline NSString *QPFCacheDirpath()
     BOOL ret = [QPFileMgr removeItemAtPath:filePath error:nil];
     BOOL exists = [QPFileMgr fileExistsAtPath:filePath];
     QPLog(@"%@ exists: %@", filename, exists ? @"YES" : @"NO");
+    
     return ret;
 }
 

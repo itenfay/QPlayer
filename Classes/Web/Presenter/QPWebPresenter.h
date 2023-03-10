@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) QPWebPlaybackContext *playbackContext;
 
-- (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches;
+- (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches cachePath:(NSString *)cachePath
 - (void)playVideoWithUrl:(NSString *)url;
 
 @end

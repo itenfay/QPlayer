@@ -59,7 +59,7 @@
 //                                     @"https://m.imooc.com/",
 //                                     @"https://m.study.163.com/",
 //                                     @"https://www.jikexueyuan.com/"];
-- (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches
+- (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches cachePath:(NSString *)cachePath
 {
     PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:@[] searchBarPlaceholder:@"请输入要搜索的内容或网址" didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
         //QPLog(@":: searchText=%@", searchText);
@@ -68,10 +68,10 @@
     searchViewController.dataSource  = self;
     searchViewController.hotSearches = hotSearches;
     searchViewController.searchBar.tintColor = UIColor.blueColor;
-    searchViewController.searchHistoriesCachePath = VIDEO_SEARCH_HISTORY_CACHE_PATH;
+    searchViewController.searchHistoriesCachePath = cachePath;
     searchViewController.hotSearchStyle = PYHotSearchStyleColorfulTag;
     searchViewController.searchHistoryStyle = PYSearchHistoryStyleDefault;
-    searchViewController.cancelButton.titleLabel.font = [UIFont systemFontOfSize:13.f weight:UIFontWeightMedium];
+    searchViewController.cancelButton.frame = CGRectMake(0, 0, 40.f, 30.f);
     
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:searchViewController];
     [nc.navigationBar setShadowImage:[UIImage new]];

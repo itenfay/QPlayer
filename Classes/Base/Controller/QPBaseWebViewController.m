@@ -177,7 +177,7 @@
     if (!isVertical) {
         tlbX = hSpace;
         tlbW = self.view.width - 2*tlbX;
-        tlbH = btnH + 2*vSpace;
+        tlbH = btnH + 4*vSpace;
         tlbY = self.view.height - offset - tlbH - (bVal ? 2*vSpace : 0);
         tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
         btnW = (tlbW - (count+1)*hSpace)/count;
@@ -196,7 +196,7 @@
         if (isVertical) {
             button.frame = CGRectMake(hSpace, (i+1)*vSpace+i*btnH, btnW, btnH);
         } else {
-            button.frame = CGRectMake((i+1)*vSpace+i*btnW, 0.8*vSpace, btnW, btnH);
+            button.frame = CGRectMake((i+1)*vSpace+i*btnW, 1.8*vSpace, btnW, btnH);
         }
         button.tag = 100 + i;
         button.showsTouchWhenHighlighted = YES;

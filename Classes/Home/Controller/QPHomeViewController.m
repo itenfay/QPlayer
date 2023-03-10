@@ -62,20 +62,4 @@
     [_homeView reloadUI];
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-    [_homeView reloadUI];
-}
-
-- (void)dealloc
-{
-    [self removeThemeStyleChangedObserver];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
 @end

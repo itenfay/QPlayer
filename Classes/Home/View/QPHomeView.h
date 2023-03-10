@@ -10,11 +10,11 @@
 #import "QPModularDelegate.h"
 #import "QPHomeListViewAdapter.h"
 
-typedef void(^HomeReloadDataBlock)();
+typedef void(^HomeReloadDataBlock)(void);
 
 @interface QPHomeView : QPBaseView <QPHomeViewDelegate>
 
-@property (nonatomic, strong) QPListViewAdapter *adapter;
+@property (nonatomic, strong) QPHomeListViewAdapter *adapter;
 
 - (UITableView *)tableView;
 

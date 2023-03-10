@@ -243,8 +243,6 @@
 {
     NSURL *url = webView.URL;
     QPLog(":: url=%@", url);
-    _requestURL = url.copy;
-    !self.linkBlock ?: self.linkBlock(url);
     [self hideProgressView];
     if (QPRespondsToSelector(self.delegate, @selector(adapter:didFailProvisionalNavigation:withError:))) {
         [self.delegate adapter:self didFailProvisionalNavigation:navigation withError:error];
@@ -262,8 +260,6 @@
 {
     NSURL *url = webView.URL;
     QPLog(":: url=%@", url);
-    _requestURL = url.copy;
-    !self.linkBlock ?: self.linkBlock(url);
     [self hideProgressView];
     if (QPRespondsToSelector(self.delegate, @selector(adapter:didFailNavigation:withError:))) {
         [self.delegate adapter:self didFailNavigation:navigation withError:error];
@@ -277,17 +273,24 @@
     [QPHudUtils showErrorMessage:errMsg];
 }
 
+//WKWebView can't jump by clicking the internal link after loading the link, because the target = "_black "in < a href = "xxx" target = "_black" > is to open a new page, so it can't be opened on the current page, and the url needs to be reloaded on the current page.
+//Target in a hyperlink:
+//_blank - Opens the link in a new window.
+//_parent - Opens the link in the parent form.
+//_self - Opens the link in the current form, which is the default value.
+//_top - Opens the link in the current form and replaces the current whole form (frame page).
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
 {
     NSURL *url = navigationAction.request.URL;
     QPLog(":: url=%@", url);
-    _requestURL = url.copy;
-    !self.linkBlock ?: self.linkBlock(url);
+    
+    // Method1: resolve the problem about '_blank'.
+    //if (!navigationAction.targetFrame.isMainFrame) {
+    //    [webView loadRequest:navigationAction.request];
+    //}
+    
     if (QPRespondsToSelector(self.delegate, @selector(adapter:createWebViewWithConfiguration:forNavigationAction:windowFeatures:))) {
         return [self.delegate adapter:self createWebViewWithConfiguration:configuration forNavigationAction:navigationAction windowFeatures:windowFeatures];
-    }
-    if (navigationAction.targetFrame == nil || !navigationAction.targetFrame.isMainFrame) {
-        [webView loadRequest:navigationAction.request];
     }
     return nil;
 }
@@ -296,21 +299,17 @@
 {
     NSURL *url = navigationAction.request.URL;
     QPLog(":: url=%@", url);
-    _requestURL = url.copy;
-    !self.linkBlock ?: self.linkBlock(url);
+    
+    // Method2: resolve the problem about '_blank'.
+    if (navigationAction.targetFrame == nil) {
+        [webView loadRequest:navigationAction.request];
+    } else {
+        _requestURL = url.copy;
+        !self.linkBlock ?: self.linkBlock(url);
+    }
     
     if (QPRespondsToSelector(self.delegate, @selector(adapter:decidePolicyForNavigationAction:decisionHandler:))) {
         [self.delegate adapter:self decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
-        return;
-    }
-    
-    // Method NO.1: resolve the problem about '_blank'.
-    //if (navigationAction.targetFrame == nil) {
-    //    [webView loadRequest:navigationAction.request];
-    //}
-    
-    if ([url.absoluteString isEqualToString:@"about:blank"]) {
-        decisionHandler(WKNavigationActionPolicyCancel);
         return;
     }
     decisionHandler(WKNavigationActionPolicyAllow);

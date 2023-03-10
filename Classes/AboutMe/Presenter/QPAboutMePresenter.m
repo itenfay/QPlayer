@@ -12,7 +12,7 @@
 #import "QPAboutMeTableHeader.h"
 #import "QPAboutMeTableFooter.h"
 
-#define AboutMeTableHeaderHeight 300.f
+#define AboutMeTableHeaderHeight 270.f
 #define AboutMeTableCellHeight    46.f
 
 @implementation QPAboutMePresenter
@@ -60,20 +60,6 @@
     [_view reloadData];
 }
 
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    CGFloat headerH = AboutMeTableHeaderHeight;
-//    CGFloat offsetY = scrollView.contentOffset.y;
-//    //QPLog(@"%f, %f", scrollView.contentOffset.x, offsetY);
-//    if (scrollView == self.m_tableView) {
-//        if (offsetY <= headerH &&
-//            offsetY >= -QPStatusBarAndNavigationBarHeight) {
-//            scrollView.contentInset = UIEdgeInsetsMake(-offsetY, 0, 0, 0);
-//        } else if (offsetY >= headerH) {
-//            scrollView.contentInset = UIEdgeInsetsMake(-headerH, 0, 0, 0);
-//        }
-//    }
-//}
-
 - (void)configTableViewHeaderFooter
 {
     UINib *headerNib = [UINib nibWithNibName:NSStringFromClass([QPAboutMeTableHeader class]) bundle:NSBundle.mainBundle];
@@ -102,7 +88,8 @@
     footer.left      = 0.f;
     footer.top       = 0.f;
     footer.width     = self.view.width;
-    footer.height    = self.view.height - header.height - count*cellH - 10;
+    CGFloat footerH  = self.view.height - header.height - count*cellH - 10;
+    footer.height    = footerH <= 160.f ? 160.f : footerH;
     _view.tableFooterView = footer;
     @QPWeakify(self)
     [footer onAct:^(AMFooterActionType type) {
@@ -136,8 +123,6 @@
     } else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-    cell.backgroundColor = _viewController.isDarkMode ? QPColorFromRGB(20, 20, 20) : QPColorFromRGB(246, 246, 246);
     
     [[self aboutMeController].adapter bindModelTo:cell atIndexPath:indexPath inTableView:_view withViewController:_viewController];
     

@@ -80,6 +80,7 @@
 
 - (void)viewDidLayoutSubviews
 {
+    [super viewDidLayoutSubviews];
     [self updateTableViewHeaderFooter];
 }
 
@@ -90,6 +91,7 @@
     self.m_tableView.dataSource = _adapter;
     self.m_tableView.rowHeight = UITableViewAutomaticDimension;
     self.m_tableView.estimatedRowHeight = 46.f;
+    self.m_tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
 }
 
 - (void)adaptThemeStyle

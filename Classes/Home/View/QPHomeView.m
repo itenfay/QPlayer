@@ -30,15 +30,15 @@
 
 - (void)buildView
 {
-    [self setupTableView:_adapter];
+    [self setupTableView];
     [self setupRefreshHeader];
 }
 
-- (void)setupTableView:(QPBaseAdapter *)adapter
+- (void)setupTableView
 {
     self.tableView.backgroundColor = [UIColor clearColor];
-    self.tableView.dataSource      = (QPListViewAdapter *)adapter;
-    self.tableView.delegate        = (QPListViewAdapter *)adapter;
+    self.tableView.dataSource      = _adapter;
+    self.tableView.delegate        = _adapter;
     self.tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight       = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 60.f;

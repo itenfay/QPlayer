@@ -93,6 +93,7 @@
 
 @optional
 - (void)bindModelTo:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView withViewController:(UIViewController *)viewController;
+- (void)bindModelTo:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView withView:(UIView *)view;
 
 @end
 

@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (ZFPlayerController *)player;
 - (void)prepareToPlay;
+- (void)enterPortraitFullScreen;
+
 - (void)startPictureInPicture;
 - (void)stopPictureInPicture;
 

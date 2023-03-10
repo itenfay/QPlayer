@@ -177,7 +177,7 @@
 {
     UINavigationController *nc = self.navigationController;
     if (!nc) { return; }
-    nc.interactivePopGestureRecognizer.enabled  = enabled;
+    nc.interactivePopGestureRecognizer.enabled = enabled;
 }
 
 - (UINavigationBar *)navigationBar

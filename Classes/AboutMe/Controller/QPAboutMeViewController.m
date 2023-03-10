@@ -6,7 +6,6 @@
 //
 
 #import "QPAboutMeViewController.h"
-#import "QPTitleView.h"
 #import "QPAboutMePresenter.h"
 
 @interface QPAboutMeViewController ()

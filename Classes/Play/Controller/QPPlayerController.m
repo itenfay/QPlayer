@@ -7,10 +7,9 @@
 //
 
 #import "QPPlayerController.h"
-#import "QPTitleView.h"
 #import "QPPlayerWebViewAdapter.h"
 
-@interface QPPlayerController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
+@interface QPPlayerController ()
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 @property (nonatomic, strong) UIImageView *containerView;
 @end
@@ -99,39 +98,26 @@
     backButton.width     = 30.f;
     backButton.height    = 30.f;
     backButton.left      = 0.f;
-    backButton.top       = (titleView.height - backButton.height)/2;
+    backButton.top       = 0.f;
     [backButton setImage:QPImageNamed(@"back_normal_white") forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 12);
-    [titleView addSubview:backButton];
+    backButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10);
+    [self addLeftNavigationBarButton:backButton];
     
     UIButton *portraitButton = [UIButton buttonWithType:UIButtonTypeCustom];
     portraitButton.width     = 40.f;
     portraitButton.height    = 30.f;
-    portraitButton.right     = titleView.right - 2*12.f; // The margin is 12.
-    portraitButton.top       = (titleView.height - portraitButton.height)/2;
+    portraitButton.right     = 0.f;
+    portraitButton.top       = 0.f;
     portraitButton.showsTouchWhenHighlighted = YES;
     [portraitButton setTitle:@"竖屏" forState:UIControlStateNormal];
     [portraitButton setTitleColor:QPColorFromRGB(252, 252, 252) forState:UIControlStateNormal];
     [portraitButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
     [portraitButton addTarget:self action:@selector(onPortraitFullScreen:) forControlEvents:UIControlEventTouchUpInside];
-    [titleView addSubview:portraitButton];
+    portraitButton.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, -10);
+    [self addRightNavigationBarButton:portraitButton];
     
-    UILabel *titleLabel        = [[UILabel alloc] init];
-    titleLabel.backgroundColor = UIColor.clearColor;
-    titleLabel.font            = [UIFont boldSystemFontOfSize:16.f];
-    titleLabel.textColor       = UIColor.whiteColor;
-    titleLabel.textAlignment   = NSTextAlignmentCenter;
-    titleLabel.text            = @""; // QPInfoDictionary[@"CFBundleName"];
-    
-    titleLabel.height = 30.f;
-    titleLabel.left   = backButton.right - 12.f;
-    titleLabel.top    = (titleView.height - titleLabel.height)/2;
-    titleLabel.width  = portraitButton.left - titleLabel.left - 12.f;
-    [titleView addSubview:titleLabel];
-    
-    self.navigationItem.titleView = titleView;
-    self.navigationItem.hidesBackButton = YES;
+    [self setNavigationBarTitle:QPInfoDictionary[@"CFBundleName"]];
 }
 
 - (void)back:(UIButton *)sender
@@ -200,9 +186,9 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    QPAppDelegate.allowOrentitaionRotation = NO;
     QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
     if ([self isMovingFromParentViewController]) {
-        QPAppDelegate.allowOrentitaionRotation = NO;
         [self releaseWebView];
         QPlayerSavePlaying(NO);
         [pt.player stopCurrentPlayingView];
@@ -231,9 +217,7 @@
 - (void)onPortraitFullScreen:(UIButton *)sender
 {
     QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
-    if (pt.player) {
-        [pt.player enterPortraitFullScreen:YES animated:YES completion:NULL];
-    }
+    [pt enterPortraitFullScreen];
 }
 
 - (void)addContainerView
@@ -246,8 +230,8 @@
     CGRect frame = CGRectMake(0, 0, 0, 0);
     [self initWebViewWithFrame:frame];
     
-    self.webView.backgroundColor     = QPColorFromRGB(243, 243, 243);
-    self.webView.opaque              = NO;
+    self.webView.backgroundColor = QPColorFromRGB(243, 243, 243);
+    self.webView.opaque          = NO;
     [self.webView autoresizing];
     [self.view addSubview:self.webView];
 }
@@ -284,7 +268,7 @@
 {
     [self.controlView showTitle:self.videoTitleByDeletingExtension
                  coverURLString:self.model.coverUrl
-               placeholderImage:self.model.placeholderCoverImage
+               placeholderImage:self.model.placeholderCoverImage ?: QPImageNamed(@"default_thumbnail")
                  fullScreenMode:ZFFullScreenModeAutomatic];
 }
 

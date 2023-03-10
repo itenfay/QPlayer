@@ -12,6 +12,7 @@
 @interface QPPlayerPresenter ()
 @property (nonatomic, strong) ZFPlayerController *player;
 @property (nonatomic, strong) AVPictureInPictureController *pipController;
+@property (nonatomic, assign) BOOL jx;
 @end
 
 @implementation QPPlayerPresenter
@@ -23,11 +24,11 @@
         if ((vc.model.isLocalVideo && vc.model.isMediaPlayerPlayback) || vc.model.isMediaPlayerPlayback) {
             KSYMediaPlayerManager *playerManager = [[KSYMediaPlayerManager alloc] init];
             _player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
-            if (vc.model.videoDecoding == 1) {
-                playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Hardware;
-            } else {
-                playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Software;
-            }
+            //if (vc.model.videoDecoding == 1) {
+            //    playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Hardware;
+            //} else {
+            //    playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Software;
+            //}
         } else if ((vc.model.isLocalVideo && vc.model.isIJKPlayerPlayback) || vc.model.isIJKPlayerPlayback) {
             //ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init]; // playerManager
             // Invalid, player hasn't been initialized yet.
@@ -62,6 +63,11 @@
     [self playWithURL:aURL];
 }
 
+- (void)enterPortraitFullScreen
+{
+    [self.player enterPortraitFullScreen:YES animated:YES completion:NULL];
+}
+
 - (void)playWithURL:(NSURL *)aURL
 {
     QPPlayerController *vc = [self playViewController];
@@ -78,17 +84,18 @@
     self.player.pauseWhenAppResignActive = YES;
     //self.player.resumePlayRecord = YES;
     
-    //@zf_weakify(self)
+    @zf_weakify(self)
     vc.controlView.backBtnClickCallback = ^{
-        //@zf_strongify(self)
-        //[self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:YES completion:NULL];
+        @zf_strongify(self)
+        [self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:YES completion:NULL];
         //[self.player stop];
     };
     
     //self.player.orientationObserver.supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
     //[self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:NO completion:NULL];
     
-    //self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+    self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+        QPLog(@":: %s, isFullScreen=%@", __func__, isFullScreen ? @"YES" : @"NO");
         //@zf_strongify(self)
         //[self.viewController setNeedsStatusBarAppearanceUpdate];
         //[UIViewController attemptRotationToDeviceOrientation];
@@ -99,7 +106,7 @@
             }
         }
         */
-    //};
+    };
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         QPLog(@":: %s, asset=%@", __func__, asset);
     };
@@ -113,12 +120,21 @@
     if (!QPlayerPictureInPictureEnabled())
         return;
     QPPlayerController *vc = [self playViewController];
-    if (vc.model.isMediaPlayerPlayback || vc.model.isIJKPlayerPlayback) {
+    if (vc.model.isIJKPlayerPlayback) {
         return;
     }
-    ZFAVPlayerManager *manager = (ZFAVPlayerManager *)self.player.currentPlayerManager;
-    AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:manager.avPlayerLayer];
-    self.pipController = pipVC;
+    if (vc.model.isZFPlayerPlayback) {
+        ZFAVPlayerManager *manager = (ZFAVPlayerManager *)self.player.currentPlayerManager;
+        if (!manager) { return; }
+        AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:manager.avPlayerLayer];
+        self.pipController = pipVC;
+        
+    } else if (vc.model.isMediaPlayerPlayback) {
+        KSYMediaPlayerManager *manager = (KSYMediaPlayerManager *)self.player.currentPlayerManager;
+        AVPlayerLayer *avPlayerLayer = (AVPlayerLayer *)manager.view.playerView.layer;
+        AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:avPlayerLayer];
+        self.pipController = pipVC;
+    }
     /// 要有延迟 否则可能开启不成功
     [self delayToScheduleTask:2.0 completion:^{
         [self.pipController startPictureInPicture];

@@ -17,7 +17,8 @@ target 'QPlayer' do
     pod 'ZFPlayer/AVPlayer'
     #pod 'ZFPlayer/ijkplayer'
     #pod 'ZFPlayer/KSYMediaPlayer' # Conflicts with ijkplayer.
-    #pod 'KSYMediaPlayer_iOS/KSYMediaPlayer_vod' # Conflicts with ijkplayer.
+    #pod 'KSYMediaPlayer_iOS/KSYMediaPlayer_vod'
+    pod 'KSYMediaPlayer_iOS'
     
     pod 'MBProgressHUD+JDragon', '~> 0.0.3'
     pod 'PYSearch'

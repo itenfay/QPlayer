@@ -51,7 +51,6 @@
 		141B173A25C93CC7008C465C /* UILabel+QPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B173425C93CC5008C465C /* UILabel+QPAdditions.m */; };
 		141B173B25C93CC7008C465C /* NSObject+QPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B173725C93CC6008C465C /* NSObject+QPAdditions.m */; };
 		141B173C25C93CC7008C465C /* UIScrollView+QPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 141B173825C93CC6008C465C /* UIScrollView+QPAdditions.m */; };
-		1430B8B0234C3FBC00189025 /* KSYMediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1430B8AC234C3FBB00189025 /* KSYMediaPlayer.framework */; };
 		1430B8B1234C3FBC00189025 /* KSYMediaPlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1430B8AE234C3FBB00189025 /* KSYMediaPlayerManager.m */; };
 		1438F67525CC5185000CC65D /* QPFileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1438F67125CC5184000CC65D /* QPFileTableViewCell.m */; };
 		1438F67625CC5185000CC65D /* QPHomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1438F67325CC5184000CC65D /* QPHomeView.m */; };
@@ -96,15 +95,17 @@
 		793BAB9E29B09C91000EF92B /* QPLivePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BAB9D29B09C91000EF92B /* QPLivePresenter.m */; };
 		793BABA129B09CA9000EF92B /* QPLiveWebViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BABA029B09CA9000EF92B /* QPLiveWebViewAdapter.m */; };
 		79443A8A29B19BF5004B125A /* QPPlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443A8929B19BF5004B125A /* QPPlayerModel.m */; };
-		79443A8D29B1DC2E004B125A /* DYFDropListView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 79443A8C29B1DC2E004B125A /* DYFDropListView.bundle */; };
-		79443A9529B1DC42004B125A /* DYFDropListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79443A9129B1DC42004B125A /* DYFDropListView.xib */; };
-		79443A9629B1DC42004B125A /* DYFDropListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443A9229B1DC42004B125A /* DYFDropListViewCell.m */; };
-		79443A9729B1DC42004B125A /* DYFDropListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443A9329B1DC42004B125A /* DYFDropListView.m */; };
-		79443A9829B1DC42004B125A /* DYFDropListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79443A9429B1DC42004B125A /* DYFDropListViewCell.xib */; };
+		79443A8D29B1DC2E004B125A /* QPDropListView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 79443A8C29B1DC2E004B125A /* QPDropListView.bundle */; };
+		79443A9529B1DC42004B125A /* QPDropListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79443A9129B1DC42004B125A /* QPDropListView.xib */; };
+		79443A9629B1DC42004B125A /* QPDropListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443A9229B1DC42004B125A /* QPDropListViewCell.m */; };
+		79443A9729B1DC42004B125A /* QPDropListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443A9329B1DC42004B125A /* QPDropListView.m */; };
+		79443A9829B1DC42004B125A /* QPDropListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79443A9429B1DC42004B125A /* QPDropListViewCell.xib */; };
 		79443A9B29B1E0EB004B125A /* QPAdvancedSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443A9A29B1E0EB004B125A /* QPAdvancedSearchController.m */; };
 		79443A9E29B1ED96004B125A /* QPSearchPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443A9C29B1ED96004B125A /* QPSearchPresenter.m */; };
-		79443AA229B1FBB4004B125A /* DYFDropListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443AA029B1FBB4004B125A /* DYFDropListModel.m */; };
+		79443AA229B1FBB4004B125A /* QPDropListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443AA029B1FBB4004B125A /* QPDropListModel.m */; };
 		7978348829A864FE00496962 /* QPBaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7978348629A864FE00496962 /* QPBaseWebViewController.m */; };
+		797F386529BAF9DD00DCCBCB /* QPDropListViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 797F386329BAF9DD00DCCBCB /* QPDropListViewPresenter.m */; };
+		797F386829BAF9EB00DCCBCB /* QPDropListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 797F386629BAF9EA00DCCBCB /* QPDropListViewAdapter.m */; };
 		799A919929B709E9007735F0 /* QPWebPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 799A919829B709E8007735F0 /* QPWebPresenter.m */; };
 		799A919C29B709F4007735F0 /* QPWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = 799A919A29B709F4007735F0 /* QPWebController.m */; };
 		79A1249029AC76EE00667B3C /* ApplicationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A1248F29AC76EE00667B3C /* ApplicationHelper.m */; };
@@ -224,7 +225,6 @@
 		141B173625C93CC5008C465C /* UIScrollView+QPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+QPAdditions.h"; sourceTree = "<group>"; };
 		141B173725C93CC6008C465C /* NSObject+QPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+QPAdditions.m"; sourceTree = "<group>"; };
 		141B173825C93CC6008C465C /* UIScrollView+QPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+QPAdditions.m"; sourceTree = "<group>"; };
-		1430B8AC234C3FBB00189025 /* KSYMediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KSYMediaPlayer.framework; sourceTree = "<group>"; };
 		1430B8AE234C3FBB00189025 /* KSYMediaPlayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSYMediaPlayerManager.m; sourceTree = "<group>"; };
 		1430B8AF234C3FBB00189025 /* KSYMediaPlayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSYMediaPlayerManager.h; sourceTree = "<group>"; };
 		1438F67025CC5184000CC65D /* QPHomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPHomeView.h; sourceTree = "<group>"; };
@@ -299,21 +299,25 @@
 		793BABA029B09CA9000EF92B /* QPLiveWebViewAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPLiveWebViewAdapter.m; sourceTree = "<group>"; };
 		79443A8829B19BF5004B125A /* QPPlayerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPPlayerModel.h; sourceTree = "<group>"; };
 		79443A8929B19BF5004B125A /* QPPlayerModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPPlayerModel.m; sourceTree = "<group>"; };
-		79443A8C29B1DC2E004B125A /* DYFDropListView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DYFDropListView.bundle; sourceTree = "<group>"; };
-		79443A8F29B1DC42004B125A /* DYFDropListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYFDropListViewCell.h; sourceTree = "<group>"; };
-		79443A9029B1DC42004B125A /* DYFDropListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYFDropListView.h; sourceTree = "<group>"; };
-		79443A9129B1DC42004B125A /* DYFDropListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DYFDropListView.xib; sourceTree = "<group>"; };
-		79443A9229B1DC42004B125A /* DYFDropListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYFDropListViewCell.m; sourceTree = "<group>"; };
-		79443A9329B1DC42004B125A /* DYFDropListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYFDropListView.m; sourceTree = "<group>"; };
-		79443A9429B1DC42004B125A /* DYFDropListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DYFDropListViewCell.xib; sourceTree = "<group>"; };
+		79443A8C29B1DC2E004B125A /* QPDropListView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QPDropListView.bundle; sourceTree = "<group>"; };
+		79443A8F29B1DC42004B125A /* QPDropListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPDropListViewCell.h; sourceTree = "<group>"; };
+		79443A9029B1DC42004B125A /* QPDropListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPDropListView.h; sourceTree = "<group>"; };
+		79443A9129B1DC42004B125A /* QPDropListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QPDropListView.xib; sourceTree = "<group>"; };
+		79443A9229B1DC42004B125A /* QPDropListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPDropListViewCell.m; sourceTree = "<group>"; };
+		79443A9329B1DC42004B125A /* QPDropListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPDropListView.m; sourceTree = "<group>"; };
+		79443A9429B1DC42004B125A /* QPDropListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QPDropListViewCell.xib; sourceTree = "<group>"; };
 		79443A9929B1E0EB004B125A /* QPAdvancedSearchController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPAdvancedSearchController.h; sourceTree = "<group>"; };
 		79443A9A29B1E0EB004B125A /* QPAdvancedSearchController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPAdvancedSearchController.m; sourceTree = "<group>"; };
 		79443A9C29B1ED96004B125A /* QPSearchPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPSearchPresenter.m; sourceTree = "<group>"; };
 		79443A9D29B1ED96004B125A /* QPSearchPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPSearchPresenter.h; sourceTree = "<group>"; };
-		79443AA029B1FBB4004B125A /* DYFDropListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYFDropListModel.m; sourceTree = "<group>"; };
-		79443AA129B1FBB4004B125A /* DYFDropListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYFDropListModel.h; sourceTree = "<group>"; };
+		79443AA029B1FBB4004B125A /* QPDropListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPDropListModel.m; sourceTree = "<group>"; };
+		79443AA129B1FBB4004B125A /* QPDropListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPDropListModel.h; sourceTree = "<group>"; };
 		7978348629A864FE00496962 /* QPBaseWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPBaseWebViewController.m; sourceTree = "<group>"; };
 		7978348729A864FE00496962 /* QPBaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPBaseWebViewController.h; sourceTree = "<group>"; };
+		797F386329BAF9DD00DCCBCB /* QPDropListViewPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPDropListViewPresenter.m; sourceTree = "<group>"; };
+		797F386429BAF9DD00DCCBCB /* QPDropListViewPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPDropListViewPresenter.h; sourceTree = "<group>"; };
+		797F386629BAF9EA00DCCBCB /* QPDropListViewAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPDropListViewAdapter.m; sourceTree = "<group>"; };
+		797F386729BAF9EB00DCCBCB /* QPDropListViewAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPDropListViewAdapter.h; sourceTree = "<group>"; };
 		799A919729B709E8007735F0 /* QPWebPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebPresenter.h; sourceTree = "<group>"; };
 		799A919829B709E8007735F0 /* QPWebPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebPresenter.m; sourceTree = "<group>"; };
 		799A919A29B709F4007735F0 /* QPWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebController.m; sourceTree = "<group>"; };
@@ -380,7 +384,6 @@
 				14AD061E2337246D00C4AD4A /* AVFoundation.framework in Frameworks */,
 				14AD061C2337242000C4AD4A /* AudioToolbox.framework in Frameworks */,
 				14F52216232BF1D400C866D1 /* libxml2.tbd in Frameworks */,
-				1430B8B0234C3FBC00189025 /* KSYMediaPlayer.framework in Frameworks */,
 				14F521C1232A28EF00C866D1 /* libc++.tbd in Frameworks */,
 				1496B4AE20D5BA57004CE10C /* libz.tbd in Frameworks */,
 				A4F7ACC66F0F0200934BADE0 /* libPods-QPlayer.a in Frameworks */,
@@ -724,6 +727,8 @@
 		141B16DB25C93B45008C465C /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				797F386429BAF9DD00DCCBCB /* QPDropListViewPresenter.h */,
+				797F386329BAF9DD00DCCBCB /* QPDropListViewPresenter.m */,
 				793BAB9C29B09C91000EF92B /* QPLivePresenter.h */,
 				793BAB9D29B09C91000EF92B /* QPLivePresenter.m */,
 			);
@@ -850,13 +855,12 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		1430B8AB234C3FBB00189025 /* KSYMediaPlayer_vod */ = {
+		1430B8AB234C3FBB00189025 /* KSYMediaPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				1430B8AC234C3FBB00189025 /* KSYMediaPlayer.framework */,
 				1430B8AD234C3FBB00189025 /* KSYMediaPlayerManager */,
 			);
-			path = KSYMediaPlayer_vod;
+			path = KSYMediaPlayer;
 			sourceTree = "<group>";
 		};
 		1430B8AD234C3FBB00189025 /* KSYMediaPlayerManager */ = {
@@ -1006,6 +1010,8 @@
 		793BAB9B29B09C7C000EF92B /* Adapter */ = {
 			isa = PBXGroup;
 			children = (
+				797F386729BAF9EB00DCCBCB /* QPDropListViewAdapter.h */,
+				797F386629BAF9EA00DCCBCB /* QPDropListViewAdapter.m */,
 				793BAB9F29B09CA9000EF92B /* QPLiveWebViewAdapter.h */,
 				793BABA029B09CA9000EF92B /* QPLiveWebViewAdapter.m */,
 			);
@@ -1024,7 +1030,7 @@
 		79443A8B29B1DC2E004B125A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				79443A8C29B1DC2E004B125A /* DYFDropListView.bundle */,
+				79443A8C29B1DC2E004B125A /* QPDropListView.bundle */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -1032,12 +1038,12 @@
 		79443A8E29B1DC42004B125A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				79443A9029B1DC42004B125A /* DYFDropListView.h */,
-				79443A9329B1DC42004B125A /* DYFDropListView.m */,
-				79443A9129B1DC42004B125A /* DYFDropListView.xib */,
-				79443A8F29B1DC42004B125A /* DYFDropListViewCell.h */,
-				79443A9229B1DC42004B125A /* DYFDropListViewCell.m */,
-				79443A9429B1DC42004B125A /* DYFDropListViewCell.xib */,
+				79443A9029B1DC42004B125A /* QPDropListView.h */,
+				79443A9329B1DC42004B125A /* QPDropListView.m */,
+				79443A9129B1DC42004B125A /* QPDropListView.xib */,
+				79443A8F29B1DC42004B125A /* QPDropListViewCell.h */,
+				79443A9229B1DC42004B125A /* QPDropListViewCell.m */,
+				79443A9429B1DC42004B125A /* QPDropListViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1045,8 +1051,8 @@
 		79443A9F29B1FBB4004B125A /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				79443AA129B1FBB4004B125A /* DYFDropListModel.h */,
-				79443AA029B1FBB4004B125A /* DYFDropListModel.m */,
+				79443AA129B1FBB4004B125A /* QPDropListModel.h */,
+				79443AA029B1FBB4004B125A /* QPDropListModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1163,7 +1169,7 @@
 			children = (
 				1481C1A9210F018A00F431BB /* Classes */,
 				F64D47BF8EF197EFA3197BA4 /* Frameworks */,
-				1430B8AB234C3FBB00189025 /* KSYMediaPlayer_vod */,
+				1430B8AB234C3FBB00189025 /* KSYMediaPlayer */,
 				63FBA0E1EBD306C3E29D621E /* Pods */,
 				965E09DF1F04A85F009BBBD9 /* Products */,
 				965E09E01F04A85F009BBBD9 /* QPlayer */,
@@ -1297,16 +1303,16 @@
 				141B172025C93B46008C465C /* QPAboutMeTableHeader.xib in Resources */,
 				141B171E25C93B46008C465C /* QPAboutMeViewController.xib in Resources */,
 				96532C721F5E816000E66A2F /* docroot in Resources */,
-				79443A9529B1DC42004B125A /* DYFDropListView.xib in Resources */,
+				79443A9529B1DC42004B125A /* QPDropListView.xib in Resources */,
 				965E09F11F04A85F009BBBD9 /* LaunchScreen.storyboard in Resources */,
 				965E09EE1F04A85F009BBBD9 /* Assets.xcassets in Resources */,
 				141B170325C93B46008C465C /* char_ref.rl in Resources */,
 				141B172125C93B46008C465C /* QPAboutMeTableFooter.xib in Resources */,
 				965E09EC1F04A85F009BBBD9 /* Main.storyboard in Resources */,
 				1438F67725CC5185000CC65D /* QPFileTableViewCell.xib in Resources */,
-				79443A8D29B1DC2E004B125A /* DYFDropListView.bundle in Resources */,
+				79443A8D29B1DC2E004B125A /* QPDropListView.bundle in Resources */,
 				141B170925C93B46008C465C /* tag.in in Resources */,
-				79443A9829B1DC42004B125A /* DYFDropListViewCell.xib in Resources */,
+				79443A9829B1DC42004B125A /* QPDropListViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1411,12 +1417,13 @@
 				141B170B25C93B46008C465C /* parser.c in Sources */,
 				793BABA129B09CA9000EF92B /* QPLiveWebViewAdapter.m in Sources */,
 				141B170625C93B46008C465C /* char_ref.c in Sources */,
-				79443A9629B1DC42004B125A /* DYFDropListViewCell.m in Sources */,
+				79443A9629B1DC42004B125A /* QPDropListViewCell.m in Sources */,
 				1438F67A25CC5196000CC65D /* QPHomePresenter.m in Sources */,
 				96532C661F5E814E00E66A2F /* FileResource.m in Sources */,
 				965E09E91F04A85F009BBBD9 /* ViewController.m in Sources */,
 				141B170F25C93B46008C465C /* OCGumbo.m in Sources */,
 				793BAB8D29B09785000EF92B /* QPPlayerPresenter.m in Sources */,
+				797F386829BAF9EB00DCCBCB /* QPDropListViewAdapter.m in Sources */,
 				141B172E25C93B46008C465C /* QPFileModel.m in Sources */,
 				141B172D25C93B46008C465C /* QPHomeViewController.m in Sources */,
 				793BAB9A29B09C44000EF92B /* QPAdvancedSearchPresenter.m in Sources */,
@@ -1426,7 +1433,7 @@
 				141B16FF25C93B46008C465C /* QPWifiManager.m in Sources */,
 				96532C701F5E814E00E66A2F /* RegexKitLite.m in Sources */,
 				1438F67525CC5185000CC65D /* QPFileTableViewCell.m in Sources */,
-				79443AA229B1FBB4004B125A /* DYFDropListModel.m in Sources */,
+				79443AA229B1FBB4004B125A /* QPDropListModel.m in Sources */,
 				141B16FE25C93B46008C465C /* QPFileHelper.m in Sources */,
 				141B172325C93B46008C465C /* QPAboutMeTableHeader.m in Sources */,
 				141B172B25C93B46008C465C /* QPAppConst.m in Sources */,
@@ -1440,9 +1447,10 @@
 				7904DED929AF540E0030A748 /* QPFileModelPresenter.m in Sources */,
 				793BAB7B29B056BD000EF92B /* QPAboutModel.m in Sources */,
 				790F5D9629A45F6100B59422 /* QPBaseCollectionViewCell.m in Sources */,
-				79443A9729B1DC42004B125A /* DYFDropListView.m in Sources */,
+				79443A9729B1DC42004B125A /* QPDropListView.m in Sources */,
 				96532C621F5E814E00E66A2F /* AsyncSocket.m in Sources */,
 				965E09E31F04A85F009BBBD9 /* main.mm in Sources */,
+				797F386529BAF9DD00DCCBCB /* QPDropListViewPresenter.m in Sources */,
 				79443A9B29B1E0EB004B125A /* QPAdvancedSearchController.m in Sources */,
 				79443A9E29B1ED96004B125A /* QPSearchPresenter.m in Sources */,
 				96532C641F5E814E00E66A2F /* DDNumber.m in Sources */,
@@ -1594,10 +1602,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0306;
 				DEVELOPMENT_TEAM = ZV3MMP87F8;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/KSYMediaPlayer_vod",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${PROJECT_NAME}/AppPrefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/QPlayer/Info.plist";
@@ -1638,10 +1643,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0306;
 				DEVELOPMENT_TEAM = ZV3MMP87F8;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/KSYMediaPlayer_vod",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${PROJECT_NAME}/AppPrefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/QPlayer/Info.plist";

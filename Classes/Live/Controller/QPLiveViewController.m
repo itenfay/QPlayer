@@ -7,8 +7,7 @@
 
 #import "QPLiveViewController.h"
 #import "QPPlayerController.h"
-#import "QPTitleView.h"
-#import "DYFDropListView.h"
+#import "QPDropListView.h"
 #import "QPLivePresenter.h"
 #import "QPLiveWebViewAdapter.h"
 
@@ -107,6 +106,12 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self enableInteractivePopGesture:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
     [self enableInteractivePopGesture:YES];
 }
 
@@ -196,7 +201,6 @@
     [presenter presentSearchViewController:@[@"https://h5.inke.cn/app/home/hotlive",
                                              @"https://h.huajiao.com/",
                                              @"https://wap.yy.com/",
-                                             @"https://m.yizhibo.com/",
                                              @"https://m.v.6.cn/",
                                              @"https://h5.9xiu.com/",
                                              @"https://www.95.cn/mobile?channel=ai00011",
@@ -207,14 +211,15 @@
                                              @"https://h5.cc.163.com/",
                                              @"https://m.tv.bingdou.net/",
                                              @"http://m.66zhibo.net/",
-                                             @"http://m.migu123.com/"]];
+                                             @"http://m.migu123.com/"]
+                                 cachePath:LIVE_SEARCH_HISTORY_CACHE_PATH];
 }
 
 - (void)showDropListView:(UIButton *)sender
 {
     sender.enabled = NO;
-    UINib *nib = [UINib nibWithNibName:NSStringFromClass([DYFDropListView class]) bundle:nil];
-    DYFDropListView *dropListView = [nib instantiateWithOwner:nil options:nil].firstObject;
+    UINib *nib = [UINib nibWithNibName:NSStringFromClass([QPDropListView class]) bundle:nil];
+    QPDropListView *dropListView = [nib instantiateWithOwner:nil options:nil].firstObject;
     dropListView.left   = 5.f;
     dropListView.top    = 5.f;
     dropListView.width  = self.view.width - 2*dropListView.left;
@@ -249,7 +254,7 @@
 
 - (NSString *)titleMatchingWithUrl:(NSString *)url
 {
-    // DYFDropListView.bundle -> DropListViewData.plist
+    // QPDropListView.bundle -> DropListViewData.plist
     NSString *path       = [NSBundle.mainBundle pathForResource:kResourceBundle ofType:nil];
     NSString *bundlePath = [NSBundle bundleWithPath:path].bundlePath;
     NSString *filePath   = [bundlePath stringByAppendingPathComponent:kDropListDataFile];

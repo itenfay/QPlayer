@@ -59,7 +59,7 @@
 - (void)adaptThemeStyle
 {
     [super adaptThemeStyle];
-    [_homeView reloadUI];
+    [self.homeView reloadUI];
 }
 
 @end

@@ -8,7 +8,6 @@
 
 #import "QPWebPresenter.h"
 #import "QPWebController.h"
-#import "QPPlayerController.h"
 
 @interface QPWebPresenter () <PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
 
@@ -102,18 +101,6 @@
     [_viewController presentViewController:nc animated:YES completion:nil];
 }
 
-- (void)playVideoWithUrl:(NSString *)url
-{
-    if (!QPlayerIsPlaying()) {
-        QPPlayerModel *model = [[QPPlayerModel alloc] init];
-        model.isZFPlayerPlayback = YES;
-        model.videoTitle         = url;
-        model.videoUrl           = url;
-        QPPlayerController *qpc  = [[QPPlayerController alloc] initWithModel:model];
-        [self.viewController.navigationController pushViewController:qpc animated:YES];
-    }
-}
-
 - (void)loadData:(NSString *)searchText searchViewController:(PYSearchViewController *)searchViewController {
     if (searchText.length > 0) {
         QPWebController *vc = (QPWebController *)self.viewController;
@@ -200,11 +187,8 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 - (void)adapter:(QPWKWebViewAdapter *)adapter decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     QPLog(@"::");
-    if ([_playbackContext canAllowNavigation:adapter.webView.URL]) {
-        decisionHandler(WKNavigationActionPolicyAllow);
-    } else {
-        decisionHandler(WKNavigationActionPolicyCancel);
-    }
+    [_playbackContext canAllowNavigation:adapter.webView.URL];
+    decisionHandler(WKNavigationActionPolicyCancel);
 }
 
 @end

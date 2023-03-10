@@ -57,7 +57,6 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 - (void)initArray
 {
     [self loadLocalFileList];
-    [self loadFileList];
 }
 
 /// Load local file list.
@@ -111,7 +110,7 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 
 - (void)reloadData
 {
-    [self delayToScheduleTask:1.5 completion:^{
+    [self delayToScheduleTask:1.2 completion:^{
         [self loadData];
     }];
 }
@@ -119,8 +118,13 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 - (void)loadData
 {
     [self loadFileList];
+    [self updateDataSource];
+}
+
+- (void)updateDataSource
+{
     [_view.adapter.dataSource removeAllObjects];
-    [_view.adapter.dataSource addObjectsFromArray:_localFileList];
+    [_view.adapter.dataSource addObjectsFromArray:self.localFileList];
     [_view reloadUI];
 }
 
@@ -136,14 +140,14 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 // the file name by the index.
 - (NSString *)fileNameAtIndex:(NSInteger)index
 {
-    QPLog("::");
+    QPLog(":: index=%zi", index);
     return [self.fileList objectAtIndex:index];
 }
 
 // provide full file path by given file name.
 - (NSString *)filePathForFileName:(NSString *)filename
 {
-    QPLog("::");
+    QPLog(":: filename=%@", filename);
     return QPAppendingPathComponent([QPFileHelper cachePath], filename);
 }
 
@@ -152,37 +156,34 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 // it to proper location and update the file list.
 - (void)newFileDidUpload:(NSString *)name inTempPath:(NSString *)tmpPath
 {
-    QPLog("::");
+    QPLog(":: filename=%@, tmpPath=%@", name, tmpPath);
     if (name == nil || tmpPath == nil) return;
     
     NSString *path = QPAppendingPathComponent([QPFileHelper cachePath], name);
     NSError *error = nil;
-    
     if (![QPFileMgr moveItemAtPath:tmpPath toPath:path error:&error]) {
-        QPLog(@"can not move %@ to %@ because: %@", tmpPath, path, error);
+        QPLog(@":: can not move %@ to %@ because: %@", tmpPath, path, error);
     }
     
     [self loadFileList];
     [self loadLocalFileList];
-    
-    [_view reloadUI];
+    [self updateDataSource];
 }
 
 // implement this method to delete requested file and update the file list.
 - (void)fileShouldDelete:(NSString *)fileName
 {
-    QPLog("::");
+    QPLog(":: filename=%@", fileName);
+    
     NSString *path = [self filePathForFileName:fileName];
     NSError *error = nil;
-    
     if(![QPFileMgr removeItemAtPath:path error:&error]) {
-        QPLog(@"%@ can not be removed because: %@", path, error);
+        QPLog(@":: %@ can not be removed because: %@", path, error);
     }
     
     [self loadFileList];
     [self loadLocalFileList];
-    
-    [_view reloadUI];
+    [self updateDataSource];
 }
 
 #pragma mark - QPListViewAdapterDelegate

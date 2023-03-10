@@ -10,13 +10,13 @@
 static inline NSString *QPFCacheDirpath()
 {
     NSString *cachePath = QPAppendingPathComponent(QPCachesDirectoryPath, @"QPlayerCacheFiles");
-    QPLog(@"cachePath: %@", cachePath);
+    QPLog(@":: cachePath: %@", cachePath);
     
     if (![QPFileMgr fileExistsAtPath:cachePath]) {
         NSError *error = nil;
         [QPFileMgr createDirectoryAtPath:cachePath withIntermediateDirectories:YES attributes:nil error:&error];
         if (error) {
-            QPLog(@"[createDirectoryAtPath] error: %@", error);
+            QPLog(@":: [createDirectoryAtPath] error: %@", error);
             return nil;
         }
     }

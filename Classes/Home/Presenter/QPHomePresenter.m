@@ -49,6 +49,12 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
     return self;
 }
 
+- (void)setViewController:(QPBaseViewController *)viewController
+{
+    _viewController = viewController;
+    [self configure];
+}
+
 - (void)setupFileResourceDelegate
 {
     [QPWifiManager shared].httpServer.fileResourceDelegate = self;

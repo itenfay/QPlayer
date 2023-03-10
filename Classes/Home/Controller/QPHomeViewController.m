@@ -30,6 +30,7 @@
     [self.homeView buildView];
     
     QPHomePresenter *presenter = [[QPHomePresenter alloc] init];
+    presenter.viewController = self;
     self.presenter = presenter;
     [presenter loadData];
 }

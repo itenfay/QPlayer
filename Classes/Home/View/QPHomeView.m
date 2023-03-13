@@ -41,7 +41,7 @@
     self.tableView.delegate        = _adapter;
     self.tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight       = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 60.f;
+    self.tableView.estimatedRowHeight = 50.f;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.tableView autoresizing];
     [self addSubview:self.tableView];

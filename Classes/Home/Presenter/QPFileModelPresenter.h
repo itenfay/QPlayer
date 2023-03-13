@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol QPFileModelDelegate <NSObject>
 
-- (void)setBackgroundColor:(UIColor *)color;
+- (void)setCellBackgroundColor:(UIColor *)color;
 - (void)setThumbnail:(NSString *)filePath;
 - (void)setFormatImage:(NSString *)fileType;
 - (void)setTitleText:(NSString *)title;

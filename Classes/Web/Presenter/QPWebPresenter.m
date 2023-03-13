@@ -188,7 +188,7 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 {
     QPLog(@"::");
     [_playbackContext canAllowNavigation:adapter.webView.URL];
-    decisionHandler(WKNavigationActionPolicyCancel);
+    decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 @end

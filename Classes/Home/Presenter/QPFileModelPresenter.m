@@ -27,9 +27,8 @@
 
 - (void)present
 {
-    if (!_model) { return; }
     BOOL isDarkMode = _viewController.isDarkMode;
-    [_view setBackgroundColor: isDarkMode ? QPColorFromRGB(30, 30, 30) : [UIColor whiteColor]];
+    [_view setCellBackgroundColor: isDarkMode ? QPColorFromRGB(30, 30, 30) : [UIColor whiteColor]];
     [_view setThumbnail:_model.path];
     [_view setFormatImage:_model.fileType];
     [_view setTitleText:_model.title];
@@ -37,7 +36,7 @@
     [_view setDateText:_model.creationDate];
     [_view setDateTextColor:isDarkMode ? QPColorFromRGB(180, 180, 180) : UIColor.grayColor];
     [_view setText:_model.path fileSize:_model.fileSize];
-    [_view setTextColor:isDarkMode ?  QPColorFromRGB(180, 180, 180) : UIColor.grayColor];
+    [_view setTextColor:isDarkMode ? QPColorFromRGB(180, 180, 180) : UIColor.grayColor];
     [_view setDividerColor:isDarkMode ? QPColorFromRGB(40, 40, 40) : QPColorFromRGB(230, 230, 230)];
 }
 

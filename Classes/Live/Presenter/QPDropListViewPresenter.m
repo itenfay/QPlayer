@@ -25,7 +25,6 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     [QPHudUtils showActivityMessageInWindow:@"正在加载数据..."];
     [[self dropListView].adapter.dataSource removeAllObjects];
     
-    // QPDropListView.bundle -> DropListViewData.plist
     NSString *path       = [NSBundle.mainBundle pathForResource:kResourceBundle ofType:nil];
     NSString *bundlePath = [NSBundle bundleWithPath:path].bundlePath;
     NSString *filePath   = [bundlePath stringByAppendingPathComponent:kDropListDataFile];
@@ -50,6 +49,7 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
         QPDropListModel *model = [[QPDropListModel alloc] init];
         model.m_title = dict.allKeys.firstObject;
         model.m_content = dict.allValues.firstObject;
+        model.sortName = model.m_title;
         [[self dropListView].adapter.dataSource addObject:model];
     }
     [[self dropListView].adapter.dataSource sortUsingFunction:QPSortObjects context:NULL];

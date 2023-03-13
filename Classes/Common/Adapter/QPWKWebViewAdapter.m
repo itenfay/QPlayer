@@ -60,6 +60,25 @@
     return _progressView;
 }
 
+- (void)setIsDarkMode:(BOOL)isDarkMode
+{
+    _isDarkMode = isDarkMode;
+    UIColor *bgColor = _isDarkMode
+                        ? [UIColor colorWithWhite:0.9 alpha:0.8]
+                        : [UIColor colorWithWhite:0.1 alpha:0.8];
+    if ([_toolBar isKindOfClass:UIImageView.class]) {
+        UIImageView *tb = (UIImageView *)_toolBar;
+        tb.image        = [self colorImage:tb.bounds
+                              cornerRadius:15.f
+                            backgroudColor:bgColor
+                               borderWidth:0.f borderColor:nil];
+    } else {
+        _toolBar.backgroundColor = bgColor;
+        _toolBar.layer.cornerRadius = 15.f;
+        _toolBar.layer.masksToBounds = YES;
+    }
+}
+
 - (BOOL)isAddedToNavBar
 {
     return _mIsAddedToNavBar;

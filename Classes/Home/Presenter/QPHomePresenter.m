@@ -12,7 +12,7 @@
 
 @interface QPHomePresenter () <QPListViewAdapterDelegate>
 @property (nonatomic, strong) NSMutableArray *localFileList;
-@property (nonatomic, strong) NSMutableArray *fileList;
+@property (nonatomic, strong) NSMutableArray *syncFileList;
 @end
 
 @implementation QPHomePresenter
@@ -56,16 +56,16 @@
 }
 
 /// Load file list.
-- (void)loadFileList
+- (void)loadSyncFileList
 {
-    [self.fileList removeAllObjects];
+    [self.syncFileList removeAllObjects];
     
     NSString *path = [QPFileHelper cachePath];
     NSDirectoryEnumerator *dirEnum = [QPFileMgr enumeratorAtPath:path];
     
     NSString *name = nil;
     while (name = [dirEnum nextObject]) {
-        [self.fileList addObject:name];
+        [self.syncFileList addObject:name];
     }
 }
 
@@ -79,16 +79,15 @@
 - (void)configure
 {
     [self setupFileResourceDelegate];
-    [self loadLocalFileList];
     self.view.adapter.listViewDelegate = self;
     @QPWeakify(self)
     [self.view reloadData:^{
-        [weak_self loadData];
+        [weak_self refreshData];
     }];
-    [self updateDataSource];
+    [self loadData];
 }
 
-- (void)reloadData
+- (void)refreshData
 {
     [self delayToScheduleTask:1.2 completion:^{
         [self loadData];
@@ -97,7 +96,7 @@
 
 - (void)loadData
 {
-    [self loadFileList];
+    [self loadLocalFileList];
     [self updateDataSource];
 }
 
@@ -114,14 +113,14 @@
 - (NSInteger)numberOfFiles
 {
     QPLog("::");
-    return [self.fileList count];
+    return [self.syncFileList count];
 }
 
 // the file name by the index.
 - (NSString *)fileNameAtIndex:(NSInteger)index
 {
     QPLog(":: index=%zi", index);
-    return [self.fileList objectAtIndex:index];
+    return [self.syncFileList objectAtIndex:index];
 }
 
 // provide full file path by given file name.
@@ -145,7 +144,7 @@
         QPLog(@":: can not move %@ to %@ because: %@", tmpPath, path, error);
     }
     
-    [self loadFileList];
+    [self loadSyncFileList];
     [self loadLocalFileList];
     [self updateDataSource];
 }
@@ -161,22 +160,17 @@
         QPLog(@":: %@ can not be removed because: %@", path, error);
     }
     
-    [self loadFileList];
+    [self loadSyncFileList];
     [self loadLocalFileList];
     [self updateDataSource];
 }
 
 #pragma mark - QPListViewAdapterDelegate
 
-- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
-{
-    return UITableViewAutomaticDimension; //100.f;
-}
-
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
     static NSString *cellID = @"QPFileCellIdentifier";
-    QPHomeViewController *vc = [self homeViewController];
+    
     QPFileTableViewCell *cell = [_view.tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         cell = [[NSBundle.mainBundle loadNibNamed:NSStringFromClass([QPFileTableViewCell class]) owner:nil options:nil] firstObject];
@@ -184,7 +178,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     QPHomeListViewAdapter *_adapter = (QPHomeListViewAdapter *)adapter;
-    [_adapter bindModelTo:cell atIndexPath:indexPath inTableView:_view.tableView withViewController:vc];
+    [_adapter bindModelTo:cell atIndexPath:indexPath inTableView:_view.tableView withViewController:_viewController];
     
     return cell;
 }
@@ -212,16 +206,13 @@
     if ([QPFileHelper removeLocalFile:fileModel.name]) {
         // Delete data for datasource, delete row from table.
         [self.localFileList removeObjectAtIndex:indexPath.row];
-        QPHomeListViewAdapter *_adapter = (QPHomeListViewAdapter *)adapter;
-        if (_adapter) {
-            if (_view.tableView.numberOfSections > 1) {
-                NSArray *rowsArray = _adapter.dataSource[indexPath.section];
-                NSMutableArray *mRowsArray = rowsArray.mutableCopy;
-                [mRowsArray removeObjectAtIndex:indexPath.row];
-                [_adapter.dataSource replaceObjectAtIndex:indexPath.section withObject:mRowsArray];
-            } else {
-                [_adapter.dataSource removeObjectAtIndex:indexPath.row];
-            }
+        if (_view.tableView.numberOfSections > 1) {
+            NSArray *rowsArray = adapter.dataSource[indexPath.section];
+            NSMutableArray *mRowsArray = rowsArray.mutableCopy;
+            [mRowsArray removeObjectAtIndex:indexPath.row];
+            [adapter.dataSource replaceObjectAtIndex:indexPath.section withObject:mRowsArray];
+        } else {
+            [adapter.dataSource removeObjectAtIndex:indexPath.row];
         }
         return YES;
     }
@@ -238,12 +229,12 @@
     return _localFileList;
 }
 
-- (NSMutableArray *)fileList
+- (NSMutableArray *)syncFileList
 {
-    if (!_fileList) {
-        _fileList = [NSMutableArray arrayWithCapacity:0];
+    if (!_syncFileList) {
+        _syncFileList = [NSMutableArray arrayWithCapacity:0];
     }
-    return _fileList;
+    return _syncFileList;
 }
 
 #pragma mark - dealloc

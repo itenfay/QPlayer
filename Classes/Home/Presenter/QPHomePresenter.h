@@ -10,9 +10,6 @@
 #import "QPFileHelper.h"
 #import "QPHomeViewController.h"
 
-// Transforms two objects's title to pinying and sorts them.
-FOUNDATION_EXTERN NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context);
-
 @interface QPHomePresenter : QPBasePresenter <WebFileResourceDelegate, QPPresenterDelegate>
 @property (nonatomic, weak) QPHomeView *view;
 @property (nonatomic, weak) QPBaseViewController *viewController;

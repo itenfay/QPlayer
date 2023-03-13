@@ -175,7 +175,7 @@
     CGRect  tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
     
     if (!isVertical) {
-        tlbX = hSpace;
+        tlbX = 1.5*hSpace;
         tlbW = self.view.width - 2*tlbX;
         tlbH = btnH + 4*vSpace;
         tlbY = self.view.height - offset - tlbH - (bVal ? 2*vSpace : 0);
@@ -222,6 +222,12 @@
         case 4: QPLog("::"); break;
         default: break;
     }
+}
+
+- (void)adaptThemeStyle
+{
+    [super adaptThemeStyle];
+    [self.adapter setIsDarkMode:self.isDarkMode];
 }
 
 @end

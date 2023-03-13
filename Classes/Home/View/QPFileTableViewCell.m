@@ -23,7 +23,7 @@
     [super setSelected:selected animated:animated];
 }
 
-- (void)setBackgroundColor:(UIColor *)color
+- (void)setCellBackgroundColor:(UIColor *)color
 {
     self.backgroundColor = color;
 }

@@ -12,7 +12,6 @@
 @interface QPPlayerPresenter ()
 @property (nonatomic, strong) ZFPlayerController *player;
 @property (nonatomic, strong) AVPictureInPictureController *pipController;
-@property (nonatomic, assign) BOOL jx;
 @end
 
 @implementation QPPlayerPresenter
@@ -24,11 +23,12 @@
         if ((vc.model.isLocalVideo && vc.model.isMediaPlayerPlayback) || vc.model.isMediaPlayerPlayback) {
             KSYMediaPlayerManager *playerManager = [[KSYMediaPlayerManager alloc] init];
             _player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
-            //if (vc.model.videoDecoding == 1) {
-            //    playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Hardware;
-            //} else {
-            //    playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Software;
-            //}
+            // 默认是硬解码
+            if (vc.model.videoDecoding == 1) {
+                //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Hardware;
+            } else {
+                //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Software;
+            }
         } else if ((vc.model.isLocalVideo && vc.model.isIJKPlayerPlayback) || vc.model.isIJKPlayerPlayback) {
             //ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init]; // playerManager
             // Invalid, player hasn't been initialized yet.
@@ -59,7 +59,10 @@
 - (void)prepareToPlay
 {
     QPPlayerController *vc = [self playViewController];
-    NSURL *aURL = [NSURL fileURLWithPath:vc.model.videoUrl];
+    NSString *videoUrl = vc.model.videoUrl;
+    NSURL *aURL = vc.model.isLocalVideo
+                ? [NSURL fileURLWithPath:videoUrl]
+                : [NSURL URLWithString:videoUrl];
     [self playWithURL:aURL];
 }
 
@@ -79,8 +82,8 @@
     
     self.player.playerApperaPercent      = 0.0;
     self.player.playerDisapperaPercent   = 1.0;
-    //self.player.statusBarHidden        = NO;
-    /// 设置退到后台继续播放
+    self.player.allowOrentitaionRotation = NO;
+    // 设置退到后台继续播放
     self.player.pauseWhenAppResignActive = YES;
     //self.player.resumePlayRecord = YES;
     
@@ -88,9 +91,9 @@
     vc.controlView.backBtnClickCallback = ^{
         @zf_strongify(self)
         [self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:YES completion:NULL];
-        //[self.player stop];
     };
     
+    // Don't use this.
     //self.player.orientationObserver.supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
     //[self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:NO completion:NULL];
     

@@ -24,11 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the media player play back.
 @property (nonatomic, assign) BOOL isMediaPlayerPlayback;
 
-/// The url for a video.
-@property (nonatomic, copy) NSString *videoUrl;
-
 /// The name for a video.
 @property (nonatomic, copy) NSString *videoTitle;
+
+/// The url for a video.
+@property (nonatomic, copy) NSString *videoUrl;
 
 /// The cover url for a video.
 @property (nonatomic, copy) NSString *coverUrl;

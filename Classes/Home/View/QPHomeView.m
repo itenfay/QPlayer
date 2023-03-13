@@ -18,7 +18,7 @@
 {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
+        [self setup];
     }
     return self;
 }
@@ -43,6 +43,7 @@
     self.tableView.rowHeight       = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50.f;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    [self.tableView registerClass:QPFileTableViewCell.class forCellReuseIdentifier:@"QPFileCellIdentifier"];
     [self.tableView autoresizing];
     [self addSubview:self.tableView];
 }
@@ -62,7 +63,7 @@
 
 - (void)loadNewData
 {
-    [self delayToScheduleTask:1.2 completion:^{
+    [self delayToScheduleTask:1.5 completion:^{
         [self endRefreshing];
     }];
     !_reloadDataBlock ?: _reloadDataBlock();

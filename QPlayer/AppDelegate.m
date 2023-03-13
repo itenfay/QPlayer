@@ -17,21 +17,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self extendSplashDisplayTime];
+    [self onDisplaySplash];
     [self controlLog];
-    [self setupConfiguration];
-    
-    if (!DYFNetworkSniffer.sharedSniffer.isStarted) {
-        [DYFNetworkSniffer.sharedSniffer start];
-    }
-    
+    [self configure];
+    [self startSniffingNetworkStatus];
     return YES;
 }
 
-- (void)extendSplashDisplayTime
+- (void)onDisplaySplash
 {
     // sleep 2 seconds.
-    [NSThread sleepForTimeInterval:1];
+    [NSThread sleepForTimeInterval:1.2];
 }
 
 - (void)controlLog
@@ -43,7 +39,7 @@
     #endif
 }
 
-- (void)setupConfiguration
+- (void)configure
 {
     BOOL result = [QPExtractValue(kWriteThemeStyleFlagOnceOnly) boolValue];
     if (!result) {
@@ -52,9 +48,27 @@
     }
 }
 
+- (void)startSniffingNetworkStatus
+{
+    if (!DYFNetworkSniffer.sharedSniffer.isStarted) {
+        [DYFNetworkSniffer.sharedSniffer start];
+    }
+}
+
+- (void)stopSniffingNetworkStatus
+{
+    
+    if (DYFNetworkSniffer.sharedSniffer.isStarted) {
+        [DYFNetworkSniffer.sharedSniffer stop];
+    }
+}
+
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    if (self.allowOrentitaionRotation) {
-        ZFInterfaceOrientationMask orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
+    if ([window isKindOfClass:ZFLandscapeWindow.class]) {
+        window.hidden = !_allowOrentitaionRotation;
+    }
+    
+    if (_allowOrentitaionRotation) {
         //ZFInterfaceOrientationMask orientationMask = ZFInterfaceOrientationMaskUnknow;
         //if (@available(iOS 16.0, *)) {
         //    orientationMask = [ZFLandscapeRotationManager_iOS16 supportedInterfaceOrientationsForWindow:window];
@@ -63,18 +77,18 @@
         //} else {
         //    orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
         //}
+        ZFInterfaceOrientationMask orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
         if (orientationMask != ZFInterfaceOrientationMaskUnknow) {
             return (UIInterfaceOrientationMask)orientationMask;
         }
     }
+    
     return UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    if (!DYFNetworkSniffer.sharedSniffer.isStarted) {
-        [DYFNetworkSniffer.sharedSniffer start];
-    }
+    [self startSniffingNetworkStatus];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -89,15 +103,12 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    
+    QPPlayerSavePlaying(NO);
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    QPPlayerSavePlaying(NO);
-    if (DYFNetworkSniffer.sharedSniffer.isStarted) {
-        [DYFNetworkSniffer.sharedSniffer stop];
-    }
+    [self stopSniffingNetworkStatus];
     UIViewController *vc = self.yf_currentViewController;
     if ([vc isKindOfClass:QPPlayerController.class]) {
         QPPlayerController *player = (QPPlayerController *)vc;
@@ -109,9 +120,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     QPPlayerSavePlaying(NO);
-    if (DYFNetworkSniffer.sharedSniffer.isStarted) {
-        [DYFNetworkSniffer.sharedSniffer stop];
-    }
+    [self stopSniffingNetworkStatus];
 }
 
 @end

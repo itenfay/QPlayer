@@ -177,12 +177,10 @@
         NSString *url = @"";
         if ([tempStr hasPrefix:@"rtmp"] || [tempStr hasPrefix:@"rtsp"] ||
             [tempStr hasPrefix:@"mms"] || QPPlayerCanSupportAVFormat(tempStr)) {
-            if (QPDetermineWhetherToPlay()) {
-                self.titleView.text = url = text;
-                NSString *title = [self titleMatchingWithUrl:url];
-                QPLivePresenter *presenter = (QPLivePresenter *)self.presenter;
-                [presenter.playbackContext playVideoWithTitle:title urlString:url usingMediaPlayer:YES];
-            }
+            self.titleView.text = url = text;
+            NSString *title = [self titleMatchingWithUrl:url];
+            QPLivePresenter *presenter = (QPLivePresenter *)self.presenter;
+            [presenter.playbackContext playVideoWithTitle:title urlString:url usingMediaPlayer:YES];
             return;
         } else if ([tempStr hasPrefix:@"https"] || [tempStr hasPrefix:@"http"]) {
             url = text;
@@ -204,11 +202,11 @@
                                              @"https://m.v.6.cn/",
                                              @"https://h5.9xiu.com/",
                                              @"https://www.95.cn/mobile?channel=ai00011",
-                                             @"http://tv.cctv.com/live/m/",
                                              @"https://cdn.egame.qq.com/pgg-play/module/livelist.html",
                                              @"https://m.douyu.com/",
                                              @"https://m.huya.com/",
                                              @"https://h5.cc.163.com/",
+                                             @"http://tv.cctv.com/live/m/",
                                              @"https://m.tv.bingdou.net/",
                                              @"http://m.66zhibo.net/",
                                              @"http://m.migu123.com/"]
@@ -220,8 +218,8 @@
     sender.enabled = NO;
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([QPDropListView class]) bundle:nil];
     QPDropListView *dropListView = [nib instantiateWithOwner:nil options:nil].firstObject;
-    dropListView.left   = 5.f;
-    dropListView.top    = 5.f;
+    dropListView.left   = 10.f;
+    dropListView.top    = 10.f;
     dropListView.width  = self.view.width - 2*dropListView.left;
     dropListView.height = self.webView.height - 2*dropListView.top;
     [dropListView autoresizing];
@@ -229,22 +227,21 @@
     [self.view bringSubviewToFront:dropListView];
     
     //dropListView.alpha = 0.f;
-    dropListView.left = -self.view.width;
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         //dropListView.alpha = 1.f;
-        dropListView.left = 5.f;
-    } completion:^(BOOL finished) {}];
+        dropListView.transform = CGAffineTransformMakeScale(1.2, 1.2);
+    } completion:^(BOOL finished) {
+        dropListView.transform = CGAffineTransformIdentity;
+    }];
     
     @QPWeakify(self)
     [dropListView onSelectRow:^(NSInteger selectedRow, NSString *title, NSString *content) {
         @QPStrongify(self)
+        NSString *urlString = [content copy];
         strong_self.playButton.enabled = YES;
-        if (QPDetermineWhetherToPlay()) {
-            NSString *urlString = [content copy];
-            strong_self.titleView.text = urlString;
-            QPLivePresenter *presenter = (QPLivePresenter *)strong_self.presenter;
-            [presenter.playbackContext playVideoWithTitle:title urlString:urlString usingMediaPlayer:YES];
-        }
+        strong_self.titleView.text = urlString;
+        QPLivePresenter *presenter = (QPLivePresenter *)strong_self.presenter;
+        [presenter.playbackContext playVideoWithTitle:title urlString:urlString usingMediaPlayer:YES];
     }];
     
     [dropListView onCloseAction:^{
@@ -267,7 +264,6 @@
             return key;
         }
     }
-    
     return url;
 }
 

@@ -141,11 +141,12 @@
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString usingMediaPlayer:(BOOL)usingMediaPlayer
 {
-    if (!QPPlayerIsPlaying()) {
+    if (!QPPlayerIsPlaying() && QPDetermineWhetherToPlay()) {
         QPPlayerSavePlaying(YES);
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];
             QPPlayerModel *model = [[QPPlayerModel alloc] init];
+            model.isLocalVideo   = NO;
             model.videoTitle     = title;
             model.videoUrl       = urlString;
             if (usingMediaPlayer) {

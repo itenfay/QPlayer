@@ -121,7 +121,7 @@
         if (QPPlayerCanSupportAVFormat(tempStr)) {
             self.titleView.text = url = text;
             QPAdvancedSearchPresenter *presenter = (QPAdvancedSearchPresenter *)self.presenter;
-            [presenter.playbackContext playVideoWithTitle:@"" urlString:url];
+            [presenter.playbackContext playVideoWithTitle:text urlString:url usingMediaPlayer:YES];
         } else if ([tempStr hasPrefix:@"https"] || [tempStr hasPrefix:@"http"]) {
             url = text;
         } else if ([tempStr hasPrefix:@"www."] || [tempStr hasPrefix:@"m."]   ||
@@ -146,7 +146,6 @@
                                              @"https://m.tv.sohu.com/",
                                              @"https://m.pptv.com/",
                                              @"https://m.le.com/",
-                                             @"https://m.mtime.cn/",
                                              
                                              @"https://m.ixigua.com/",
                                              @"https://v.ifeng.com/",

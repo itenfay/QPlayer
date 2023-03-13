@@ -40,6 +40,38 @@
     return model;
 }
 
+- (CGFloat)heightForHeaderInSection:(NSInteger)section
+{
+    if (QPRespondsToSelector(self.listViewDelegate, @selector(heightForHeaderInSection:forAdapter:))) {
+        return [self.listViewDelegate heightForHeaderInSection:section forAdapter:self];
+    }
+    return 0.01f;
+}
+
+- (UIView *)viewForHeaderInSection:(NSInteger)section
+{
+    if (QPRespondsToSelector(self.listViewDelegate, @selector(viewForHeaderInSection:forAdapter:))) {
+        return [self.listViewDelegate viewForHeaderInSection:section forAdapter:self];
+    }
+    return nil;
+}
+
+- (CGFloat)heightForFooterInSection:(NSInteger)section
+{
+    if (QPRespondsToSelector(self.listViewDelegate, @selector(heightForFooterInSection:forAdapter:))) {
+        return [self.listViewDelegate heightForFooterInSection:section forAdapter:self];
+    }
+    return 0.01f;
+}
+
+- (UIView *)viewForFooterInSection:(NSInteger)section
+{
+    if (QPRespondsToSelector(self.listViewDelegate, @selector(viewForFooterInSection:forAdapter:))) {
+        return [self.listViewDelegate viewForFooterInSection:section forAdapter:self];
+    }
+    return nil;
+}
+
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -61,38 +93,6 @@
         return 1;
     }
     return self.dataSource.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (QPRespondsToSelector(self.listViewDelegate, @selector(heightForHeaderInSection:forAdapter:))) {
-        return [self.listViewDelegate heightForHeaderInSection:section forAdapter:self];
-    }
-    return UITableViewAutomaticDimension;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if (QPRespondsToSelector(self.listViewDelegate, @selector(viewForHeaderInSection:forAdapter:))) {
-        return [self.listViewDelegate viewForHeaderInSection:section forAdapter:self];
-    }
-    return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    if (QPRespondsToSelector(self.listViewDelegate, @selector(heightForFooterInSection:forAdapter:))) {
-        [self.listViewDelegate heightForFooterInSection:section forAdapter:self];
-    }
-    return UITableViewAutomaticDimension;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    if (QPRespondsToSelector(self.listViewDelegate, @selector(viewForFooterInSection:forAdapter:))) {
-        return [self.listViewDelegate viewForFooterInSection:section forAdapter:self];
-    }
-    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

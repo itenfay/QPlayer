@@ -154,10 +154,10 @@
     NSMutableArray *items = @[@"web_reward_13x21", @"web_forward_13x21",
                               @"web_refresh_24x21", @"web_stop_21x21",
                               @"parse_button_blue"].mutableCopy;
-    if (!self.parsingButtonRequired) { [items removeLastObject]; }
+    if (!self.parsingRequired) { [items removeLastObject]; }
     BOOL bVal;
     if (isVertical) {
-        bVal = self.parsingButtonRequired || !self.hidesBottomBarWhenPushed;
+        bVal = self.parsingRequired || !self.hidesBottomBarWhenPushed;
     } else {
         bVal = !self.hidesBottomBarWhenPushed;
     }

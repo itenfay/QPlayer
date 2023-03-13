@@ -43,7 +43,7 @@
     self.tableView.rowHeight       = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50.f;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    [self.tableView registerClass:QPFileTableViewCell.class forCellReuseIdentifier:@"QPFileCellIdentifier"];
+    //[self.tableView registerClass:QPFileTableViewCell.class forCellReuseIdentifier:@"QPFileCellIdentifier"];
     [self.tableView autoresizing];
     [self addSubview:self.tableView];
 }

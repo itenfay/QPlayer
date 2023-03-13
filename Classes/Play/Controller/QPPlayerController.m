@@ -55,7 +55,7 @@
     if (self = [super init]) {
         self.model = model;
         self.model.videoDecoding = 0;
-        self.parsingButtonRequired = NO;
+        self.parsingRequired = NO;
         self.hidesBottomBarWhenPushed = YES;
     }
     return self;
@@ -164,7 +164,6 @@
 {
     [super viewWillAppear:animated];
     QPAppDelegate.allowOrentitaionRotation = YES;
-    [self enableInteractivePopGesture:NO];
     [self configureControlView];
     QPPlayerSavePlaying(YES);
 }
@@ -172,6 +171,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self enableInteractivePopGesture:NO];
     QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
     if (![pt.player.currentPlayerManager isPlaying]) {
         [pt.player.currentPlayerManager play];

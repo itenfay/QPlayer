@@ -6,7 +6,7 @@
 //
 
 #import "QPBaseViewController.h"
-#import "QPListViewAdapter.h"
+#import "QPListViewHeaderFooterAdapter.h"
 
 @interface QPSettingsViewController : QPBaseViewController
 

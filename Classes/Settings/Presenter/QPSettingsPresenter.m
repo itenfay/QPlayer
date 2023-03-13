@@ -71,45 +71,22 @@
     return dataArray.count;
 }
 
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    if (section == 0) {
-//        return 1;
-//    } else if (section == 1) {
-//        return 1;
-//    } else if (section == 2) {
-//        return 1;
-//    } else if (section == 3) {
-//        return 1;
-//    } else if (section == 4) {
-//        return 1;
-//    } else if (section == 5) {
-//        return 1;
-//    } else {
-//        return 0;
-//    }
-//}
+- (CGFloat)heightForHeaderInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
+{
+    return UITableViewAutomaticDimension;
+}
 
-//- (CGFloat)heightForHeaderInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
-//{
-//    return SectionHeaderHeight;
-//}
-
-//- (CGFloat)heightForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
-//{
-//    //if (section == 0 || section == 1 || section == 2) {
-//    //    return 0.01f;
-//    //}
-//    //BOOL status = [[QPWifiManager shared] serverStatus];
-//    //if (section == 1 && status) {
-//    //    return 0.01f;
-//    //}
-//    //return SectionFooterHeight;
-//}
-
-//- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
-//{
-//    return SettingsCellHeight;
-//}
+- (CGFloat)heightForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
+{
+    //if (section == 0 || section == 1 || section == 2) {
+    //    return 0.01f;
+    //}
+    //BOOL status = [[QPWifiManager shared] serverStatus];
+    //if (section == 1 && status) {
+    //    return 0.01f;
+    //}
+    return UITableViewAutomaticDimension;
+}
 
 - (UIView *)viewForHeaderInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
 {
@@ -177,6 +154,11 @@
     
     return footerView;
 }
+
+//- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
+//{
+//    return SettingsCellHeight;
+//}
 
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {

@@ -21,7 +21,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [self setParsingButtonRequired:NO];
+        [self setParsingRequired:NO];
     }
     return self;
 }
@@ -227,9 +227,9 @@
     [self.view bringSubviewToFront:dropListView];
     
     //dropListView.alpha = 0.f;
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         //dropListView.alpha = 1.f;
-        dropListView.transform = CGAffineTransformMakeScale(1.2, 1.2);
+        dropListView.transform = CGAffineTransformMakeScale(1.05, 1.05);
     } completion:^(BOOL finished) {
         dropListView.transform = CGAffineTransformIdentity;
     }];

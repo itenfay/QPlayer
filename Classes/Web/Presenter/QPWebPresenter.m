@@ -70,7 +70,7 @@
     searchViewController.searchHistoriesCachePath = cachePath;
     searchViewController.hotSearchStyle = PYHotSearchStyleColorfulTag;
     searchViewController.searchHistoryStyle = PYSearchHistoryStyleDefault;
-    searchViewController.cancelButton.frame = CGRectMake(0, 0, 40.f, 30.f);
+    searchViewController.searchViewControllerShowMode = PYSearchViewControllerShowDefault;
     
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:searchViewController];
     [nc.navigationBar setShadowImage:[UIImage new]];

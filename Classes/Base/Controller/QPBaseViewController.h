@@ -14,7 +14,7 @@
 @property (nonatomic, strong) QPBasePresenter *presenter;
 
 /// The property determines whether the parsing button is required.
-@property (nonatomic, assign) BOOL parsingButtonRequired;
+@property (nonatomic, assign) BOOL parsingRequired;
 
 /// The property determines whether The dark interface style was truned on.
 @property (nonatomic, assign, readonly) BOOL isDarkMode;

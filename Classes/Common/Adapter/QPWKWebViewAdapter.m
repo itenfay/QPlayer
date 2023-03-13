@@ -64,11 +64,11 @@
 {
     _isDarkMode = isDarkMode;
     UIColor *customBlackColor = [UIColor colorWithWhite:0.1 alpha:0.8];
-    UIColor *customWhiteColor = [UIColor colorWithWhite:0.9 alpha:0.8];
+    UIColor *customWhiteColor = [UIColor colorWithWhite:0.9 alpha:0.9];
     BOOL ret = [QPExtractValue(kThemeStyleOnOff) boolValue];
     UIColor *bgColor = ret
-                    ? (_isDarkMode ? customWhiteColor : customBlackColor)
-                    : customBlackColor;
+                    ? (_isDarkMode ? customBlackColor : customWhiteColor)
+                    : customWhiteColor;
     if ([_toolBar isKindOfClass:UIImageView.class]) {
         UIImageView *tb = (UIImageView *)_toolBar;
         tb.image        = [self colorImage:tb.bounds

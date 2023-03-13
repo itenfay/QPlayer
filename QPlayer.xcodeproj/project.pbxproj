@@ -83,6 +83,7 @@
 		7904DED629AF3C280030A748 /* QPHomeListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7904DED429AF3C280030A748 /* QPHomeListViewAdapter.m */; };
 		7904DED929AF540E0030A748 /* QPFileModelPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7904DED829AF540E0030A748 /* QPFileModelPresenter.m */; };
 		790F5D9629A45F6100B59422 /* QPBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 790F5D9529A45F6100B59422 /* QPBaseCollectionViewCell.m */; };
+		7923EA6229BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7923EA6129BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m */; };
 		793BAB7229B0556B000EF92B /* QPAboutMeListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BAB7129B0556B000EF92B /* QPAboutMeListViewAdapter.m */; };
 		793BAB7829B0563B000EF92B /* QPAboutMePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BAB7729B0563B000EF92B /* QPAboutMePresenter.m */; };
 		793BAB7B29B056BD000EF92B /* QPAboutModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BAB7A29B056BD000EF92B /* QPAboutModel.m */; };
@@ -275,6 +276,8 @@
 		7904DED829AF540E0030A748 /* QPFileModelPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPFileModelPresenter.m; sourceTree = "<group>"; };
 		790F5D9429A45F6100B59422 /* QPBaseCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPBaseCollectionViewCell.h; sourceTree = "<group>"; };
 		790F5D9529A45F6100B59422 /* QPBaseCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPBaseCollectionViewCell.m; sourceTree = "<group>"; };
+		7923EA6029BF06EE00B0742A /* QPListViewHeaderFooterAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPListViewHeaderFooterAdapter.h; sourceTree = "<group>"; };
+		7923EA6129BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPListViewHeaderFooterAdapter.m; sourceTree = "<group>"; };
 		793BAB7029B0556B000EF92B /* QPAboutMeListViewAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPAboutMeListViewAdapter.h; sourceTree = "<group>"; };
 		793BAB7129B0556B000EF92B /* QPAboutMeListViewAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPAboutMeListViewAdapter.m; sourceTree = "<group>"; };
 		793BAB7629B0563B000EF92B /* QPAboutMePresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPAboutMePresenter.h; sourceTree = "<group>"; };
@@ -769,6 +772,8 @@
 			children = (
 				141B16E425C93B45008C465C /* QPListViewAdapter.h */,
 				141B16E625C93B45008C465C /* QPListViewAdapter.m */,
+				7923EA6029BF06EE00B0742A /* QPListViewHeaderFooterAdapter.h */,
+				7923EA6129BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m */,
 				141B16E525C93B45008C465C /* QPWKWebViewAdapter.h */,
 				141B16E725C93B45008C465C /* QPWKWebViewAdapter.m */,
 			);
@@ -1427,6 +1432,7 @@
 				141B172E25C93B46008C465C /* QPFileModel.m in Sources */,
 				141B172D25C93B46008C465C /* QPHomeViewController.m in Sources */,
 				793BAB9A29B09C44000EF92B /* QPAdvancedSearchPresenter.m in Sources */,
+				7923EA6229BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m in Sources */,
 				96532C691F5E814E00E66A2F /* HTTPResponse.m in Sources */,
 				141B172625C93B46008C465C /* QPTabBarController.m in Sources */,
 				1438F69025CC5282000CC65D /* QPBaseModel.m in Sources */,

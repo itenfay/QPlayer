@@ -17,7 +17,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [self setParsingButtonRequired:NO];
+        [self setParsingRequired:NO];
     }
     return self;
 }

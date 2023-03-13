@@ -85,6 +85,7 @@
     self.player.allowOrentitaionRotation = NO;
     // 设置退到后台继续播放
     self.player.pauseWhenAppResignActive = YES;
+    // 是否内存缓存播放
     //self.player.resumePlayRecord = YES;
     
     @zf_weakify(self)

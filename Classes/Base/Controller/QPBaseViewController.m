@@ -176,8 +176,7 @@
 - (void)enableInteractivePopGesture:(BOOL)enabled
 {
     UINavigationController *nc = self.navigationController;
-    if (!nc) { return; }
-    nc.interactivePopGestureRecognizer.delegate = enabled ? self : nil;
+    //nc.interactivePopGestureRecognizer.delegate = enabled ? self : nil;
     nc.interactivePopGestureRecognizer.enabled = enabled;
 }
 

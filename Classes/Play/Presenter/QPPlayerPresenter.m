@@ -117,7 +117,7 @@
 
 - (void)startPictureInPicture
 {
-    if (!QPlayerPictureInPictureEnabled())
+    if (!QPPlayerPictureInPictureEnabled())
         return;
     QPPlayerController *vc = [self playViewController];
     if (vc.model.isIJKPlayerPlayback) {
@@ -143,7 +143,7 @@
 
 - (void)stopPictureInPicture
 {
-    if (!QPlayerPictureInPictureEnabled())
+    if (!QPPlayerPictureInPictureEnabled())
         return;
     QPPlayerController *vc = [self playViewController];
     if (vc.model.isMediaPlayerPlayback || vc.model.isIJKPlayerPlayback) {

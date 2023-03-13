@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-FOUNDATION_EXPORT NSString *const kQPlayerIsPlaying;
+FOUNDATION_EXPORT NSString *const kQPPlayerIsPlaying;
 FOUNDATION_EXPORT NSString *const kRecordKeyInfo;
 FOUNDATION_EXPORT NSString *const kWriteThemeStyleFlagOnceOnly;
 FOUNDATION_EXPORT NSString *const kThemeStyleOnOff;

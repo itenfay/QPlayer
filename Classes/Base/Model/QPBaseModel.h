@@ -9,4 +9,7 @@
 
 @interface QPBaseModel : NSObject
 
+/// The name of sorting.
+@property (nonatomic, copy) NSString *sortName;
+
 @end

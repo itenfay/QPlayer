@@ -146,7 +146,7 @@
         NSString *recipients = [NSString stringWithFormat:@"mailto:%@?subject=Hello!", _model.rValue];
         NSString *body  = [NSString stringWithFormat:@"&body=  "];
         NSString *email = [NSString stringWithFormat:@"%@%@", recipients, body];
-        [self openUrl:[ApplicationHelper urlEncode:email]];
+        [self openUrl:[AppHelper urlEncode:email]];
     }
 }
 

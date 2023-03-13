@@ -11,7 +11,7 @@
 #pragma mark - Internal
 
 #import "AppDelegate.h"
-#import "ApplicationHelper.h"
+#import "AppHelper.h"
 #import "QPBaseViewController.h"
 #import "QPMacros.h"
 #import "QPGlobalDef.h"

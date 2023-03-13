@@ -9,7 +9,7 @@
 #import "QPLiveViewController.h"
 
 @interface QPHomeViewController ()
-
+@property (nonatomic, strong) QPHomeView *homeView;
 @end
 
 @implementation QPHomeViewController
@@ -29,8 +29,8 @@
     self.homeView.adapter = [[QPHomeListViewAdapter alloc] init];
     [self.homeView buildView];
     
-    QPHomePresenter *presenter = [[QPHomePresenter alloc] init];
-    presenter.viewController = self;
+    QPHomePresenter *presenter = [[QPHomePresenter alloc] initWithViewController:self];
+    presenter.view = self.homeView;
     self.presenter = presenter;
     [presenter loadData];
 }
@@ -42,7 +42,7 @@
     
     UIButton *liveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     liveButton.frame = CGRectMake(0, 0, 30, 30);
-    [liveButton setTitle:@"Live" forState:UIControlStateNormal];
+    [liveButton setTitle:@"LIVE" forState:UIControlStateNormal];
     [liveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
     [liveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [liveButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];

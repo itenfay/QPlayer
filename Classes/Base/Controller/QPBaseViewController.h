@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "QPBasePresenter.h"
 
-@interface QPBaseViewController : UIViewController
+@interface QPBaseViewController : UIViewController <UIGestureRecognizerDelegate>
 
 /// Declares a base presenter.
 @property (nonatomic, strong) QPBasePresenter *presenter;

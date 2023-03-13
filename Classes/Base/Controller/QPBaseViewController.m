@@ -120,7 +120,7 @@
 
 - (void)adaptThemeStyle
 {
-    BOOL ret = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
+    BOOL ret = [QPExtractValue(kThemeStyleOnOff) boolValue];
     if (!ret) {
         [self adaptLightTheme];
         return;
@@ -177,6 +177,7 @@
 {
     UINavigationController *nc = self.navigationController;
     if (!nc) { return; }
+    nc.interactivePopGestureRecognizer.delegate = enabled ? self : nil;
     nc.interactivePopGestureRecognizer.enabled = enabled;
 }
 

@@ -45,10 +45,10 @@
 
 - (void)setupConfiguration
 {
-    BOOL result = [QPlayerExtractValue(kWriteThemeStyleFlagOnceOnly) boolValue];
+    BOOL result = [QPExtractValue(kWriteThemeStyleFlagOnceOnly) boolValue];
     if (!result) {
-        QPlayerStoreValue(kThemeStyleOnOff, [NSNumber numberWithBool:YES]);
-        QPlayerStoreValue(kWriteThemeStyleFlagOnceOnly, [NSNumber numberWithBool:YES]);
+        QPStoreValue(kThemeStyleOnOff, [NSNumber numberWithBool:YES]);
+        QPStoreValue(kWriteThemeStyleFlagOnceOnly, [NSNumber numberWithBool:YES]);
     }
 }
 
@@ -94,7 +94,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    QPlayerSavePlaying(NO);
+    QPPlayerSavePlaying(NO);
     if (DYFNetworkSniffer.sharedSniffer.isStarted) {
         [DYFNetworkSniffer.sharedSniffer stop];
     }
@@ -108,7 +108,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    QPlayerSavePlaying(NO);
+    QPPlayerSavePlaying(NO);
     if (DYFNetworkSniffer.sharedSniffer.isStarted) {
         [DYFNetworkSniffer.sharedSniffer stop];
     }

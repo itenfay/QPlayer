@@ -118,7 +118,7 @@
     if (text.length > 0) {
         NSString *tempStr = [text lowercaseString];
         NSString *url = @"";
-        if (QPlayerCanSupportAVFormat(tempStr)) {
+        if (QPPlayerCanSupportAVFormat(tempStr)) {
             self.titleView.text = url = text;
             QPAdvancedSearchPresenter *presenter = (QPAdvancedSearchPresenter *)self.presenter;
             [presenter.playbackContext playVideoWithTitle:@"" urlString:url];
@@ -132,7 +132,7 @@
             url = [url stringByAppendingFormat:@"%@s?wd=%@&cl=3", bdUrl, text];
         }
         self.titleView.text = url;
-        [self loadRequestWithUrl:[ApplicationHelper urlEncode:url]];
+        [self loadRequestWithUrl:[AppHelper urlEncode:url]];
     }
 }
 
@@ -166,9 +166,7 @@
 
 //- (void)addObserver
 //{
-//    // 进入全屏监听
 //    [QPNotiDefaultCenter addObserver:self selector:@selector(enterFullScreen:) name:UIWindowDidBecomeVisibleNotification object:nil];
-//    // 退出全屏监听
 //    [QPNotiDefaultCenter addObserver:self selector:@selector(exitFullScreen:) name:UIWindowDidBecomeHiddenNotification object:nil];
 //}
 
@@ -182,15 +180,12 @@
 //{
 //    QPLog("::");
 //    if (@available(iOS 9.0, *)) {}
-//    [self setNeedsStatusBarAppearanceUpdate];
 //}
 
 //- (void)exitFullScreen:(NSNotification *)noti
 //{
 //    QPLog("::");
 //    if (@available(iOS 9.0, *)) {}
-//    [QPSharedApp setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-//    [self setNeedsStatusBarAppearanceUpdate];
 //}
 
 @end

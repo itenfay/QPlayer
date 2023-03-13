@@ -9,6 +9,7 @@
 #import "QPAppConst.h"
 #import "QPHudUtils.h"
 #import "DYFNetworkSniffer.h"
+#import "QPBaseModel.h"
 
 #ifndef QPGlobalDef_h
 #define QPGlobalDef_h
@@ -74,47 +75,47 @@ QP_STATIC_INLINE NSString *QPUrlDecode(NSString *str)
     return [str copy];
 }
 
-QP_STATIC_INLINE void QPlayerStoreValue(NSString *key, id value)
+QP_STATIC_INLINE void QPStoreValue(NSString *key, id value)
 {
     [NSUserDefaults.standardUserDefaults setObject:value forKey:key];
     [NSUserDefaults.standardUserDefaults synchronize];
 }
 
-QP_STATIC_INLINE id QPlayerExtractValue(NSString *key)
+QP_STATIC_INLINE id QPExtractValue(NSString *key)
 {
     return [NSUserDefaults.standardUserDefaults objectForKey:key];
 }
 
-QP_STATIC_INLINE void QPlayerSavePlaying(BOOL value)
+QP_STATIC_INLINE void QPPlayerSavePlaying(BOOL value)
 {
-    QPlayerStoreValue(kQPlayerIsPlaying, [NSNumber numberWithBool:value]);
+    QPStoreValue(kQPPlayerIsPlaying, [NSNumber numberWithBool:value]);
 }
 
-QP_STATIC_INLINE BOOL QPlayerIsPlaying() {
-    return [QPlayerExtractValue(kQPlayerIsPlaying) boolValue];
+QP_STATIC_INLINE BOOL QPPlayerIsPlaying() {
+    return [QPExtractValue(kQPPlayerIsPlaying) boolValue];
 }
 
-QP_STATIC_INLINE void QPlayerSetCarrierNetworkAllowed(BOOL value)
+QP_STATIC_INLINE void QPSetCarrierNetworkAllowed(BOOL value)
 {
-    QPlayerStoreValue(kCarrierNetworkAllowed, [NSNumber numberWithBool:value]);
+    QPStoreValue(kCarrierNetworkAllowed, [NSNumber numberWithBool:value]);
 }
 
-QP_STATIC_INLINE BOOL QPlayerCarrierNetworkAllowed()
+QP_STATIC_INLINE BOOL QPCarrierNetworkAllowed()
 {
-    return [QPlayerExtractValue(kCarrierNetworkAllowed) boolValue];
+    return [QPExtractValue(kCarrierNetworkAllowed) boolValue];
 }
 
-QP_STATIC_INLINE void QPlayerSetPictureInPictureEnabled(BOOL value)
+QP_STATIC_INLINE void QPPlayerSetPictureInPictureEnabled(BOOL value)
 {
-    QPlayerStoreValue(kPlayerPictureInPictureEnabled, [NSNumber numberWithBool:value]);
+    QPStoreValue(kPlayerPictureInPictureEnabled, [NSNumber numberWithBool:value]);
 }
 
-QP_STATIC_INLINE BOOL QPlayerPictureInPictureEnabled()
+QP_STATIC_INLINE BOOL QPPlayerPictureInPictureEnabled()
 {
-    return [QPlayerExtractValue(kPlayerPictureInPictureEnabled) boolValue];
+    return [QPExtractValue(kPlayerPictureInPictureEnabled) boolValue];
 }
 
-QP_STATIC_INLINE NSString *QPlayerMatchingIconName(NSString *ext)
+QP_STATIC_INLINE NSString *QPMatchingIconName(NSString *ext)
 {
     NSString *iconName = nil;
     if ([ext isEqualToString:@"avi"]) {
@@ -149,7 +150,7 @@ QP_STATIC_INLINE NSString *QPlayerMatchingIconName(NSString *ext)
     return iconName;
 }
 
-QP_STATIC_INLINE BOOL QPlayerCanSupportAVFormat(NSString *url)
+QP_STATIC_INLINE BOOL QPPlayerCanSupportAVFormat(NSString *url)
 {
     BOOL canSupport = NO;
     if ([url hasSuffix:@".m3u8"]) {
@@ -182,12 +183,12 @@ QP_STATIC_INLINE BOOL QPlayerCanSupportAVFormat(NSString *url)
     return canSupport;
 }
 
-QP_STATIC_INLINE BOOL QPlayerDetermineWhetherToPlay()
+QP_STATIC_INLINE BOOL QPDetermineWhetherToPlay()
 {
     if ([DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
         return YES;
     } else if ([DYFNetworkSniffer.sharedSniffer isConnectedViaWWAN]) {
-        if (QPlayerCarrierNetworkAllowed()) {
+        if (QPCarrierNetworkAllowed()) {
             return YES;
         }
         [QPHudUtils showWarnMessage:@"请在设置中允许流量播放！"];
@@ -196,6 +197,22 @@ QP_STATIC_INLINE BOOL QPlayerDetermineWhetherToPlay()
         [QPHudUtils showWarnMessage:@"没有检测到网络！"];
         return NO;
     }
+}
+
+/// Transforms two objects's title to pinying and sorts them.
+QP_STATIC_INLINE NSInteger QPSortObjects(QPBaseModel *m1, QPBaseModel *m2, void *context)
+{
+    NSMutableString *str1 = [[NSMutableString alloc] initWithString:m1.sortName];
+    if (CFStringTransform((__bridge CFMutableStringRef)str1,
+                          0,
+                          kCFStringTransformMandarinLatin, NO)) {
+    }
+    NSMutableString *str2 = [[NSMutableString alloc] initWithString:m2.sortName];
+    if (CFStringTransform((__bridge CFMutableStringRef)str2,
+                          0,
+                          kCFStringTransformMandarinLatin, NO)) {
+    }
+    return [str1 localizedCompare:str2];
 }
 
 #endif /* QPGlobalDef_h */

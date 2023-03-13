@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ApplicationHelper : NSObject
+@interface AppHelper : NSObject
 
 /// Return a string that uses to show the duration of a video.
 + (NSString *)formatVideoDuration:(int)duration;

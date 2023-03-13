@@ -135,7 +135,7 @@
 
 - (void)adaptThemeStyle
 {
-    BOOL ret = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
+    BOOL ret = [QPExtractValue(kThemeStyleOnOff) boolValue];
     if (!ret) {
         _isDarkMode = NO;
     } else {
@@ -171,7 +171,7 @@
     UIFont *font = [UIFont boldSystemFontOfSize:13.f];
     UITabBarItem *tabBarItem = [UITabBarItem appearance];
     
-    BOOL bValue = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
+    BOOL bValue = [QPExtractValue(kThemeStyleOnOff) boolValue];
     if (bValue) {
         if (@available(iOS 10.0, *)) {
             self.tabBar.unselectedItemTintColor = normalColor;

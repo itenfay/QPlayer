@@ -10,20 +10,6 @@
 #import "QPFileTableViewCell.h"
 #import "QPPlayerController.h"
 
-NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
-{
-    NSMutableString *str1 = [[NSMutableString alloc] initWithString:o1.name];
-    if (CFStringTransform((__bridge CFMutableStringRef)str1,
-                          0,
-                          kCFStringTransformMandarinLatin, NO)) {}
-    NSMutableString *str2 = [[NSMutableString alloc] initWithString:o2.name];
-    if (CFStringTransform((__bridge CFMutableStringRef)str2,
-                          0,
-                          kCFStringTransformMandarinLatin,
-                          NO)) {}
-    return [str1 localizedCompare:str2];
-}
-
 @interface QPHomePresenter () <QPListViewAdapterDelegate>
 @property (nonatomic, strong) NSMutableArray *localFileList;
 @property (nonatomic, strong) NSMutableArray *fileList;
@@ -33,36 +19,27 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 
 - (instancetype)init
 {
-    if (self = [super init]) {
-        [self configure];
-    }
-    return self;
+    return [self initWithViewController:nil];
 }
 
 - (instancetype)initWithViewController:(QPBaseViewController *)viewController
 {
     self = [super init];
     if (self) {
-        [self setViewController:viewController];
-        [self configure];
+        self.viewController = viewController;
     }
     return self;
 }
 
-- (void)setViewController:(QPBaseViewController *)viewController
+- (void)setView:(QPHomeView *)view
 {
-    _viewController = viewController;
+    _view = view;
     [self configure];
 }
 
 - (void)setupFileResourceDelegate
 {
     [QPWifiManager shared].httpServer.fileResourceDelegate = self;
-}
-
-- (void)initArray
-{
-    [self loadLocalFileList];
 }
 
 /// Load local file list.
@@ -75,7 +52,7 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
     [self.localFileList addObjectsFromArray:files];
     
     // sort objects.
-    [self.localFileList sortUsingFunction:qp_sortObjects context:NULL];
+    [self.localFileList sortUsingFunction:QPSortObjects context:NULL];
 }
 
 /// Load file list.
@@ -102,16 +79,13 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 - (void)configure
 {
     [self setupFileResourceDelegate];
-    [self initArray];
-    QPHomeViewController *vc = [self homeViewController];
-    if (vc) {
-        _view = vc.homeView;
-        _view.adapter.listViewDelegate = self;
-        @QPWeakify(self)
-        [vc.homeView reloadData:^{
-            [weak_self loadData];
-        }];
-    }
+    [self loadLocalFileList];
+    self.view.adapter.listViewDelegate = self;
+    @QPWeakify(self)
+    [self.view reloadData:^{
+        [weak_self loadData];
+    }];
+    [self updateDataSource];
 }
 
 - (void)reloadData
@@ -218,7 +192,7 @@ NSInteger qp_sortObjects(QPFileModel *o1, QPFileModel *o2, void *context)
 - (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
     QPFileModel *_model = (QPFileModel *)model;
-    if (!QPlayerIsPlaying()) {
+    if (!QPPlayerIsPlaying()) {
         NSURL *url                  = [NSURL fileURLWithPath:_model.path];
         UIImage *thumbnail          = self.yf_videoThumbnailImage(url, 3, 107, 60);
         QPPlayerModel *model        = [[QPPlayerModel alloc] init];

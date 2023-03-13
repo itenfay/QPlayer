@@ -164,9 +164,9 @@
 {
     [super viewWillAppear:animated];
     QPAppDelegate.allowOrentitaionRotation = YES;
-    [self enableInteractivePopGesture:YES];
+    [self enableInteractivePopGesture:NO];
     [self configureControlView];
-    QPlayerSavePlaying(YES);
+    QPPlayerSavePlaying(YES);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -181,6 +181,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [self enableInteractivePopGesture:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -190,7 +191,7 @@
     QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
     if ([self isMovingFromParentViewController]) {
         [self releaseWebView];
-        QPlayerSavePlaying(NO);
+        QPPlayerSavePlaying(NO);
         [pt.player stopCurrentPlayingView];
     } else {
         if ([pt.player.currentPlayerManager isPlaying]) {

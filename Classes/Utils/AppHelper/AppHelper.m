@@ -1,14 +1,14 @@
 //
-//  ApplicationHelper.m
+//  AppHelper.m
 //  QPlayer
 //
 //  Created by chenxing on 2023/2/27.
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "ApplicationHelper.h"
+#import "AppHelper.h"
 
-@implementation ApplicationHelper
+@implementation AppHelper
 
 + (NSString *)formatVideoDuration:(int)duration
 {

@@ -9,18 +9,17 @@
 
 static inline NSString *QPFCacheDirpath()
 {
-    NSString *cachePath = QPAppendingPathComponent(QPCachesDirectoryPath, @"QPlayerCacheFiles");
-    QPLog(@":: cachePath: %@", cachePath);
+    NSString *cachePath = QPAppendingPathComponent(QPCachesDirectoryPath, @"qp-filecache");
+    QPLog(@":: cachePath=%@", cachePath);
     
     if (![QPFileMgr fileExistsAtPath:cachePath]) {
         NSError *error = nil;
         [QPFileMgr createDirectoryAtPath:cachePath withIntermediateDirectories:YES attributes:nil error:&error];
         if (error) {
-            QPLog(@":: [createDirectoryAtPath] error: %@", error);
+            QPLog(@":: [createDirectoryAtPath] error=%zi, %@", error.code, error.localizedDescription);
             return nil;
         }
     }
-    
     return cachePath;
 }
 
@@ -39,6 +38,7 @@ static inline NSString *QPFCacheDirpath()
     
     for (NSString *item in contents) {
         QPFileModel *fm = [[QPFileModel alloc] init];
+        fm.name = fm.sortName = item;
         fm.path = QPAppendingPathComponent(path, item);
         
         NSDictionary *fileAttrs = [QPFileMgr attributesOfItemAtPath:fm.path error:nil];
@@ -48,8 +48,6 @@ static inline NSString *QPFCacheDirpath()
         [formatter setDateFormat:@"yyyy/MM/dd HH:mm:ss"]; // yyyy-MM-dd HH:mm:ss
         fm.modificationDate = [formatter stringFromDate:[fileAttrs objectForKey:@"NSFileModificationDate"]];
         fm.creationDate = [formatter stringFromDate:[fileAttrs objectForKey:@"NSFileCreationDate"]];
-        
-        fm.name = item;
         
         NSArray *components = [item componentsSeparatedByString:@"."];
         if (components.count > 0) {
@@ -77,7 +75,6 @@ static inline NSString *QPFCacheDirpath()
     BOOL ret = [QPFileMgr removeItemAtPath:filePath error:nil];
     BOOL exists = [QPFileMgr fileExistsAtPath:filePath];
     QPLog(@"%@ exists: %@", filename, exists ? @"YES" : @"NO");
-    
     return ret;
 }
 

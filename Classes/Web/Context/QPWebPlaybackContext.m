@@ -141,8 +141,8 @@
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString usingMediaPlayer:(BOOL)usingMediaPlayer
 {
-    if (!QPlayerIsPlaying()) {
-        QPlayerSavePlaying(YES);
+    if (!QPPlayerIsPlaying()) {
+        QPPlayerSavePlaying(YES);
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];
             QPPlayerModel *model = [[QPPlayerModel alloc] init];

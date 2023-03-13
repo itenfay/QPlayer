@@ -7,7 +7,7 @@
 
 #import "QPAppConst.h"
 
-NSString *const kQPlayerIsPlaying = @"kQPlayerIsPlaying";
+NSString *const kQPPlayerIsPlaying = @"kQPPlayerIsPlaying";
 
 NSString *const kRecordKeyInfo = @"kRecordKeyInfo";
 

@@ -13,22 +13,6 @@
 NSString *const kResourceBundle   = @"QPDropListView.bundle";
 NSString *const kDropListDataFile = @"DropListViewData.plist";
 
-// Transforms two objects's title to pinying and sorts them.
-NSInteger sortObjects(QPDropListModel *obj1, QPDropListModel *obj2, void *context)
-{
-    NSMutableString *str1 = [[NSMutableString alloc] initWithString:obj1.m_title];
-    if (CFStringTransform((__bridge CFMutableStringRef)str1,
-                          0,
-                          kCFStringTransformMandarinLatin, NO)) {
-    }
-    NSMutableString *str2 = [[NSMutableString alloc] initWithString:obj2.m_title];
-    if (CFStringTransform((__bridge CFMutableStringRef)str2,
-                          0,
-                          kCFStringTransformMandarinLatin, NO)) {
-    }
-    return [str1 localizedCompare:str2];
-}
-
 @implementation QPDropListViewPresenter
 
 - (QPDropListView *)dropListView
@@ -68,7 +52,7 @@ NSInteger sortObjects(QPDropListModel *obj1, QPDropListModel *obj2, void *contex
         model.m_content = dict.allValues.firstObject;
         [[self dropListView].adapter.dataSource addObject:model];
     }
-    [[self dropListView].adapter.dataSource sortUsingFunction:sortObjects context:NULL];
+    [[self dropListView].adapter.dataSource sortUsingFunction:QPSortObjects context:NULL];
     
     [self delayToScheduleTask:0.5 completion:^{
         [QPHudUtils hideHUD];

@@ -13,9 +13,8 @@
 
 @implementation QPFileTableViewCell
 
-- (void)awakeFromNib
+- (void)setup
 {
-    [super awakeFromNib];
     _presenter = [[QPFileModelPresenter alloc] initWithView:self];
 }
 
@@ -41,7 +40,7 @@
 - (void)setFormatImage:(NSString *)fileType
 {
     NSString *ext = [fileType lowercaseString];
-    NSString *iconName = QPlayerMatchingIconName(ext);
+    NSString *iconName = QPMatchingIconName(ext);
     self.formatImgView.image = QPImageNamed(iconName);
     self.formatImgView.contentMode = UIViewContentModeScaleToFill;
 }
@@ -72,7 +71,7 @@
 {
     NSURL *aURL = [NSURL fileURLWithPath:filePath];
     int duration = self.yf_videoDuration(aURL);
-    NSString *displayTime = [ApplicationHelper formatVideoDuration:duration];
+    NSString *displayTime = [AppHelper formatVideoDuration:duration];
     
     double ret = fileSize / 1000.0;
     NSString *sizeStr;

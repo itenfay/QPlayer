@@ -150,7 +150,7 @@
             url = [url stringByAppendingFormat:@"%@s?wd=%@&cl=3", bdUrl, text];
         }
         self.titleView.text = url;
-        [self loadRequestWithUrl:[ApplicationHelper urlEncode:url]];
+        [self loadRequestWithUrl:[AppHelper urlEncode:url]];
     }
 }
 

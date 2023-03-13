@@ -209,7 +209,7 @@
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = SettingsCellHeight/2.0;
-        sw.on        = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
+        sw.on        = [QPExtractValue(kThemeStyleOnOff) boolValue];
         sw.tag       = 10;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         
@@ -223,7 +223,7 @@
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = SettingsCellHeight/2.0;
-        sw.on        = QPlayerPictureInPictureEnabled();
+        sw.on        = QPPlayerPictureInPictureEnabled();
         sw.tag       = 9;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         
@@ -233,7 +233,7 @@
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = SettingsCellHeight/2.0;
-        sw.on        = QPlayerCarrierNetworkAllowed();
+        sw.on        = QPCarrierNetworkAllowed();
         sw.tag       = 8;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         
@@ -268,21 +268,21 @@
 - (void)switchValueChanged:(UISwitch *)sender
 {
     if (sender.tag == 10) {
-        QPlayerStoreValue(kThemeStyleOnOff, [NSNumber numberWithBool:sender.isOn]);
+        QPStoreValue(kThemeStyleOnOff, [NSNumber numberWithBool:sender.isOn]);
         [NSNotificationCenter.defaultCenter postNotificationName:kThemeStyleDidChangeNotification object:nil];
         if (self.viewController.tabBarController) {
             QPTabBarController *tbc = (QPTabBarController *)self.viewController.tabBarController;
             [tbc adaptThemeStyle];
         }
     } else if (sender.tag == 9) {
-        QPlayerSetPictureInPictureEnabled(sender.isOn);
+        QPPlayerSetPictureInPictureEnabled(sender.isOn);
         if (sender.isOn) {
             [QPHudUtils showTipMessageInView:@"已开启画中画"];
         } else {
             [QPHudUtils showTipMessageInView:@"已关闭画中画"];
         }
     } else if (sender.tag == 8) {
-        QPlayerSetCarrierNetworkAllowed(sender.isOn);
+        QPSetCarrierNetworkAllowed(sender.isOn);
         if (sender.isOn) {
             [QPHudUtils showTipMessageInView:@"已开启"];
         } else {

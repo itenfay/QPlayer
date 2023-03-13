@@ -176,8 +176,8 @@
         NSString *tempStr = [text lowercaseString];
         NSString *url = @"";
         if ([tempStr hasPrefix:@"rtmp"] || [tempStr hasPrefix:@"rtsp"] ||
-            [tempStr hasPrefix:@"mms"] || QPlayerCanSupportAVFormat(tempStr)) {
-            if (QPlayerDetermineWhetherToPlay()) {
+            [tempStr hasPrefix:@"mms"] || QPPlayerCanSupportAVFormat(tempStr)) {
+            if (QPDetermineWhetherToPlay()) {
                 self.titleView.text = url = text;
                 NSString *title = [self titleMatchingWithUrl:url];
                 QPLivePresenter *presenter = (QPLivePresenter *)self.presenter;
@@ -190,7 +190,7 @@
             NSString *bdUrl = @"https://www.baidu.com/";
             url = [url stringByAppendingFormat:@"%@s?wd=%@&cl=3", bdUrl, text];
         }
-        [self loadRequestWithUrl:[ApplicationHelper urlEncode:url]];
+        [self loadRequestWithUrl:[AppHelper urlEncode:url]];
         self.titleView.text = url;
     }
 }
@@ -239,7 +239,7 @@
     [dropListView onSelectRow:^(NSInteger selectedRow, NSString *title, NSString *content) {
         @QPStrongify(self)
         strong_self.playButton.enabled = YES;
-        if (QPlayerDetermineWhetherToPlay()) {
+        if (QPDetermineWhetherToPlay()) {
             NSString *urlString = [content copy];
             strong_self.titleView.text = urlString;
             QPLivePresenter *presenter = (QPLivePresenter *)strong_self.presenter;

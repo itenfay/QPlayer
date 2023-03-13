@@ -169,7 +169,7 @@
     //}];
     NSString *bgColor   = @"";
     NSString *textColor = @"";
-    BOOL bValue = [QPlayerExtractValue(kThemeStyleOnOff) boolValue];
+    BOOL bValue = [QPExtractValue(kThemeStyleOnOff) boolValue];
     if (bValue && self.isDarkMode) {
         bgColor   = @"'#1E1E1E'";
         textColor = @"'#B4B4B4'";
@@ -285,9 +285,9 @@
     QPLog(":: url=%@", url);
     
     // Method1: resolve the problem about '_blank'.
-    //if (!navigationAction.targetFrame.isMainFrame) {
-    //    [webView loadRequest:navigationAction.request];
-    //}
+    if (!navigationAction.targetFrame.isMainFrame) {
+        [webView loadRequest:navigationAction.request];
+    }
     
     if (QPRespondsToSelector(self.delegate, @selector(adapter:createWebViewWithConfiguration:forNavigationAction:windowFeatures:))) {
         return [self.delegate adapter:self createWebViewWithConfiguration:configuration forNavigationAction:navigationAction windowFeatures:windowFeatures];
@@ -299,14 +299,13 @@
 {
     NSURL *url = navigationAction.request.URL;
     QPLog(":: url=%@", url);
+    _requestURL = url.copy;
+    !self.linkBlock ?: self.linkBlock(url);
     
     // Method2: resolve the problem about '_blank'.
-    if (navigationAction.targetFrame == nil) {
-        [webView loadRequest:navigationAction.request];
-    } else {
-        _requestURL = url.copy;
-        !self.linkBlock ?: self.linkBlock(url);
-    }
+    //if (navigationAction.targetFrame == nil) {
+    //    [webView loadRequest:navigationAction.request];
+    //}
     
     if (QPRespondsToSelector(self.delegate, @selector(adapter:decidePolicyForNavigationAction:decisionHandler:))) {
         [self.delegate adapter:self decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];

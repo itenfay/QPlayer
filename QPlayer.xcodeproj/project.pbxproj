@@ -108,7 +108,7 @@
 		797F386829BAF9EB00DCCBCB /* QPDropListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 797F386629BAF9EA00DCCBCB /* QPDropListViewAdapter.m */; };
 		799A919929B709E9007735F0 /* QPWebPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 799A919829B709E8007735F0 /* QPWebPresenter.m */; };
 		799A919C29B709F4007735F0 /* QPWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = 799A919A29B709F4007735F0 /* QPWebController.m */; };
-		79A1249029AC76EE00667B3C /* ApplicationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A1248F29AC76EE00667B3C /* ApplicationHelper.m */; };
+		79A1249029AC76EE00667B3C /* AppHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A1248F29AC76EE00667B3C /* AppHelper.m */; };
 		79A466D729B9D2E2009417EB /* QPWebPlaybackContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A466D629B9D2E2009417EB /* QPWebPlaybackContext.m */; };
 		79A466DB29B9D34C009417EB /* QPBaseContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A466DA29B9D34C009417EB /* QPBaseContext.m */; };
 		96532C621F5E814E00E66A2F /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 96532C481F5E814E00E66A2F /* AsyncSocket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -322,8 +322,8 @@
 		799A919829B709E8007735F0 /* QPWebPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebPresenter.m; sourceTree = "<group>"; };
 		799A919A29B709F4007735F0 /* QPWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebController.m; sourceTree = "<group>"; };
 		799A919B29B709F4007735F0 /* QPWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebController.h; sourceTree = "<group>"; };
-		79A1248E29AC76EE00667B3C /* ApplicationHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationHelper.h; sourceTree = "<group>"; };
-		79A1248F29AC76EE00667B3C /* ApplicationHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationHelper.m; sourceTree = "<group>"; };
+		79A1248E29AC76EE00667B3C /* AppHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppHelper.h; sourceTree = "<group>"; };
+		79A1248F29AC76EE00667B3C /* AppHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppHelper.m; sourceTree = "<group>"; };
 		79A466D529B9D2E2009417EB /* QPWebPlaybackContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPWebPlaybackContext.h; sourceTree = "<group>"; };
 		79A466D629B9D2E2009417EB /* QPWebPlaybackContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPWebPlaybackContext.m; sourceTree = "<group>"; };
 		79A466D929B9D34C009417EB /* QPBaseContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPBaseContext.h; sourceTree = "<group>"; };
@@ -396,7 +396,7 @@
 		141B165925C93B43008C465C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				79A1248D29AC76AC00667B3C /* ApplicationHelper */,
+				79A1248D29AC76AC00667B3C /* AppHelper */,
 				141B165D25C93B43008C465C /* FileHelper */,
 				141B168E25C93B44008C465C /* HistoryManager */,
 				141B165A25C93B43008C465C /* HudUtils */,
@@ -1085,13 +1085,13 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		79A1248D29AC76AC00667B3C /* ApplicationHelper */ = {
+		79A1248D29AC76AC00667B3C /* AppHelper */ = {
 			isa = PBXGroup;
 			children = (
-				79A1248E29AC76EE00667B3C /* ApplicationHelper.h */,
-				79A1248F29AC76EE00667B3C /* ApplicationHelper.m */,
+				79A1248E29AC76EE00667B3C /* AppHelper.h */,
+				79A1248F29AC76EE00667B3C /* AppHelper.m */,
 			);
-			path = ApplicationHelper;
+			path = AppHelper;
 			sourceTree = "<group>";
 		};
 		79A466D429B9D283009417EB /* Context */ = {
@@ -1369,7 +1369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				141B16FD25C93B46008C465C /* QPHudUtils.m in Sources */,
-				79A1249029AC76EE00667B3C /* ApplicationHelper.m in Sources */,
+				79A1249029AC76EE00667B3C /* AppHelper.m in Sources */,
 				793BAB8129B07EC6000EF92B /* QPSettingsModel.m in Sources */,
 				799A919C29B709F4007735F0 /* QPWebController.m in Sources */,
 				141B170D25C93B46008C465C /* string_piece.c in Sources */,

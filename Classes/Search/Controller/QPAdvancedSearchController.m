@@ -108,7 +108,7 @@
 {
     NSString *url = [QPInfoDictionary objectForKey:@"TecentVideoUrl"];
     self.titleView.text = url;
-    [self loadRequestWithUrl:@"https://www.baidu.com"];
+    [self loadRequestWithUrl:url];
 }
 
 - (void)loadWebContents

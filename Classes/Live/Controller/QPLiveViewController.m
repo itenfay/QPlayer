@@ -165,7 +165,7 @@
 {
     NSString *url = [QPInfoDictionary objectForKey:@"InkeHotLiveUrl"];
     self.titleView.text = url;
-    [self loadRequestWithUrl:@"https://www.baidu.com"];
+    [self loadRequestWithUrl:url];
 }
 
 - (void)loadWebContents

@@ -15,10 +15,12 @@ target 'QPlayer' do
     pod 'ZFPlayer'
     pod 'ZFPlayer/ControlView'
     pod 'ZFPlayer/AVPlayer'
-    #pod 'ZFPlayer/ijkplayer'
+    pod 'ZFPlayer/ijkplayer'
     #pod 'ZFPlayer/KSYMediaPlayer' # Conflicts with ijkplayer.
+    # 用于直播的静态库
+    #pod 'KSYMediaPlayer_iOS' # <=> pod 'KSYMediaPlayer_iOS/KSYMediaPlayer_live'
+    # 用于点播的静态库
     #pod 'KSYMediaPlayer_iOS/KSYMediaPlayer_vod'
-    pod 'KSYMediaPlayer_iOS'
     
     pod 'MBProgressHUD+JDragon', '~> 0.0.3'
     pod 'PYSearch'

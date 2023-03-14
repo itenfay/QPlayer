@@ -63,26 +63,23 @@
     }
 }
 
+//******************************************************************************
+//* ZFInterfaceOrientationMask orientationMask = ZFInterfaceOrientationMaskUnknow;
+//* if (@available(iOS 16.0, *)) {
+//*    orientationMask = [ZFLandscapeRotationManager_iOS16 supportedInterfaceOrientationsForWindow:window];
+//* } else if (@available(iOS 15.0, *)) {
+//*     orientationMask = [ZFLandscapeRotationManager_iOS15 supportedInterfaceOrientationsForWindow:window];
+//* } else {
+//*     orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
+//* }
+//******************************************************************************
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    if ([window isKindOfClass:ZFLandscapeWindow.class]) {
-        window.hidden = !_allowOrentitaionRotation;
-    }
-    
     if (_allowOrentitaionRotation) {
-        //ZFInterfaceOrientationMask orientationMask = ZFInterfaceOrientationMaskUnknow;
-        //if (@available(iOS 16.0, *)) {
-        //    orientationMask = [ZFLandscapeRotationManager_iOS16 supportedInterfaceOrientationsForWindow:window];
-        //} else if (@available(iOS 15.0, *)) {
-        //    orientationMask = [ZFLandscapeRotationManager_iOS15 supportedInterfaceOrientationsForWindow:window];
-        //} else {
-        //    orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
-        //}
         ZFInterfaceOrientationMask orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
         if (orientationMask != ZFInterfaceOrientationMaskUnknow) {
             return (UIInterfaceOrientationMask)orientationMask;
         }
     }
-    
     return UIInterfaceOrientationMaskPortrait;
 }
 

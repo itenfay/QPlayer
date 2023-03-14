@@ -34,7 +34,7 @@
     return self;
 }
 
-- (void)useDefaultPort8080
+- (void)using8080Port
 {
     [self changePort:8080];
 }
@@ -51,12 +51,10 @@
     NSError *error = nil;
     if (status) {
         _serverStatus = [_httpServer start:&error];
-        
         if (!_serverStatus) {
             QPLog(@"Error Starting HTTP Server: %@", error);
         }
-    }
-    else {
+    } else {
         if ([_httpServer stop]) {
             _serverStatus = NO;
         }

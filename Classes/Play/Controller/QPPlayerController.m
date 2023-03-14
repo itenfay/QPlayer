@@ -152,7 +152,7 @@
     self.adapter = adater;
     [self.adapter addProgressViewToWebView];
     [self setWebViewDelegate];
-    [self delayToScheduleTask:3 completion:^{
+    [self delayToScheduleTask:2 completion:^{
         [self.adapter inspectToolBarAlpha];
     }];
     
@@ -267,9 +267,13 @@
 
 - (void)configureControlView
 {
+    UIImage *foregroundImage = QPImageNamed(@"default_thumbnail");
+    UIImage *coverImage = [self yf_drawImage:foregroundImage
+                           inBackgroundColor:QPColorFromRGBAlp(20, 20, 20, 0.1)
+                              backgroundRect:CGRectMake(0, 0, 1024.f, 1024.f)];
     [self.controlView showTitle:self.videoTitleByDeletingExtension
                  coverURLString:self.model.coverUrl
-               placeholderImage:self.model.placeholderCoverImage ?: QPImageNamed(@"default_thumbnail")
+               placeholderImage:self.model.placeholderCoverImage ?: coverImage
                  fullScreenMode:ZFFullScreenModeAutomatic];
 }
 

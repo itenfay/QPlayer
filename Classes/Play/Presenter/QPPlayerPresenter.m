@@ -61,8 +61,8 @@
     QPPlayerController *vc = [self playViewController];
     NSString *videoUrl = vc.model.videoUrl;
     NSURL *aURL = vc.model.isLocalVideo
-                ? [NSURL fileURLWithPath:videoUrl]
-                : [NSURL URLWithString:videoUrl];
+    ? [NSURL fileURLWithPath:videoUrl]
+    : [NSURL URLWithString:videoUrl];
     [self playWithURL:aURL];
 }
 
@@ -98,11 +98,13 @@
     //self.player.orientationObserver.supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
     //[self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:NO completion:NULL];
     
+    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+        QPLog(@":: %s, isFullScreen=%@", __func__, isFullScreen ? @"YES" : @"NO");
+        QPAppDelegate.allowOrentitaionRotation = isFullScreen;
+    };
     self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         QPLog(@":: %s, isFullScreen=%@", __func__, isFullScreen ? @"YES" : @"NO");
-        //@zf_strongify(self)
-        //[self.viewController setNeedsStatusBarAppearanceUpdate];
-        //[UIViewController attemptRotationToDeviceOrientation];
+        @zf_strongify(self)
         /* // 使用YYTextView转屏失败
         for (UIWindow *window in [UIApplication sharedApplication].windows) {
             if ([window isKindOfClass:NSClassFromString(@"YYTextEffectWindow")]) {
@@ -110,6 +112,15 @@
             }
         }
         */
+        if (!isFullScreen) {
+            for (UIWindow *window in [self yf_activeWindows]) {
+                if ([window isKindOfClass:ZFLandscapeWindow.class]) {
+                    window.hidden = YES;
+                }
+            }
+        }
+        //[self.viewController setNeedsStatusBarAppearanceUpdate];
+        //[UIViewController attemptRotationToDeviceOrientation];
     };
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         QPLog(@":: %s, asset=%@", __func__, asset);

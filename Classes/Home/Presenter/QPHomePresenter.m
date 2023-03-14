@@ -206,6 +206,7 @@
     if ([QPFileHelper removeLocalFile:fileModel.name]) {
         // Delete data for datasource, delete row from table.
         [self.localFileList removeObjectAtIndex:indexPath.row];
+        [self.syncFileList removeObjectAtIndex:indexPath.row];
         if (_view.tableView.numberOfSections > 1) {
             NSArray *rowsArray = adapter.dataSource[indexPath.section];
             NSMutableArray *mRowsArray = rowsArray.mutableCopy;
@@ -214,6 +215,8 @@
         } else {
             [adapter.dataSource removeObjectAtIndex:indexPath.row];
         }
+        FileResource *fr = (FileResource *)[QPWifiManager shared].httpServer.fileResourceDelegate;
+        [fr actionList];
         return YES;
     }
     return NO;

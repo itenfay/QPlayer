@@ -496,7 +496,7 @@
 
 - (void)inspectToolBarAlpha
 {
-    if (!_didScroll) { return; }
+    if (_didScroll) { return; }
     if (self.toolBar.alpha > 0) {
         self.toolBar.alpha = 0.f;
         [self cancelHidingToolBar];

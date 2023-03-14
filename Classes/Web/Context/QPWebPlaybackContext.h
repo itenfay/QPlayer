@@ -19,6 +19,7 @@
 - (BOOL)canAllowNavigation:(NSURL *)URL;
 
 - (void)evaluateJavaScriptForVideoSrc;
+- (void)evaluateJavaScriptForVideoCurrentSrc;
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString;
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString usingMediaPlayer:(BOOL)usingMediaPlayer;
 

@@ -25,6 +25,38 @@
     return  self;
 }
 
+- (void)evaluateJavaScriptForVideoCurrentSrc
+{
+    NSString *jsStr = @"document.querySelector('video').currentSrc;";
+    @weakify(self)
+    [self.adapter.webView evaluateJavaScript:jsStr completionHandler:^(id result, NSError *error) {
+        if (!error) {
+            // 截获到视频地址
+            NSString *videoUrl = (NSString *)result;
+            QPLog(@":: videoUrl=%@", videoUrl);
+            [weak_self attemptToPlayVideo:videoUrl];
+        } else {
+            QPLog(@":: error=%zi, %@", error.code, error.localizedDescription);
+        }
+    }];
+}
+
+- (void)evaluateJavaScriptForVideoSrc
+{
+    NSString *jsStr = @"document.getElementsByTagName('video')[0].src";
+    @weakify(self)
+    [self.adapter.webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        if(![response isEqual:[NSNull null]] && response != nil) {
+            // 截获到视频地址
+            NSString *videoUrl = (NSString *)response;
+            QPLog(@":: videoUrl=%@", videoUrl);
+            [weak_self attemptToPlayVideo:videoUrl];
+        } else {
+            QPLog(@":: error=%zi, %@", error.code, error.localizedDescription);
+        }
+    }];
+}
+
 - (BOOL)canAllowNavigation:(NSURL *)URL
 {
     NSString *url = URL.absoluteString;
@@ -102,21 +134,6 @@
     }
     
     return shouldPlay;
-}
-
-- (void)evaluateJavaScriptForVideoSrc
-{
-    NSString *jsStr = @"document.getElementsByTagName('video')[0].src";
-    [self.adapter.webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        if(![response isEqual:[NSNull null]] && response != nil) {
-            // 截获到视频地址
-            NSString *videoUrl = (NSString *)response;
-            QPLog(@":: videoUrl=%@", videoUrl);
-            [self attemptToPlayVideo:videoUrl];
-        } else {
-            QPLog(@":: error=%@", error);
-        }
-    }];
 }
 
 - (void)attemptToPlayVideo:(NSString *)url

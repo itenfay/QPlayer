@@ -76,10 +76,10 @@
             borderColor:(UIColor *)borderColor
 {
     UIImage *newImage  = nil;
+    
     CGRect mRect       = rect;
     CGSize mSize       = mRect.size;
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:mRect cornerRadius:cornerRadius];
-    
     if (@available(iOS 10.0, *)) {
         UIGraphicsImageRenderer *render = [[UIGraphicsImageRenderer alloc] initWithSize:mSize];
         newImage = [render imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
@@ -150,6 +150,35 @@
     return VideoDurationBlock;
 }
 
+- (UIImage *)yf_supplyVideoCover:(NSString *)url
+{
+    NSURL *aURL = [NSURL URLWithString:url];
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:aURL options:nil];
+    AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    generator.appliesPreferredTrackTransform = YES;
+    generator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
+    CMTime time = CMTimeMakeWithSeconds(1, 60);
+    if (@available(iOS 16.0, *)) {
+        __block CGImageRef imgRef;
+        [generator generateCGImageAsynchronouslyForTime:time completionHandler:^(CGImageRef  _Nullable image, CMTime actualTime, NSError * _Nullable error) {
+            if (error) {
+                QPLog(":: error=%zi, %@", error.code, error.localizedDescription);
+            } else {
+                imgRef = image;
+            }
+        }];
+        return [UIImage imageWithCGImage:imgRef];
+    } else {
+        NSError *error = nil;
+        CGImageRef imgRef = [generator copyCGImageAtTime:time actualTime:nil error:&error];
+        if (error) {
+            QPLog(":: error=%zi, %@", error.code, error.localizedDescription);
+            return nil;
+        }
+        return [UIImage imageWithCGImage:imgRef];
+    }
+}
+
 - (UIImage *)yf_imageRenderingAlwaysTemplate:(NSString *)name
 {
     UIImage *image = QPImageNamed(name);
@@ -168,12 +197,7 @@
 - (UIImage *)yf_imageWithColor:(UIColor *)color
 {
     CGRect rect = CGRectMake(0, 0, 1, 1);
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
-    [color setFill];
-    UIRectFill(rect);
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
+    return [self yf_imageWithColor:color rect:rect];
 }
 
 - (UIImage *)yf_imageWithColor:(UIColor *)color rect:(CGRect)rect
@@ -186,10 +210,38 @@
     return image;
 }
 
-- (UIWindow *)yf_mainWindow
+- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundColor:(UIColor *)backgroundColor backgroundRect:(CGRect)rect
 {
-    UIWindow *window;
-    NSMutableArray<UIWindow *> *windowArray = [NSMutableArray arrayWithCapacity:0];
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+    [backgroundColor setFill];
+    UIRectFill(rect);
+    CGFloat scale = UIScreen.mainScreen.scale;
+    CGFloat fgw = foregroundImage.size.width/scale;
+    CGFloat fgh = foregroundImage.size.height/scale;
+    CGFloat fgx = (rect.size.width  - fgw)/2;
+    CGFloat fgy = (rect.size.height - fgh)/2;
+    [foregroundImage drawInRect:CGRectMake(fgx, fgy, fgw, fgh)];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundColor:(UIColor *)backgroundColor backgroundRect:(CGRect)rect atPoint:(CGPoint)point
+{
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+    [backgroundColor setFill];
+    UIRectFill(rect);
+    CGFloat scale = UIScreen.mainScreen.scale;
+    CGFloat fgw = foregroundImage.size.width/scale;
+    CGFloat fgh = foregroundImage.size.height/scale;
+    [foregroundImage drawInRect:CGRectMake(point.x, point.y, fgw, fgh)];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+- (NSArray<UIWindow *> *)yf_activeWindows
+{
     UIApplication *sharedApp = UIApplication.sharedApplication;
     if (@available(iOS 13.0, *)) {
         NSMutableArray<UIWindowScene *> *sceneArray = [NSMutableArray arrayWithCapacity:0];
@@ -200,15 +252,21 @@
             }
         }
         UIWindowScene *scene = sceneArray.firstObject;
-        for (UIWindow *w in scene.windows) {
-            if (w.isKeyWindow) { [windowArray addObject:w]; }
-        }
+        return scene.windows;
     } else {
-        for (UIWindow *w in sharedApp.windows) {
-            if (w.isKeyWindow) { [windowArray addObject:w]; }
-        }
+        return sharedApp.windows;
     }
-    window = windowArray.firstObject;
+}
+
+- (UIWindow *)yf_mainWindow
+{
+    UIWindow *window;
+    NSMutableArray<UIWindow *> *mWindows = [NSMutableArray arrayWithCapacity:0];
+    NSArray<UIWindow *> *tWindows = [self yf_activeWindows];
+    for (UIWindow *w in tWindows) {
+        if (w.isKeyWindow) { [mWindows addObject:w]; }
+    }
+    window = mWindows.firstObject;
     return window;
 }
 

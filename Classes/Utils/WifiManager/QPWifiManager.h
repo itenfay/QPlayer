@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "HTTPServer.h"
+#import "FileResource.h"
 
 @interface QPWifiManager : NSObject
 
@@ -20,7 +21,7 @@
 + (instancetype)shared;
 
 // Uses the default port 8080.
-- (void)useDefaultPort8080;
+- (void)using8080Port;
 
 // Changes a port with a `unsigned int` number.
 - (void)changePort:(UInt16)port;

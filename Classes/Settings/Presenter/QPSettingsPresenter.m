@@ -322,7 +322,7 @@
 - (void)onConfigurePort:(BOOL)isDefault
 {
     if (isDefault) {
-        [QPWifiManager.shared useDefaultPort8080];
+        [QPWifiManager.shared using8080Port];
     } else {
         [QPWifiManager.shared changePort:self.mPort++];
     }

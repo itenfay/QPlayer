@@ -176,7 +176,7 @@
 - (void)enableInteractivePopGesture:(BOOL)enabled
 {
     UINavigationController *nc = self.navigationController;
-    //nc.interactivePopGestureRecognizer.delegate = enabled ? self : nil;
+    nc.interactivePopGestureRecognizer.delegate = enabled ? self : nil;
     nc.interactivePopGestureRecognizer.enabled = enabled;
 }
 
@@ -227,10 +227,10 @@
 - (UIButton *)backButtonWithTarget:(id)target selector:(SEL)selector
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0, 0, 40, 36);
+    button.frame = CGRectMake(0, 0, 30, 30);
     [button setImage:QPImageNamed(@"back_normal_white") forState:UIControlStateNormal];
     [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 20);
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10);
     return button;
 }
 
@@ -280,8 +280,8 @@
 
 - (void)dealloc
 {
-    QPLog(@"::");
     [self removeThemeStyleChangedObserver];
+    QPLog(@"::");
 }
 
 @end

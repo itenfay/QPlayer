@@ -54,7 +54,6 @@
 {
     if (self = [super init]) {
         self.model = model;
-        self.model.videoDecoding = 0;
         self.parsingRequired = NO;
         self.hidesBottomBarWhenPushed = YES;
     }
@@ -135,6 +134,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    QPAppDelegate.playerController = self;
     QPLog(@":: videoTitle: %@", self.model.videoTitle);
     QPLog(@":: videoUrl: %@", self.model.videoUrl);
     QPLog(@":: videoDecoding: %d", self.model.videoDecoding);
@@ -267,10 +267,11 @@
 
 - (void)configureControlView
 {
+    CGRect rect = CGRectMake(0.f, 0.f, 1024.f, 1024.f);
+    UIImage *backgroundImage = [self yf_imageWithColor:QPColorFromRGBAlp(90, 90, 90, 0.1) rect:rect];
     UIImage *foregroundImage = QPImageNamed(@"default_thumbnail");
     UIImage *coverImage = [self yf_drawImage:foregroundImage
-                           inBackgroundColor:QPColorFromRGBAlp(20, 20, 20, 0.1)
-                              backgroundRect:CGRectMake(0, 0, 1024.f, 1024.f)];
+                           inBackgroundImage:backgroundImage withRect:rect];
     [self.controlView showTitle:self.videoTitleByDeletingExtension
                  coverURLString:self.model.coverUrl
                placeholderImage:self.model.placeholderCoverImage ?: coverImage

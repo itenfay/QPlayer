@@ -29,7 +29,7 @@
 - (void)loadView
 {
     [super loadView];
-    [self addPlayButton];
+    [self addTVButton];
     self.webView.height = self.view.height;
 }
 
@@ -129,7 +129,7 @@
     }
 }
 
-- (void)addPlayButton {
+- (void)addTVButton {
     UIButton *playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     playBtn.width  = 30; //60;
     playBtn.height = 30; //60;
@@ -180,7 +180,7 @@
             self.titleView.text = url = text;
             NSString *title = [self titleMatchingWithUrl:url];
             QPLivePresenter *presenter = (QPLivePresenter *)self.presenter;
-            [presenter.playbackContext playVideoWithTitle:title urlString:url usingMediaPlayer:YES];
+            [presenter.playbackContext playVideoWithTitle:title urlString:url playerType:QPPlayerTypeIJKPlayer];
             return;
         } else if ([tempStr hasPrefix:@"https"] || [tempStr hasPrefix:@"http"]) {
             url = text;
@@ -196,20 +196,21 @@
 - (void)onSearch:(UIButton *)sender
 {
     QPLivePresenter *presenter = (QPLivePresenter *)self.presenter;
+    //@"https://h5.cc.163.com/",
     [presenter presentSearchViewController:@[@"https://h5.inke.cn/app/home/hotlive",
                                              @"https://h.huajiao.com/",
                                              @"https://wap.yy.com/",
                                              @"https://m.v.6.cn/",
                                              @"https://h5.9xiu.com/",
-                                             @"https://www.95.cn/mobile?channel=ai00011",
-                                             @"https://cdn.egame.qq.com/pgg-play/module/livelist.html",
                                              @"https://m.douyu.com/",
                                              @"https://m.huya.com/",
-                                             @"https://h5.cc.163.com/",
+                                             
                                              @"http://tv.cctv.com/live/m/",
-                                             @"https://m.tv.bingdou.net/",
-                                             @"http://m.66zhibo.net/",
-                                             @"http://m.migu123.com/"]
+                                             @"http://m.migu123.com/",
+                                             
+                                             @"https://m.live.qq.com/",
+                                             @"https://sports.sina.cn/?from=wap",
+                                             @"https://m.sohu.com/z/"]
                                  cachePath:LIVE_SEARCH_HISTORY_CACHE_PATH];
 }
 
@@ -241,7 +242,7 @@
         strong_self.playButton.enabled = YES;
         strong_self.titleView.text = urlString;
         QPLivePresenter *presenter = (QPLivePresenter *)strong_self.presenter;
-        [presenter.playbackContext playVideoWithTitle:title urlString:urlString usingMediaPlayer:YES];
+        [presenter.playbackContext playVideoWithTitle:title urlString:urlString playerType:QPPlayerTypeIJKPlayer];
     }];
     
     [dropListView onCloseAction:^{
@@ -264,6 +265,7 @@
             return key;
         }
     }
+    
     return url;
 }
 

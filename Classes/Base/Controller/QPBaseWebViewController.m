@@ -178,7 +178,7 @@
         tlbX = 1.5*hSpace;
         tlbW = self.view.width - 2*tlbX;
         tlbH = btnH + 3*vSpace;
-        tlbY = self.view.height - offset - tlbH - (bVal ? 2*vSpace : 0);
+        tlbY = self.view.height - offset - tlbH - (bVal ? 2*vSpace : 0) + 5.f;
         tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
         btnW = (tlbW - (count+1)*hSpace)/count;
     }
@@ -190,7 +190,6 @@
                                 backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
                                    borderWidth:0.f
                                    borderColor:nil];
-    
     for (NSUInteger i = 0; i < count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         if (isVertical) {
@@ -204,7 +203,6 @@
         [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
         [toolBar addSubview:button];
     }
-    
     toolBar.userInteractionEnabled = YES;
     [toolBar autoresizing];
     

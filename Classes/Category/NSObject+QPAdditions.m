@@ -210,14 +210,11 @@
     return image;
 }
 
-- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundColor:(UIColor *)backgroundColor backgroundRect:(CGRect)rect
+- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect
 {
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
-    [backgroundColor setFill];
-    UIRectFill(rect);
-    CGFloat scale = UIScreen.mainScreen.scale;
-    CGFloat fgw = foregroundImage.size.width/scale;
-    CGFloat fgh = foregroundImage.size.height/scale;
+    [backgroundImage drawInRect:rect];
+    CGFloat fgw = foregroundImage.size.width;
+    CGFloat fgh = foregroundImage.size.height;
     CGFloat fgx = (rect.size.width  - fgw)/2;
     CGFloat fgy = (rect.size.height - fgh)/2;
     [foregroundImage drawInRect:CGRectMake(fgx, fgy, fgw, fgh)];
@@ -226,14 +223,11 @@
     return image;
 }
 
-- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundColor:(UIColor *)backgroundColor backgroundRect:(CGRect)rect atPoint:(CGPoint)point
+- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect atPoint:(CGPoint)point
 {
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
-    [backgroundColor setFill];
-    UIRectFill(rect);
-    CGFloat scale = UIScreen.mainScreen.scale;
-    CGFloat fgw = foregroundImage.size.width/scale;
-    CGFloat fgh = foregroundImage.size.height/scale;
+    [backgroundImage drawInRect:rect];
+    CGFloat fgw = foregroundImage.size.width;
+    CGFloat fgh = foregroundImage.size.height;
     [foregroundImage drawInRect:CGRectMake(point.x, point.y, fgw, fgh)];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

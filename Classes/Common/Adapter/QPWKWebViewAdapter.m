@@ -63,12 +63,18 @@
 - (void)setIsDarkMode:(BOOL)isDarkMode
 {
     _isDarkMode = isDarkMode;
-    UIColor *customBlackColor = [UIColor colorWithWhite:0.1 alpha:0.8];
-    UIColor *customWhiteColor = [UIColor colorWithWhite:0.9 alpha:0.9];
+    [self updateToolBarAppearance];
+    [self.webView reload];
+}
+
+- (void)updateToolBarAppearance
+{
+    UIColor *customDarkColor = [UIColor colorWithWhite:0.1 alpha:0.8];
+    UIColor *customLightColor = [UIColor colorWithWhite:0.1 alpha:0.6];
     BOOL ret = [QPExtractValue(kThemeStyleOnOff) boolValue];
     UIColor *bgColor = ret
-                    ? (_isDarkMode ? customBlackColor : customWhiteColor)
-                    : customWhiteColor;
+    ? (_isDarkMode ? customDarkColor : customLightColor)
+    : customLightColor;
     if ([_toolBar isKindOfClass:UIImageView.class]) {
         UIImageView *tb = (UIImageView *)_toolBar;
         tb.image        = [self colorImage:tb.bounds
@@ -179,31 +185,31 @@
     }
 }
 
-// Deprecated
+/// Deprecated
 - (void)adaptThemeForWebView
 {
     //[self.webView evaluateJavaScript:@"document.body.style.backgroundColor" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
-    //if (!error) {
-    //    QPLog(@":: result=%@", result);
-    //} else {
-    //    QPLog(@":: error=%@, %@", @(error.code), error.localizedDescription);
-    //}
+    //    if (!error) {
+    //        QPLog(@":: result=%@", result);
+    //    } else {
+    //        QPLog(@":: error=%zi, %@", error.code, error.localizedDescription);
+    //    }
     //}];
-    NSString *bgColor   = @"";
+    NSString *backgroundColor = @"";
     NSString *textColor = @"";
-    BOOL bValue = [QPExtractValue(kThemeStyleOnOff) boolValue];
-    if (bValue && self.isDarkMode) {
-        bgColor   = @"'#1E1E1E'";
+    BOOL ret = [QPExtractValue(kThemeStyleOnOff) boolValue];
+    if (ret && _isDarkMode) {
+        backgroundColor = @"'#1E1E1E'";
         textColor = @"'#B4B4B4'";
     } else {
-        bgColor   = @"'#F3F3F3'";
+        backgroundColor = @"'#F3F3F3'";
         textColor = @"'#303030'";
     }
-    // document.getElementsByTagName('body')[0].style.backgroundColor
+    //[self.webView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= %@", @"130%"] completionHandler:nil];
+    //document.body.style.webkitTextFillColor
+    [self.webView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor=%@", textColor] completionHandler:nil];
     // document.body.style.backgroundColor
-    [self.webView evaluateJavaScript:[NSString stringWithFormat:@"document.body.style.backgroundColor=%@", bgColor] completionHandler:NULL];
-    // document.getElementsByTagName('body')[0].style.webkitTextFillColor
-    [self.webView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextFillColor=%@", textColor] completionHandler:NULL];
+    [self.webView evaluateJavaScript:[NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.background=%@", backgroundColor] completionHandler:nil];
 }
 
 #pragma make - WKNavigationDelegate, WKUIDelegate
@@ -224,8 +230,6 @@
 {
     NSURL *url = webView.URL;
     QPLog(":: url=%@", url);
-    _requestURL = url.copy;
-    !self.linkBlock ?: self.linkBlock(url);
     if (QPRespondsToSelector(self.delegate, @selector(adapter:didReceiveServerRedirectForProvisionalNavigation:))) {
         [self.delegate adapter:self didReceiveServerRedirectForProvisionalNavigation:navigation];
     }
@@ -235,9 +239,6 @@
 {
     NSURL *url = webView.URL;
     QPLog(":: url=%@", url);
-    _requestURL = url.copy;
-    !self.linkBlock ?: self.linkBlock(url);
-    //[self adaptThemeForWebView];
     if (QPRespondsToSelector(self.delegate, @selector(adapter:didCommitNavigation:))) {
         [self.delegate adapter:self didCommitNavigation:navigation];
     }
@@ -255,7 +256,7 @@
     _requestURL = url.copy;
     !self.linkBlock ?: self.linkBlock(url);
     [self hideProgressView];
-    //[self adaptThemeForWebView];
+    [self adaptThemeForWebView];
     if (QPRespondsToSelector(self.delegate, @selector(adapter:didFinishNavigation:))) {
         [self.delegate adapter:self didFinishNavigation:navigation];
     }
@@ -321,8 +322,10 @@
 {
     NSURL *url = navigationAction.request.URL;
     QPLog(":: url=%@", url);
-    _requestURL = url.copy;
-    !self.linkBlock ?: self.linkBlock(url);
+    if (![url.absoluteString isEqualToString:@"about:blank"]) {
+        _requestURL = url.copy;
+        !self.linkBlock ?: self.linkBlock(url);
+    }
     
     // Method2: resolve the problem about '_blank'.
     //if (navigationAction.targetFrame == nil) {
@@ -389,11 +392,11 @@
 
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message
 {
+    QPLog(@":: message=%@", message);
     if (QPRespondsToSelector(self.delegate, @selector(adapter:userContentController:didReceiveScriptMessage:))) {
         [self.delegate adapter:self userContentController:userContentController didReceiveScriptMessage:message];
         return;
     }
-    QPLog(@":: message=%@", message);
 }
 
 #pragma mark - UIScrollViewDelegate

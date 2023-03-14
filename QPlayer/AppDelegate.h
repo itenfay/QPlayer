@@ -7,10 +7,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class QPPlayerController;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
+/// A root window for the app.
 @property (strong, nonatomic) UIWindow *window;
 
+/// Allow to rotate user interface orentitaion.
 @property (nonatomic, assign) BOOL allowOrentitaionRotation;
+
+/// A player controller.
+@property (nonatomic, weak) QPPlayerController *playerController;
 
 @end

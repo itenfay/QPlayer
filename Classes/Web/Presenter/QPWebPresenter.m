@@ -72,6 +72,7 @@
     searchViewController.searchHistoryStyle = PYSearchHistoryStyleDefault;
     searchViewController.searchViewControllerShowMode = PYSearchViewControllerShowDefault;
     
+    /*
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:searchViewController];
     [nc.navigationBar setShadowImage:[UIImage new]];
     if (_viewController.isDarkMode) {
@@ -96,9 +97,15 @@
         nc.navigationBar.standardAppearance = appearance;
         nc.navigationBar.scrollEdgeAppearance = appearance;
     }
-    nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    //nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     //nc.modalPresentationStyle = UIModalPresentationFullScreen;
-    [_viewController presentViewController:nc animated:YES completion:nil];
+    //[_viewController presentViewController:nc animated:YES completion:nil];
+    */
+    BOOL darkMode = _viewController.isDarkMode;
+    UIColor *bgColor = darkMode ? QPColorFromRGB(20, 20, 20) : QPColorFromRGB(240, 240, 240);
+    searchViewController.view.backgroundColor = bgColor;
+    searchViewController.searchBar = darkMode ? QPColorFromRGB(20, 20, 20) : QPColorFromRGB(39, 220, 203);
+    [_viewController presentViewController:searchViewController animated:YES completion:nil];
 }
 
 - (void)loadData:(NSString *)searchText searchViewController:(PYSearchViewController *)searchViewController {
@@ -181,13 +188,13 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 - (void)adapter:(QPWKWebViewAdapter *)adapter didFinishNavigation:(WKNavigation *)navigation
 {
     QPLog(@"::");
-    [_playbackContext evaluateJavaScriptForVideoCurrentSrc];
+    [_playbackContext evaluateJavaScriptForVideoSrc];
 }
 
 - (void)adapter:(QPWKWebViewAdapter *)adapter decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     QPLog(@"::");
-    [_playbackContext canAllowNavigation:adapter.webView.URL];
+    //[_playbackContext canAllowNavigation:adapter.webView.URL];
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 

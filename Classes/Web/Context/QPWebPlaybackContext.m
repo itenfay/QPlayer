@@ -25,22 +25,6 @@
     return  self;
 }
 
-- (void)evaluateJavaScriptForVideoCurrentSrc
-{
-    NSString *jsStr = @"document.querySelector('video').currentSrc;";
-    @weakify(self)
-    [self.adapter.webView evaluateJavaScript:jsStr completionHandler:^(id result, NSError *error) {
-        if (!error) {
-            // 截获到视频地址
-            NSString *videoUrl = (NSString *)result;
-            QPLog(@":: videoUrl=%@", videoUrl);
-            [weak_self attemptToPlayVideo:videoUrl];
-        } else {
-            QPLog(@":: error=%zi, %@", error.code, error.localizedDescription);
-        }
-    }];
-}
-
 - (void)evaluateJavaScriptForVideoSrc
 {
     NSString *jsStr = @"document.getElementsByTagName('video')[0].src";
@@ -125,7 +109,7 @@
                         NSString *videoUrl = [tempUrl componentsSeparatedByString:@"?"].firstObject;
                         videoUrl = [NSString stringWithFormat:@"%@://%@%@", aURL.scheme, aURL.host, videoUrl];
                         QPLog(@":: videoUrl=%@", videoUrl);
-                        [self playVideoWithTitle:title urlString:videoUrl];
+                        [self playVideoWithTitle:title urlString:videoUrl playerType:QPPlayerTypeKSYMediaPlayer];
                     }
                     break;
                 }
@@ -143,7 +127,7 @@
     NSString *videoTitle = self.adapter.webView.title;
     QPLog(@":: videoTitle=%@", videoTitle);
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
-        [self playVideoWithTitle:videoTitle urlString:url];
+        [self playVideoWithTitle:videoTitle urlString:url playerType:QPPlayerTypeKSYMediaPlayer];
     } else {
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];
@@ -153,10 +137,10 @@
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString
 {
-    [self playVideoWithTitle:title urlString:urlString usingMediaPlayer:NO];
+    [self playVideoWithTitle:title urlString:urlString playerType:QPPlayerTypeZFPlayer];
 }
 
-- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString usingMediaPlayer:(BOOL)usingMediaPlayer
+- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type
 {
     if (!QPPlayerIsPlaying() && QPDetermineWhetherToPlay()) {
         QPPlayerSavePlaying(YES);
@@ -166,10 +150,20 @@
             model.isLocalVideo   = NO;
             model.videoTitle     = title;
             model.videoUrl       = urlString;
-            if (usingMediaPlayer) {
-                model.isMediaPlayerPlayback = YES;
-            } else {
-                model.isZFPlayerPlayback = YES;
+            model.videoDecoding  = 1;
+            switch (type) {
+                case QPPlayerTypeZFPlayer:
+                    model.isZFPlayerPlayback = YES;
+                    break;
+                case QPPlayerTypeIJKPlayer:
+                    model.isIJKPlayerPlayback = YES;
+                    break;
+                case QPPlayerTypeKSYMediaPlayer:
+                    model.isMediaPlayerPlayback = YES;
+                    break;
+                default:
+                    model.isZFPlayerPlayback = YES;
+                    break;
             }
             QPPlayerController *qpc = [[QPPlayerController alloc] initWithModel:model];
             [self.yf_currentViewController.navigationController pushViewController:qpc animated:YES];

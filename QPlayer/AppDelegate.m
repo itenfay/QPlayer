@@ -57,7 +57,6 @@
 
 - (void)stopSniffingNetworkStatus
 {
-    
     if (DYFNetworkSniffer.sharedSniffer.isStarted) {
         [DYFNetworkSniffer.sharedSniffer stop];
     }
@@ -90,10 +89,8 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    UIViewController *vc = self.yf_currentViewController;
-    if ([vc isKindOfClass:QPPlayerController.class]) {
-        QPPlayerController *player = (QPPlayerController *)vc;
-        QPPlayerPresenter *pt = (QPPlayerPresenter *)player.presenter;
+    if (_playerController) {
+        QPPlayerPresenter *pt = (QPPlayerPresenter *)_playerController.presenter;
         [pt stopPictureInPicture];
     }
 }
@@ -106,10 +103,8 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [self stopSniffingNetworkStatus];
-    UIViewController *vc = self.yf_currentViewController;
-    if ([vc isKindOfClass:QPPlayerController.class]) {
-        QPPlayerController *player = (QPPlayerController *)vc;
-        QPPlayerPresenter *pt = (QPPlayerPresenter *)player.presenter;
+    if (_playerController) {
+        QPPlayerPresenter *pt = (QPPlayerPresenter *)_playerController.presenter;
         [pt startPictureInPicture];
     }
 }

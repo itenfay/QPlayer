@@ -29,18 +29,25 @@
 #pragma mark - Third
 
 #import "HTTPServer.h"
-#import "MJRefresh.h"
 #import "SVBlurView.h"
 #import "MBProgressHUD+JDragon.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
+/// PYSearch
 #import "PYSearch.h"
+/// DYFProgressView
 #import "DYFProgressView.h"
 #import "DYFWebProgressView.h"
 
+/// ZFPlayer
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFLandscapeRotationManager.h>
 #import <ZFPlayer/ZFLandscapeRotationManager_iOS15.h>
 #import <ZFPlayer/ZFLandscapeRotationManager_iOS16.h>
+#if __has_include(<ZFPlayer/ZFIJKPlayerManager.h>)
+#import <ZFPlayer/ZFIJKPlayerManager.h>
+#endif
+
+/// MJRefresh
 #import <MJRefresh/MJRefresh.h>
 
 #endif /* QPPchFile_h */

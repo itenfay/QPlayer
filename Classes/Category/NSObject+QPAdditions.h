@@ -64,8 +64,8 @@
 
 - (UIImage *)yf_imageWithColor:(UIColor *)color;
 - (UIImage *)yf_imageWithColor:(UIColor *)color rect:(CGRect)rect;
-- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundColor:(UIColor *)backgroundColor backgroundRect:(CGRect)rect;
-- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundColor:(UIColor *)backgroundColor backgroundRect:(CGRect)rect atPoint:(CGPoint)point;
+- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect;
+- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect atPoint:(CGPoint)point;
 
 - (NSArray<UIWindow *> *)yf_activeWindows;
 /// Returns a main window.

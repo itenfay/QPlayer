@@ -121,7 +121,7 @@
         if (QPPlayerCanSupportAVFormat(tempStr)) {
             self.titleView.text = url = text;
             QPAdvancedSearchPresenter *presenter = (QPAdvancedSearchPresenter *)self.presenter;
-            [presenter.playbackContext playVideoWithTitle:text urlString:url usingMediaPlayer:YES];
+            [presenter.playbackContext playVideoWithTitle:text urlString:url playerType:QPPlayerTypeIJKPlayer];
         } else if ([tempStr hasPrefix:@"https"] || [tempStr hasPrefix:@"http"]) {
             url = text;
         } else if ([tempStr hasPrefix:@"www."] || [tempStr hasPrefix:@"m."]   ||
@@ -143,23 +143,11 @@
                                              @"https://m.mgtv.com/",
                                              @"https://m.iqiyi.com/",
                                              @"https://www.youku.com/",
-                                             @"https://m.tv.sohu.com/",
                                              @"https://m.pptv.com/",
-                                             @"https://m.le.com/",
-                                             
                                              @"https://m.ixigua.com/",
                                              @"https://v.ifeng.com/",
                                              @"https://haokan.baidu.com/",
-                                             @"https://www.pearvideo.com/?from=intro",
-                                             @"http://ten.budejie.com/video/",
-                                             @"https://m.ku6.com/index",
-                                             
-                                             @"https://y80s.net/",
-                                             
-                                             @"https://xw.qq.com/m/sports/index.htm",
-                                             @"https://m.live.qq.com/",
-                                             @"https://sports.sina.cn/?from=wap",
-                                             @"https://m.sohu.com/z/"]
+                                             @"https://y80s.net/"]
                                  cachePath:VIDEO_SEARCH_HISTORY_CACHE_PATH];
 }
 

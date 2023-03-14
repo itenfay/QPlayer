@@ -10,6 +10,12 @@
 #import "QPWKWebViewAdapter.h"
 #import "QPPlayerController.h"
 
+typedef NS_ENUM(NSUInteger, QPPlayerType) {
+    QPPlayerTypeZFPlayer,
+    QPPlayerTypeIJKPlayer,
+    QPPlayerTypeKSYMediaPlayer,
+};
+
 @interface QPWebPlaybackContext : QPBaseContext
 @property (nonatomic, weak) QPWKWebViewAdapter *adapter;
 @property (nonatomic, weak) QPBaseViewController *controller;
@@ -19,9 +25,8 @@
 - (BOOL)canAllowNavigation:(NSURL *)URL;
 
 - (void)evaluateJavaScriptForVideoSrc;
-- (void)evaluateJavaScriptForVideoCurrentSrc;
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString;
-- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString usingMediaPlayer:(BOOL)usingMediaPlayer;
+- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type;
 
 @end
 

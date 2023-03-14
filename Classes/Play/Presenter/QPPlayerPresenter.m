@@ -30,19 +30,38 @@
                 //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Software;
             }
         } else if ((vc.model.isLocalVideo && vc.model.isIJKPlayerPlayback) || vc.model.isIJKPlayerPlayback) {
-            //ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init]; // playerManager
-            // Invalid, player hasn't been initialized yet.
-            //[playerManager.player setPlayerOptionIntValue:vc.model.videoDecoding forKey:@"videotoolbox"];
-            //NSURL *aURL = [NSURL URLWithString:vc.model.videoUrl];
-            //NSString *scheme = [aURL scheme];
-            //QPLog(@":: scheme=%@", scheme);
-            //if ([scheme isEqualToString:@"rtsp"]) {
-            //    [playerManager.player setFormatOptionValue:@"tcp" forKey:@"rtsp_transport"];
-            //}
-            //_player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
-        } else if ((vc.model.isLocalVideo && vc.model.isZFPlayerPlayback) || vc.model.isZFPlayerPlayback) {
-            ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
+            /*
+            #if DEBUG
+            [IJKFFMoviePlayerController setLogReport:YES];
+            [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_DEBUG];
+            #else
+            [IJKFFMoviePlayerController setLogReport:NO];
+            [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_INFO];
+            #endif
+            ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init]; // IJKPlayerManager
             _player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
+            NSURL *url = [NSURL URLWithString:vc.model.videoUrl];
+            NSString *scheme = [url.scheme lowercaseString];
+            QPLog(@":: url=%@, scheme=%@", url, scheme);
+            if ([scheme hasPrefix:@"rtmp"]) {
+                // 不限制输入缓存区大小
+                //[playerManager.player setOptionIntValue:1 forKey:@"infbuf" ofCategory:kIJKFFOptionCategoryPlayer];
+                // 最大缓存区大小
+                //[playerManager.player setOptionIntValue:1024 forKey:@"maxx-buffer-size" ofCategory:kIJKFFOptionCategoryPlayer];
+                // 缩短播放的rtmp视频延迟在1s内
+                [playerManager.player setOptionIntValue:100 forKey:@"analyzemaxduration" ofCategory:kIJKFFOptionCategoryFormat];
+                [playerManager.player setOptionIntValue:10240 forKey:@"probesize" ofCategory:kIJKFFOptionCategoryFormat];
+                [playerManager.player setOptionIntValue:1 forKey:@"flush_packets" ofCategory:kIJKFFOptionCategoryFormat];
+                [playerManager.player setOptionIntValue:1 forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryFormat];
+                [playerManager.player setOptionValue:@"fflags" forKey:@"fflags" ofCategory:kIJKFFOptionCategoryFormat];
+                [playerManager.player setOptionIntValue:0 forKey:@"packet-buffering" ofCategory:kIJKFFOptionCategoryPlayer];
+                [playerManager.player setOptionIntValue:1 forKey:@"framedrop" ofCategory:kIJKFFOptionCategoryPlayer];
+                // 设置rtmp的来源
+                //[playerManager.player setOptionValue:QPBundleIdentifier forKey:@"rtmp_pageurl" ofCategory:kIJKFFOptionCategoryFormat];
+            } else if ([scheme hasPrefix:@"rtsp"]) {
+                [playerManager.player setOptionIntValue:1 forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryFormat];
+            }
+            */
         } else {
             ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
             _player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
@@ -61,8 +80,8 @@
     QPPlayerController *vc = [self playViewController];
     NSString *videoUrl = vc.model.videoUrl;
     NSURL *aURL = vc.model.isLocalVideo
-    ? [NSURL fileURLWithPath:videoUrl]
-    : [NSURL URLWithString:videoUrl];
+                ? [NSURL fileURLWithPath:videoUrl]
+                : [NSURL URLWithString:videoUrl];
     [self playWithURL:aURL];
 }
 
@@ -82,9 +101,9 @@
     
     self.player.playerApperaPercent      = 0.0;
     self.player.playerDisapperaPercent   = 1.0;
-    self.player.allowOrentitaionRotation = NO;
+    self.player.allowOrentitaionRotation = YES;
     // 设置退到后台继续播放
-    self.player.pauseWhenAppResignActive = YES;
+    self.player.pauseWhenAppResignActive = NO;
     // 是否内存缓存播放
     //self.player.resumePlayRecord = YES;
     
@@ -143,15 +162,19 @@
         if (!manager) { return; }
         AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:manager.avPlayerLayer];
         self.pipController = pipVC;
-        
     } else if (vc.model.isMediaPlayerPlayback) {
         KSYMediaPlayerManager *manager = (KSYMediaPlayerManager *)self.player.currentPlayerManager;
         AVPlayerLayer *avPlayerLayer = (AVPlayerLayer *)manager.view.playerView.layer;
         AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:avPlayerLayer];
         self.pipController = pipVC;
+    } else if (vc.model.isIJKPlayerPlayback) {
+        //ZFIJKPlayerManager *manager = (ZFIJKPlayerManager *)self.player.currentPlayerManager;
+        //AVPlayerLayer *avPlayerLayer = (AVPlayerLayer *)manager.view.playerView.layer;
+        //AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:avPlayerLayer];
+        //self.pipController = pipVC;
     }
     /// 要有延迟 否则可能开启不成功
-    [self delayToScheduleTask:2.0 completion:^{
+    [self delayToScheduleTask:2 completion:^{
         [self.pipController startPictureInPicture];
     }];
 }
@@ -167,7 +190,8 @@
     [self.pipController stopPictureInPicture];
 }
 
-//- (void)configureIJKFFOptions:(IJKFFOptions *)options {
+//- (IJKFFOptions *)supplyIJKFFOptions {
+//    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
 //    // 帧速率（fps）可以改，确认非标准帧率会导致音画不同步，所以只能设定为15或者29.97）
 //    [options setPlayerOptionIntValue:29.97 forKey:@"r"];
 //    // 设置音量大小，256为标准音量。（要设置成两倍音量时则输入512，依此类推)
@@ -180,7 +204,7 @@
 //    // 跳帧开关
 //    [options setPlayerOptionIntValue:0 forKey:@"framedrop"];
 //    // 开启硬编码（默认是 0 ：软解）
-//    [options setPlayerOptionIntValue:self.videoDecoding forKey:@"videotoolbox"];
+//    [options setPlayerOptionIntValue:1 forKey:@"videotoolbox"];
 //
 //    // 指定最大宽度
 //    [options setPlayerOptionIntValue:960 forKey:@"videotoolbox-max-frame-width"];
@@ -211,9 +235,11 @@
 //    [options setPlayerOptionIntValue:0 forKey:@"packet-buffering"];
 //
 //    // param for playback
-//    //[options setPlayerOptionIntValue:0 forKey:@"max_cached_duration"];
-//    //[options setPlayerOptionIntValue:0 forKey:@"infbuf"];
-//    //[options setPlayerOptionIntValue:1 forKey:@"packet-buffering"];
+//    [options setPlayerOptionIntValue:0 forKey:@"max_cached_duration"];
+//    [options setPlayerOptionIntValue:0 forKey:@"infbuf"];
+//    [options setPlayerOptionIntValue:1 forKey:@"packet-buffering"];
+//
+//    return  options;
 //}
 
 @end

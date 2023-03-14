@@ -860,21 +860,21 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		1430B8AB234C3FBB00189025 /* KSYMediaPlayer */ = {
+		1430B8AB234C3FBB00189025 /* KSYMediaPlayer_vod */ = {
 			isa = PBXGroup;
 			children = (
-				1430B8AD234C3FBB00189025 /* KSYMediaPlayerManager */,
+				1430B8AD234C3FBB00189025 /* Manager */,
 			);
-			path = KSYMediaPlayer;
+			path = KSYMediaPlayer_vod;
 			sourceTree = "<group>";
 		};
-		1430B8AD234C3FBB00189025 /* KSYMediaPlayerManager */ = {
+		1430B8AD234C3FBB00189025 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
 				1430B8AF234C3FBB00189025 /* KSYMediaPlayerManager.h */,
 				1430B8AE234C3FBB00189025 /* KSYMediaPlayerManager.m */,
 			);
-			path = KSYMediaPlayerManager;
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		1438F67B25CC5280000CC65D /* Model */ = {
@@ -1174,7 +1174,7 @@
 			children = (
 				1481C1A9210F018A00F431BB /* Classes */,
 				F64D47BF8EF197EFA3197BA4 /* Frameworks */,
-				1430B8AB234C3FBB00189025 /* KSYMediaPlayer */,
+				1430B8AB234C3FBB00189025 /* KSYMediaPlayer_vod */,
 				63FBA0E1EBD306C3E29D621E /* Pods */,
 				965E09DF1F04A85F009BBBD9 /* Products */,
 				965E09E01F04A85F009BBBD9 /* QPlayer */,

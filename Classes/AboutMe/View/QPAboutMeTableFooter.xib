@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="QPAboutMeTableFooter">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="160"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="免责声明：部分资源和内容来源于互联网，如有涉及版权和法律法规问题，就请提issue或发送email联系本人。在核实确认后，本人会将其删除。" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tXb-YA-l1h" userLabel="DisclaimerLabel">
+                    <rect key="frame" x="30" y="82" width="354" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="MPH-TL-M3s"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright © 2017 - Now. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M40-wU-RlD" userLabel="CopyrightLabel">
+                    <rect key="frame" x="20" y="137" width="374" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="18" id="xtY-ba-6ja"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mgd-kJ-rPR" userLabel="BtnBGView">
+                    <rect key="frame" x="157" y="12" width="100" height="50"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3p1-e2-Gpa" userLabel="JianShuButton">
+                            <rect key="frame" x="5" y="10" width="40" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="Wr0-aU-zx5"/>
+                                <constraint firstAttribute="width" constant="40" id="y5D-EC-s1G"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <state key="normal" title="简书">
+                                <color key="titleColor" red="0.28601914639999998" green="0.56322944159999999" blue="0.98144155740000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="gotoJianShu:" destination="iN0-l3-epB" eventType="touchUpInside" id="enf-kT-XNW"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="deviderLine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="beb-zh-a76" userLabel="VDivider">
+                            <rect key="frame" x="50" y="17" width="1" height="16"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="aon-gc-PDw"/>
+                                <constraint firstAttribute="width" constant="1" id="c4j-4b-kb0"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OmL-Yu-2Af" userLabel="BlogButton">
+                            <rect key="frame" x="56" y="10" width="40" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="4QG-cS-fke"/>
+                                <constraint firstAttribute="width" constant="40" id="vq7-AB-EyU"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <state key="normal" title="博客">
+                                <color key="titleColor" red="0.28601914644241333" green="0.56322944164276123" blue="0.98144155740737915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="gotoMyBlog:" destination="iN0-l3-epB" eventType="touchUpInside" id="nwz-Y0-DHN"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="1OB-MA-ol7"/>
+                        <constraint firstItem="3p1-e2-Gpa" firstAttribute="leading" secondItem="mgd-kJ-rPR" secondAttribute="leading" constant="5" id="3ae-n3-33i"/>
+                        <constraint firstItem="OmL-Yu-2Af" firstAttribute="top" secondItem="mgd-kJ-rPR" secondAttribute="top" constant="10" id="Ddi-oN-zPj"/>
+                        <constraint firstAttribute="width" constant="100" id="ISs-cA-i11"/>
+                        <constraint firstItem="beb-zh-a76" firstAttribute="top" secondItem="mgd-kJ-rPR" secondAttribute="top" constant="17" id="SEK-B6-fL7"/>
+                        <constraint firstItem="3p1-e2-Gpa" firstAttribute="top" secondItem="mgd-kJ-rPR" secondAttribute="top" constant="10" id="Vgi-4b-Hbz"/>
+                        <constraint firstItem="OmL-Yu-2Af" firstAttribute="leading" secondItem="beb-zh-a76" secondAttribute="trailing" constant="5" id="feG-Bf-j2w"/>
+                        <constraint firstItem="beb-zh-a76" firstAttribute="leading" secondItem="3p1-e2-Gpa" secondAttribute="trailing" constant="5" id="lHH-qY-B1n"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="mgd-kJ-rPR" firstAttribute="top" relation="lessThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" constant="112" id="3BZ-6U-UsN"/>
+                <constraint firstItem="M40-wU-RlD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="FRP-c6-LUU"/>
+                <constraint firstAttribute="trailing" secondItem="M40-wU-RlD" secondAttribute="trailing" constant="20" id="MKW-B4-F9w"/>
+                <constraint firstAttribute="trailing" secondItem="tXb-YA-l1h" secondAttribute="trailing" constant="30" id="Mab-xM-Vob"/>
+                <constraint firstItem="tXb-YA-l1h" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="Oie-yT-CCh"/>
+                <constraint firstItem="mgd-kJ-rPR" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="QKv-k2-0l5"/>
+                <constraint firstAttribute="bottom" secondItem="M40-wU-RlD" secondAttribute="bottom" constant="5" id="QZH-fH-pMj"/>
+                <constraint firstItem="tXb-YA-l1h" firstAttribute="top" secondItem="mgd-kJ-rPR" secondAttribute="bottom" constant="20" id="UZd-Tx-a75"/>
+                <constraint firstItem="M40-wU-RlD" firstAttribute="top" secondItem="tXb-YA-l1h" secondAttribute="bottom" constant="5" id="nK9-Qf-9yH"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="blogButton" destination="OmL-Yu-2Af" id="DJ5-QW-pVi"/>
+                <outlet property="copyrightLabel" destination="M40-wU-RlD" id="kX6-CH-5uN"/>
+                <outlet property="disclaimerLabel" destination="tXb-YA-l1h" id="4eY-BM-ayF"/>
+                <outlet property="jshuButton" destination="3p1-e2-Gpa" id="sxQ-H4-AD0"/>
+            </connections>
+            <point key="canvasLocation" x="340.57971014492756" y="79.6875"/>
+        </view>
+    </objects>
+</document>

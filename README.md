@@ -1,127 +1,80 @@
 ## QPlayer
 
-`QPlayer` is a video player that you can't miss, supports `m4v, wmv, 3gp, mp4, mov, avi, mkv, mpeg, mpg, flv, rm, rmvb, mp3` format. Enter any `HTTP, RTSP, RTMP, HLS` address play network streaming or live. `QPlayer` uses `ffmpeg`, you can transfer files via wifi. It aggregates several lives, videos and short video platforms, and you can watch live, video and short video online. 
+`QPlayer`是一款你不容错过的视频播放器，支持 `M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3` 等主流媒体格式。输入任何 `HTTP、RTMP、RTSP、HLS` 地址播放网络流或直播。`QPlayer`支持 `WiFi` 文件传输。聚合了多个直播、视频和短视频平台，可在线观看直播、视频和短视频。
 
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
 
-[Chinese Instructions (中文说明)](README-zh.md)
 
-
-## Disclaimer
-
-The relevant technologies and resources used in this article are only for learning and communication. Please do not use them for any other commercial purposes, or you will be responsible for the consequences!!!
-
-Some of the resources and content come from the Internet. If there are copyright and laws & regulations, please send the issue or email to contact me. After verification and confirmation, I will delete it.
-
-
-## Group (ID:15535338)
+## QQ群 (ID:15535338)
 
 <div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
+&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
+</div>
+
+[English Instructions](README-en.md)
+
+
+## 免责声明
+
+本文使用的相关技术以及资源仅用于学习交流，请勿用于其他任何商业用途，否则后果自负！！！
+
+部分资源和内容来源于互联网，如有涉及版权和法律法规问题，就请提 issue 或发送 email 联系本人。在核实确认后，本人会将其删除。
+
+
+## 预览
+
+- 本地视频
+
+<div align=left>
+&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/local_videos.png" width="80%" />
+</div>
+
+- 直播和电视
+
+<div align=left>
+&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/live_tv.png" width="80%" />
+</div>
+
+- 网页视频
+
+<div align=left>
+&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/web_videos.png" width="80%" />
+</div>
+
+- 应用介绍
+
+<div align=left>
+&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/app_intro.png" width="80%" />
 </div>
 
 
-## Preview
+## 要求
 
-- Local Videos
-
-<div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/local_videos.png" width="80%" />
-</div>
-
-- Lives And TV
-
-<div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/ms_live.png" width="80%" /> <br />
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/live_tv.png" width="80%" />
-</div>
-
-- Web Videos
-
-<div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/web_videos.png" width="80%" />
-</div>
-
-- App Introduction
-
-<div align=left>
-&emsp; <img src="https://github.com/dgynfi/QPlayer/raw/master/images/app_intro.png" width="80%" />
-</div>
+iOS 11.0+, iPhone and iPad, Xcode10+.
 
 
-## Requirements
+## 文件传输
 
-iOS 8.0+, iPhone and iPad, Xcode10+.
+在 `App` 设置中打开 `WiFi` 文件传输的开关，即可享用 WiFi 文件传输服务。在电脑浏览器中输入，例如：“[http://192.168.6.6:8888](http://192.168.6.6:8888)”，打开网页后，选择文件，点击 `Upload` 上传。在上传媒体文件时，确保电脑和手机在同一 `WiFi` 环境并且不要关闭本应用也不要锁屏。
 
-
-## File Transfer
-
-Turn on the `WiFi` file transfer switch in the app settings to enjoy the `WiFi` file transfer service. Input in the computer browser, for example, "[http://192.168.6.6:8888](http://192.168.6.6:8888)", After open the web page, select the file, and click `Upload`. When uploading media files, make sure the computer and mobile phone are in the same `WiFi` environment and do not close the app or lock the screen.
-
-PS: `PC` browser is recommended (Safari [MAC], Microsoft edge [win10], Google Chrome [MAC win10])
+`PS：建议使用PC浏览器（ Safari [Mac], Microsoft Edge [Win10], Google Chrome [Mac Win10] ）`
 
 
-## Blog
+## 博客
 
-- [How to customize your own live, audio and video player (QPlayer) for iOS?](https://www.jianshu.com/p/df5af1d079d6)
-
-
-## Open Source Components
-
-- [AFNetworking](https://github.com/AFNetworking/AFNetworking)
-
-    A delightful networking framework for iOS, macOS, watchOS, and tvOS. 
-
-- [SDWebImage](https://github.com/SDWebImage/SDWebImage)
-
-    This library provides an async image downloader with cache support. For convenience, we added categories for UI elements like UIImageView, UIButton, MKAnnotationView.
-
-- [ijkplayer](https://github.com/bilibili/ijkplayer) 
-
-    Android/iOS video player based on FFmpeg n3.4, with MediaCodec, VideoToolbox support. ( [ IJKMediaFramework.framework Download ](https://pan.baidu.com/s/1WCZzdCUiaQL3a1yJSD22QQ) - Extraction Code: mxqq )
-
-- [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
-
-    MBProgressHUD is an iOS drop-in class that displays a translucent HUD with an indicator and/or labels while work is being done in a background thread. The HUD is meant as a replacement for the undocumented, private UIKit UIProgressHUD with some additional features.
-
-- [MJRefresh](https://github.com/CoderMJLee/MJRefresh)
-
-    An easy way to use pull-to-refresh.
-
-- [FDFullscreenPopGesture](https://github.com/forkingdog/FDFullscreenPopGesture) 
-
-    A UINavigationController's category to enable fullscreen pop gesture with iOS7+ system style.
-
-- [PYSearch](https://github.com/ko1o/PYSearch)
-
-    🔍 An elegant search controller which replaces the UISearchController for iOS (iPhone & iPad) .
-
-- [CocoaWebResource](https://github.com/robin/cocoa-web-resource)
-
-    A file transfer solution for iPhone and iPod Touch. Support uploading, download and delete files via browser.
-
-- [ZFPlayer](https://github.com/renzifeng/ZFPlayer) 
-
-    Support customization of any player SDK and control layer.
-
-- [KSYMediaPlayer_iOS](ttps://github.com/ksvc/KSYMediaPlayer_iOS)
-
-    The `KSYUN Live Streaming Player SDK` supports the `RTMP HTTP-FLV HLS` protocol. Consistent with the `MPMoviePlayerController` interface of the system player, it can seamlessly and quickly switch to KSYMediaPlayer. It supports local all media format, and optimizes the mainstream media format (`MP4, avi, WMV, flv, MKV, MOV, RMVB, etc.`), supports a wide range of streaming video formats, `HLS, RTMP, HTTP Rseudo-Streaming, etc.`. Low latency live broadcast experience, with `KSYUN Live Streaming Player SDK`, it can achieve a stable 4-second delay in the whole live broadcast, realize fast full screen playback, bring users a faster and better playback experience, support screen rotation, volume adjustment and other functions.
-
-- [SVBlurView](https://github.com/TransitApp/SVBlurView)
-
-    SVBlurView is a simple reimplementation of FXBlurView for iOS 7. It uses Apple's UIImage+ImageEffects category as well as the new drawViewHierarchyInRect: UIView API. It doesn't do dynamic blurs yet.
-
-- [MBProgressHUD-JDragon](https://github.com/lyc59621/MBProgressHUD-JDragon)
-
-    A category that encapsulates `MBProgressHUD`.
+- [iOS 定制自己的直播/音视频播放器 QPlayer](https://www.jianshu.com/p/df5af1d079d6)
 
 
-## Clone
+## 开源组件
 
-If you need to build a custom video player, you can input the command (`git clone https://github.com/dgynfi/QPlayer.git`) on the terminal to clone the project.
+- [查看开源组件](OpenSourceComponents.md)
 
 
-## Feedback is welcome
+## 克隆
 
-If you notice any issue, got stuck or just want to chat feel free to create an issue. I will be happy to help you.
+如果你需要构建自定义的视频播放器，那么你可以在终端输入命令 (`git clone https://github.com/chenxing640/QPlayer.git`) 克隆此工程。
+
+
+## 欢迎反馈
+
+如果你遇到任何问题，请创建一个问题。我很乐意帮助你。

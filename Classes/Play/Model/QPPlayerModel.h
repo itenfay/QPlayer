@@ -1,0 +1,44 @@
+//
+//  QPPlayerModel.h
+//  QPlayer
+//
+//  Created by chenxing on 2023/3/3.
+//  Copyright © 2023 chenxing. All rights reserved.
+//
+
+#import "QPBaseModel.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface QPPlayerModel : QPBaseModel
+
+/// Whether play the local video.
+@property (nonatomic, assign) BOOL isLocalVideo;
+
+/// Whether the ZFPlayer play back.
+@property (nonatomic, assign) BOOL isZFPlayerPlayback;
+
+/// Whether the ijkplayer play back.
+@property (nonatomic, assign) BOOL isIJKPlayerPlayback;
+
+/// Whether the media player play back.
+@property (nonatomic, assign) BOOL isMediaPlayerPlayback;
+
+/// The name for a video.
+@property (nonatomic, copy) NSString *videoTitle;
+
+/// The url for a video.
+@property (nonatomic, copy) NSString *videoUrl;
+
+/// The cover url for a video.
+@property (nonatomic, copy) NSString *coverUrl;
+
+/// The placeholder cover image for a video.
+@property (nonatomic, strong) UIImage *placeholderCoverImage;
+
+/// The decoding for a video. 0: soft decoding, 1: hard decoding.
+@property (nonatomic, assign) int videoDecoding;
+
+@end
+
+NS_ASSUME_NONNULL_END

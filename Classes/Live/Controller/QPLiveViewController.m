@@ -88,6 +88,7 @@
     presenter.viewController = self;
     self.presenter = presenter;
     self.adapter.scrollViewDelegate = presenter;
+    self.adapter.delegate = presenter;
 }
 
 - (void)configureWebViewAdapter
@@ -180,7 +181,7 @@
             self.titleView.text = url = text;
             NSString *title = [self titleMatchingWithUrl:url];
             QPLivePresenter *presenter = (QPLivePresenter *)self.presenter;
-            [presenter.playbackContext playVideoWithTitle:title urlString:url playerType:QPPlayerTypeIJKPlayer];
+            [presenter.playbackContext playVideoWithTitle:title urlString:url playerType:QPPlayerTypeKSYMediaPlayer];
             return;
         } else if ([tempStr hasPrefix:@"https"] || [tempStr hasPrefix:@"http"]) {
             url = text;
@@ -228,7 +229,7 @@
     [self.view bringSubviewToFront:dropListView];
     
     //dropListView.alpha = 0.f;
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         //dropListView.alpha = 1.f;
         dropListView.transform = CGAffineTransformMakeScale(1.05, 1.05);
     } completion:^(BOOL finished) {
@@ -242,7 +243,7 @@
         strong_self.playButton.enabled = YES;
         strong_self.titleView.text = urlString;
         QPLivePresenter *presenter = (QPLivePresenter *)strong_self.presenter;
-        [presenter.playbackContext playVideoWithTitle:title urlString:urlString playerType:QPPlayerTypeIJKPlayer];
+        [presenter.playbackContext playVideoWithTitle:title urlString:urlString playerType:QPPlayerTypeKSYMediaPlayer];
     }];
     
     [dropListView onCloseAction:^{

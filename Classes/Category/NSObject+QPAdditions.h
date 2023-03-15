@@ -56,7 +56,7 @@
  */
 - (int (^)(NSURL *url))yf_videoDuration;
 
-- (UIImage *)yf_supplyVideoCover:(NSString *)url;
+- (UIImage *)yf_getVideoCoverWithUrl:(NSString *)url;
 
 /// Returns a new version of the image that uses always template mode.
 - (UIImage *)yf_imageRenderingAlwaysTemplate:(NSString *)name;

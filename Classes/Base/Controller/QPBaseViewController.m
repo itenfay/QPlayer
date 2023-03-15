@@ -175,9 +175,8 @@
 
 - (void)enableInteractivePopGesture:(BOOL)enabled
 {
-    UINavigationController *nc = self.navigationController;
-    nc.interactivePopGestureRecognizer.delegate = enabled ? self : nil;
-    nc.interactivePopGestureRecognizer.enabled = enabled;
+    self.navigationController.interactivePopGestureRecognizer.delegate = enabled ? self : nil;
+    self.navigationController.interactivePopGestureRecognizer.enabled = enabled;
 }
 
 - (UINavigationBar *)navigationBar
@@ -280,8 +279,8 @@
 
 - (void)dealloc
 {
-    [self removeThemeStyleChangedObserver];
     QPLog(@"::");
+    [self removeThemeStyleChangedObserver];
 }
 
 @end

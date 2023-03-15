@@ -25,20 +25,149 @@
     return  self;
 }
 
-- (void)evaluateJavaScriptForVideoSrc
+- (void)queryVideoCurrentSrcByJavaScript
 {
-    NSString *jsStr = @"document.getElementsByTagName('video')[0].src";
+    // currentSrc: 只能返回视频地址，不能设置，并且要等到视频加载好了并且可以播放时才能获取到
+    NSString *js = @"document.querySelector('video').currentSrc";
+    QPLog(@":: js=%@", js);
     @weakify(self)
-    [self.adapter.webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        if(![response isEqual:[NSNull null]] && response != nil) {
-            // 截获到视频地址
-            NSString *videoUrl = (NSString *)response;
-            QPLog(@":: videoUrl=%@", videoUrl);
-            [weak_self attemptToPlayVideo:videoUrl];
-        } else {
+    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        if (error) {
             QPLog(@":: error=%zi, %@", error.code, error.localizedDescription);
         }
+        if ([weak_self handleJSResp:response]) {
+            QPLog(@":: js ok(currentSrc).");
+        }
     }];
+}
+
+- (void)queryVideoUrlByJavaScript
+{
+    NSString *js = @"document.getElementsByTagName('video')[0].src";
+    QPLog(@":: js=%@", js);
+    @weakify(self)
+    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        if(error) {
+            QPLog(@":: error=%zi, %@", error.code, error.localizedDescription);
+        }
+        if ([weak_self handleJSResp:response]) {
+            QPLog(@":: js ok(src).");
+        }
+    }];
+}
+
+- (void)queryVideoUrlByJavaScrip
+{
+    NSString *jsPath = [NSBundle.mainBundle pathForResource:@"jsquery_video_srcx" ofType:@"js"];
+    NSData *jsData = [NSData dataWithContentsOfFile:jsPath];
+    NSString *jsString = [NSString.alloc initWithData:jsData encoding:NSUTF8StringEncoding];
+    QPLog(@":: jsString=%@", jsString);
+    @weakify(self)
+    [self.adapter.webView evaluateJavaScript:jsString completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            QPLog(@":: jsString error=%zi, %@.", error.code, error.localizedDescription);
+        }
+        if ([weak_self handleJSResp:response]) {
+            QPLog(@":: jsString ok.");
+        }
+    }];
+}
+
+- (void)queryLastVideoByJavaScript
+{
+    NSString *js = @"var video=document.querySelectorAll('video')[0];if(video){video.pause();};video.src;";
+    QPLog(@":: js1=%@", js);
+    @weakify(self)
+    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            QPLog(@":: js1 error=%zi, %@.", error.code, error.localizedDescription);
+        }
+        if ([weak_self handleJSResp:response]) {
+            QPLog(@":: js1 ok.");
+        } else {
+            [weak_self queryVideoOfLastIFrameByJavaScript];
+        }
+    }];
+}
+
+- (void)queryVideoOfLastIFrameByJavaScript
+{
+    NSString *js = @"var frame=document.querySelectorAll('iframe')[0];var video=frame.contentWindow.document.documentElement.getElementsByTagName('video')[0];if(video){video.pause();};video.src;";
+    QPLog(@":: js2=%@", js);
+    @weakify(self)
+    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            QPLog(@":: js2 error=%zi, %@.", error.code, error.localizedDescription);
+        }
+        if ([weak_self handleJSResp:response]) {
+            QPLog(@":: js2 ok.");
+        } else {
+            [weak_self queryFirstVideoByJavaScript];
+        }
+    }];
+}
+
+- (void)queryFirstVideoByJavaScript
+{
+    NSString *js = @"var video=document.querySelector('video');if(video) {video.pause();};video.src;";
+    QPLog(@":: js3=%@", js);
+    @weakify(self)
+    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            QPLog(@":: js3 error=%zi, %@.", error.code, error.localizedDescription);
+        }
+        if ([weak_self handleJSResp:response]) {
+            QPLog(@":: js3 ok.");
+        } else {
+            [weak_self queryVideoOfFirstIFrameByJavaScript];
+        }
+    }];
+}
+
+- (void)queryVideoOfFirstIFrameByJavaScript
+{
+    NSString *js = @"var frame=document.querySelector('iframe');var video=frame.contentWindow.document.documentElement.getElementsByTagName('video')[0];if(video){video.pause();};video.src;";
+    QPLog(@":: js4=%@", js);
+    @weakify(self)
+    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            QPLog(@":: js4 error=%zi, %@.", error.code, error.localizedDescription);
+        }
+        if ([weak_self handleJSResp:response]) {
+            QPLog(@":: js4 ok.");
+        } else {
+            [weak_self queryVideoByJavaScript];
+        }
+    }];
+}
+
+- (void)queryVideoByJavaScript
+{
+    NSString *js = @"(var video=document.getElementsByTagName('video');if(video){video.pause();};video.src;";
+    QPLog(@":: js5=%@", js);
+    @weakify(self)
+    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            QPLog(@":: js5 error=%zi, %@.", error.code, error.localizedDescription);
+        }
+        if ([weak_self handleJSResp:response]) {
+            QPLog(@":: js5 ok.");
+        }
+    }];
+}
+
+- (BOOL)handleJSResp:(id)response
+{
+    if(![response isEqual:[NSNull null]] && response != nil) {
+        if ([response isKindOfClass:NSString.class]) {
+            // 截获到视频地址
+            NSString *videoUrl = (NSString *)response;
+            [self attemptToPlayVideo:videoUrl];
+            return YES;
+        }
+        return NO;
+    }
+    return NO;
 }
 
 - (BOOL)canAllowNavigation:(NSURL *)URL
@@ -122,12 +251,12 @@
 
 - (void)attemptToPlayVideo:(NSString *)url
 {
-    QPLog(@":: videoUrl=%@", url);
     [QPHudUtils showActivityMessageInView:@"正在解析..."];
-    NSString *videoTitle = self.adapter.webView.title;
-    QPLog(@":: videoTitle=%@", videoTitle);
+    NSString *title = self.adapter.webView.title;
+    QPLog(@":: videoTitle=%@", title);
+    QPLog(@":: videoUrl=%@", url);
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
-        [self playVideoWithTitle:videoTitle urlString:url playerType:QPPlayerTypeKSYMediaPlayer];
+        [self playVideoWithTitle:title urlString:url playerType:QPPlayerTypeKSYMediaPlayer];
     } else {
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];
@@ -168,6 +297,8 @@
             QPPlayerController *qpc = [[QPPlayerController alloc] initWithModel:model];
             [self.yf_currentViewController.navigationController pushViewController:qpc animated:YES];
         }];
+    } else {
+        [QPHudUtils hideHUD];
     }
 }
 

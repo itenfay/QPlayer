@@ -44,7 +44,6 @@
 //                                     @"https://m.ku6.com/index",
 //
 //                                     @"https://www.y80s.net/",
-//                                     @"http://www.boqudy.com/",
 //
 //                                     @"https://xw.qq.com/m/sports/index.htm",
 //                                     @"https://m.live.qq.com/",
@@ -60,9 +59,7 @@
 //                                     @"https://www.jikexueyuan.com/"];
 - (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches cachePath:(NSString *)cachePath
 {
-    PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:@[] searchBarPlaceholder:@"请输入要搜索的内容或网址" didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
-        //QPLog(@":: searchText=%@", searchText);
-    }];
+    PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:@[] searchBarPlaceholder:@"请输入要搜索的内容或网址"];
     searchViewController.delegate    = self;
     searchViewController.dataSource  = self;
     searchViewController.hotSearches = hotSearches;
@@ -70,12 +67,16 @@
     searchViewController.searchHistoriesCachePath = cachePath;
     searchViewController.hotSearchStyle = PYHotSearchStyleColorfulTag;
     searchViewController.searchHistoryStyle = PYSearchHistoryStyleDefault;
-    searchViewController.searchViewControllerShowMode = PYSearchViewControllerShowDefault;
+    searchViewController.searchViewControllerShowMode = PYSearchViewControllerShowModeModal;
     
-    /*
+    BOOL darkMode = _viewController.isDarkMode;
+    UIColor *bgColor = darkMode ? QPColorFromRGB(20, 20, 20) : QPColorFromRGB(240, 240, 240);
+    searchViewController.view.backgroundColor = bgColor;
+    //[_viewController presentViewController:searchViewController animated:YES completion:nil];
+    
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:searchViewController];
     [nc.navigationBar setShadowImage:[UIImage new]];
-    if (_viewController.isDarkMode) {
+    if (darkMode) {
         [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBlackBg") forBarMetrics:UIBarMetricsDefault];
     } else {
         [nc.navigationBar setBackgroundImage:QPImageNamed(@"NavigationBarBg") forBarMetrics:UIBarMetricsDefault];
@@ -99,13 +100,20 @@
     }
     //nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     //nc.modalPresentationStyle = UIModalPresentationFullScreen;
-    //[_viewController presentViewController:nc animated:YES completion:nil];
-    */
-    BOOL darkMode = _viewController.isDarkMode;
-    UIColor *bgColor = darkMode ? QPColorFromRGB(20, 20, 20) : QPColorFromRGB(240, 240, 240);
-    searchViewController.view.backgroundColor = bgColor;
-    searchViewController.searchBar = darkMode ? QPColorFromRGB(20, 20, 20) : QPColorFromRGB(39, 220, 203);
-    [_viewController presentViewController:searchViewController animated:YES completion:nil];
+    [_viewController presentViewController:nc animated:YES completion:^{
+        [self changeSearchControllerCancelButtonWidth];
+    }];
+}
+
+- (void)changeSearchControllerCancelButtonWidth
+{
+    UIViewController *vc = [self yf_currentViewController];
+    vc = vc.parentViewController;
+    if ([vc isKindOfClass:PYSearchViewController.class]) {
+        PYSearchViewController *searchVC = (PYSearchViewController *)vc;
+        searchVC.cancelButton.width = 50.f;
+        searchVC.cancelButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    }
 }
 
 - (void)loadData:(NSString *)searchText searchViewController:(PYSearchViewController *)searchViewController {
@@ -188,7 +196,7 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 - (void)adapter:(QPWKWebViewAdapter *)adapter didFinishNavigation:(WKNavigation *)navigation
 {
     QPLog(@"::");
-    [_playbackContext evaluateJavaScriptForVideoSrc];
+    [_playbackContext queryVideoUrlByJavaScrip];
 }
 
 - (void)adapter:(QPWKWebViewAdapter *)adapter decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler

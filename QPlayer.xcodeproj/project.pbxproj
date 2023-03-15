@@ -104,6 +104,8 @@
 		79443A9B29B1E0EB004B125A /* QPAdvancedSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443A9A29B1E0EB004B125A /* QPAdvancedSearchController.m */; };
 		79443A9E29B1ED96004B125A /* QPSearchPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443A9C29B1ED96004B125A /* QPSearchPresenter.m */; };
 		79443AA229B1FBB4004B125A /* QPDropListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79443AA029B1FBB4004B125A /* QPDropListModel.m */; };
+		796695FB29C16E8500DC35E4 /* jsquery_video_src.js in Resources */ = {isa = PBXBuildFile; fileRef = 7951767429C0780D0040B18A /* jsquery_video_src.js */; };
+		796695FD29C1996200DC35E4 /* jsquery_video_srcx.js in Resources */ = {isa = PBXBuildFile; fileRef = 796695FC29C1996100DC35E4 /* jsquery_video_srcx.js */; };
 		7978348829A864FE00496962 /* QPBaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7978348629A864FE00496962 /* QPBaseWebViewController.m */; };
 		797F386529BAF9DD00DCCBCB /* QPDropListViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 797F386329BAF9DD00DCCBCB /* QPDropListViewPresenter.m */; };
 		797F386829BAF9EB00DCCBCB /* QPDropListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 797F386629BAF9EA00DCCBCB /* QPDropListViewAdapter.m */; };
@@ -315,6 +317,8 @@
 		79443A9D29B1ED96004B125A /* QPSearchPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPSearchPresenter.h; sourceTree = "<group>"; };
 		79443AA029B1FBB4004B125A /* QPDropListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPDropListModel.m; sourceTree = "<group>"; };
 		79443AA129B1FBB4004B125A /* QPDropListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPDropListModel.h; sourceTree = "<group>"; };
+		7951767429C0780D0040B18A /* jsquery_video_src.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = jsquery_video_src.js; sourceTree = "<group>"; };
+		796695FC29C1996100DC35E4 /* jsquery_video_srcx.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jsquery_video_srcx.js; sourceTree = "<group>"; };
 		7978348629A864FE00496962 /* QPBaseWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPBaseWebViewController.m; sourceTree = "<group>"; };
 		7978348729A864FE00496962 /* QPBaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPBaseWebViewController.h; sourceTree = "<group>"; };
 		797F386329BAF9DD00DCCBCB /* QPDropListViewPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPDropListViewPresenter.m; sourceTree = "<group>"; };
@@ -1035,6 +1039,8 @@
 		79443A8B29B1DC2E004B125A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				7951767429C0780D0040B18A /* jsquery_video_src.js */,
+				796695FC29C1996100DC35E4 /* jsquery_video_srcx.js */,
 				79443A8C29B1DC2E004B125A /* QPDropListView.bundle */,
 			);
 			path = Resource;
@@ -1305,6 +1311,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				796695FB29C16E8500DC35E4 /* jsquery_video_src.js in Resources */,
 				141B172025C93B46008C465C /* QPAboutMeTableHeader.xib in Resources */,
 				141B171E25C93B46008C465C /* QPAboutMeViewController.xib in Resources */,
 				96532C721F5E816000E66A2F /* docroot in Resources */,
@@ -1314,6 +1321,7 @@
 				141B170325C93B46008C465C /* char_ref.rl in Resources */,
 				141B172125C93B46008C465C /* QPAboutMeTableFooter.xib in Resources */,
 				965E09EC1F04A85F009BBBD9 /* Main.storyboard in Resources */,
+				796695FD29C1996200DC35E4 /* jsquery_video_srcx.js in Resources */,
 				1438F67725CC5185000CC65D /* QPFileTableViewCell.xib in Resources */,
 				79443A8D29B1DC2E004B125A /* QPDropListView.bundle in Resources */,
 				141B170925C93B46008C465C /* tag.in in Resources */,
@@ -1606,7 +1614,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0306;
+				CURRENT_PROJECT_VERSION = 0315;
 				DEVELOPMENT_TEAM = ZV3MMP87F8;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1615,7 +1623,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.1.2;
+				MARKETING_VERSION = 3.1.6.45;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1647,7 +1655,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0306;
+				CURRENT_PROJECT_VERSION = 0315;
 				DEVELOPMENT_TEAM = ZV3MMP87F8;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1656,7 +1664,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.1.2;
+				MARKETING_VERSION = 3.1.6.45;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

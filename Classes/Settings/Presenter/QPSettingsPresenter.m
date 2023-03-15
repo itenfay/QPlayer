@@ -194,34 +194,31 @@
         sw.on        = [QPExtractValue(kThemeStyleOnOff) boolValue];
         sw.tag       = 10;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
-        
         [cell.contentView addSubview:sw];
     } else if (indexPath.section == 1) {
-        //cell.textLabel.text = @"当前网络连接状态";
+        //@"当前网络连接状态";
         cell.detailTextLabel.text = DYFNetworkSniffer.sharedSniffer.statusFlags;
         cell.detailTextLabel.font = [UIFont systemFontOfSize:16.f];
     } else if (indexPath.section == 2) {
-        //cell.textLabel.text = @"开启画中画";
+        //@"开启画中画";
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = SettingsCellHeight/2.0;
         sw.on        = QPPlayerPictureInPictureEnabled();
         sw.tag       = 9;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
-        
         [cell.contentView addSubview:sw];
     } else if (indexPath.section == 3) {
-        //cell.textLabel.text = @"允许运营商网络播放";
+        //@"允许运营商网络播放";
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = SettingsCellHeight/2.0;
         sw.on        = QPCarrierNetworkAllowed();
         sw.tag       = 8;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
-        
         [cell.contentView addSubview:sw];
     } else if (indexPath.section == 4) {
-        //cell.textLabel.text = @"WiFi 文件传输";
+        //@"WiFi 文件传输";
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = SettingsCellHeight/2.0;
@@ -234,8 +231,8 @@
         }
         [cell.contentView addSubview:sw];
     } else if (indexPath.section == 5) {
+        //@"更改端口";
         cell.textLabel.text = [NSString stringWithFormat:@"http://%@:%d", [QPWifiManager shared].httpServer.hostName, [QPWifiManager shared].httpServer.port];
-        //cell.detailTextLabel.text = @"更改端口";
         cell.detailTextLabel.font = [UIFont systemFontOfSize:16.f];
         cell.detailTextLabel.textColor = QPColorFromRGB(66, 126, 210);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

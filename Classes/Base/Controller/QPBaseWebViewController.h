@@ -14,6 +14,11 @@
 
 @property (nonatomic, strong) QPWKWebViewAdapter *adapter;
 
+/// Returns a web view.
+- (WKWebView *)webView;
+/// Releases a web view.
+- (void)releaseWebView;
+
 /// A collection of properties used to initialize a web view.
 - (WKWebViewConfiguration *)webViewConfiguration;
 /// An object for managing interactions between JavaScript code and your web view, and for filtering content in your web view.
@@ -25,11 +30,6 @@
 - (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration;
 /// Initializes a web view with a specified frame, configuration and adapter.
 - (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration adapter:(QPWKWebViewAdapter *)adapter;
-
-/// Returns a web view.
-- (WKWebView *)webView;
-/// Releases a web view.
-- (void)releaseWebView;
 
 /// Navigates to the back item in the back-forward list.
 - (void)onGoBack;

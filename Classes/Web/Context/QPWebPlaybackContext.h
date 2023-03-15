@@ -24,9 +24,11 @@ typedef NS_ENUM(NSUInteger, QPPlayerType) {
 
 - (BOOL)canAllowNavigation:(NSURL *)URL;
 
-- (void)evaluateJavaScriptForVideoSrc;
+- (void)queryVideoUrlByJavaScript;
+- (void)queryVideoUrlByJavaScrip;
+
+- (void)attemptToPlayVideo:(NSString *)url;
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString;
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type;
 
 @end
-

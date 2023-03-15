@@ -33,22 +33,22 @@
     return NO;
 }
 
-- (void)delayToScheduleTask:(NSTimeInterval)seconds completion:(void (^)(void))completion
+- (void)delayToScheduleTask:(NSTimeInterval)timeInterval completion:(void (^)(void))completion
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)),
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeInterval * NSEC_PER_SEC)),
                    dispatch_get_main_queue(), ^{
         !completion ?: completion();
     });
 }
 
-- (void (^)(id target, SEL selector, id object, NSTimeInterval delayInSeconds))scheduleTask
+- (void (^)(id target, SEL selector, id object, NSTimeInterval timeInterval))scheduleTask
 {
-    void (^taskBlock)(id target, SEL selector, id object, NSTimeInterval delayInSeconds)
-    = ^(id target, SEL selector, id object, NSTimeInterval delayInSeconds) {
+    void (^taskBlock)(id target, SEL selector, id object, NSTimeInterval timeInterval)
+    = ^(id target, SEL selector, id object, NSTimeInterval timeInterval) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        if (delayInSeconds > 0) {
-            [target performSelector:selector withObject:object afterDelay:delayInSeconds];
+        if (timeInterval > 0) {
+            [target performSelector:selector withObject:object afterDelay:timeInterval];
         } else {
             [target performSelector:selector withObject:object];
         }
@@ -150,7 +150,7 @@
     return VideoDurationBlock;
 }
 
-- (UIImage *)yf_supplyVideoCover:(NSString *)url
+- (UIImage *)yf_getVideoCoverWithUrl:(NSString *)url
 {
     NSURL *aURL = [NSURL URLWithString:url];
     AVURLAsset *asset = [AVURLAsset URLAssetWithURL:aURL options:nil];
@@ -160,7 +160,7 @@
     CMTime time = CMTimeMakeWithSeconds(1, 60);
     if (@available(iOS 16.0, *)) {
         __block CGImageRef imgRef;
-        [generator generateCGImageAsynchronouslyForTime:time completionHandler:^(CGImageRef  _Nullable image, CMTime actualTime, NSError * _Nullable error) {
+        [generator generateCGImageAsynchronouslyForTime:time completionHandler:^(CGImageRef _Nullable image, CMTime actualTime, NSError * _Nullable error) {
             if (error) {
                 QPLog(":: error=%zi, %@", error.code, error.localizedDescription);
             } else {

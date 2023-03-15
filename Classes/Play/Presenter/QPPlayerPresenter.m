@@ -154,12 +154,8 @@
     if (!QPPlayerPictureInPictureEnabled())
         return;
     QPPlayerController *vc = [self playViewController];
-    if (vc.model.isIJKPlayerPlayback) {
-        return;
-    }
     if (vc.model.isZFPlayerPlayback) {
         ZFAVPlayerManager *manager = (ZFAVPlayerManager *)self.player.currentPlayerManager;
-        if (!manager) { return; }
         AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:manager.avPlayerLayer];
         self.pipController = pipVC;
     } else if (vc.model.isMediaPlayerPlayback) {
@@ -173,8 +169,8 @@
         //AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:avPlayerLayer];
         //self.pipController = pipVC;
     }
-    /// 要有延迟 否则可能开启不成功
-    [self delayToScheduleTask:2 completion:^{
+    // 要有延迟 否则可能开启不成功
+    [self delayToScheduleTask:2.0 completion:^{
         [self.pipController startPictureInPicture];
     }];
 }
@@ -183,10 +179,6 @@
 {
     if (!QPPlayerPictureInPictureEnabled())
         return;
-    QPPlayerController *vc = [self playViewController];
-    if (vc.model.isMediaPlayerPlayback || vc.model.isIJKPlayerPlayback) {
-        return;
-    }
     [self.pipController stopPictureInPicture];
 }
 

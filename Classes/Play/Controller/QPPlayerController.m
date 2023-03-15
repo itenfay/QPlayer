@@ -12,33 +12,30 @@
 @interface QPPlayerController ()
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 @property (nonatomic, strong) UIImageView *containerView;
+@property (nonatomic, assign) BOOL showNext;
 @end
 
 @implementation QPPlayerController
+
+- (BOOL)prefersStatusBarHidden
+{
+    QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
+    return pt.player.isFullScreen ? YES : NO;
+}
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleDefault;
 }
 
-- (BOOL)prefersStatusBarHidden
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
-    return NO;
+    return UIStatusBarAnimationNone;
 }
 
 - (BOOL)shouldAutorotate
 {
     return NO;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskPortrait;
-}
-
-- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
-{
-    return UIStatusBarAnimationNone;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -104,11 +101,10 @@
     [self addLeftNavigationBarButton:backButton];
     
     UIButton *portraitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    portraitButton.width     = 40.f;
+    portraitButton.width     = 30.f;
     portraitButton.height    = 30.f;
     portraitButton.right     = 0.f;
     portraitButton.top       = 0.f;
-    portraitButton.showsTouchWhenHighlighted = YES;
     [portraitButton setTitle:@"竖屏" forState:UIControlStateNormal];
     [portraitButton setTitleColor:QPColorFromRGB(252, 252, 252) forState:UIControlStateNormal];
     [portraitButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
@@ -116,12 +112,30 @@
     portraitButton.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, -10);
     [self addRightNavigationBarButton:portraitButton];
     
-    [self setNavigationBarTitle:QPInfoDictionary[@"CFBundleName"]];
+    UIButton *pipButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    pipButton.width     = 30.f;
+    pipButton.height    = 30.f;
+    pipButton.right     = 0.f;
+    pipButton.top       = 0.f;
+    [pipButton setTitle:@"开启画中画" forState:UIControlStateNormal];
+    [pipButton setTitleColor:QPColorFromRGB(252, 252, 252) forState:UIControlStateNormal];
+    [pipButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
+    [pipButton addTarget:self action:@selector(pipBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    //[self addRightNavigationBarButton:pipButton];
+    
+    //[self setNavigationBarTitle:QPInfoDictionary[@"CFBundleName"]];
+    [self setNavigationBarTitle:@""];
 }
 
 - (void)back:(UIButton *)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)pipBtnClick:(UIButton *)sender
+{
+    QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
+    [pt startPictureInPicture];
 }
 
 - (void)loadView
@@ -164,8 +178,8 @@
 {
     [super viewWillAppear:animated];
     QPAppDelegate.allowOrentitaionRotation = YES;
-    [self configureControlView];
     QPPlayerSavePlaying(YES);
+    [self configureControlView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -190,10 +204,12 @@
     QPAppDelegate.allowOrentitaionRotation = NO;
     QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
     if ([self isMovingFromParentViewController]) {
-        [self releaseWebView];
         QPPlayerSavePlaying(NO);
         [pt.player stopCurrentPlayingView];
-    } else {
+    }
+    if (_showNext) {
+        _showNext = NO;
+        QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
         if ([pt.player.currentPlayerManager isPlaying]) {
             [pt.player.currentPlayerManager pause];
         }
@@ -267,11 +283,7 @@
 
 - (void)configureControlView
 {
-    CGRect rect = CGRectMake(0.f, 0.f, 1024.f, 1024.f);
-    UIImage *backgroundImage = [self yf_imageWithColor:QPColorFromRGBAlp(90, 90, 90, 0.1) rect:rect];
-    UIImage *foregroundImage = QPImageNamed(@"default_thumbnail");
-    UIImage *coverImage = [self yf_drawImage:foregroundImage
-                           inBackgroundImage:backgroundImage withRect:rect];
+    UIImage *coverImage = QPImageNamed(@"default_BigThumbnail");
     [self.controlView showTitle:self.videoTitleByDeletingExtension
                  coverURLString:self.model.coverUrl
                placeholderImage:self.model.placeholderCoverImage ?: coverImage
@@ -281,16 +293,6 @@
 - (void)loadBottomContents {
     NSString *aUrl = [QPInfoDictionary objectForKey:@"MyJianShuUrl"];
     [self loadRequestWithUrl:aUrl];
-}
-
-- (ZFPlayerControlView *)supplyControlView
-{
-    return self.controlView;
-}
-
-- (UIImageView *)supplyContainerView
-{
-    return self.containerView;
 }
 
 @end

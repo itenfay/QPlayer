@@ -121,7 +121,7 @@
         if (QPPlayerCanSupportAVFormat(tempStr)) {
             self.titleView.text = url = text;
             QPAdvancedSearchPresenter *presenter = (QPAdvancedSearchPresenter *)self.presenter;
-            [presenter.playbackContext playVideoWithTitle:text urlString:url playerType:QPPlayerTypeIJKPlayer];
+            [presenter.playbackContext playVideoWithTitle:text urlString:url playerType:QPPlayerTypeKSYMediaPlayer];
         } else if ([tempStr hasPrefix:@"https"] || [tempStr hasPrefix:@"http"]) {
             url = text;
         } else if ([tempStr hasPrefix:@"www."] || [tempStr hasPrefix:@"m."]   ||

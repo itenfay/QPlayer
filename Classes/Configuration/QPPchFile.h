@@ -43,9 +43,18 @@
 #import <ZFPlayer/ZFLandscapeRotationManager.h>
 #import <ZFPlayer/ZFLandscapeRotationManager_iOS15.h>
 #import <ZFPlayer/ZFLandscapeRotationManager_iOS16.h>
+#import <ZFPlayer/ZFAVPlayerManager.h>
+#import <ZFPlayer/ZFPlayerControlView.h>
+//#import <ZFPlayer/ZFIJKPlayerManager.h>
+//#import <ZFPlayer/KSMediaPlayerManager.h>
+
+/// ZFIJKPlayerManager
 #if __has_include(<ZFPlayer/ZFIJKPlayerManager.h>)
 #import <ZFPlayer/ZFIJKPlayerManager.h>
 #endif
+
+/// KSYMediaPlayerManager
+#import "KSYMediaPlayerManager.h"
 
 /// MJRefresh
 #import <MJRefresh/MJRefresh.h>

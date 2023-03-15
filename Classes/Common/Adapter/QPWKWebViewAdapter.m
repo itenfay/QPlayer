@@ -64,7 +64,7 @@
 {
     _isDarkMode = isDarkMode;
     [self updateToolBarAppearance];
-    [self.webView reload];
+    [self adaptThemeForWebView];
 }
 
 - (void)updateToolBarAppearance

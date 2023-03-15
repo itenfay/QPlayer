@@ -39,6 +39,7 @@
 {
     [super viewDidLoad];
     [self configureWebViewAdapter];
+    [self injectLocalUserScript];
     [self setWebViewDelegate];
     [self loadDefaultRequest];
     [self delayToScheduleTask:2 completion:^{
@@ -91,9 +92,9 @@
     
     self.webView.backgroundColor = UIColor.clearColor; //QPColorFromRGB(243, 243, 243);
     self.webView.opaque          = NO;
-    
     self.webView.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.webView autoresizing];
+    
     [self.view addSubview:self.webView];
 }
 
@@ -102,6 +103,16 @@
     self.webView.navigationDelegate  = self.adapter;
     self.webView.UIDelegate          = self.adapter;
     self.webView.scrollView.delegate = self.adapter;
+}
+
+- (void)injectLocalUserScript
+{
+    //NSString *jsPath = [NSBundle.mainBundle pathForResource:@"jsquery_video_src" ofType:@"js"];
+    //NSData *jsData = [NSData dataWithContentsOfFile:jsPath];
+    //NSString *jsString = [NSString.alloc initWithData:jsData encoding:NSUTF8StringEncoding];
+    //QPLog(@":: jsString=%@", jsString);
+    //WKUserScript *userScript = [WKUserScript.alloc initWithSource:jsString injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+    //[self.userContentController addUserScript:userScript];
 }
 
 - (void)addWebToolBar {

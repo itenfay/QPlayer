@@ -9,12 +9,6 @@
 #import "QPBasePresenter.h"
 #import "QPModularDelegate.h"
 #import "QPPlayerModel.h"
-#import <ZFPlayer/ZFPlayer.h>
-#import <ZFPlayer/ZFAVPlayerManager.h>
-#import <ZFPlayer/ZFPlayerControlView.h>
-#import "KSYMediaPlayerManager.h" // Conflicts with ijkplayer.
-//#import <ZFPlayer/ZFIJKPlayerManager.h>
-//#import <ZFPlayer/KSMediaPlayerManager.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

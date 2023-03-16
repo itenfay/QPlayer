@@ -50,7 +50,7 @@
             [playerManager.options setOptionIntValue:0 forKey:@"mediacodec-auto-rotate" ofCategory:kIJKFFOptionCategoryPlayer];
             [playerManager.options setOptionIntValue:0 forKey:@"mediacodec-handle-resolution-change" ofCategory:kIJKFFOptionCategoryPlayer];
             // 环路滤波，解码参数，画面更清晰
-            [playerManager.options setOptionIntValue:IJK_AVDISCARD_ALL forKey:@"skip_loop_filter" ofCategory:kIJKFFOptionCategoryCodec];
+            [playerManager.options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter" ofCategory:kIJKFFOptionCategoryCodec];
             [playerManager.options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame" ofCategory:kIJKFFOptionCategoryCodec];
             // 延时优化
             if ([scheme hasPrefix:@"rtmp"] || [scheme hasPrefix:@"rtsp"]) {

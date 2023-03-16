@@ -48,7 +48,7 @@ Some of the resources and content come from the Internet. If there are copyright
 
 ## Requirements
 
-iOS 11.0+, iPhone and iPad, Xcode10+.
+iOS 11.0+, iPhone and iPad, Xcode14+.
 
 
 ## File Transfer

@@ -50,7 +50,7 @@
 
 ## 要求
 
-iOS 11.0+, iPhone and iPad, Xcode10+.
+iOS 11.0+, iPhone and iPad, Xcode14+.
 
 
 ## 文件传输

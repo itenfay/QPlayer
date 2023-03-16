@@ -4,14 +4,14 @@
 
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
 
+[English Instructions](README-en.md)
+
 
 ## QQ群 (ID:15535338)
 
 <div align=left>
 &emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
 </div>
-
-[English Instructions](README-en.md)
 
 
 ## 免责声明

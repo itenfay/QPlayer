@@ -238,7 +238,7 @@
                         NSString *videoUrl = [tempUrl componentsSeparatedByString:@"?"].firstObject;
                         videoUrl = [NSString stringWithFormat:@"%@://%@%@", aURL.scheme, aURL.host, videoUrl];
                         QPLog(@":: videoUrl=%@", videoUrl);
-                        [self playVideoWithTitle:title urlString:videoUrl playerType:QPPlayerTypeKSYMediaPlayer];
+                        [self playVideoWithTitle:title urlString:videoUrl playerType:QPPlayerTypeIJKPlayer];
                     }
                     break;
                 }
@@ -256,7 +256,7 @@
     QPLog(@":: videoTitle=%@", title);
     QPLog(@":: videoUrl=%@", url);
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
-        [self playVideoWithTitle:title urlString:url playerType:QPPlayerTypeKSYMediaPlayer];
+        [self playVideoWithTitle:title urlString:url playerType:QPPlayerTypeIJKPlayer];
     } else {
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];

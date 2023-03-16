@@ -181,7 +181,7 @@
             self.titleView.text = url = text;
             NSString *title = [self titleMatchingWithUrl:url];
             QPLivePresenter *presenter = (QPLivePresenter *)self.presenter;
-            [presenter.playbackContext playVideoWithTitle:title urlString:url playerType:QPPlayerTypeKSYMediaPlayer];
+            [presenter.playbackContext playVideoWithTitle:title urlString:url playerType:QPPlayerTypeIJKPlayer];
             return;
         } else if ([tempStr hasPrefix:@"https"] || [tempStr hasPrefix:@"http"]) {
             url = text;
@@ -243,7 +243,7 @@
         strong_self.playButton.enabled = YES;
         strong_self.titleView.text = urlString;
         QPLivePresenter *presenter = (QPLivePresenter *)strong_self.presenter;
-        [presenter.playbackContext playVideoWithTitle:title urlString:urlString playerType:QPPlayerTypeKSYMediaPlayer];
+        [presenter.playbackContext playVideoWithTitle:title urlString:urlString playerType:QPPlayerTypeIJKPlayer];
     }];
     
     [dropListView onCloseAction:^{

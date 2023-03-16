@@ -21,8 +21,8 @@
     if (!_player) {
         QPPlayerController *vc = [self playViewController];
         if ((vc.model.isLocalVideo && vc.model.isMediaPlayerPlayback) || vc.model.isMediaPlayerPlayback) {
-            KSYMediaPlayerManager *playerManager = [[KSYMediaPlayerManager alloc] init];
-            _player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
+            //KSYMediaPlayerManager *playerManager = [[KSYMediaPlayerManager alloc] init];
+            //_player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
             // 默认是硬解码
             if (vc.model.videoDecoding == 1) {
                 //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Hardware;
@@ -30,7 +30,6 @@
                 //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Software;
             }
         } else if ((vc.model.isLocalVideo && vc.model.isIJKPlayerPlayback) || vc.model.isIJKPlayerPlayback) {
-            /*
             #if DEBUG
             [IJKFFMoviePlayerController setLogReport:YES];
             [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_DEBUG];
@@ -38,30 +37,53 @@
             [IJKFFMoviePlayerController setLogReport:NO];
             [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_INFO];
             #endif
-            ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init]; // IJKPlayerManager
-            _player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
             NSURL *url = [NSURL URLWithString:vc.model.videoUrl];
             NSString *scheme = [url.scheme lowercaseString];
-            QPLog(@":: url=%@, scheme=%@", url, scheme);
-            if ([scheme hasPrefix:@"rtmp"]) {
-                // 不限制输入缓存区大小
-                //[playerManager.player setOptionIntValue:1 forKey:@"infbuf" ofCategory:kIJKFFOptionCategoryPlayer];
-                // 最大缓存区大小
-                //[playerManager.player setOptionIntValue:1024 forKey:@"maxx-buffer-size" ofCategory:kIJKFFOptionCategoryPlayer];
-                // 缩短播放的rtmp视频延迟在1s内
-                [playerManager.player setOptionIntValue:100 forKey:@"analyzemaxduration" ofCategory:kIJKFFOptionCategoryFormat];
-                [playerManager.player setOptionIntValue:10240 forKey:@"probesize" ofCategory:kIJKFFOptionCategoryFormat];
-                [playerManager.player setOptionIntValue:1 forKey:@"flush_packets" ofCategory:kIJKFFOptionCategoryFormat];
-                [playerManager.player setOptionIntValue:1 forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryFormat];
-                [playerManager.player setOptionValue:@"fflags" forKey:@"fflags" ofCategory:kIJKFFOptionCategoryFormat];
-                [playerManager.player setOptionIntValue:0 forKey:@"packet-buffering" ofCategory:kIJKFFOptionCategoryPlayer];
-                [playerManager.player setOptionIntValue:1 forKey:@"framedrop" ofCategory:kIJKFFOptionCategoryPlayer];
-                // 设置rtmp的来源
-                //[playerManager.player setOptionValue:QPBundleIdentifier forKey:@"rtmp_pageurl" ofCategory:kIJKFFOptionCategoryFormat];
-            } else if ([scheme hasPrefix:@"rtsp"]) {
-                [playerManager.player setOptionIntValue:1 forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryFormat];
+            QPLog(@":: url scheme=%@", scheme);
+            ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
+            // 开启硬解码（硬件解码CPU消耗低，软解更稳定）
+            [playerManager.options setOptionIntValue:1 forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryPlayer];
+            // 打开h265硬解
+            [playerManager.options setOptionIntValue:1 forKey:@"mediacodec-hevc" ofCategory:kIJKFFOptionCategoryPlayer];
+            // 这样开启硬解码，如果打开硬解码失败，再自动切换到软解码
+            [playerManager.options setOptionIntValue:0 forKey:@"mediacodec" ofCategory:kIJKFFOptionCategoryPlayer];
+            [playerManager.options setOptionIntValue:0 forKey:@"mediacodec-auto-rotate" ofCategory:kIJKFFOptionCategoryPlayer];
+            [playerManager.options setOptionIntValue:0 forKey:@"mediacodec-handle-resolution-change" ofCategory:kIJKFFOptionCategoryPlayer];
+            // 环路滤波，解码参数，画面更清晰
+            [playerManager.options setOptionIntValue:IJK_AVDISCARD_ALL forKey:@"skip_loop_filter" ofCategory:kIJKFFOptionCategoryCodec];
+            [playerManager.options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame" ofCategory:kIJKFFOptionCategoryCodec];
+            // 延时优化
+            if ([scheme hasPrefix:@"rtmp"] || [scheme hasPrefix:@"rtsp"]) {
+                // 丢帧阈值
+                [playerManager.options setOptionIntValue:30 forKey:@"framedrop" ofCategory:kIJKFFOptionCategoryPlayer];
+                // 视频帧率
+                [playerManager.options setOptionIntValue:30 forKey:@"fps" ofCategory:kIJKFFOptionCategoryPlayer];
+                // 设置无packet缓存，关闭播放器缓冲
+                [playerManager.options setOptionIntValue:0 forKey:@"packet-buffering" ofCategory:kIJKFFOptionCategoryPlayer];
+                [playerManager.options setOptionValue:@"nobuffer" forKey:@"fflags" ofCategory:kIJKFFOptionCategoryFormat];
+                // 不限制拉流缓存大小
+                [playerManager.options setOptionIntValue:1 forKey:@"infbuf" ofCategory:kIJKFFOptionCategoryPlayer];
+                // 设置最大缓存数量
+                [playerManager.options setOptionIntValue:1024 forKey:@"max-buffer-size" ofCategory:kIJKFFOptionCategoryFormat];
+                // 设置最小解码帧数
+                [playerManager.options setOptionIntValue:3 forKey:@"min-frames" ofCategory:kIJKFFOptionCategoryPlayer];
+                // 启动预加载
+                [playerManager.options setOptionIntValue:1 forKey:@"start-on-prepared" ofCategory:kIJKFFOptionCategoryPlayer];
+                // 设置探测包数量
+                [playerManager.options setOptionIntValue:4096 forKey:@"probesize" ofCategory:kIJKFFOptionCategoryFormat];
+                // 设置分析流时长
+                [playerManager.options setOptionIntValue:100 forKey:@"analyzeduration" ofCategory:kIJKFFOptionCategoryFormat];
+                if ([scheme hasPrefix:@"rtsp"]) {
+                    // ijkPlayer默认使用udp拉流，因为速度比较快。如果需要可靠且减少丢包，可以改为tcp协议
+                    [playerManager.options setOptionValue:@"tcp" forKey:@"rtsp_transport" ofCategory:kIJKFFOptionCategoryFormat];
+                }
+            } else {
+                // 最大缓存时间
+                [playerManager.options setOptionIntValue:0 forKey:@"max_cached_duration" ofCategory:kIJKFFOptionCategoryPlayer];
+                [playerManager.options setOptionIntValue:0 forKey:@"infbuf" ofCategory:kIJKFFOptionCategoryPlayer];
+                [playerManager.options setOptionIntValue:1 forKey:@"packet-buffering" ofCategory:kIJKFFOptionCategoryPlayer];
             }
-            */
+            _player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
         } else {
             ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
             _player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
@@ -192,15 +214,15 @@
         AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:manager.avPlayerLayer];
         self.pipController = pipVC;
     } else if (vc.model.isMediaPlayerPlayback) {
-        KSYMediaPlayerManager *manager = (KSYMediaPlayerManager *)self.player.currentPlayerManager;
-        AVPlayerLayer *avPlayerLayer = (AVPlayerLayer *)manager.view.playerView.layer;
-        AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:avPlayerLayer];
-        self.pipController = pipVC;
-    } else if (vc.model.isIJKPlayerPlayback) {
-        //ZFIJKPlayerManager *manager = (ZFIJKPlayerManager *)self.player.currentPlayerManager;
+        //KSYMediaPlayerManager *manager = (KSYMediaPlayerManager *)self.player.currentPlayerManager;
         //AVPlayerLayer *avPlayerLayer = (AVPlayerLayer *)manager.view.playerView.layer;
         //AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:avPlayerLayer];
         //self.pipController = pipVC;
+    } else if (vc.model.isIJKPlayerPlayback) {
+        ZFIJKPlayerManager *manager = (ZFIJKPlayerManager *)self.player.currentPlayerManager;
+        AVPlayerLayer *avPlayerLayer = (AVPlayerLayer *)manager.view.playerView.layer;
+        AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:avPlayerLayer];
+        self.pipController = pipVC;
     }
     // 要有延迟 否则可能开启不成功
     [self delayToScheduleTask:5.0 completion:^{
@@ -215,56 +237,67 @@
     [self.pipController stopPictureInPicture];
 }
 
-//- (IJKFFOptions *)supplyIJKFFOptions {
-//    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
-//    // 帧速率（fps）可以改，确认非标准帧率会导致音画不同步，所以只能设定为15或者29.97）
-//    [options setPlayerOptionIntValue:29.97 forKey:@"r"];
-//    // 设置音量大小，256为标准音量。（要设置成两倍音量时则输入512，依此类推)
-//    [options setPlayerOptionIntValue:512 forKey:@"vol"];
-//    // 静音设置
-//    [options setPlayerOptionValue:@"1" forKey:@"an"];
-//
-//    // 最大fps
-//    [options setPlayerOptionIntValue:30 forKey:@"max-fps"];
-//    // 跳帧开关
-//    [options setPlayerOptionIntValue:0 forKey:@"framedrop"];
-//    // 开启硬编码（默认是 0 ：软解）
-//    [options setPlayerOptionIntValue:1 forKey:@"videotoolbox"];
-//
-//    // 指定最大宽度
-//    [options setPlayerOptionIntValue:960 forKey:@"videotoolbox-max-frame-width"];
-//    // 自动转屏开关
-//    [options setFormatOptionIntValue:0 forKey:@"auto_convert"];
-//
-//    // 重连开启 BOOL
-//    [options setFormatOptionIntValue:1 forKey:@"reconnect"];
-//    // 超时时间，timeout参数只对http设置有效
-//    // 若果你用rtmp设置timeout，ijkplayer内部会忽略timeout参数。
-//    // rtmp的timeout参数含义和http的不一样。
-//    [options setFormatOptionIntValue:30 * 1000 * 1000 forKey:@"timeout"];
-//
-//    // 播放前的探测Size，默认是1M, 改小一点会出画面更快
-//    [options setFormatOptionIntValue:1024 * 16 forKey:@"probesize"];
-//    // 开启环路滤波（0比48清楚，但解码开销大，48基本没有开启环路滤波，清晰度低，解码开销小）
-//    [options setCodecOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter"];
-//    [options setCodecOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame"];
-//
-//    // param for living
-//    // 如果使用rtsp协议，可以优先用tcp（默认udp）
-//    [options setFormatOptionValue:@"tcp" forKey:@"rtsp_transport"];
-//    // 最大缓存大小是3秒，可以依据自己的需求修改
-//    [options setPlayerOptionIntValue:3000 forKey:@"max_cached_duration"];
-//    // 无限读
-//    [options setPlayerOptionIntValue:1 forKey:@"infbuf"];
-//    // 关闭播放器缓冲 (如果频繁卡顿，可以保留缓冲区，不设置默认为1)
-//    [options setPlayerOptionIntValue:0 forKey:@"packet-buffering"];
-//
-//    // param for playback
-//    [options setPlayerOptionIntValue:0 forKey:@"max_cached_duration"];
-//    [options setPlayerOptionIntValue:0 forKey:@"infbuf"];
-//    [options setPlayerOptionIntValue:1 forKey:@"packet-buffering"];
-//
-//    return  options;
-//}
+- (IJKFFOptions *)supplyIJKFFOptions {
+    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
+    
+    /*-------------PlayerOption-------------*/
+    // 在视频帧处理不过来的时候丢弃一些帧达到同步的效果
+    // 跳帧开关，如果cpu解码能力不足，可以设置成5，否则会引起音视频不同步，也可以通过设置它来跳帧达到倍速播放
+    [options setPlayerOptionIntValue:5/*0*/ forKey:@"framedrop"];
+    // 最大fps
+    [options setPlayerOptionIntValue:30 forKey:@"max-fps"];
+    // 帧速率(fps) 可以改，确认非标准桢率会导致音画不同步，所以只能设定为15或者29.97
+    [options setPlayerOptionIntValue:29.97 forKey:@"r"];
+    // 设置音量大小，256为标准音量。（要设置成两倍音量时则输入512，依此类推）
+    [options setPlayerOptionIntValue:512 forKey:@"vol"];
+    // 指定最大宽度
+    [options setPlayerOptionIntValue:960 forKey:@"videotoolbox-max-frame-width"];
+    // 开启/关闭 硬解码（硬件解码CPU消耗低。软解，更稳定）
+    [options setPlayerOptionIntValue:0 forKey:@"videotoolbox"];
+    // 是否有声音
+    [options setPlayerOptionIntValue:1  forKey:@"an"];
+    // 是否有视频
+    [options setPlayerOptionIntValue:1  forKey:@"vn"];
+    // 每处理一个packet之后刷新io上下文
+    [options setPlayerOptionIntValue:1 forKey:@"flush_packets"];
+    // 是否禁止图像显示(只输出音频)
+    [options setPlayerOptionIntValue:1 forKey:@"nodisp"];
+    //
+    [options setPlayerOptionIntValue:0 forKey:@"start-on-prepared"];
+    //
+    [options setPlayerOptionValue:@"fcc-_es2" forKey:@"overlay-format"];
+    //
+    [options setPlayerOptionIntValue:3 forKey:@"video-pictq-size"];
+    //
+    [options setPlayerOptionIntValue:25 forKey:@"min-frames"];
+    
+    /*-------------FormatOption-------------*/
+    // 如果是rtsp协议，可以优先用tcp(默认是用udp)
+    [options setFormatOptionValue:@"tcp" forKey:@"rtsp_transport"];
+    // 播放前的探测Size，默认是1M, 改小一点会出画面更快
+    [options setFormatOptionIntValue:1024*16*0.5 forKey:@"probsize"];
+    // 播放前的探测时间
+    [options setFormatOptionIntValue:50000 forKey:@"analyzeduration"];
+    // 自动转屏开关
+    [options setFormatOptionIntValue:0 forKey:@"auto_convert"];
+    // 重连次数
+    [options setFormatOptionIntValue:1 forKey:@"reconnect"];
+    // 超时时间，timeout参数只对http设置有效。若果你用rtmp设置timeout，ijkplayer内部会忽略timeout参数。rtmp的timeout参数含义和http的不一样。
+    [options setFormatOptionIntValue:30 * 1000 * 1000 forKey:@"timeout"];
+    //
+    [options setFormatOptionValue:@"nobuffer" forKey:@"fflags"];
+    //
+    [options setFormatOptionValue:@"ijkplayer" forKey:@"user-agent"];
+    //
+    [options setFormatOptionIntValue:0 forKey:@"safe"];
+    //
+    [options setFormatOptionIntValue:0 forKey:@"http-detect-range-support"];
+    //
+    [options setFormatOptionIntValue:4628439040 forKey:@"ijkapplication"];
+    //
+    [options setFormatOptionIntValue:6176477408 forKey:@"ijkiomanager"];
+    
+    return options;
+}
 
 @end

@@ -150,32 +150,31 @@
     return VideoDurationBlock;
 }
 
-- (UIImage *)yf_getVideoCoverWithUrl:(NSString *)url
+- (void)yf_getThumbnailImageWithURL:(NSURL *)aURL completionHandler:(void(^)(UIImage *))completionHandler
 {
-    NSURL *aURL = [NSURL URLWithString:url];
     AVURLAsset *asset = [AVURLAsset URLAssetWithURL:aURL options:nil];
     AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
     generator.appliesPreferredTrackTransform = YES;
     generator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
     CMTime time = CMTimeMakeWithSeconds(1, 60);
     if (@available(iOS 16.0, *)) {
-        __block CGImageRef imgRef;
         [generator generateCGImageAsynchronouslyForTime:time completionHandler:^(CGImageRef _Nullable image, CMTime actualTime, NSError * _Nullable error) {
             if (error) {
                 QPLog(":: error=%zi, %@", error.code, error.localizedDescription);
-            } else {
-                imgRef = image;
             }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(error ? nil : [UIImage imageWithCGImage:image]);
+            });
         }];
-        return [UIImage imageWithCGImage:imgRef];
     } else {
         NSError *error = nil;
         CGImageRef imgRef = [generator copyCGImageAtTime:time actualTime:nil error:&error];
         if (error) {
             QPLog(":: error=%zi, %@", error.code, error.localizedDescription);
-            return nil;
         }
-        return [UIImage imageWithCGImage:imgRef];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(error ? nil : [UIImage imageWithCGImage:imgRef]);
+        });
     }
 }
 

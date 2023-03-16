@@ -70,6 +70,35 @@
     return _player;
 }
 
+- (void)getCoverImageWithURL:(NSURL *)url
+{
+    @weakify(self)
+    [self yf_getThumbnailImageWithURL:url completionHandler:^(UIImage *image) {
+        [weak_self configureControlView:image];
+    }];
+}
+
+- (void)configureControlView:(UIImage *)coverImage
+{
+    //NSURL *url = [NSURL fileURLWithPath:vc.model.videoUrl];
+    //UIImage *thumbnail = self.yf_videoThumbnailImage(url, 3, 107, 60);
+    QPPlayerController *vc = [self playViewController];
+    UIImage *defaultThumbnail = QPImageNamed(@"default_thumbnail");
+    [vc.controlView showTitle:self.videoTitleByDeletingExtension
+               coverURLString:vc.model.coverUrl
+             placeholderImage:coverImage ?: defaultThumbnail
+               fullScreenMode:ZFFullScreenModeAutomatic];
+}
+
+- (NSString *)videoTitleByDeletingExtension
+{
+    QPPlayerController *vc = [self playViewController];
+    if ([vc.model.videoTitle containsString:@"://"]) {
+        return vc.model.videoTitle;
+    }
+    return [vc.model.videoTitle stringByDeletingPathExtension];
+}
+
 - (QPPlayerController *)playViewController
 {
     return (QPPlayerController *)_viewController;
@@ -82,6 +111,7 @@
     NSURL *aURL = vc.model.isLocalVideo
                 ? [NSURL fileURLWithPath:videoUrl]
                 : [NSURL URLWithString:videoUrl];
+    [self getCoverImageWithURL:aURL];
     [self playWithURL:aURL];
 }
 
@@ -153,6 +183,9 @@
 {
     if (!QPPlayerPictureInPictureEnabled())
         return;
+    // 设备是否支持画中画
+    if (![AVPictureInPictureController isPictureInPictureSupported])
+        return;
     QPPlayerController *vc = [self playViewController];
     if (vc.model.isZFPlayerPlayback) {
         ZFAVPlayerManager *manager = (ZFAVPlayerManager *)self.player.currentPlayerManager;
@@ -170,7 +203,7 @@
         //self.pipController = pipVC;
     }
     // 要有延迟 否则可能开启不成功
-    [self delayToScheduleTask:2.0 completion:^{
+    [self delayToScheduleTask:5.0 completion:^{
         [self.pipController startPictureInPicture];
     }];
 }

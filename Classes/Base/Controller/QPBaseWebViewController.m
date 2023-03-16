@@ -9,8 +9,8 @@
 
 @interface QPBaseWebViewController ()
 @property (nonatomic, strong) WKWebView *wkWebView; // Declares a web view object.
-@property (nonatomic, strong) WKWebViewConfiguration *wkConfiguration;
-@property (nonatomic, strong) WKUserContentController *wkUserContentController;
+@property (nonatomic, strong) WKWebViewConfiguration *webViewConfiguration;
+@property (nonatomic, strong) WKUserContentController *userContentController;
 @end
 
 @implementation QPBaseWebViewController
@@ -27,61 +27,52 @@
 - (void)releaseWebView
 {
     if (self.wkWebView) {
-        _wkWebView = nil;
+        self.wkWebView = nil;
     }
-}
-
-- (WKWebViewConfiguration *)wkConfiguration
-{
-    if (!_wkConfiguration) {
-        _wkConfiguration = [[WKWebViewConfiguration alloc] init];
-        WKPreferences *preferences = [[WKPreferences alloc] init];
-        preferences.minimumFontSize = 0;
-        preferences.javaScriptEnabled = YES;
-        preferences.javaScriptCanOpenWindowsAutomatically = YES;
-        _wkConfiguration.preferences = preferences;
-        //_wkConfiguration.processPool = [[WKProcessPool alloc] init];
-        _wkConfiguration.userContentController = self.wkUserContentController;
-        _wkConfiguration.allowsInlineMediaPlayback = YES;
-        if (@available(iOS 9.0, *)) {
-            // The default value is YES.
-            _wkConfiguration.allowsAirPlayForMediaPlayback = YES;
-            _wkConfiguration.allowsPictureInPictureMediaPlayback = YES;
-            if (@available(iOS 10.0, *)) {
-                // WKAudiovisualMediaTypeNone
-                _wkConfiguration.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypeAll;
-            } else {
-                //_wkConfiguration.requiresUserActionForMediaPlayback = NO;
-            }
-        } else {
-            // Fallback on earlier versions
-            //_wkConfiguration.mediaPlaybackAllowsAirPlay = YES;
-            //_wkConfiguration.mediaPlaybackRequiresUserAction = YES;
-        }
-    }
-    return _wkConfiguration;
-}
-
-- (WKUserContentController *)wkUserContentController
-{
-    if (!_wkUserContentController) {
-        _wkUserContentController = WKUserContentController.alloc.init;
-    }
-    return _wkUserContentController;
 }
 
 - (WKWebViewConfiguration *)webViewConfiguration
 {
-    return self.wkConfiguration;
+    if (!_webViewConfiguration) {
+        _webViewConfiguration = [[WKWebViewConfiguration alloc] init];
+        WKPreferences *preferences = [[WKPreferences alloc] init];
+        preferences.minimumFontSize = 0;
+        preferences.javaScriptEnabled = YES;
+        preferences.javaScriptCanOpenWindowsAutomatically = YES;
+        _webViewConfiguration.preferences = preferences;
+        //_webViewConfiguration.processPool = [[WKProcessPool alloc] init];
+        _webViewConfiguration.userContentController = self.userContentController;
+        _webViewConfiguration.allowsInlineMediaPlayback = YES;
+        if (@available(iOS 9.0, *)) {
+            // The default value is YES.
+            _webViewConfiguration.allowsAirPlayForMediaPlayback = YES;
+            _webViewConfiguration.allowsPictureInPictureMediaPlayback = YES;
+            if (@available(iOS 10.0, *)) {
+                // WKAudiovisualMediaTypeNone
+                _webViewConfiguration.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypeAll;
+            } else {
+                //_webViewConfiguration.requiresUserActionForMediaPlayback = NO;
+            }
+        } else {
+            // Fallback on earlier versions
+            //_webViewConfiguration.mediaPlaybackAllowsAirPlay = YES;
+            //_webViewConfiguration.mediaPlaybackRequiresUserAction = YES;
+        }
+    }
+    return _webViewConfiguration;
 }
 
-- (WKUserContentController *)userContentController {
-    return self.wkUserContentController;
+- (WKUserContentController *)userContentController
+{
+    if (!_userContentController) {
+        _userContentController = WKUserContentController.alloc.init;
+    }
+    return _userContentController;
 }
 
 - (void)initWebViewWithFrame:(CGRect)frame
 {
-    [self initWebViewWithFrame:frame configuration:self.wkConfiguration];
+    [self initWebViewWithFrame:frame configuration:self.webViewConfiguration];
 }
 
 - (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration
@@ -247,12 +238,12 @@
 - (void)dealloc
 {
     QPLog(@"::");
-    [self.wkUserContentController removeAllUserScripts];
+    [self.userContentController removeAllUserScripts];
     if (@available(iOS 14.0, *)) {
-        [self.wkUserContentController removeAllScriptMessageHandlers];
+        [self.userContentController removeAllScriptMessageHandlers];
     } else {
         // Unknow
-        //[self.wkUserContentController removeScriptMessageHandlerForName:@""];
+        //[self.userContentController removeScriptMessageHandlerForName:@""];
     }
     [self releaseWebView];
     [self removeThemeStyleChangedObserver];

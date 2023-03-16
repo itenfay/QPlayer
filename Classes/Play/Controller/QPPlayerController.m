@@ -19,8 +19,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
-    return pt.player.isFullScreen ? YES : NO;
+    return NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -179,7 +178,6 @@
     [super viewWillAppear:animated];
     QPAppDelegate.allowOrentitaionRotation = YES;
     QPPlayerSavePlaying(YES);
-    [self configureControlView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -271,23 +269,6 @@
 - (UIImageView *)webToolBar
 {
     return (UIImageView *)[self.view viewWithTag:888];
-}
-
-- (NSString *)videoTitleByDeletingExtension
-{
-    if ([self.model.videoTitle containsString:@"://"]) {
-        return self.model.videoTitle;
-    }
-    return [self.model.videoTitle stringByDeletingPathExtension];
-}
-
-- (void)configureControlView
-{
-    UIImage *coverImage = QPImageNamed(@"default_BigThumbnail");
-    [self.controlView showTitle:self.videoTitleByDeletingExtension
-                 coverURLString:self.model.coverUrl
-               placeholderImage:self.model.placeholderCoverImage ?: coverImage
-                 fullScreenMode:ZFFullScreenModeAutomatic];
 }
 
 - (void)loadBottomContents {

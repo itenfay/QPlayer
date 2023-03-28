@@ -185,7 +185,7 @@
     }
 }
 
-/// Deprecated
+/// Adapt theme style for the web view.
 - (void)adaptThemeForWebView
 {
     //[self.webView evaluateJavaScript:@"document.body.style.backgroundColor" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
@@ -239,6 +239,8 @@
 {
     NSURL *url = webView.URL;
     QPLog(":: url=%@", url);
+    _requestURL = url.copy;
+    !self.linkBlock ?: self.linkBlock(url);
     if (QPRespondsToSelector(self.delegate, @selector(adapter:didCommitNavigation:))) {
         [self.delegate adapter:self didCommitNavigation:navigation];
     }
@@ -308,7 +310,7 @@
     QPLog(":: url=%@", url);
     
     // Method1: resolve the problem about '_blank'.
-    if (!navigationAction.targetFrame.isMainFrame) {
+    if (navigationAction.targetFrame == nil || !navigationAction.targetFrame.isMainFrame) {
         [webView loadRequest:navigationAction.request];
     }
     
@@ -322,10 +324,6 @@
 {
     NSURL *url = navigationAction.request.URL;
     QPLog(":: url=%@", url);
-    if (![url.absoluteString isEqualToString:@"about:blank"]) {
-        _requestURL = url.copy;
-        !self.linkBlock ?: self.linkBlock(url);
-    }
     
     // Method2: resolve the problem about '_blank'.
     //if (navigationAction.targetFrame == nil) {
@@ -472,7 +470,7 @@
 
 - (void)hideToolBarAfterDelay
 {
-    self.scheduleTask(self, @selector(hideToolBar), nil, 8);
+    self.scheduleTask(self, @selector(hideToolBar), nil, 6);
 }
 
 - (void)showToolBar

@@ -20,3 +20,5 @@ NSString *const kThemeStyleDidChangeNotification = @"kThemeStyleDidChangeNotific
 NSString *const kCarrierNetworkAllowed = @"kCarrierNetworkAllowed";
 
 NSString *const kPlayerPictureInPictureEnabled = @"kPlayerPictureInPictureEnabled";
+
+NSString *const kPlayerHardDecoding = @"kPlayerHardDecoding";

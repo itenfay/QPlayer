@@ -91,7 +91,8 @@ QP_STATIC_INLINE void QPPlayerSavePlaying(BOOL value)
     QPStoreValue(kQPPlayerIsPlaying, [NSNumber numberWithBool:value]);
 }
 
-QP_STATIC_INLINE BOOL QPPlayerIsPlaying() {
+QP_STATIC_INLINE BOOL QPPlayerIsPlaying()
+{
     return [QPExtractValue(kQPPlayerIsPlaying) boolValue];
 }
 
@@ -113,6 +114,16 @@ QP_STATIC_INLINE void QPPlayerSetPictureInPictureEnabled(BOOL value)
 QP_STATIC_INLINE BOOL QPPlayerPictureInPictureEnabled()
 {
     return [QPExtractValue(kPlayerPictureInPictureEnabled) boolValue];
+}
+
+QP_STATIC_INLINE void QPPlayerSetHardDecoding(int value)
+{
+    QPStoreValue(kPlayerHardDecoding, [NSNumber numberWithInt:value]);
+}
+
+QP_STATIC_INLINE int QPPlayerHardDecoding()
+{
+    return [QPExtractValue(kPlayerHardDecoding) intValue];
 }
 
 QP_STATIC_INLINE NSString *QPMatchingIconName(NSString *ext)

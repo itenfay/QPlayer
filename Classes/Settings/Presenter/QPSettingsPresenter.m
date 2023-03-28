@@ -42,21 +42,27 @@
     model1.title = @"当前网络连接状态";
     [vc.adapter.dataSource addObject:model1];
     
+    NSMutableArray *subArray = [NSMutableArray arrayWithCapacity:0];
     QPSettingsModel *model2 = [QPSettingsModel new];
-    model2.title = @"开启画中画";
-    [vc.adapter.dataSource addObject:model2];
+    model2.title = @"硬解码播放";
+    [subArray addObject:model2];
     
     QPSettingsModel *model3 = [QPSettingsModel new];
-    model3.title = @"允许运营商网络播放";
-    [vc.adapter.dataSource addObject:model3];
+    model3.title = @"开启画中画";
+    [subArray addObject:model3];
     
     QPSettingsModel *model4 = [QPSettingsModel new];
-    model4.title = @"WiFi 文件传输";
-    [vc.adapter.dataSource addObject:model4];
+    model4.title = @"允许运营商网络播放";
+    [subArray addObject:model4];
+    [vc.adapter.dataSource addObject:subArray];
     
     QPSettingsModel *model5 = [QPSettingsModel new];
-    model5.title = @"更改端口";
+    model5.title = @"WiFi 文件传输";
     [vc.adapter.dataSource addObject:model5];
+    
+    QPSettingsModel *model6 = [QPSettingsModel new];
+    model6.title = @"更改端口";
+    [vc.adapter.dataSource addObject:model6];
     
     [_view reloadData];
 }
@@ -92,7 +98,6 @@
 {
     NSArray *headerTitles = @[@"开启后，将与手机设置保持一致的深色或浅色模式",
                               @"显示网络连接状态",
-                              @"开启后，可以享用画中画播放",
                               @"播放设置",
                               @"开启后，可以享用 WiFi 文件传输服务",
                               @"打开电脑浏览器，输入以下网址进行访问"];
@@ -123,7 +128,7 @@
 
 - (UIView *)viewForFooterInSection:(NSInteger)section forAdapter:(QPListViewAdapter *)adapter
 {
-    if (section == 0 || section == 1 || section == 2) {
+    if (section == 0 || section == 1) {
         return nil;
     }
     NSArray *footerDescs = @[@"开启后，可以使用流量在线观看视频，注意网页播放器仍可使用流量播放。",
@@ -139,7 +144,7 @@
     titleLabel.textAlignment   = NSTextAlignmentLeft;
     titleLabel.numberOfLines   = 0;
     titleLabel.lineBreakMode   = NSLineBreakByWordWrapping;
-    titleLabel.text            = footerDescs[section - 3];
+    titleLabel.text            = footerDescs[section - 2];
     [footerView addSubview:titleLabel];
     
     CGFloat tX = 2*BaseLeftMargin;
@@ -157,7 +162,7 @@
 
 //- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 //{
-//    return SettingsCellHeight;
+//    return UITableViewAutomaticDimension; //SettingsCellHeight;
 //}
 
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
@@ -175,53 +180,64 @@
     cell.backgroundColor = _viewController.isDarkMode ? QPColorFromRGB(40, 40, 40) : [UIColor whiteColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSMutableArray *dataArray = [self settingsController].adapter.dataSource;
-    if (indexPath.section < dataArray.count) {
-        QPSettingsModel *model = dataArray[indexPath.section];
-        if (indexPath.section == 5) {
-            cell.detailTextLabel.text = model.title;
-        } else {
-            cell.textLabel.text = model.title;
-        }
+    QPSettingsModel *model = (QPSettingsModel *)[adapter modelWithTableView:_view atIndexPath:indexPath];
+    if (indexPath.section == 4) {
+        cell.detailTextLabel.text = model.title;
+    } else {
+        cell.textLabel.text = model.title;
     }
+    cell.textLabel.font = [UIFont systemFontOfSize:15.f];
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
     cell.textLabel.textColor = _viewController.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:15.f];
     cell.detailTextLabel.textColor = _viewController.isDarkMode ? QPColorFromRGB(180, 180, 180) : QPColorFromRGB(48, 48, 48);
+    
     if (indexPath.section == 0) {
         //@"自动跟随系统设置";
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
-        sw.centerY   = SettingsCellHeight/2.0;
+        sw.centerY   = cell.height/2.0;
         sw.on        = [QPExtractValue(kThemeStyleOnOff) boolValue];
-        sw.tag       = 10;
+        sw.tag       = 12;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         [cell.contentView addSubview:sw];
     } else if (indexPath.section == 1) {
         //@"当前网络连接状态";
         cell.detailTextLabel.text = DYFNetworkSniffer.sharedSniffer.statusFlags;
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:16.f];
     } else if (indexPath.section == 2) {
-        //@"开启画中画";
-        UISwitch *sw = [[UISwitch alloc] init];
-        sw.left      = QPScreenWidth - 70.f;
-        sw.centerY   = SettingsCellHeight/2.0;
-        sw.on        = QPPlayerPictureInPictureEnabled();
-        sw.tag       = 9;
-        [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [cell.contentView addSubview:sw];
+        if (indexPath.item == 0) {
+            //@"硬解码播放";
+            UISwitch *sw = [[UISwitch alloc] init];
+            sw.left      = QPScreenWidth - 70.f;
+            sw.centerY   = cell.height/2.0;
+            sw.on        = QPPlayerHardDecoding() == 1 ? YES : NO;
+            sw.tag       = 10;
+            [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
+            [cell.contentView addSubview:sw];
+        } else if (indexPath.item == 1) {
+            //@"画中画播放";
+            UISwitch *sw = [[UISwitch alloc] init];
+            sw.left      = QPScreenWidth - 70.f;
+            sw.centerY   = cell.height/2.0;
+            sw.on        = QPPlayerPictureInPictureEnabled();
+            sw.tag       = 9;
+            [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
+            [cell.contentView addSubview:sw];
+        } else if (indexPath.item == 2) {
+            //@"允许运营商网络播放";
+            UISwitch *sw = [[UISwitch alloc] init];
+            sw.left      = QPScreenWidth - 70.f;
+            sw.centerY   = cell.height/2.0;
+            sw.on        = QPCarrierNetworkAllowed();
+            sw.tag       = 8;
+            [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
+            [cell.contentView addSubview:sw];
+        }
     } else if (indexPath.section == 3) {
-        //@"允许运营商网络播放";
-        UISwitch *sw = [[UISwitch alloc] init];
-        sw.left      = QPScreenWidth - 70.f;
-        sw.centerY   = SettingsCellHeight/2.0;
-        sw.on        = QPCarrierNetworkAllowed();
-        sw.tag       = 8;
-        [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [cell.contentView addSubview:sw];
-    } else if (indexPath.section == 4) {
         //@"WiFi 文件传输";
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
-        sw.centerY   = SettingsCellHeight/2.0;
+        sw.centerY   = cell.height/2.0;
         sw.tag       = 6;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         if ([DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
@@ -230,28 +246,31 @@
             sw.on = NO;
         }
         [cell.contentView addSubview:sw];
-    } else if (indexPath.section == 5) {
+    } else if (indexPath.section == 4) {
         //@"更改端口";
         cell.textLabel.text = [NSString stringWithFormat:@"http://%@:%d", [QPWifiManager shared].httpServer.hostName, [QPWifiManager shared].httpServer.port];
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:16.f];
         cell.detailTextLabel.textColor = QPColorFromRGB(66, 126, 210);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    
-    cell.textLabel.font = [UIFont systemFontOfSize:16.f];
-    cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
     return cell;
 }
 
 - (void)switchValueChanged:(UISwitch *)sender
 {
-    if (sender.tag == 10) {
+    if (sender.tag == 12) {
         QPStoreValue(kThemeStyleOnOff, [NSNumber numberWithBool:sender.isOn]);
         [NSNotificationCenter.defaultCenter postNotificationName:kThemeStyleDidChangeNotification object:nil];
         if (self.viewController.tabBarController) {
             QPTabBarController *tbc = (QPTabBarController *)self.viewController.tabBarController;
             [tbc adaptThemeStyle];
+        }
+    } else if (sender.tag == 10) {
+        QPPlayerSetHardDecoding(sender.isOn ? 1 : 0);
+        if (sender.isOn) {
+            [QPHudUtils showTipMessageInView:@"已开启硬解码播放"];
+        } else {
+            [QPHudUtils showTipMessageInView:@"已关闭硬解码播放"];
         }
     } else if (sender.tag == 9) {
         QPPlayerSetPictureInPictureEnabled(sender.isOn);
@@ -290,7 +309,7 @@
 - (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
     [_view deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 5) {
+    if (indexPath.section == 4) {
         if (indexPath.row == 0) {
             [self onChangePort:nil];
         }

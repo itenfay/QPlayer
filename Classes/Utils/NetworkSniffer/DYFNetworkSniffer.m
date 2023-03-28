@@ -54,16 +54,16 @@
     [AFNetworkReachabilityManager.sharedManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
             case AFNetworkReachabilityStatusUnknown:
-                _statusFlags = @"Unknown";
+                self->_statusFlags = @"Unknown";
                 break;
             case AFNetworkReachabilityStatusNotReachable:
-                _statusFlags = @"Not Reachable";
+                self->_statusFlags = @"Not Reachable";
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
                 [self updateCellularNetworkStatus];
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:
-                _statusFlags = @"WiFi";
+                self->_statusFlags = @"WiFi";
                 break;
             default:
                 break;
@@ -104,40 +104,42 @@
 
 - (void)updateCellularNetworkStatus
 {
-    if (@available(iOS 7.0, *)) {
-        NSArray *type2G_Strings = @[CTRadioAccessTechnologyEdge,
-                                    CTRadioAccessTechnologyGPRS];
-        NSArray *type3G_Strings = @[CTRadioAccessTechnologyHSDPA,
-                                    CTRadioAccessTechnologyWCDMA,
-                                    CTRadioAccessTechnologyCDMA1x,
-                                    CTRadioAccessTechnologyHSUPA,
-                                    CTRadioAccessTechnologyeHRPD,
-                                    CTRadioAccessTechnologyCDMAEVDORev0,
-                                    CTRadioAccessTechnologyCDMAEVDORevA,
-                                    CTRadioAccessTechnologyCDMAEVDORevB];
-        NSArray *type4G_Strings = @[CTRadioAccessTechnologyLTE];
-        
-        CTTelephonyNetworkInfo *info= [[CTTelephonyNetworkInfo alloc] init];
-        NSString *currentAccessType = info.currentRadioAccessTechnology;
+    CTTelephonyNetworkInfo *info= [[CTTelephonyNetworkInfo alloc] init];
+    NSString *ct;
+    if (@available(iOS 12.0, *)) {
+        ct = info.serviceCurrentRadioAccessTechnology.allValues.firstObject;
+    } else {
+        ct = info.currentRadioAccessTechnology;
+    }
+    NSArray *t2GStrings = @[CTRadioAccessTechnologyEdge,
+                            CTRadioAccessTechnologyGPRS];
+    NSArray *t3GStrings = @[CTRadioAccessTechnologyHSDPA,
+                            CTRadioAccessTechnologyWCDMA,
+                            CTRadioAccessTechnologyCDMA1x,
+                            CTRadioAccessTechnologyHSUPA,
+                            CTRadioAccessTechnologyeHRPD,
+                            CTRadioAccessTechnologyCDMAEVDORev0,
+                            CTRadioAccessTechnologyCDMAEVDORevA,
+                            CTRadioAccessTechnologyCDMAEVDORevB];
+    NSArray *t4GStrings = @[CTRadioAccessTechnologyLTE];
+    if ([t2GStrings containsObject:ct]) {
+        _statusFlags = @"2G";
+    } else if ([t3GStrings containsObject:ct]) {
+        _statusFlags = @"3G";
+    } else if ([t4GStrings containsObject:ct]) {
+        _statusFlags = @"4G";
+    } else {
         if (@available(iOS 14.1, *)) {
-            NSArray *type5G_Strings = @[CTRadioAccessTechnologyNR,
-                                        CTRadioAccessTechnologyNRNSA];
-            if ([type5G_Strings containsObject:currentAccessType]) {
+            NSArray *t5GStrings = @[CTRadioAccessTechnologyNR,
+                                    CTRadioAccessTechnologyNRNSA];
+            if ([t5GStrings containsObject:ct]) {
                 _statusFlags = @"5G";
             } else {
-                _statusFlags = @"WWAN";
+                _statusFlags = @"Unkown";
             }
-        } else if ([type4G_Strings containsObject:currentAccessType]) {
-            _statusFlags = @"4G";
-        } else if ([type3G_Strings containsObject:currentAccessType]) {
-            _statusFlags = @"3G";
-        } else if ([type2G_Strings containsObject:currentAccessType]) {
-            _statusFlags = @"2G";
         } else {
-            _statusFlags = @"WWAN";
+            _statusFlags = @"Unkown";
         }
-    } else {
-        _statusFlags = @"WWAN";
     }
 }
 

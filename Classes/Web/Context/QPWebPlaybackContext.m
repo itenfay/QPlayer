@@ -279,7 +279,6 @@
             model.isLocalVideo   = NO;
             model.videoTitle     = title;
             model.videoUrl       = urlString;
-            model.videoDecoding  = 1;
             switch (type) {
                 case QPPlayerTypeZFPlayer:
                     model.isZFPlayerPlayback = YES;

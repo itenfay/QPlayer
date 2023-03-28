@@ -33,9 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// The cover url for a video.
 @property (nonatomic, copy) NSString *coverUrl;
 
-/// The decoding for a video. 0: soft decoding, 1: hard decoding.
-@property (nonatomic, assign) int videoDecoding;
-
 @end
 
 NS_ASSUME_NONNULL_END

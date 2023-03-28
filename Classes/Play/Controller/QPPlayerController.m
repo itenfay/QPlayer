@@ -19,7 +19,8 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return NO;
+    QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
+    return pt.player.isFullScreen ? YES : NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -150,7 +151,7 @@
     QPAppDelegate.playerController = self;
     QPLog(@":: videoTitle: %@", self.model.videoTitle);
     QPLog(@":: videoUrl: %@", self.model.videoUrl);
-    QPLog(@":: videoDecoding: %d", self.model.videoDecoding);
+    QPLog(@":: videoDecoding: %d", QPPlayerHardDecoding());
     [self configureNavigationBar];
     
     QPPlayerPresenter *presenter = [[QPPlayerPresenter alloc] init];

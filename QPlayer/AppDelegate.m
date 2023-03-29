@@ -90,8 +90,8 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     if (_playerController) {
-        QPPlayerPresenter *pt = (QPPlayerPresenter *)_playerController.presenter;
-        [pt stopPictureInPicture];
+        //QPPlayerPresenter *pt = (QPPlayerPresenter *)_playerController.presenter;
+        //[pt stopPictureInPicture];
     }
 }
 
@@ -104,8 +104,8 @@
 {
     [self stopSniffingNetworkStatus];
     if (_playerController) {
-        QPPlayerPresenter *pt = (QPPlayerPresenter *)_playerController.presenter;
-        [pt startPictureInPicture];
+        //QPPlayerPresenter *pt = (QPPlayerPresenter *)_playerController.presenter;
+        //[pt startPictureInPicture];
     }
 }
 

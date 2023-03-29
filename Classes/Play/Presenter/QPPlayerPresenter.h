@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)prepareToPlay;
 - (void)enterPortraitFullScreen;
 
+- (BOOL)isPictureInPictureActive;
 - (void)startPictureInPicture;
 - (void)stopPictureInPicture;
 

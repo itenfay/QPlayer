@@ -19,8 +19,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
-    return pt.player.isFullScreen ? YES : NO;
+    return NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -107,7 +106,7 @@
     portraitButton.top       = 0.f;
     [portraitButton setTitle:@"竖屏" forState:UIControlStateNormal];
     [portraitButton setTitleColor:QPColorFromRGB(252, 252, 252) forState:UIControlStateNormal];
-    [portraitButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
+    [portraitButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.f]];
     [portraitButton addTarget:self action:@selector(onPortraitFullScreen:) forControlEvents:UIControlEventTouchUpInside];
     portraitButton.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, -10);
     [self addRightNavigationBarButton:portraitButton];
@@ -117,9 +116,9 @@
     pipButton.height    = 30.f;
     pipButton.right     = 0.f;
     pipButton.top       = 0.f;
-    [pipButton setTitle:@"开启画中画" forState:UIControlStateNormal];
+    [pipButton setTitle:@"画中画" forState:UIControlStateNormal];
     [pipButton setTitleColor:QPColorFromRGB(252, 252, 252) forState:UIControlStateNormal];
-    [pipButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
+    [pipButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.f]];
     [pipButton addTarget:self action:@selector(pipBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     //[self addRightNavigationBarButton:pipButton];
     
@@ -135,7 +134,11 @@
 - (void)pipBtnClick:(UIButton *)sender
 {
     QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
-    [pt startPictureInPicture];
+    if ([pt isPictureInPictureActive]) {
+        [pt stopPictureInPicture];
+    } else {
+        [pt startPictureInPicture];
+    }
 }
 
 - (void)loadView

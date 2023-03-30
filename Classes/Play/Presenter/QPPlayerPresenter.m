@@ -45,9 +45,9 @@
             // 开启硬解码（硬件解码CPU消耗低，软解更稳定）
             [playerManager.options setOptionIntValue:hardDecoding forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryPlayer];
             // 支持H265硬解 1：开启 0：关闭
-            //[playerManager.options setOptionIntValue:hardDecoding forKey:@"mediacodec-hevc" ofCategory:kIJKFFOptionCategoryPlayer];
+            [playerManager.options setOptionIntValue:hardDecoding forKey:@"mediacodec-hevc" ofCategory:kIJKFFOptionCategoryPlayer];
             // 支持硬解 1：开启 0：关闭
-            //[playerManager.options setOptionIntValue:hardDecoding forKey:@"mediacodec" ofCategory:kIJKFFOptionCategoryPlayer];
+            [playerManager.options setOptionIntValue:hardDecoding forKey:@"mediacodec" ofCategory:kIJKFFOptionCategoryPlayer];
             // 自动旋屏
             [playerManager.options setOptionIntValue:0 forKey:@"mediacodec-auto-rotate" ofCategory:kIJKFFOptionCategoryPlayer];
             // 处理分辨率变化
@@ -56,14 +56,12 @@
             [playerManager.options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter" ofCategory:kIJKFFOptionCategoryCodec];
             // 跳过帧
             [playerManager.options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame" ofCategory:kIJKFFOptionCategoryCodec];
-            // 丢帧阈值，视频帧处理不过来的时候丢弃一些帧达到同步的效果
-            [playerManager.options setOptionIntValue:5 forKey:@"framedrop" ofCategory:kIJKFFOptionCategoryPlayer];
-            // 多次调用播放器(网络视频，rtsp，本地视频，wifi上http视频)，需要清空DNS才能播放
+            // 多次调用播放器(网络视频，rtsp，本地视频，http视频)，清空DNS才能播放
             [playerManager.options setOptionIntValue:1 forKey:@"dns_cache_clear" ofCategory:kIJKFFOptionCategoryFormat];
             // 设置分析流时长，播放前的探测时间设置为1，达到首屏秒开效果
             [playerManager.options setOptionIntValue:1 forKey:@"analyzeduration" ofCategory:kIJKFFOptionCategoryFormat];
             // 设置播放前的最大探测时间
-            [playerManager.options setOptionIntValue:100 forKey:@"analyzemaxduration" ofCategory:kIJKFFOptionCategoryFormat];
+            [playerManager.options setOptionIntValue:60 forKey:@"analyzemaxduration" ofCategory:kIJKFFOptionCategoryFormat];
             // 不额外优化(使能非规范兼容优化，默认值0)
             //[playerManager.options setOptionIntValue:1 forKey:@"fast" ofCategory:kIJKFFOptionCategoryPlayer];
             // 播放重连次数
@@ -76,6 +74,8 @@
                 [playerManager.options setOptionValue:@"tcp" forKey:@"rtsp_transport" ofCategory:kIJKFFOptionCategoryFormat];
             }
             if ([scheme hasPrefix:@"rtmp"] || [scheme hasPrefix:@"rtsp"]) {
+                // 丢帧阈值，视频帧处理不过来的时候丢弃一些帧达到同步的效果
+                [playerManager.options setOptionIntValue:5 forKey:@"framedrop" ofCategory:kIJKFFOptionCategoryPlayer];
                 // 是否开启预缓冲，一般直播项目会开启，达到秒开的效果，不过带来播放丢帧卡顿的体验
                 [playerManager.options setOptionIntValue:0 forKey:@"packet-buffering" ofCategory:kIJKFFOptionCategoryPlayer];
                 // 缩短播放的rtmp视频延迟在1s内
@@ -89,7 +89,7 @@
                 // 启动预加载，准备好后自动播放
                 [playerManager.options setOptionIntValue:1 forKey:@"start-on-prepared" ofCategory:kIJKFFOptionCategoryPlayer];
                 // 播放前的探测Size，默认是1M，改小一点会出画面更快
-                [playerManager.options setOptionIntValue:1024 forKey:@"probesize" ofCategory:kIJKFFOptionCategoryFormat];//1024
+                [playerManager.options setOptionIntValue:200 forKey:@"probesize" ofCategory:kIJKFFOptionCategoryFormat];//1024
                 // 最大缓存时长
                 [playerManager.options setOptionIntValue:3 forKey:@"max_cached_duration" ofCategory:kIJKFFOptionCategoryPlayer];
             } else {
@@ -162,7 +162,7 @@
     QPPlayerController *vc = [self playViewController];
     
     self.player.controlView    = vc.controlView;
-    self.player.WWANAutoPlay   = YES;
+    self.player.WWANAutoPlay   = QPCarrierNetworkAllowed();
     self.player.shouldAutoPlay = YES;
     self.player.assetURL       = aURL;
     
@@ -192,20 +192,22 @@
         QPLog(@":: isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
         @zf_strongify(self)
         NSArray<UIWindow *> *windows = [self yf_activeWindows];
+        QPPlayerController *vc = [self playViewController];
         // 使用YYTextView转屏失败
         for (UIWindow *window in windows) {
             if ([window isKindOfClass:NSClassFromString(@"YYTextEffectWindow")]) {
                 window.hidden = isFullScreen;
             }
         }
-        QPPlayerController *vc = [self playViewController];
         if (!isFullScreen) {
-            vc.controlView.showCustomStatusBar = NO;
             for (UIWindow *window in windows) {
                 if ([window isKindOfClass:ZFLandscapeWindow.class]) {
                     window.hidden = YES;
                 }
             }
+        }
+        if (self.player.orientationObserver.fullScreenMode == ZFFullScreenModePortrait) {
+            vc.controlView.showCustomStatusBar = NO;
         } else {
             vc.controlView.showCustomStatusBar = YES;
         }
@@ -270,7 +272,10 @@
             [AVAudioSession.sharedInstance setCategory:AVAudioSessionCategoryPlayback error:&error];
             [AVAudioSession.sharedInstance setActive:YES error:&error];
         } @catch (NSException *exception) {
-            QPLog(":: [AVAudioSession] exception=%@, %@, %@", exception.name, exception.callStackSymbols, exception.callStackReturnAddresses);
+            QPLog(":: [AVAudioSession] exception=%@, %@, %@"
+                  , exception.name
+                  , exception.callStackSymbols
+                  , exception.callStackReturnAddresses);
         } @finally {}
         [self.pipVC startPictureInPicture];
     }];
@@ -310,13 +315,17 @@
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController failedToStartPictureInPictureWithError:(NSError *)error
 {
     QPLog(":: FailedToStartPictureInPicture. error=%@.", error);
+    NSString *message = [NSString stringWithFormat:@"画中画开启失败(code=%zi, msg=%@)"
+                         , error.code
+                         , error.localizedDescription];
+    [QPHudUtils showErrorMessage:message];
 }
 
-- (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
-{
-    QPLog(":: restoreUserInterface.");
-    completionHandler(YES);
-}
+//- (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
+//{
+//    QPLog(":: restoreUserInterface.");
+//    completionHandler(YES);
+//}
 
 #pragma mark - IJKFFOptions
 

@@ -30,7 +30,6 @@
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="1" id="6ZE-TY-eti"/>
-                            <constraint firstAttribute="height" constant="30" id="F61-y1-s2q"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ve3-1F-GUC" userLabel="MDetailsLabel">
@@ -48,6 +47,7 @@
                     </view>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="YxC-Yw-y1j" secondAttribute="bottom" constant="10" id="1QW-7q-0CA"/>
                     <constraint firstAttribute="trailing" secondItem="RvN-TZ-aih" secondAttribute="trailing" id="A5S-dy-0oT"/>
                     <constraint firstItem="RvN-TZ-aih" firstAttribute="top" secondItem="V90-5Q-Ho7" secondAttribute="bottom" constant="10" id="BSd-gb-IQA"/>
                     <constraint firstItem="YxC-Yw-y1j" firstAttribute="leading" secondItem="V90-5Q-Ho7" secondAttribute="trailing" constant="10" id="IJh-fR-7Ws"/>

@@ -52,7 +52,6 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
         model.sortName = model.m_title;
         [[self dropListView].adapter.dataSource addObject:model];
     }
-    [[self dropListView].adapter.dataSource sortUsingFunction:QPSortObjects context:NULL];
     
     [self delayToScheduleTask:0.5 completion:^{
         [QPHudUtils hideHUD];

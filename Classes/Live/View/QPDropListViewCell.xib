@@ -16,10 +16,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V90-5Q-Ho7" userLabel="MTitleLabel">
-                        <rect key="frame" x="10" y="8" width="100" height="34"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V90-5Q-Ho7" userLabel="MTitleLabel">
+                        <rect key="frame" x="10" y="10" width="100" height="29"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="34" id="EQk-JF-jxh"/>
                             <constraint firstAttribute="width" constant="100" id="v7B-6X-jBU"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="13"/>
@@ -34,11 +33,8 @@
                             <constraint firstAttribute="height" constant="30" id="F61-y1-s2q"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ve3-1F-GUC" userLabel="MDetailsLabel">
-                        <rect key="frame" x="131" y="8" width="273" height="34"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="34" id="ftD-vJ-WcI"/>
-                        </constraints>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ve3-1F-GUC" userLabel="MDetailsLabel">
+                        <rect key="frame" x="131" y="10" width="273" height="29"/>
                         <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="13"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -53,13 +49,15 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="RvN-TZ-aih" secondAttribute="trailing" id="A5S-dy-0oT"/>
+                    <constraint firstItem="RvN-TZ-aih" firstAttribute="top" secondItem="V90-5Q-Ho7" secondAttribute="bottom" constant="10" id="BSd-gb-IQA"/>
                     <constraint firstItem="YxC-Yw-y1j" firstAttribute="leading" secondItem="V90-5Q-Ho7" secondAttribute="trailing" constant="10" id="IJh-fR-7Ws"/>
-                    <constraint firstItem="ve3-1F-GUC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="PD8-0P-TIc"/>
+                    <constraint firstItem="RvN-TZ-aih" firstAttribute="top" secondItem="ve3-1F-GUC" secondAttribute="bottom" constant="10" id="Kzy-8i-OfZ"/>
+                    <constraint firstItem="ve3-1F-GUC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="PD8-0P-TIc"/>
                     <constraint firstItem="ve3-1F-GUC" firstAttribute="leading" secondItem="YxC-Yw-y1j" secondAttribute="trailing" constant="10" id="cR9-cA-pH3"/>
                     <constraint firstAttribute="bottom" secondItem="RvN-TZ-aih" secondAttribute="bottom" id="far-9q-ECw"/>
                     <constraint firstItem="YxC-Yw-y1j" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="htc-37-E9A"/>
                     <constraint firstItem="RvN-TZ-aih" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="jdI-hT-nNn"/>
-                    <constraint firstItem="V90-5Q-Ho7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="lkb-lu-gsR"/>
+                    <constraint firstItem="V90-5Q-Ho7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="lkb-lu-gsR"/>
                     <constraint firstItem="V90-5Q-Ho7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="pa9-Mz-9R8"/>
                     <constraint firstAttribute="trailing" secondItem="ve3-1F-GUC" secondAttribute="trailing" constant="10" id="wgT-hh-18a"/>
                 </constraints>

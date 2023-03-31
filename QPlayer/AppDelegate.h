@@ -6,8 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QPPictureInPicturePresenter.h"
 
-@class QPPlayerController;
+@class QPPictureInPicturePresenter;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -17,7 +18,7 @@
 /// Allow to rotate user interface orentitaion.
 @property (nonatomic, assign) BOOL allowOrentitaionRotation;
 
-/// A player controller.
-@property (nonatomic, weak) QPPlayerController *playerController;
+/// A presenter for picture in picture.
+@property (nonatomic, strong) QPPictureInPicturePresenter *pipPresenter;
 
 @end

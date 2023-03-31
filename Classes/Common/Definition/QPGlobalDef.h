@@ -202,10 +202,10 @@ QP_STATIC_INLINE BOOL QPDetermineWhetherToPlay()
         if (QPCarrierNetworkAllowed()) {
             return YES;
         }
-        [QPHudUtils showWarnMessage:@"请在设置中允许流量播放"];
+        [QPHudUtils showWarnMessage:@"请在设置中允许运营商网络播放！"];
         return NO;
     } else {
-        [QPHudUtils showWarnMessage:@"无法连接，请检查网络"];
+        [QPHudUtils showWarnMessage:@"无法连接，请检查网络！"];
         return NO;
     }
 }

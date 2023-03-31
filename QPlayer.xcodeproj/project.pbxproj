@@ -84,6 +84,8 @@
 		7904DED929AF540E0030A748 /* QPFileModelPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7904DED829AF540E0030A748 /* QPFileModelPresenter.m */; };
 		790F5D9629A45F6100B59422 /* QPBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 790F5D9529A45F6100B59422 /* QPBaseCollectionViewCell.m */; };
 		7923EA6229BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7923EA6129BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m */; };
+		79381BF129D67DFB009FE250 /* QPPictureInPicturePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 79381BF029D67DFB009FE250 /* QPPictureInPicturePresenter.m */; };
+		79381BF429D682CB009FE250 /* QPPlaybackContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 79381BF329D682CB009FE250 /* QPPlaybackContext.m */; };
 		793BAB7229B0556B000EF92B /* QPAboutMeListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BAB7129B0556B000EF92B /* QPAboutMeListViewAdapter.m */; };
 		793BAB7829B0563B000EF92B /* QPAboutMePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BAB7729B0563B000EF92B /* QPAboutMePresenter.m */; };
 		793BAB7B29B056BD000EF92B /* QPAboutModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BAB7A29B056BD000EF92B /* QPAboutModel.m */; };
@@ -279,6 +281,10 @@
 		790F5D9529A45F6100B59422 /* QPBaseCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPBaseCollectionViewCell.m; sourceTree = "<group>"; };
 		7923EA6029BF06EE00B0742A /* QPListViewHeaderFooterAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPListViewHeaderFooterAdapter.h; sourceTree = "<group>"; };
 		7923EA6129BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPListViewHeaderFooterAdapter.m; sourceTree = "<group>"; };
+		79381BEF29D67DFB009FE250 /* QPPictureInPicturePresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPPictureInPicturePresenter.h; sourceTree = "<group>"; };
+		79381BF029D67DFB009FE250 /* QPPictureInPicturePresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPPictureInPicturePresenter.m; sourceTree = "<group>"; };
+		79381BF229D682CB009FE250 /* QPPlaybackContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPPlaybackContext.h; sourceTree = "<group>"; };
+		79381BF329D682CB009FE250 /* QPPlaybackContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPPlaybackContext.m; sourceTree = "<group>"; };
 		793BAB7029B0556B000EF92B /* QPAboutMeListViewAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPAboutMeListViewAdapter.h; sourceTree = "<group>"; };
 		793BAB7129B0556B000EF92B /* QPAboutMeListViewAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPAboutMeListViewAdapter.m; sourceTree = "<group>"; };
 		793BAB7629B0563B000EF92B /* QPAboutMePresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPAboutMePresenter.h; sourceTree = "<group>"; };
@@ -1000,6 +1006,8 @@
 		793BAB8929B09785000EF92B /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				79381BEF29D67DFB009FE250 /* QPPictureInPicturePresenter.h */,
+				79381BF029D67DFB009FE250 /* QPPictureInPicturePresenter.m */,
 				793BAB8B29B09785000EF92B /* QPPlayerPresenter.h */,
 				793BAB8A29B09785000EF92B /* QPPlayerPresenter.m */,
 			);
@@ -1107,6 +1115,8 @@
 		79A466D429B9D283009417EB /* Context */ = {
 			isa = PBXGroup;
 			children = (
+				79381BF229D682CB009FE250 /* QPPlaybackContext.h */,
+				79381BF329D682CB009FE250 /* QPPlaybackContext.m */,
 				79A466D529B9D2E2009417EB /* QPWebPlaybackContext.h */,
 				79A466D629B9D2E2009417EB /* QPWebPlaybackContext.m */,
 			);
@@ -1410,6 +1420,7 @@
 				141B170225C93B46008C465C /* util.c in Sources */,
 				141B170825C93B46008C465C /* error.c in Sources */,
 				1438F67625CC5185000CC65D /* QPHomeView.m in Sources */,
+				79381BF129D67DFB009FE250 /* QPPictureInPicturePresenter.m in Sources */,
 				793BAB7E29B07EAC000EF92B /* QPSettingsPresenter.m in Sources */,
 				141B172725C93B46008C465C /* QPSettingsViewController.m in Sources */,
 				141B171125C93B46008C465C /* QPHistoryArchive.m in Sources */,
@@ -1431,6 +1442,7 @@
 				79443A9629B1DC42004B125A /* QPDropListViewCell.m in Sources */,
 				1438F67A25CC5196000CC65D /* QPHomePresenter.m in Sources */,
 				96532C661F5E814E00E66A2F /* FileResource.m in Sources */,
+				79381BF429D682CB009FE250 /* QPPlaybackContext.m in Sources */,
 				965E09E91F04A85F009BBBD9 /* ViewController.m in Sources */,
 				141B170F25C93B46008C465C /* OCGumbo.m in Sources */,
 				793BAB8D29B09785000EF92B /* QPPlayerPresenter.m in Sources */,
@@ -1612,7 +1624,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0330;
+				CURRENT_PROJECT_VERSION = 0331;
 				DEVELOPMENT_TEAM = ZV3MMP87F8;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1621,7 +1633,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.2.0.90;
+				MARKETING_VERSION = 3.2.1.93;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1653,7 +1665,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0330;
+				CURRENT_PROJECT_VERSION = 0331;
 				DEVELOPMENT_TEAM = ZV3MMP87F8;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1662,7 +1674,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.2.0.90;
+				MARKETING_VERSION = 3.2.1.93;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

@@ -33,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The cover url for a video.
 @property (nonatomic, copy) NSString *coverUrl;
 
+/// The time to seek for a video.
+@property (nonatomic, assign) NSTimeInterval seekToTime;
+
 @end
 
 NS_ASSUME_NONNULL_END

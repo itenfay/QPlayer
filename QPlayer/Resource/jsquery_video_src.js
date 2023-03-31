@@ -26,11 +26,7 @@ function queryLastVideo() {
     return video;
 }
 
-// Old funtion.
 //(function (){ var iframes = document.querySelectorAll('iframe'); var frame; for (var i = 0; i < iframes.length; i++) { frame = iframes[i]; }; if(frame) { var videos = frame.contentWindow.document.documentElement.getElementsByTagName('video'); var video; if (videos.length > 0) { video = videos[0]; }; if (video) { video.pause(); return video.src; }; }; var videos2 = document.querySelectorAll('video'); var video2; for (var i = 0; i < videos2.length; i++) { video2 = videos2[i]; }; if (video2) { video2.pause(); return video2.src; }; var video3 = document.getElementsByTagName('video'); if (video3) { video3.pause(); return video3.src; }; var video4 = document.querySelector('video'); if(video4) { video4.pause(); return video4.src; }; var frame2 = document.querySelector('iframe'); if(frame2) { var videos5 = frame2.contentWindow.document.documentElement.getElementsByTagName('video'); var video5; if (videos5.length > 0) { video5 = videos5[0]; }; if (video5) { video5.pause(); return video5.src; }; }; return;})();
-
-// New funtion.
-//(function (){ var video = document.getElementsByTagName('video'); if (video) { video.pause(); return video.src; }; var video2 = document.querySelector('video'); if (video2) { video2.pause(); return video2.src; }; var frame = document.querySelector('iframe'); if (frame) { var videos = frame.contentWindow.document.documentElement.getElementsByTagName('video'); var video3; for (var i = 0; i < videos.length; i++) { video3 = videos[i]; if (video3) { break; } }; if (video3) { video3.pause(); return video3.src; } }; var videos2 = document.querySelectorAll('video'); var video4; for (var i = 0; i < videos2.length; i++) { video4 = videos2[i]; if (video4) { break; } }; if (video4) { video4.pause(); return video4.src; }; var iframes = document.querySelectorAll('iframe'); var frame2; for (var i = 0; i < iframes.length; i++) { frame2 = iframes[i]; if (frame2) { break; } }; if(frame2) { var videos3 = frame2.contentWindow.document.documentElement.getElementsByTagName('video'); var video5; for (var i = 0; i < videos3.length; i++) { video5 = videos3[i]; if (video5) { break; } }; if (video5) { video5.pause(); return video5.src; }; }; return;})();
 
 // 查询视频的url播放地址
 function queryVideoSrc() {

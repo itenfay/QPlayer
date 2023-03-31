@@ -6,7 +6,6 @@
 //
 
 #import "AppDelegate.h"
-#import "QPPlayerController.h"
 #import <ZFPlayer/ZFPlayer.h>
 
 @interface AppDelegate ()
@@ -32,11 +31,11 @@
 
 - (void)controlLog
 {
-#ifdef DEBUG
+    #ifdef DEBUG
     [ZFPlayerLogManager setLogEnable:YES];
-#else
+    #else
     [ZFPlayerLogManager setLogEnable:NO];
-#endif
+    #endif
 }
 
 - (void)configure
@@ -60,6 +59,14 @@
     if (DYFNetworkSniffer.sharedSniffer.isStarted) {
         [DYFNetworkSniffer.sharedSniffer stop];
     }
+}
+
+- (QPPictureInPicturePresenter *)pipPresenter
+{
+    if (!_pipPresenter) {
+        _pipPresenter = QPPictureInPicturePresenter.alloc.init;
+    }
+    return _pipPresenter;
 }
 
 //******************************************************************************
@@ -89,9 +96,8 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    if (_playerController) {
-        //QPPlayerPresenter *pt = (QPPlayerPresenter *)_playerController.presenter;
-        //[pt stopPictureInPicture];
+    if ([_pipPresenter isPictureInPictureActive]) {
+        [_pipPresenter stopPictureInPicture];
     }
 }
 
@@ -103,9 +109,8 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [self stopSniffingNetworkStatus];
-    if (_playerController) {
-        //QPPlayerPresenter *pt = (QPPlayerPresenter *)_playerController.presenter;
-        //[pt startPictureInPicture];
+    if (![_pipPresenter isPictureInPictureActive]) {
+        [_pipPresenter startPictureInPicture];
     }
 }
 

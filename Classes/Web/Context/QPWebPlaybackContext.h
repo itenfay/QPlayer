@@ -7,14 +7,9 @@
 //
 
 #import "QPBaseContext.h"
+#import "QPPlaybackContext.h"
 #import "QPWKWebViewAdapter.h"
 #import "QPPlayerController.h"
-
-typedef NS_ENUM(NSUInteger, QPPlayerType) {
-    QPPlayerTypeZFPlayer,
-    QPPlayerTypeIJKPlayer,
-    QPPlayerTypeKSYMediaPlayer,
-};
 
 @interface QPWebPlaybackContext : QPBaseContext
 @property (nonatomic, weak) QPWKWebViewAdapter *adapter;
@@ -25,7 +20,7 @@ typedef NS_ENUM(NSUInteger, QPPlayerType) {
 - (BOOL)canAllowNavigation:(NSURL *)URL;
 
 - (void)queryVideoUrlByJavaScript;
-- (void)queryVideoUrlByJavaScrip;
+- (void)queryVideoUrlByCustomJavaScript;
 
 - (void)attemptToPlayVideo:(NSString *)url;
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString;

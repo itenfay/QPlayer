@@ -7,7 +7,6 @@
 //
 
 #import "QPBasePresenter.h"
-#import "QPModularDelegate.h"
 #import "QPPlayerModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -18,11 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (ZFPlayerController *)player;
 - (void)prepareToPlay;
+- (void)seekToTime:(NSTimeInterval)time;
 - (void)enterPortraitFullScreen;
-
-- (BOOL)isPictureInPictureActive;
-- (void)startPictureInPicture;
-- (void)stopPictureInPicture;
 
 @end
 

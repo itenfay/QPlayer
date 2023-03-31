@@ -134,12 +134,11 @@
 
 - (void)pipBtnClick:(UIButton *)sender
 {
-    QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
+    QPPictureInPicturePresenter *pt = QPAppDelegate.pipPresenter;
     if ([pt isPictureInPictureActive]) {
-        [pt stopPictureInPicture];
-    } else {
-        [pt startPictureInPicture];
+        return;
     }
+    [pt startPictureInPicture];
 }
 
 - (void)loadView
@@ -152,7 +151,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    QPAppDelegate.playerController = self;
     QPLog(@":: videoTitle: %@", self.model.videoTitle);
     QPLog(@":: videoUrl: %@", self.model.videoUrl);
     QPLog(@":: videoDecoding: %d", QPPlayerHardDecoding());
@@ -182,7 +180,6 @@
 {
     [super viewWillAppear:animated];
     QPAppDelegate.allowOrentitaionRotation = YES;
-    QPPlayerSavePlaying(YES);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -277,7 +274,7 @@
 }
 
 - (void)loadBottomContents {
-    NSString *aUrl = [QPInfoDictionary objectForKey:@"MyJianShuUrl"];
+    NSString *aUrl = QPInfoDictionary[@"MyGithubUrl"];
     [self loadRequestWithUrl:aUrl];
 }
 

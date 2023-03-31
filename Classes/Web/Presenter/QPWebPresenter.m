@@ -196,7 +196,7 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 - (void)adapter:(QPWKWebViewAdapter *)adapter didFinishNavigation:(WKNavigation *)navigation
 {
     QPLog(@"::");
-    [_playbackContext queryVideoUrlByJavaScrip];
+    [_playbackContext queryVideoUrlByCustomJavaScript];
 }
 
 - (void)adapter:(QPWKWebViewAdapter *)adapter decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler

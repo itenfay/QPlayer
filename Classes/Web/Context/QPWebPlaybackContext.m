@@ -56,7 +56,7 @@
     }];
 }
 
-- (void)queryVideoUrlByJavaScrip
+- (void)queryVideoUrlByCustomJavaScript
 {
     NSString *jsPath = [NSBundle.mainBundle pathForResource:@"jsquery_video_srcx" ofType:@"js"];
     NSData *jsData = [NSData dataWithContentsOfFile:jsPath];
@@ -271,34 +271,8 @@
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type
 {
-    if (!QPPlayerIsPlaying() && QPDetermineWhetherToPlay()) {
-        QPPlayerSavePlaying(YES);
-        [self delayToScheduleTask:1.0 completion:^{
-            [QPHudUtils hideHUD];
-            QPPlayerModel *model = [[QPPlayerModel alloc] init];
-            model.isLocalVideo   = NO;
-            model.videoTitle     = title;
-            model.videoUrl       = urlString;
-            switch (type) {
-                case QPPlayerTypeZFPlayer:
-                    model.isZFPlayerPlayback = YES;
-                    break;
-                case QPPlayerTypeIJKPlayer:
-                    model.isIJKPlayerPlayback = YES;
-                    break;
-                case QPPlayerTypeKSYMediaPlayer:
-                    model.isMediaPlayerPlayback = YES;
-                    break;
-                default:
-                    model.isZFPlayerPlayback = YES;
-                    break;
-            }
-            QPPlayerController *qpc = [[QPPlayerController alloc] initWithModel:model];
-            [self.yf_currentViewController.navigationController pushViewController:qpc animated:YES];
-        }];
-    } else {
-        [QPHudUtils hideHUD];
-    }
+    QPPlaybackContext *context = QPPlaybackContext.alloc.init;
+    [context playVideoWithTitle:title urlString:urlString playerType:type];
 }
 
 @end

@@ -69,10 +69,6 @@
         [QPHudUtils showInfoMessage:@"当前设备不否支持画中画功能！"];
         return;
     }
-    if (![self isPictureInPicturePossible]) {
-        [QPHudUtils showInfoMessage:@"不能开启画中画功能！"];
-        return;
-    }
     if (!_presenter || _pipVC) { return; }
     
     NSError *error = nil;
@@ -85,6 +81,11 @@
               , error.localizedDescription);
         return;
     }
+    //if (![self isPictureInPicturePossible]) {
+    //    [QPHudUtils showInfoMessage:@"不能开启画中画功能！"];
+    //    return;
+    //}
+    
     QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
     if (_playerModel.isMediaPlayerPlayback) {
         //KSYMediaPlayerManager *manager = (KSYMediaPlayerManager *)pt.player.currentPlayerManager;

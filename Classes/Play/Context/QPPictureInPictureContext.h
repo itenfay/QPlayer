@@ -1,22 +1,22 @@
 //
-//  QPPictureInPicturePresenter.h
+//  QPPictureInPictureContext.h
 //  QPlayer
 //
 //  Created by chenxing on 2023/3/2.
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPBaseViewController.h"
-#import "QPBasePresenter.h"
-#import "QPPlayerModel.h"
+#import "QPBaseContext.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QPPictureInPicturePresenter : QPBasePresenter <QPPresenterDelegate>
-@property (nonatomic, weak) UIView *view;
-@property (nonatomic, weak) QPBaseViewController *viewController;
-@property (nonatomic, assign) NSTimeInterval currentTime;
+@class QPBasePresenter, QPPlayerModel;
+
+@interface QPPictureInPictureContext : QPBaseContext
+@property (nonatomic, weak) QPBasePresenter *presenter;
 @property (nonatomic, strong, readonly) QPPlayerModel *playerModel;
+
+- (void)configPlayerModel:(QPPlayerModel *)model;
 
 - (BOOL)isPictureInPictureValid;
 - (BOOL)isPictureInPicturePossible;

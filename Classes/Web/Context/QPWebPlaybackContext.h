@@ -22,7 +22,6 @@
 - (void)queryVideoUrlByJavaScript;
 - (void)queryVideoUrlByCustomJavaScript;
 
-- (void)attemptToPlayVideo:(NSString *)url;
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString;
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type;
 

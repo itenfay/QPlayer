@@ -71,10 +71,13 @@
 /// Returns a main window.
 - (UIWindow *)yf_mainWindow;
 
-/// Returns a current view controller.
+/// Returns the current navigation controller.
+- (UINavigationController *)yf_currentNavigationController;
+
+/// Returns the current view controller.
 - (UIViewController *)yf_currentViewController;
 
-/// Queries and returns a current view controller from a view controller.
+/// Queries and returns the current view controller from the specified view controller.
 - (UIViewController *)yf_queryCurrentViewControllerFrom:(UIViewController *)viewController;
 
 @end

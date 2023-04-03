@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class QPBaseViewController, ZFPlayerController;
+
 @interface QPPlayerPresenter : QPBasePresenter <QPPresenterDelegate>
 @property (nonatomic, weak) UIView *view;
 @property (nonatomic, weak) QPBaseViewController *viewController;

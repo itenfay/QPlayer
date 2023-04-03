@@ -73,94 +73,11 @@
     }];
 }
 
-- (void)queryLastVideoByJavaScript
-{
-    NSString *js = @"var video=document.querySelectorAll('video')[0];if(video){video.pause();};video.src;";
-    QPLog(@":: js1=%@", js);
-    @weakify(self)
-    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        if (error) {
-            QPLog(@":: js1 error=%zi, %@.", error.code, error.localizedDescription);
-        }
-        if ([weak_self handleJSResp:response]) {
-            QPLog(@":: js1 ok.");
-        } else {
-            [weak_self queryVideoOfLastIFrameByJavaScript];
-        }
-    }];
-}
-
-- (void)queryVideoOfLastIFrameByJavaScript
-{
-    NSString *js = @"var frame=document.querySelectorAll('iframe')[0];var video=frame.contentWindow.document.documentElement.getElementsByTagName('video')[0];if(video){video.pause();};video.src;";
-    QPLog(@":: js2=%@", js);
-    @weakify(self)
-    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        if (error) {
-            QPLog(@":: js2 error=%zi, %@.", error.code, error.localizedDescription);
-        }
-        if ([weak_self handleJSResp:response]) {
-            QPLog(@":: js2 ok.");
-        } else {
-            [weak_self queryFirstVideoByJavaScript];
-        }
-    }];
-}
-
-- (void)queryFirstVideoByJavaScript
-{
-    NSString *js = @"var video=document.querySelector('video');if(video) {video.pause();};video.src;";
-    QPLog(@":: js3=%@", js);
-    @weakify(self)
-    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        if (error) {
-            QPLog(@":: js3 error=%zi, %@.", error.code, error.localizedDescription);
-        }
-        if ([weak_self handleJSResp:response]) {
-            QPLog(@":: js3 ok.");
-        } else {
-            [weak_self queryVideoOfFirstIFrameByJavaScript];
-        }
-    }];
-}
-
-- (void)queryVideoOfFirstIFrameByJavaScript
-{
-    NSString *js = @"var frame=document.querySelector('iframe');var video=frame.contentWindow.document.documentElement.getElementsByTagName('video')[0];if(video){video.pause();};video.src;";
-    QPLog(@":: js4=%@", js);
-    @weakify(self)
-    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        if (error) {
-            QPLog(@":: js4 error=%zi, %@.", error.code, error.localizedDescription);
-        }
-        if ([weak_self handleJSResp:response]) {
-            QPLog(@":: js4 ok.");
-        } else {
-            [weak_self queryVideoByJavaScript];
-        }
-    }];
-}
-
-- (void)queryVideoByJavaScript
-{
-    NSString *js = @"(var video=document.getElementsByTagName('video');if(video){video.pause();};video.src;";
-    QPLog(@":: js5=%@", js);
-    @weakify(self)
-    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        if (error) {
-            QPLog(@":: js5 error=%zi, %@.", error.code, error.localizedDescription);
-        }
-        if ([weak_self handleJSResp:response]) {
-            QPLog(@":: js5 ok.");
-        }
-    }];
-}
-
 - (BOOL)handleJSResp:(id)response
 {
     if(![response isEqual:[NSNull null]] && response != nil) {
         if ([response isKindOfClass:NSString.class]) {
-            // 截获到视频地址
+            // 获取视频地址
             NSString *videoUrl = (NSString *)response;
             [self attemptToPlayVideo:videoUrl];
             return YES;
@@ -206,7 +123,7 @@
 
 - (BOOL)parse80sHtmlWithURL:(NSURL *)URL
 {
-    [QPHudUtils showActivityMessageInView:@"正在解析..."];
+    [QPHudUtils showActivityMessageInView:@"正在加载..."];
     BOOL shouldPlay = NO;
     NSURL *aURL = [URL copy];
     NSString *htmlString = [NSString stringWithContentsOfURL:aURL encoding:NSUTF8StringEncoding error:NULL];
@@ -251,7 +168,7 @@
 
 - (void)attemptToPlayVideo:(NSString *)url
 {
-    [QPHudUtils showActivityMessageInView:@"正在解析..."];
+    [QPHudUtils showActivityMessageInView:@"正在加载..."];
     NSString *title = self.adapter.webView.title;
     QPLog(@":: videoTitle=%@", title);
     QPLog(@":: videoUrl=%@", url);

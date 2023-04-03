@@ -7,6 +7,7 @@
 //
 
 #import "QPPlaybackContext.h"
+#import "QPPlayerController.h"
 
 @interface QPPlaybackContext ()
 
@@ -27,9 +28,9 @@
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type seekToTime:(NSTimeInterval)time
 {
     if (!QPPlayerIsPlaying() && QPDetermineWhetherToPlay()) {
-        QPPictureInPicturePresenter *pt = QPAppDelegate.pipPresenter;
-        if ([pt isPictureInPictureValid]) {
-            [pt stopPictureInPicture];
+        QPPictureInPictureContext *ctx = QPAppDelegate.pipContext;
+        if ([ctx isPictureInPictureValid]) {
+            [ctx stopPictureInPicture];
         }
         QPPlayerSavePlaying(YES);
         [self delayToScheduleTask:1.0 completion:^{
@@ -59,34 +60,39 @@
             [self.yf_currentViewController.navigationController pushViewController:qpc animated:YES];
         }];
     } else {
-        [self delayToScheduleTask:1.0 completion:^{ [QPHudUtils hideHUD]; }];
+        [self delayToScheduleTask:1.0 completion:^{
+            [QPHudUtils hideHUD];
+        }];
     }
 }
 
 - (void)playVideoWithModel:(QPPlayerModel *)model
 {
     if (!QPPlayerIsPlaying() && QPDetermineWhetherToPlay()) {
-        QPPictureInPicturePresenter *pt = QPAppDelegate.pipPresenter;
-        if ([pt isPictureInPictureValid]) {
-            [pt stopPictureInPicture];
+        QPPictureInPictureContext *ctx = QPAppDelegate.pipContext;
+        if ([ctx isPictureInPictureValid]) {
+            [ctx stopPictureInPicture];
         }
         QPPlayerSavePlaying(YES);
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];
-            QPPlayerModel *_model = [[QPPlayerModel alloc] init];
-            _model.isLocalVideo = model.isLocalVideo;
-            _model.videoTitle   = model.videoTitle;
-            _model.videoUrl     = model.videoUrl;
-            _model.coverUrl     = model.coverUrl;
-            _model.isZFPlayerPlayback = model.isZFPlayerPlayback;
-            _model.isIJKPlayerPlayback = model.isIJKPlayerPlayback;
-            _model.isMediaPlayerPlayback = model.isMediaPlayerPlayback;
-            _model.seekToTime = model.seekToTime;
-            QPPlayerController *qpc = [[QPPlayerController alloc] initWithModel:_model];
-            [self.yf_currentViewController.navigationController pushViewController:qpc animated:YES];
+            QPPlayerModel *playerModel = [[QPPlayerModel alloc] init];
+            playerModel.isLocalVideo = model.isLocalVideo;
+            playerModel.videoTitle   = model.videoTitle;
+            playerModel.videoUrl     = model.videoUrl;
+            playerModel.coverUrl     = model.coverUrl;
+            playerModel.isZFPlayerPlayback = model.isZFPlayerPlayback;
+            playerModel.isIJKPlayerPlayback = model.isIJKPlayerPlayback;
+            playerModel.isMediaPlayerPlayback = model.isMediaPlayerPlayback;
+            playerModel.seekToTime = model.seekToTime;
+            QPPlayerController *playerVC = [[QPPlayerController alloc] initWithModel:playerModel];
+            playerVC.hidesBottomBarWhenPushed = YES;
+            [self.yf_currentNavigationController pushViewController:playerVC animated:YES];
         }];
     } else {
-        [self delayToScheduleTask:1.0 completion:^{ [QPHudUtils hideHUD]; }];
+        [self delayToScheduleTask:1.0 completion:^{
+            [QPHudUtils hideHUD];
+        }];
     }
 }
 

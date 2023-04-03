@@ -134,11 +134,8 @@
 
 - (void)pipBtnClick:(UIButton *)sender
 {
-    QPPictureInPicturePresenter *pt = QPAppDelegate.pipPresenter;
-    if ([pt isPictureInPictureActive]) {
-        return;
-    }
-    [pt startPictureInPicture];
+    QPPictureInPictureContext *ctx = QPAppDelegate.pipContext;
+    [ctx startPictureInPicture];
 }
 
 - (void)loadView

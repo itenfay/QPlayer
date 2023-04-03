@@ -263,6 +263,11 @@
     return window;
 }
 
+- (UINavigationController *)yf_currentNavigationController
+{
+    return self.yf_currentViewController.navigationController;
+}
+
 - (UIViewController *)yf_currentViewController
 {
     UIWindow *window = [self yf_mainWindow];

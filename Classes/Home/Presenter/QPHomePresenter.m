@@ -192,8 +192,9 @@
         model.isZFPlayerPlayback = YES;
         model.videoTitle         = _model.name;
         model.videoUrl           = _model.path;
-        QPPlayerController *qpc = [[QPPlayerController alloc] initWithModel:model];
-        [[self homeViewController].navigationController pushViewController:qpc animated:YES];
+        QPPlayerController *playerVC = [[QPPlayerController alloc] initWithModel:model];
+        playerVC.hidesBottomBarWhenPushed = YES;
+        [[self homeViewController].navigationController pushViewController:playerVC animated:YES];
     }
 }
 

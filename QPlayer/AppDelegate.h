@@ -6,9 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "QPPictureInPicturePresenter.h"
+#import "QPPictureInPictureContext.h"
 
-@class QPPictureInPicturePresenter;
+@class QPPictureInPictureContext;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -19,6 +19,6 @@
 @property (nonatomic, assign) BOOL allowOrentitaionRotation;
 
 /// A presenter for picture in picture.
-@property (nonatomic, strong) QPPictureInPicturePresenter *pipPresenter;
+@property (nonatomic, strong) QPPictureInPictureContext *pipContext;
 
 @end

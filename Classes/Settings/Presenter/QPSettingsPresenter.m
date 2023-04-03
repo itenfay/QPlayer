@@ -289,7 +289,7 @@
     } else {
         if (![DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
             sender.on = !sender.isOn;
-            [QPHudUtils showWarnMessage:@"当前网络不是WiFi"];
+            [QPHudUtils showWarnMessage:@"当前不是WiFi网络"];
             return;
         }
         if (sender.isOn) {

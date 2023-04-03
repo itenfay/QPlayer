@@ -5,7 +5,6 @@
 //  Copyright (c) 2015 chenxing. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "QPModularDelegate.h"
 
 @interface QPBasePresenter : NSObject

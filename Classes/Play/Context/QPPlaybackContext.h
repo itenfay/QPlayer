@@ -7,13 +7,14 @@
 //
 
 #import "QPBaseContext.h"
-#import "QPPlayerController.h"
 
 typedef NS_ENUM(NSUInteger, QPPlayerType) {
     QPPlayerTypeZFPlayer,
     QPPlayerTypeIJKPlayer,
     QPPlayerTypeKSYMediaPlayer,
 };
+
+@class QPPlayerModel;
 
 @interface QPPlaybackContext : QPBaseContext
 

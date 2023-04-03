@@ -25,8 +25,8 @@
 
 - (void)onDisplaySplash
 {
-    // sleep 2 seconds.
-    [NSThread sleepForTimeInterval:1.2];
+    // sleep 1 seconds.
+    [NSThread sleepForTimeInterval:1.0];
 }
 
 - (void)controlLog
@@ -61,12 +61,12 @@
     }
 }
 
-- (QPPictureInPicturePresenter *)pipPresenter
+- (QPPictureInPictureContext *)pipContext
 {
-    if (!_pipPresenter) {
-        _pipPresenter = QPPictureInPicturePresenter.alloc.init;
+    if (!_pipContext) {
+        _pipContext = QPPictureInPictureContext.alloc.init;
     }
-    return _pipPresenter;
+    return _pipContext;
 }
 
 //******************************************************************************
@@ -79,6 +79,7 @@
 //*     orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
 //* }
 //******************************************************************************
+
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
     if (_allowOrentitaionRotation) {
         ZFInterfaceOrientationMask orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
@@ -96,8 +97,8 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    if ([_pipPresenter isPictureInPictureActive]) {
-        [_pipPresenter stopPictureInPicture];
+    if ([_pipContext isPictureInPictureValid]) {
+        [_pipContext stopPictureInPicture];
     }
 }
 
@@ -109,8 +110,8 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [self stopSniffingNetworkStatus];
-    if (![_pipPresenter isPictureInPictureActive]) {
-        [_pipPresenter startPictureInPicture];
+    if (![_pipContext isPictureInPictureValid]) {
+        [_pipContext startPictureInPicture];
     }
 }
 

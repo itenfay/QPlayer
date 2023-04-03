@@ -214,6 +214,8 @@
             // 销毁内容
             [weak_self destroy];
         }];
+    } else {
+        [self destroy];
     }
 }
 
@@ -229,7 +231,7 @@
                          , error.code
                          , error.localizedDescription];
     [QPHudUtils showErrorMessage:message];
-    self.pipVC = nil;
+    [self destroy];
 }
 
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler

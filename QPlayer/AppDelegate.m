@@ -97,9 +97,9 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    if ([_pipContext isPictureInPictureValid]) {
-        [_pipContext stopPictureInPicture];
-    }
+    //if ([_pipContext isPictureInPictureValid]) {
+    //    [_pipContext stopPictureInPicture];
+    //}
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -110,9 +110,9 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [self stopSniffingNetworkStatus];
-    if (![_pipContext isPictureInPictureValid]) {
-        [_pipContext startPictureInPicture];
-    }
+    //if (![_pipContext isPictureInPictureValid]) {
+    //    [_pipContext startPictureInPicture];
+    //}
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

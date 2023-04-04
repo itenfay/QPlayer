@@ -161,7 +161,12 @@
 
 - (void)seekToTime:(NSTimeInterval)time
 {
-    [self.player seekToTime:time completionHandler:NULL];
+    [self seekToTime:time completionHandler:^(BOOL finished) {}];
+}
+
+- (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^)(BOOL))completionHandler
+{
+    [self.player seekToTime:time completionHandler:completionHandler];
 }
 
 - (void)enterPortraitFullScreen
@@ -234,7 +239,7 @@
     };
     self.player.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         QPLog(@":: asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
-        [weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
+        //[weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
     };
     self.player.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval bufferTime) {
         QPLog(@":: asset=%@, bufferTime=%.2f", asset, bufferTime);

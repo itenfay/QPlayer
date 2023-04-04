@@ -117,7 +117,7 @@
     pipButton.right     = 0.f;
     pipButton.top       = 0.f;
     [pipButton setShowsTouchWhenHighlighted:YES];
-    [pipButton setTitle:@"画中画" forState:UIControlStateNormal];
+    [pipButton setTitle:@"开启画中画" forState:UIControlStateNormal];
     [pipButton setTitleColor:QPColorFromRGB(252, 252, 252) forState:UIControlStateNormal];
     [pipButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.f]];
     [pipButton addTarget:self action:@selector(pipBtnClick:) forControlEvents:UIControlEventTouchUpInside];

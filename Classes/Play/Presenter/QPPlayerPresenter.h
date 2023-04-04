@@ -18,8 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) QPBaseViewController *viewController;
 
 - (ZFPlayerController *)player;
+
 - (void)prepareToPlay;
+
 - (void)seekToTime:(NSTimeInterval)time;
+- (void)seekToTime:(NSTimeInterval)time completionHandler:(void (^)(BOOL))completionHandler;
+
 - (void)enterPortraitFullScreen;
 
 @end

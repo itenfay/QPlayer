@@ -48,8 +48,12 @@
     [subArray addObject:model2];
     
     QPSettingsModel *model3 = [QPSettingsModel new];
-    model3.title = @"开启画中画";
+    model3.title = @"开启小窗播放";
     [subArray addObject:model3];
+    
+    QPSettingsModel *model3a = [QPSettingsModel new];
+    model3a.title = @"允许退出应用继续小窗播放";
+    [subArray addObject:model3a];
     
     QPSettingsModel *model4 = [QPSettingsModel new];
     model4.title = @"允许运营商网络播放";
@@ -205,31 +209,31 @@
         //@"当前网络连接状态";
         cell.detailTextLabel.text = DYFNetworkSniffer.sharedSniffer.statusFlags;
     } else if (indexPath.section == 2) {
+        UISwitch *sw = [[UISwitch alloc] init];
+        sw.left      = QPScreenWidth - 70.f;
+        sw.centerY   = cell.height/2.0;
         if (indexPath.item == 0) {
             //@"硬解码播放";
-            UISwitch *sw = [[UISwitch alloc] init];
-            sw.left      = QPScreenWidth - 70.f;
-            sw.centerY   = cell.height/2.0;
-            sw.on        = QPPlayerHardDecoding() == 1 ? YES : NO;
-            sw.tag       = 10;
+            sw.on  = QPPlayerHardDecoding() == 1 ? YES : NO;
+            sw.tag = 10;
             [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:sw];
         } else if (indexPath.item == 1) {
-            //@"画中画播放";
-            UISwitch *sw = [[UISwitch alloc] init];
-            sw.left      = QPScreenWidth - 70.f;
-            sw.centerY   = cell.height/2.0;
-            sw.on        = QPPlayerPictureInPictureEnabled();
-            sw.tag       = 9;
+            //@"开启小窗播放"; @"画中画播放";
+            sw.on  = QPPlayerPictureInPictureEnabled();
+            sw.tag = 9;
             [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:sw];
         } else if (indexPath.item == 2) {
+            //@"允许退出应用继续小窗播放";
+            sw.on  = QPPlayerPictureInPictureEnabledWhenBackgound();
+            sw.tag = 8;
+            [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
+            [cell.contentView addSubview:sw];
+        } else if (indexPath.item == 3) {
             //@"允许运营商网络播放";
-            UISwitch *sw = [[UISwitch alloc] init];
-            sw.left      = QPScreenWidth - 70.f;
-            sw.centerY   = cell.height/2.0;
-            sw.on        = QPCarrierNetworkAllowed();
-            sw.tag       = 8;
+            sw.on  = QPCarrierNetworkAllowed();
+            sw.tag = 7;
             [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:sw];
         }
@@ -275,11 +279,18 @@
     } else if (sender.tag == 9) {
         QPPlayerSetPictureInPictureEnabled(sender.isOn);
         if (sender.isOn) {
-            [QPHudUtils showTipMessageInView:@"已开启画中画"];
+            [QPHudUtils showTipMessageInView:@"已开启小窗播放"];
         } else {
-            [QPHudUtils showTipMessageInView:@"已关闭画中画"];
+            [QPHudUtils showTipMessageInView:@"已关闭小窗播放"];
         }
     } else if (sender.tag == 8) {
+        QPPlayerSetPictureInPictureEnabledWhenBackgound(sender.isOn);
+        if (sender.isOn) {
+            [QPHudUtils showTipMessageInView:@"已开启"];
+        } else {
+            [QPHudUtils showTipMessageInView:@"已关闭"];
+        }
+    } else if (sender.tag == 7) {
         QPSetCarrierNetworkAllowed(sender.isOn);
         if (sender.isOn) {
             [QPHudUtils showTipMessageInView:@"已开启"];

@@ -28,6 +28,11 @@
             borderWidth:(CGFloat)borderWidth
             borderColor:(UIColor *)borderColor;
 
+// Returns a new image with a specified image, corner radius, border width and border color.
+- (UIImage *)clipImage:(UIImage *)image
+          cornerRadius:(CGFloat)cornerRadius
+           borderWidth:(CGFloat)borderWidth
+           borderColor:(UIColor *)borderColor;
 /**
  获取视频缩略图
  @param url 待探测格式的文件地址，该地址可以是本地地址或者服务器地址

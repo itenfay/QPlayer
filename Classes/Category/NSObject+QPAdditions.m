@@ -107,6 +107,17 @@
     return newImage;
 }
 
+// Returns a new image with a specified image, corner radius, border width and border color.
+- (UIImage *)clipImage:(UIImage *)image
+          cornerRadius:(CGFloat)cornerRadius
+           borderWidth:(CGFloat)borderWidth
+           borderColor:(UIColor *)borderColor
+{
+    UIColor *bgColor = [UIColor colorWithPatternImage:image];
+    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+    return [self colorImage:rect cornerRadius:cornerRadius backgroudColor:bgColor borderWidth:borderWidth borderColor:borderColor];
+}
+
 - (UIImage *(^)(NSURL *url, NSTimeInterval seekTime, int width, int height))yf_videoThumbnailImage
 {
     UIImage *(^ThumbnailBlock)(NSURL *url, NSTimeInterval seekTime, int width, int height)
@@ -161,20 +172,22 @@
         [generator generateCGImageAsynchronouslyForTime:time completionHandler:^(CGImageRef _Nullable image, CMTime actualTime, NSError * _Nullable error) {
             if (error) {
                 QPLog(":: error=%zi, %@", error.code, error.localizedDescription);
+                if (completionHandler) { completionHandler(nil); }
+            } else {
+                UIImage *thumbnailImage = [UIImage imageWithCGImage:image];
+                if (completionHandler) { completionHandler(thumbnailImage); }
             }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(error ? nil : [UIImage imageWithCGImage:image]);
-            });
         }];
     } else {
         NSError *error = nil;
         CGImageRef imgRef = [generator copyCGImageAtTime:time actualTime:nil error:&error];
         if (error) {
             QPLog(":: error=%zi, %@", error.code, error.localizedDescription);
+            if (completionHandler) { completionHandler(nil); }
+        } else {
+            UIImage *thumbnailImage = [UIImage imageWithCGImage:imgRef];
+            if (completionHandler) { completionHandler(thumbnailImage); }
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(error ? nil : [UIImage imageWithCGImage:imgRef]);
-        });
     }
 }
 

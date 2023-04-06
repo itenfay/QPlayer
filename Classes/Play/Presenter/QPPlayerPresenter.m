@@ -106,12 +106,16 @@
     return _player;
 }
 
-- (void)getCoverImageWithURL:(NSURL *)url
+- (void)getCoverImageWithURL:(NSURL *)aURL
 {
-    @weakify(self)
-    [self yf_getThumbnailImageWithURL:url completionHandler:^(UIImage *image) {
-        [weak_self configureControlView:image];
-    }];
+    //@weakify(self)
+    //[self yf_getThumbnailImageWithURL:aURL completionHandler:^(UIImage *image) {
+    //    @strongify(self)
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //        [self configureControlView:image];
+    //    });
+    //}];
+    [self configureControlView:nil];
 }
 
 - (void)configureControlView:(UIImage *)coverImage
@@ -154,9 +158,6 @@
     [QPAppDelegate.pipContext configPlayerModel:vc.model];
     
     [self playWithURL:aURL];
-    if (vc.model.seekToTime > 0) {
-        [self seekToTime:vc.model.seekToTime];
-    }
 }
 
 - (void)seekToTime:(NSTimeInterval)time
@@ -176,8 +177,7 @@
 
 - (void)playWithURL:(NSURL *)aURL
 {
-    QPPlayerController *vc = [self playViewController];
-    
+    QPPlayerController *vc     = [self playViewController];
     self.player.controlView    = vc.controlView;
     self.player.WWANAutoPlay   = QPCarrierNetworkAllowed();
     self.player.shouldAutoPlay = YES;
@@ -239,20 +239,22 @@
     };
     self.player.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         QPLog(@":: asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
-        //[weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
+        [weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
     };
     self.player.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval bufferTime) {
         QPLog(@":: asset=%@, bufferTime=%.2f", asset, bufferTime);
     };
+    
+    if (vc.model.seekToTime > 0) {
+        [self seekToTime:vc.model.seekToTime];
+    }
 }
 
 - (void)takeThumbnailImageOfSpecifiedTime:(NSTimeInterval)currentTime
 {
-    if (currentTime == 3.0) {
-        @zf_weakify(self)
-        [self.player.currentPlayerManager thumbnailImageAtCurrentTime:^(UIImage * _Nonnull image) {
-            [weak_self configureControlView:image];
-        }];
+    if (currentTime == 5) {
+        UIImage *thumbnailImage = [self.player.currentPlayerManager thumbnailImageAtCurrentTime];
+        [self configureControlView:thumbnailImage];
     }
 }
 

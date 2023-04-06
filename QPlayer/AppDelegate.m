@@ -9,7 +9,7 @@
 #import <ZFPlayer/ZFPlayer.h>
 
 @interface AppDelegate ()
-
+@property (nonatomic, assign) UIBackgroundTaskIdentifier taskIdentifier;
 @end
 
 @implementation AppDelegate
@@ -40,6 +40,7 @@
 
 - (void)configure
 {
+    QPPlayerSavePlaying(NO);
     BOOL result = [QPExtractValue(kWriteThemeStyleFlagOnceOnly) boolValue];
     if (!result) {
         QPStoreValue(kThemeStyleOnOff, [NSNumber numberWithBool:YES]);
@@ -69,7 +70,7 @@
     return _pipContext;
 }
 
-//******************************************************************************
+//*---------------------------------------------------------------------------------------
 //* ZFInterfaceOrientationMask orientationMask = ZFInterfaceOrientationMaskUnknow;
 //* if (@available(iOS 16.0, *)) {
 //*    orientationMask = [ZFLandscapeRotationManager_iOS16 supportedInterfaceOrientationsForWindow:window];
@@ -78,8 +79,7 @@
 //* } else {
 //*     orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
 //* }
-//******************************************************************************
-
+//*---------------------------------------------------------------------------------------
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
     if (_allowOrentitaionRotation) {
         ZFInterfaceOrientationMask orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
@@ -97,9 +97,11 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    //if ([_pipContext isPictureInPictureValid]) {
-    //    [_pipContext stopPictureInPicture];
-    //}
+    if (!QPPlayerPictureInPictureEnabledWhenBackgound()) {
+        if ([_pipContext isPictureInPictureValid]) {
+            [_pipContext stopPictureInPicture];
+        }
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -109,16 +111,37 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    [self applyForMoreTimeFromSystem];
     [self stopSniffingNetworkStatus];
-    //if (![_pipContext isPictureInPictureValid]) {
-    //    [_pipContext startPictureInPicture];
-    //}
+    if (QPPlayerPictureInPictureEnabledWhenBackgound()) {
+        if (![_pipContext isPictureInPictureValid]) {
+            [_pipContext startPictureInPicture];
+        }
+    } else {
+        if ([_pipContext isPictureInPictureValid]) {
+            [_pipContext stopPictureInPicture];
+        }
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     QPPlayerSavePlaying(NO);
     [self stopSniffingNetworkStatus];
+}
+
+- (void)applyForMoreTimeFromSystem
+{
+    // 向系统申请10s
+    _taskIdentifier = [UIApplication.sharedApplication beginBackgroundTaskWithName:@"QPlayer.pip.handle" expirationHandler:^{
+        [self endAndInvalidateBackgroundTask];
+    }];
+}
+
+- (void)endAndInvalidateBackgroundTask
+{
+    [UIApplication.sharedApplication endBackgroundTask:_taskIdentifier];
+    _taskIdentifier = UIBackgroundTaskInvalid;
 }
 
 @end

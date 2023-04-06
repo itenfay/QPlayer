@@ -21,4 +21,6 @@ NSString *const kCarrierNetworkAllowed = @"kCarrierNetworkAllowed";
 
 NSString *const kPlayerPictureInPictureEnabled = @"kPlayerPictureInPictureEnabled";
 
+NSString *const kPlayerPictureInPictureEnabledWhenBackgound = @"kPlayerPictureInPictureEnabledWhenBackgound";
+
 NSString *const kPlayerHardDecoding = @"kPlayerHardDecoding";

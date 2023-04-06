@@ -116,6 +116,16 @@ QP_STATIC_INLINE BOOL QPPlayerPictureInPictureEnabled()
     return [QPExtractValue(kPlayerPictureInPictureEnabled) boolValue];
 }
 
+QP_STATIC_INLINE void QPPlayerSetPictureInPictureEnabledWhenBackgound(BOOL value)
+{
+    QPStoreValue(kPlayerPictureInPictureEnabledWhenBackgound, [NSNumber numberWithBool:value]);
+}
+
+QP_STATIC_INLINE BOOL QPPlayerPictureInPictureEnabledWhenBackgound()
+{
+    return [QPExtractValue(kPlayerPictureInPictureEnabledWhenBackgound) boolValue];
+}
+
 QP_STATIC_INLINE void QPPlayerSetHardDecoding(int value)
 {
     QPStoreValue(kPlayerHardDecoding, [NSNumber numberWithInt:value]);

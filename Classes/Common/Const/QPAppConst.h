@@ -21,5 +21,7 @@ FOUNDATION_EXPORT NSString *const kThemeStyleDidChangeNotification;
 FOUNDATION_EXPORT NSString *const kCarrierNetworkAllowed;
 /// The key for picture in picture.
 FOUNDATION_EXPORT NSString *const kPlayerPictureInPictureEnabled;
+/// The key for picture in picture when app enters background.
+FOUNDATION_EXPORT NSString *const kPlayerPictureInPictureEnabledWhenBackgound;
 /// The key for hard decoding
 FOUNDATION_EXPORT NSString *const kPlayerHardDecoding;

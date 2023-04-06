@@ -61,7 +61,7 @@
 - (void)startPictureInPicture
 {
     if (!QPPlayerPictureInPictureEnabled()) {
-        [QPHudUtils showInfoMessage:@"请在设置中允许开启画中画功能！"];
+        [QPHudUtils showInfoMessage:@"请在设置中开启小窗播放功能！"];
         return;
     }
     // 设备是否支持画中画
@@ -81,10 +81,6 @@
               , error.localizedDescription);
         return;
     }
-    //if (![self isPictureInPicturePossible]) {
-    //    [QPHudUtils showInfoMessage:@"不能开启画中画功能！"];
-    //    return;
-    //}
     
     QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
     if (_playerModel.isMediaPlayerPlayback) {
@@ -108,7 +104,7 @@
 - (void)startPipAfterDelay
 {
     self.pipVC.delegate = self;
-    [self delayToScheduleTask:3.0 completion:^{
+    [self delayToScheduleTask:2.0 completion:^{
         [self.pipVC startPictureInPicture];
     }];
 }
@@ -168,6 +164,7 @@
     if (self.avPlayer) {
         [self.avPlayer removeObserver:self forKeyPath:@"status"];
         [self.avPlayer removeObserver:self forKeyPath:@"timeControlStatus"];
+        [self.avPlayer pause];
         [self.avPlayerLayer removeFromSuperlayer];
         [self.avPlayerLayerContainerView removeFromSuperview];
         self.avPlayerLayerContainerView = nil;
@@ -176,6 +173,38 @@
         self.pipAlreadyStartedFlag = NO;
     }
     self.pipVC = nil;
+}
+
+#pragma mark - Recover playback of original player
+
+- (void)recoverPlaybackOfOriginalPlayer
+{
+    if (_presenter) {
+        if (_avPlayer != nil) {
+            // ijkplayer进入才需要恢复之前的播放时间
+            NSTimeInterval currentPlayTime = CMTimeGetSeconds(_avPlayer.currentTime);
+            _playerModel.seekToTime = currentPlayTime;
+            QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
+            @weakify(self)
+            [pt.player seekToTime:currentPlayTime completionHandler:^(BOOL finished) {
+                @strongify(self)
+                QPPlayerPresenter *inPt = (QPPlayerPresenter *)self.presenter;
+                if (self.avPlayer.timeControlStatus == AVPlayerTimeControlStatusPlaying) {
+                    [inPt.player.currentPlayerManager play];
+                } else if (self.avPlayer.timeControlStatus == AVPlayerTimeControlStatusPaused) {
+                    [inPt.player.currentPlayerManager play];
+                    [inPt.player.currentPlayerManager pause];
+                }
+                // 销毁内容
+                [self destroy];
+            }];
+        } else {
+            // 如果是ZFPlayer的avplayer，则不做处理。
+        }
+    } else {
+        // 销毁内容
+        [self destroy];
+    }
 }
 
 #pragma mark - AVPictureInPictureControllerDelegate
@@ -193,30 +222,7 @@
 - (void)pictureInPictureControllerWillStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
     QPLog(":: 即将停止画中画功能.");
-    if (_avPlayer != nil) {
-        if (!_presenter) {
-            [self destroy];
-            return;
-        }
-        // ijkplayer进入才需要恢复之前的播放时间
-        NSTimeInterval currentPlayTime = CMTimeGetSeconds(_avPlayer.currentTime);
-        _playerModel.seekToTime = currentPlayTime;
-        QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
-        @weakify(self)
-        [pt seekToTime:currentPlayTime completionHandler:^(BOOL finished) {
-            QPPlayerPresenter *inPt = (QPPlayerPresenter *)weak_self.presenter;
-            if (weak_self.avPlayer.timeControlStatus == AVPlayerTimeControlStatusPlaying) {
-                [inPt.player.currentPlayerManager play];
-            } else if (weak_self.avPlayer.timeControlStatus == AVPlayerTimeControlStatusPaused) {
-                [inPt.player.currentPlayerManager play];
-                [inPt.player.currentPlayerManager pause];
-            }
-            // 销毁内容
-            [weak_self destroy];
-        }];
-    } else {
-        self.pipVC = nil;
-    }
+    [self recoverPlaybackOfOriginalPlayer];
 }
 
 - (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
@@ -246,6 +252,8 @@
         }
         QPPlaybackContext *context = QPPlaybackContext.alloc.init;
         [context playVideoWithModel:_playerModel];
+    } else {
+        [self recoverPlaybackOfOriginalPlayer];
     }
     completionHandler(YES);
 }
@@ -272,27 +280,7 @@
         }
         case AVPlayerStatusReadyToPlay: {
             QPLog(@":: 准备完毕，可以播放");
-            // 准备完毕，获取当前创建的avplayer的时间
-            int32_t timeScale = _avPlayer.currentItem.asset.duration.timescale;
-            // 获取原始的ijkplayer的播放时间
-            NSTimeInterval currentPlayTime;
-            if (_presenter) {
-                QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
-                currentPlayTime = pt.player.currentTime;
-            } else {
-                currentPlayTime = _playerModel.seekToTime;
-            }
-            Float64 seekTo = currentPlayTime;
-            // 将时间转换
-            CMTime time = CMTimeMakeWithSeconds(seekTo, timeScale);
-            BOOL failed = NO;
-            @try {
-                // 将播放器的播放时间与原始ijkplayer的播放地方同步
-                [_avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-            } @catch (NSException *exception) {
-                QPLog(@":: exception=%@", exception);
-                failed = YES;
-            }
+            [self syncPlaybackTimeOfOriginalPlayer];
             //_avPlayer.volume = 0.0;
             //_avPlayer.muted = YES;
             [_avPlayer play];
@@ -319,24 +307,7 @@
         // 这个可能会多次回调，所以判断一下，防止多次调用[self setupPip]
         if (!_pipAlreadyStartedFlag) {
             // 真正开始播放时候再seek一下, 使播放点更准确
-            int32_t timeScale = _avPlayer.currentItem.asset.duration.timescale;
-            NSTimeInterval currentPlayTime;
-            if (_presenter) {
-                QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
-                currentPlayTime = pt.player.currentTime;
-            } else {
-                currentPlayTime = _playerModel.seekToTime;
-            }
-            Float64 seekTo = currentPlayTime; // 真正开始画中画 大概在2秒之后
-            CMTime time = CMTimeMakeWithSeconds(seekTo, timeScale);
-            BOOL failed = NO;
-            @try {
-                // 将播放器的播放时间与原始ijkplayer的播放地方同步
-                [_avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-            } @catch (NSException *exception) {
-                QPLog(@":: exception=%@", exception);
-                failed = YES;
-            }
+            BOOL failed = [self syncPlaybackTimeOfOriginalPlayer];
             if (!failed) {
                 // 等player开始播放后再开启pip
                 [self setupPip];
@@ -346,11 +317,35 @@
     }
 }
 
+- (BOOL)syncPlaybackTimeOfOriginalPlayer
+{
+    // 获取当前创建的avplayer的时间
+    int32_t timeScale = _avPlayer.currentItem.asset.duration.timescale;
+    NSTimeInterval currentPlayTime;
+    if (_presenter) {
+        QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
+        currentPlayTime = pt.player.currentTime;
+    } else {
+        currentPlayTime = _playerModel.seekToTime;
+    }
+    Float64 seekTo = currentPlayTime; // 真正开始画中画 大概在2秒之后
+    CMTime time = CMTimeMakeWithSeconds(seekTo, timeScale);
+    BOOL ret = NO;
+    @try {
+        // 将播放器的播放时间与原始ijkplayer的播放地方同步
+        [_avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    } @catch (NSException *exception) {
+        QPLog(@":: exception=%@", exception);
+        ret = YES;
+    }
+    return ret;
+}
+
 - (void)setupPip
 {
     AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.avPlayerLayer];
     self.pipVC = pipVC;
-    // 要有延迟 否则可能开启不成功
+    // 要有延迟，否则可能开启不成功
     [self startPipAfterDelay];
 }
 

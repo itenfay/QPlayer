@@ -5,8 +5,8 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "QPBaseViewController.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : QPBaseViewController
 
 @end

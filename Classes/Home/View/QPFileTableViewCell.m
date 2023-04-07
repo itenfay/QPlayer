@@ -31,10 +31,15 @@
 - (void)setThumbnail:(NSString *)filePath
 {
     NSURL *url = [NSURL fileURLWithPath:filePath];
-    UIImage *thumbnail = self.yf_videoThumbnailImage(url, 3, 107, 60);
-    [self.thumbnailImgView setBackgroundColor:QPColorFromRGB(36, 39, 46)];
-    [self.thumbnailImgView setImage:thumbnail];
-    [self.thumbnailImgView setContentMode:UIViewContentModeScaleAspectFit];
+    //UIImage *thumbnail = self.yf_videoThumbnailImage(url, 3, 107, 60);
+    @QPWeakify(self)
+    [self yf_getThumbnailImageWithURL:url completionHandler:^(UIImage *thumbnail) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weak_self.thumbnailImgView setBackgroundColor:QPColorFromRGB(36, 39, 46)];
+            [weak_self.thumbnailImgView setImage:thumbnail];
+            [weak_self.thumbnailImgView setContentMode:UIViewContentModeScaleAspectFit];
+        });
+    }];
 }
 
 - (void)setFormatImage:(NSString *)fileType

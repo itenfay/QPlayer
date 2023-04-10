@@ -1,6 +1,6 @@
 ## QPlayer
 
-`QPlayer`是一款你不容错过的视频播放器，支持 `M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3` 等主流媒体格式。输入任何 `HTTP、RTMP、RTSP、HLS` 地址播放网络流或直播。`QPlayer`支持 `WiFi` 文件传输。聚合了多个直播、视频和短视频平台，可在线观看直播、视频和短视频。
+`QPlayer`一款不错的视频播放器，支持 `M4V、WMV、MP4、MOV、AVI、MKV、FLV、RM、RMVB` 等主流媒体格式，支持 `WiFi` 文件传输，可以随时随地观看本地视频，同时也支持 `HTTP、RTMP、RTSP、HLS` 等流媒体播放。
 
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
 

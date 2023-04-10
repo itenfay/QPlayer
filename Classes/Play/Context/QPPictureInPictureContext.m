@@ -85,13 +85,9 @@
     }
     
     QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
-    if (_playerModel.isMediaPlayerPlayback) {
-        //KSYMediaPlayerManager *manager = (KSYMediaPlayerManager *)pt.player.currentPlayerManager;
-        //AVPlayerLayer *playerLayer = [[AVPlayerLayer alloc] initWithLayer:manager.player.view.layer];
-        //AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:playerLayer];
-        //self.pipVC = pipVC;
-    } else if (_playerModel.isIJKPlayerPlayback) {
-        [self instantiateAVPlayerForIJKPlayer];
+    if (_playerModel.isIJKPlayerPlayback ||
+        _playerModel.isMediaPlayerPlayback) {
+        [self instantiateAVPlayerFor3rdPlayer];
     } else {
         // _playerModel.isZFPlayerPlayback or others.
         ZFAVPlayerManager *manager = (ZFAVPlayerManager *)pt.player.currentPlayerManager;
@@ -119,12 +115,14 @@
     [_pipVC stopPictureInPicture];
 }
 
-#pragma mark - ijkplayer
+#pragma mark - ijkplayer & KSYMediaPlayer
 
-- (void)instantiateAVPlayerForIJKPlayer
+- (void)instantiateAVPlayerFor3rdPlayer
 {
     if (_avPlayer) { return; }
     QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
+    // 全屏不创建avplayer
+    if (pt.player.orientationObserver.isFullScreen) { return; }
     ZFIJKPlayerManager *manager = (ZFIJKPlayerManager *)pt.player.currentPlayerManager;
     UIView *ijkContainerView = pt.player.containerView;
     UIView *superView = nil;
@@ -192,8 +190,9 @@
             QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
             @weakify(self)
             [pt seekToTime:currentPlayTime completionHandler:^(BOOL finished) {
-                [weak_self handleControlStatus];
-                [weak_self destroy];
+                @strongify(self)
+                [self handleControlStatus];
+                [self destroy];
             }];
         } else {
             [self handleControlStatus];
@@ -286,7 +285,6 @@
         }
         case AVPlayerStatusReadyToPlay: {
             QPLog(@":: 准备完毕，可以播放");
-            [self syncPlayTimeOfOriginalPlayer];
             //_avPlayer.volume = 0.0;
             //_avPlayer.muted = YES;
             [_avPlayer play];
@@ -294,7 +292,7 @@
         }
         case AVPlayerStatusFailed: {
             AVPlayerItem *item = (AVPlayerItem *)object;
-            QPLog(@":: 加载异常 error=%@", item.error);
+            QPLog(@":: 加载失败 error=%@", item.error);
             [self destroy];
             break;
         }

@@ -21,13 +21,13 @@
         QPPlayerController *vc = [self playViewController];
         if ((vc.model.isLocalVideo && vc.model.isMediaPlayerPlayback) || vc.model.isMediaPlayerPlayback) {
             //KSYMediaPlayerManager *playerManager = [[KSYMediaPlayerManager alloc] init];
-            //_player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
             // 默认是硬解码
             if (QPPlayerHardDecoding() == 1) {
                 //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Hardware;
             } else {
                 //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Software;
             }
+            //_player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
         } else if ((vc.model.isLocalVideo && vc.model.isIJKPlayerPlayback) || vc.model.isIJKPlayerPlayback) {
             #if DEBUG
             [IJKFFMoviePlayerController setLogReport:YES];
@@ -185,11 +185,9 @@
     
     self.player.playerApperaPercent      = 0.0;
     self.player.playerDisapperaPercent   = 1.0;
-    self.player.allowOrentitaionRotation = YES;
-    // 设置退到后台继续播放
-    self.player.pauseWhenAppResignActive = NO;
-    // 是否内存缓存播放
-    //self.player.resumePlayRecord = YES;
+    self.player.allowOrentitaionRotation = NO; // 是否允许自动全屏，NO不允许
+    self.player.pauseWhenAppResignActive = NO; // 设置退到后台继续播放
+    //self.player.resumePlayRecord = YES; // 是否内存缓存播放
     
     @zf_weakify(self)
     vc.controlView.backBtnClickCallback = ^{

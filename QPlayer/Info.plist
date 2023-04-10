@@ -75,21 +75,21 @@
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>是否允许此App访问你的媒体库？</string>
+	<string>是否允许App访问你的媒体库？</string>
 	<key>NSCameraUsageDescription</key>
-	<string>是否允许此App使用你的设备相机？若不允许，则无法使用相机功能。</string>
+	<string>是否允许App使用你的设备相机？若不允许，则无法使用相机功能。</string>
 	<key>NSLocationUsageDescription</key>
-	<string>是否允许此App访问你的位置？</string>
+	<string>是否允许App访问你的位置？</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>是否允许此App在使用时访问你的位置？</string>
+	<string>是否允许App在使用时访问你的位置？</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>是否允许此App访问你的媒体资料库？若不允许，则无法存取照片。</string>
+	<string>是否允许App访问你的媒体资料库？若不允许，则无法存取照片。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>是否允许此App访问你的媒体资料库？若不允许，则无法存取照片。</string>
+	<string>是否允许App访问你的媒体资料库？若不允许，则无法存取照片。</string>
 	<key>QPlayerGithubUrl</key>
 	<string>https://github.com/chenxing640/QPlayer</string>
 	<key>QPlyerDesc</key>
-	<string>QPlayer 是一款不容你错过的视频播放器，支持 M4V、WMV、MP4、MOV、AVI、MKV、MPEG、MPG、FLV、RM、RMVB、MP3 等主流媒体格式，支持 WiFi 文件传输，可以随时随地观看本地视频。聚合了多个直播、视频和短视频平台，可以在线观看直播、视频和短视频，同时支持 HTTP、RTMP、RTSP、HLS 等流媒体播放。</string>
+	<string>QPlayer一款不错的视频播放器，支持M4V、WMV、MP4、MOV、AVI、MKV、FLV、RM、RMVB等主流媒体格式，支持 WiFi 文件传输，可以随时随地观看本地视频，同时也支持 HTTP、RTMP、RTSP、HLS 等流媒体播放。</string>
 	<key>TecentVideoUrl</key>
 	<string>https://m.v.qq.com/</string>
 	<key>UIBackgroundModes</key>

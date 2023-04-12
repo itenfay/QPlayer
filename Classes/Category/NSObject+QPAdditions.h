@@ -61,7 +61,8 @@
  */
 - (int (^)(NSURL *url))yf_videoDuration;
 
-- (void)yf_getThumbnailImageWithURL:(NSURL *)aURL completionHandler:(void(^)(UIImage *))completionHandler;
+- (void)yf_takeThumbnailWithURL:(NSURL *)aURL completionHandler:(void(^)(UIImage *))completionHandler;
+- (void)yf_takeThumbnailWithURL:(NSURL *)aURL forTime:(Float64)time completionHandler:(void(^)(UIImage *))completionHandler;
 
 /// Returns a new version of the image that uses always template mode.
 - (UIImage *)yf_imageRenderingAlwaysTemplate:(NSString *)name;

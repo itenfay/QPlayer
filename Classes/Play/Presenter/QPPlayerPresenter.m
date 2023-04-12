@@ -108,13 +108,15 @@
 
 - (void)getCoverImageWithURL:(NSURL *)aURL
 {
-    //@weakify(self)
-    //[self yf_getThumbnailImageWithURL:aURL completionHandler:^(UIImage *image) {
-    //    @strongify(self)
-    //    dispatch_async(dispatch_get_main_queue(), ^{
-    //        [self configureControlView:image];
-    //    });
-    //}];
+    /*
+    @weakify(self)
+    [self yf_takeThumbnailWithURL:aURL forTime:3 completionHandler:^(UIImage *image) {
+        @strongify(self)
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self configureControlView:image];
+        });
+    }];
+    */
     [self configureControlView:nil];
 }
 

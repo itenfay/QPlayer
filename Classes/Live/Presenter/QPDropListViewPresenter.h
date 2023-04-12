@@ -33,6 +33,7 @@ FOUNDATION_EXPORT NSString *const kDropListDataFile;
 @property (nonatomic, copy) DropListViewOnSelectRowHandler onSelectRowHandler;
 
 - (void)loadData;
+- (void)updateValue:(NSString *)value atIndex:(NSInteger)index;
 
 @end
 

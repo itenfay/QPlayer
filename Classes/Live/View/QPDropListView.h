@@ -23,6 +23,8 @@
 @property (nonatomic, assign, readonly) BOOL isDarkMode;
 @property (nonatomic, strong) QPDropListViewAdapter *adapter;
 
+- (QPDropListViewPresenter *)__presenter;
+
 // Carries out a action for closing with a `DLVOnCloseHandler` handler.
 - (void)onCloseAction:(DropListViewOnCloseHandler)completionHandler;
 

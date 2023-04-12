@@ -35,9 +35,31 @@
             model = obj;
         }
     } else {
-        model = self.dataSource[indexPath.row];
+        if (indexPath.row < self.dataSource.count) {
+            model = self.dataSource[indexPath.row];
+        }
     }
     return model;
+}
+
+- (void)updateModel:(QPBaseModel *)model withTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView.numberOfSections > 1 && indexPath.section < self.dataSource.count) {
+        id obj = self.dataSource[indexPath.section];
+        if ([obj isKindOfClass:NSArray.class]) {
+            NSMutableArray *mArray = ((NSArray *)obj).mutableCopy;
+            if (indexPath.item < mArray.count) {
+                [mArray replaceObjectAtIndex:indexPath.item withObject:model];
+                [self.dataSource replaceObjectAtIndex:indexPath.section withObject:mArray];
+            }
+        } else {
+            [self.dataSource replaceObjectAtIndex:indexPath.section withObject:model];
+        }
+    } else {
+        if (indexPath.item < self.dataSource.count) {
+            [self.dataSource replaceObjectAtIndex:indexPath.item withObject:model];
+        }
+    }
 }
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section

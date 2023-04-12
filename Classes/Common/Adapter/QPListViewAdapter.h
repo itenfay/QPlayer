@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
 - (QPBaseModel *)modelWithTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
+- (void)updateModel:(QPBaseModel *)model withTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
 - (UIView *)viewForHeaderInSection:(NSInteger)section;

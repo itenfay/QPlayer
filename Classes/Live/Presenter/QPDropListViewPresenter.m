@@ -20,28 +20,53 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     return (QPDropListView*)_view;
 }
 
+- (NSString *)customBundleFilePath
+{
+    NSString *path = [NSBundle.mainBundle pathForResource:kResourceBundle ofType:nil];
+    NSString *bundlePath = [NSBundle bundleWithPath:path].bundlePath;
+    return [bundlePath stringByAppendingPathComponent:kDropListDataFile];
+}
+
+- (void)updateValue:(NSString *)value atIndex:(NSInteger)index
+{
+    NSString *filePath = [self customBundleFilePath];
+    QPLog(@":: filePath=%@", filePath);
+    NSMutableArray *list = [NSMutableArray arrayWithContentsOfFile:filePath];
+    if (index > 0 && index < list.count) {
+        NSMutableDictionary *dict = ((NSDictionary *)[list objectAtIndex:index]).mutableCopy;
+        [dict setValue:value forKey:dict.allKeys.firstObject];
+        [list replaceObjectAtIndex:index withObject:dict];
+        if (@available(macOS 10.13, iOS 11.0, watchOS 4.0, tvOS 11.0, *)) {
+            [list writeToURL:[NSURL fileURLWithPath:filePath] error:nil];
+        } else {
+            [list writeToFile:filePath atomically:YES];
+        }
+    }
+}
+
 - (void)loadData
 {
-    [QPHudUtils showActivityMessageInWindow:@"正在加载数据..."];
+    [QPHudUtils showActivityMessageInWindow:@"加载中，请稍等..."];
+    [self fetchDataSource];
+    [self delayToScheduleTask:0.5 completion:^{
+        [QPHudUtils hideHUD];
+        [[self dropListView] refreshUI];
+    }];
+}
+
+- (void)fetchDataSource
+{
     [[self dropListView].adapter.dataSource removeAllObjects];
     
-    NSString *path       = [NSBundle.mainBundle pathForResource:kResourceBundle ofType:nil];
-    NSString *bundlePath = [NSBundle bundleWithPath:path].bundlePath;
-    NSString *filePath   = [bundlePath stringByAppendingPathComponent:kDropListDataFile];
+    NSString *filePath = [self customBundleFilePath];
     QPLog(@":: filePath=%@", filePath);
     
-    //NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    //NSEnumerator *enumerator = [dict keyEnumerator];
-    //id key;
-    //while ((key = [enumerator nextObject]) != nil) {
-    //    NSString *content = [dict objectForKey:key];
-    //    QPDropListModel *model = [[QPDropListModel alloc] init];
-    //    model.m_title = key;
-    //    model.m_content = content;
-    //    [[self dropListView].adapter.dataSource addObject:model];
-    //}
-    
-    NSArray *tvList = [NSArray arrayWithContentsOfFile:filePath];
+    NSArray *tvList;
+    if (@available(macOS 10.13, iOS 11.0, watchOS 4.0, tvOS 11.0, *)) {
+        tvList = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:filePath] error:nil];
+    } else {
+        tvList = [NSArray arrayWithContentsOfFile:filePath];
+    }
     NSEnumerator *enumerator = [tvList objectEnumerator];
     id obj;
     while ((obj = [enumerator nextObject]) != nil) {
@@ -52,11 +77,6 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
         model.sortName = model.m_title;
         [[self dropListView].adapter.dataSource addObject:model];
     }
-    
-    [self delayToScheduleTask:0.5 completion:^{
-        [QPHudUtils hideHUD];
-        [[self dropListView] refreshUI];
-    }];
 }
 
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter

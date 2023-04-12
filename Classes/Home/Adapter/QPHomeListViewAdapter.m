@@ -33,8 +33,7 @@
         [weak_self deleteRowWithTableView:tableView atIndexPath:indexPath];
     }];
     UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[deleteAciton]];
-    // YES: 允许侧滑删除
-    config.performsFirstActionWithFullSwipe = NO;
+    config.performsFirstActionWithFullSwipe = NO; // YES: 允许侧滑删除
     return config;
 }
 

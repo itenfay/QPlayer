@@ -13,6 +13,11 @@
 
 @implementation QPDropListView
 
+- (QPDropListViewPresenter *)__presenter
+{
+    return _presenter;
+}
+
 - (void)setup
 {
     [super setup];

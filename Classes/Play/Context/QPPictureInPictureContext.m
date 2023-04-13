@@ -198,8 +198,8 @@
             @QPWeakify(self)
             [pt seekToTime:currentPlayTime completionHandler:^(BOOL finished) {
                 @QPStrongify(self)
-                [self handleControlStatus];
-                [self destroy];
+                [strong_self handleControlStatus];
+                [strong_self destroy];
             }];
         } else {
             [self handleControlStatus];
@@ -338,8 +338,8 @@
             // 将播放器的播放时间与原始ijkplayer的播放地方同步
             [_avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
                 @QPStrongify(self)
-                self.seeksPending = NO;
-                self.seekToTimeFinished = finished;
+                strong_self.seeksPending = NO;
+                strong_self.seekToTimeFinished = finished;
             }];
         } @catch (NSException *exception) {
             QPLog(@":: exception=%@", exception);

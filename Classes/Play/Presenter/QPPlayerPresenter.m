@@ -115,7 +115,7 @@
     //[self yf_takeThumbnailWithURL:aURL forTime:3 completionHandler:^(UIImage *image) {
     //    @QPStrongify(self)
     //    dispatch_async(dispatch_get_main_queue(), ^{
-    //        [self configureControlView:image];
+    //        [strong_self configureControlView:image];
     //    });
     //}];
     [self configureControlView:nil];

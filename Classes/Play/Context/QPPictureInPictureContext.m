@@ -17,7 +17,8 @@
 @property (nonatomic, strong) AVPlayer *avPlayer;
 @property (nonatomic, strong) AVPlayerLayer *avPlayerLayer;
 @property (nonatomic, strong) UIView *avPlayerLayerContainerView;
-@property (nonatomic, assign) BOOL pipAlreadyStartedFlag;
+@property (nonatomic, assign) BOOL seekToTimeFinished;
+@property (nonatomic, assign) BOOL seeksPending;
 @end
 
 @implementation QPPictureInPictureContext
@@ -152,9 +153,14 @@
     }
     _playerModel.seekToTime = manager.currentTime;
     
-    // 只有ijkplayer进入才会有player
+    // 只有ijkplayer or third player进入，才会有avplayer
     [_avPlayer addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     [_avPlayer addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionNew context:nil];
+    
+    //_avPlayer.volume = 0.0;
+    //_avPlayer.muted = YES;
+    [_avPlayer play];
+    [self setupPip];
 }
 
 #pragma mark - destroy
@@ -170,7 +176,8 @@
         self.avPlayerLayerContainerView = nil;
         self.avPlayer = nil;
         self.avPlayerLayer = nil;
-        self.pipAlreadyStartedFlag = NO;
+        self.seeksPending = NO;
+        self.seekToTimeFinished = NO;
     }
     self.pipVC = nil;
 }
@@ -239,8 +246,7 @@
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController failedToStartPictureInPictureWithError:(NSError *)error
 {
     QPLog(":: 开启画中画功能失败. error=%@.", error);
-    NSString *message = [NSString stringWithFormat:@"开启画中画失败(code=%zi)"
-                         , error.code];
+    NSString *message = [NSString stringWithFormat:@"开启画中画失败(code=%zi)", error.code];
     [QPHudUtils showErrorMessage:message];
     [self destroy];
 }
@@ -285,15 +291,11 @@
         }
         case AVPlayerStatusReadyToPlay: {
             QPLog(@":: 准备完毕，可以播放");
-            //_avPlayer.volume = 0.0;
-            //_avPlayer.muted = YES;
-            [_avPlayer play];
             break;
         }
         case AVPlayerStatusFailed: {
             AVPlayerItem *item = (AVPlayerItem *)object;
             QPLog(@":: 加载失败 error=%@", item.error);
-            [self destroy];
             break;
         }
         default: break;
@@ -309,43 +311,39 @@
     }
     if (_avPlayer.timeControlStatus == AVPlayerTimeControlStatusPlaying) {
         // 这个可能会多次回调，所以判断一下，防止多次调用[self setupPip]
-        if (!_pipAlreadyStartedFlag) {
-            // 真正开始播放时候再seek一下, 使播放点更准确
-            BOOL failed = [self syncPlayTimeOfOriginalPlayer];
-            if (!failed) {
-                // 等player开始播放后再开启pip
-                [self setupPip];
-                _pipAlreadyStartedFlag = YES;
-            }
+        if (!_seeksPending && !_seekToTimeFinished) {
+            _seeksPending = YES;
+            // 同步原始播放器播放时间, 使播放更准确
+            [self syncPlayTimeOfOriginalPlayer];
         }
     }
 }
 
-- (BOOL)syncPlayTimeOfOriginalPlayer
+- (void)syncPlayTimeOfOriginalPlayer
 {
     // 获取当前创建的avplayer的时间尺度
     int32_t timeScale = _avPlayer.currentItem.asset.duration.timescale;
-    NSTimeInterval currentPlayTime;
+    NSTimeInterval currentTime;
     if (_presenter) {
         QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
-        currentPlayTime = pt.player.currentTime;
+        currentTime = pt.player.currentTime;
     } else {
-        currentPlayTime = _playerModel.seekToTime;
+        currentTime = _playerModel.seekToTime;
     }
-    Float64 seekTo = currentPlayTime; // 真正开始画中画 大概在2秒之后
-    CMTime time = CMTimeMakeWithSeconds(seekTo, timeScale);
-    BOOL ret = NO;
-    @try {
+    Float64 seekTo = currentTime;
+    if (seekTo > 0) {
+        CMTime time = CMTimeMakeWithSeconds(seekTo, timeScale);
+        @weakify(self)
         // 将播放器的播放时间与原始ijkplayer的播放地方同步
-        [_avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-    } @catch (NSException *exception) {
-        QPLog(@":: exception=%@", exception);
-        ret = YES;
+        [_avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+            weak_self.seeksPending = NO;
+            weak_self.seekToTimeFinished = finished ? YES : NO;
+        }];
+    } else {
+        _seeksPending = NO;
+        _seekToTimeFinished = YES;
+        //[_avPlayer.currentItem cancelPendingSeeks];
     }
-    if (!ret) {
-        [_avPlayer.currentItem cancelPendingSeeks];
-    }
-    return ret;
 }
 
 - (void)setupPip

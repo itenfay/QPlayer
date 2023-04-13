@@ -27,7 +27,7 @@
     QPAboutMeViewController *vc = [self aboutMeController];
     [vc.adapter.dataSource removeAllObjects];
     
-    NSString *vString = [NSString stringWithFormat:@"%@.%@", QPAppVersion, QPBuildVersion];
+    NSString *vString = [NSString stringWithFormat:@"%@(%@)", QPAppVersion, QPBuildVersion];
     QPAboutModel *vModel = [QPAboutModel new];
     vModel.title = @"版本";
     vModel.rValue = vString;

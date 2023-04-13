@@ -30,7 +30,7 @@
     // currentSrc: 只能返回视频地址，不能设置，并且要等到视频加载好了并且可以播放时才能获取到
     NSString *js = @"document.querySelector('video').currentSrc";
     QPLog(@":: js=%@", js);
-    @weakify(self)
+    @QPWeakify(self)
     [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
         if (error) {
             QPLog(@":: error=%zi, %@", error.code, error.localizedDescription);
@@ -45,7 +45,7 @@
 {
     NSString *js = @"document.getElementsByTagName('video')[0].src";
     QPLog(@":: js=%@", js);
-    @weakify(self)
+    @QPWeakify(self)
     [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
         if(error) {
             QPLog(@":: error=%zi, %@", error.code, error.localizedDescription);
@@ -62,7 +62,7 @@
     NSData *jsData = [NSData dataWithContentsOfFile:jsPath];
     NSString *jsString = [NSString.alloc initWithData:jsData encoding:NSUTF8StringEncoding];
     QPLog(@":: jsString=%@", jsString);
-    @weakify(self)
+    @QPWeakify(self)
     [self.adapter.webView evaluateJavaScript:jsString completionHandler:^(id _Nullable response, NSError * _Nullable error) {
         if (error) {
             QPLog(@":: jsString error=%zi, %@.", error.code, error.localizedDescription);

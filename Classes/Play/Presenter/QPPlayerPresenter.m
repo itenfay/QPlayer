@@ -108,19 +108,21 @@
 
 - (void)getCoverImageWithURL:(NSURL *)aURL
 {
-    @weakify(self)
-    [self yf_takeThumbnailWithURL:aURL forTime:3 completionHandler:^(UIImage *image) {
-        @strongify(self)
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self configureControlView:image];
-        });
-    }];
+    // For KSYMediaPlayer.
+    //UIImage *thumbnail = self.yf_videoThumbnailImage(aURL, 3, 107, 60);
+    
+    //@QPWeakify(self)
+    //[self yf_takeThumbnailWithURL:aURL forTime:3 completionHandler:^(UIImage *image) {
+    //    @QPStrongify(self)
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //        [self configureControlView:image];
+    //    });
+    //}];
+    [self configureControlView:nil];
 }
 
 - (void)configureControlView:(UIImage *)coverImage
 {
-    //NSURL *url = [NSURL fileURLWithPath:vc.model.videoUrl];
-    //UIImage *thumbnail = self.yf_videoThumbnailImage(url, 3, 107, 60);
     QPPlayerController *vc = [self playViewController];
     UIImage *defaultThumbnail = QPImageNamed(@"default_thumbnail");
     [vc.controlView showTitle:self.videoTitleByDeletingExtension
@@ -236,7 +238,7 @@
     };
     self.player.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         QPLog(@":: asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
-        //[weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
+        [weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
     };
     self.player.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval bufferTime) {
         QPLog(@":: asset=%@, bufferTime=%.2f", asset, bufferTime);
@@ -249,7 +251,7 @@
 
 - (void)takeThumbnailImageOfSpecifiedTime:(NSTimeInterval)currentTime
 {
-    if (currentTime >= 3 && currentTime < 5) {
+    if (currentTime >= 3 && currentTime < 6) {
         dispatch_async(dispatch_get_main_queue(), ^{
             UIImage *thumbnailImage = [self.player.currentPlayerManager thumbnailImageAtCurrentTime];
             [self configureControlView:thumbnailImage];

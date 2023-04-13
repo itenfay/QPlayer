@@ -103,7 +103,7 @@
 - (void)startPipAfterDelay
 {
     self.pipVC.delegate = self;
-    [self delayToScheduleTask:2.0 completion:^{
+    [self delayToScheduleTask:1.5 completion:^{
         [self.pipVC startPictureInPicture];
     }];
 }
@@ -195,9 +195,9 @@
         _playerModel.seekToTime = currentPlayTime;
         if (currentPlayTime > 0) {
             QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
-            @weakify(self)
+            @QPWeakify(self)
             [pt seekToTime:currentPlayTime completionHandler:^(BOOL finished) {
-                @strongify(self)
+                @QPStrongify(self)
                 [self handleControlStatus];
                 [self destroy];
             }];
@@ -321,8 +321,6 @@
 
 - (void)syncPlayTimeOfOriginalPlayer
 {
-    // 获取当前创建的avplayer的时间尺度
-    int32_t timeScale = _avPlayer.currentItem.asset.duration.timescale;
     NSTimeInterval currentTime;
     if (_presenter) {
         QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
@@ -332,17 +330,24 @@
     }
     Float64 seekTo = currentTime;
     if (seekTo > 0) {
+        // CMTimeScale: int32_t
+        CMTimeScale timeScale = _avPlayer.currentItem.asset.duration.timescale;
         CMTime time = CMTimeMakeWithSeconds(seekTo, timeScale);
-        @weakify(self)
-        // 将播放器的播放时间与原始ijkplayer的播放地方同步
-        [_avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
-            weak_self.seeksPending = NO;
-            weak_self.seekToTimeFinished = finished ? YES : NO;
-        }];
+        @try {
+            @QPWeakify(self)
+            // 将播放器的播放时间与原始ijkplayer的播放地方同步
+            [_avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+                @QPStrongify(self)
+                self.seeksPending = NO;
+                self.seekToTimeFinished = finished;
+            }];
+        } @catch (NSException *exception) {
+            QPLog(@":: exception=%@", exception);
+            [_avPlayer.currentItem cancelPendingSeeks];
+        }
     } else {
         _seeksPending = NO;
         _seekToTimeFinished = YES;
-        //[_avPlayer.currentItem cancelPendingSeeks];
     }
 }
 

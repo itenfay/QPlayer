@@ -132,9 +132,9 @@
 }
 
 - (void)replay {
-    @weakify(self)
+    @zf_weakify(self)
     [self seekToTime:0 completionHandler:^(BOOL finished) {
-        @strongify(self)
+        @zf_strongify(self)
         [self play];
     }];
 }

@@ -13,7 +13,7 @@
 
 @implementation QPDropListView
 
-- (QPDropListViewPresenter *)__presenter
+- (QPDropListViewPresenter *)presenter
 {
     return _presenter;
 }

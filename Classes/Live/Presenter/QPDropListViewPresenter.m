@@ -11,7 +11,7 @@
 #import "QPDropListView.h"
 
 NSString *const kResourceBundle   = @"QPDropListView.bundle";
-NSString *const kDropListDataFile = @"DropListViewData.plist";
+NSString *const kDropListDataFile = @"DropListViewData.dat";
 
 @implementation QPDropListViewPresenter
 
@@ -20,26 +20,77 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     return (QPDropListView*)_view;
 }
 
-- (NSString *)customBundleFilePath
+- (NSString *)customBundlePath
 {
+    // QPDropListView.bundle
     NSString *path = [NSBundle.mainBundle pathForResource:kResourceBundle ofType:nil];
     NSString *bundlePath = [NSBundle bundleWithPath:path].bundlePath;
-    return [bundlePath stringByAppendingPathComponent:kDropListDataFile];
+    return bundlePath;
+}
+
+- (NSString *)customTVFilePath
+{
+    NSFileManager *fileManager = NSFileManager.defaultManager;
+    NSString *docPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSString *filePath = [docPath stringByAppendingPathComponent:kDropListDataFile];
+    if (![fileManager fileExistsAtPath:filePath]) {
+        /// 沙箱根目录下文件无写入权限
+        NSString *srcPath = [NSBundle.mainBundle pathForResource:kDropListDataFile ofType:nil];
+        [self writeData:srcPath toFile:filePath];
+    }
+    return filePath;
+}
+
+- (BOOL)writeData:(NSString *)srcPath toFile:(NSString *)filePath
+{
+    NSMutableArray *tvList = [NSMutableArray arrayWithContentsOfFile:srcPath];
+    BOOL ret = NO;
+    if (@available(macOS 10.13, iOS 11.0, watchOS 4.0, tvOS 11.0, *)) {
+        NSError *error = nil;
+        ret = [tvList writeToURL:[NSURL fileURLWithPath:filePath] error:&error];
+        if (error) {
+            QPLog(@":: [writeToURL] error=%zi, %@", error.code, error.localizedDescription);
+        }
+    } else {
+        ret = [tvList writeToFile:filePath atomically:YES];
+        if (!ret) {
+            QPLog(@":: [writeToFile] ret=%d", ret);
+        }
+    }
+    return ret;
 }
 
 - (void)updateValue:(NSString *)value atIndex:(NSInteger)index
 {
-    NSString *filePath = [self customBundleFilePath];
+    NSString *filePath = [self customTVFilePath];
     QPLog(@":: filePath=%@", filePath);
-    NSMutableArray *list = [NSMutableArray arrayWithContentsOfFile:filePath];
-    if (index > 0 && index < list.count) {
-        NSMutableDictionary *dict = ((NSDictionary *)[list objectAtIndex:index]).mutableCopy;
+    
+    /// 设置访问权限
+    NSFileManager *fileManager = NSFileManager.defaultManager;
+    //NSDictionary *attributes = @{NSFilePosixPermissions : @(666)};
+    //NSError *permissionsError = nil;
+    //[fileManager setAttributes:attributes ofItemAtPath:filePath error:&permissionsError];
+    //if (permissionsError) {
+    //    QPLog(@":: [setAttributes] error=%zi, %@", permissionsError.code, permissionsError.localizedDescription);
+    //}
+    
+    NSMutableArray *tvList = [NSMutableArray arrayWithContentsOfFile:filePath];
+    if (index >= 0 && index < tvList.count) {
+        NSMutableDictionary *dict = ((NSDictionary *)tvList[index]).mutableCopy;
         [dict setValue:value forKey:dict.allKeys.firstObject];
-        [list replaceObjectAtIndex:index withObject:dict];
+        [tvList replaceObjectAtIndex:index withObject:dict];
+        BOOL ret = NO;
         if (@available(macOS 10.13, iOS 11.0, watchOS 4.0, tvOS 11.0, *)) {
-            [list writeToURL:[NSURL fileURLWithPath:filePath] error:nil];
+            NSError *error = nil;
+            ret = [tvList writeToURL:[NSURL fileURLWithPath:filePath] error:&error];
+            if (error) {
+                QPLog(@":: [writeToURL] error=%zi, %@", error.code, error.localizedDescription);
+            }
         } else {
-            [list writeToFile:filePath atomically:YES];
+            ret = [tvList writeToFile:filePath atomically:YES];
+            if (!ret) {
+                QPLog(@":: [writeToFile] ret=%d", ret);
+            }
         }
     }
 }
@@ -58,7 +109,7 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
 {
     [[self dropListView].adapter.dataSource removeAllObjects];
     
-    NSString *filePath = [self customBundleFilePath];
+    NSString *filePath = [self customTVFilePath];
     QPLog(@":: filePath=%@", filePath);
     
     NSArray *tvList;
@@ -91,12 +142,13 @@ NSString *const kDropListDataFile = @"DropListViewData.plist";
     }
     cell.contentView.backgroundColor = UIColor.clearColor;
     cell.backgroundColor = UIColor.clearColor;
-    cell.selectionStyle  = UITableViewCellSelectionStyleGray;
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
     
     [[self dropListView].adapter bindModelTo:cell
                                  atIndexPath:indexPath
                                  inTableView:dropListView.m_tableView
                                     withView:_view];
+    
     return cell;
 }
 

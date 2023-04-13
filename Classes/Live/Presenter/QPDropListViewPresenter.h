@@ -32,7 +32,11 @@ FOUNDATION_EXPORT NSString *const kDropListDataFile;
 @property (nonatomic, copy) DropListViewOnCloseHandler onCloseHandler;
 @property (nonatomic, copy) DropListViewOnSelectRowHandler onSelectRowHandler;
 
+- (NSString *)customBundlePath;
+- (NSString *)customTVFilePath;
+
 - (void)loadData;
+
 - (void)updateValue:(NSString *)value atIndex:(NSInteger)index;
 
 @end

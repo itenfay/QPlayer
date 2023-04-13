@@ -177,7 +177,7 @@
         NSString *tempStr = [text lowercaseString];
         NSString *url = @"";
         if ([tempStr hasPrefix:@"rtmp"] || [tempStr hasPrefix:@"rtsp"] ||
-            [tempStr hasPrefix:@"mms"] || QPPlayerCanSupportAVFormat(tempStr)) {
+            [tempStr hasSuffix:@"m3u8"] || QPPlayerCanSupportAVFormat(tempStr)) {
             self.titleView.text = url = text;
             NSString *title = [self titleMatchingWithUrl:url];
             QPLivePresenter *presenter = (QPLivePresenter *)self.presenter;
@@ -253,17 +253,17 @@
 
 - (NSString *)titleMatchingWithUrl:(NSString *)url
 {
-    // QPDropListView.bundle -> DropListViewData.plist
-    NSString *path       = [NSBundle.mainBundle pathForResource:kResourceBundle ofType:nil];
-    NSString *bundlePath = [NSBundle bundleWithPath:path].bundlePath;
-    NSString *filePath   = [bundlePath stringByAppendingPathComponent:kDropListDataFile];
+    QPDropListViewPresenter *pt = QPDropListViewPresenter.alloc.init;
+    NSString *filePath = [pt customTVFilePath];
     QPLog(@":: filePath=%@", filePath);
     
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    for (NSString *key in dict) {
-        NSString *value = dict[key];
-        if ([value isEqualToString:url]) {
-            return key;
+    NSMutableArray *list = [NSMutableArray arrayWithContentsOfFile:filePath];
+    for (NSDictionary *dict in list) {
+        for (NSString *key in dict) {
+            NSString *value = dict[key];
+            if ([value isEqualToString:url]) {
+                return key;
+            }
         }
     }
     

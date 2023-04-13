@@ -84,6 +84,7 @@
 		7904DED929AF540E0030A748 /* QPFileModelPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7904DED829AF540E0030A748 /* QPFileModelPresenter.m */; };
 		790F5D9629A45F6100B59422 /* QPBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 790F5D9529A45F6100B59422 /* QPBaseCollectionViewCell.m */; };
 		7923EA6229BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7923EA6129BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m */; };
+		792784F229E7A056002C8936 /* DropListViewData.dat in Resources */ = {isa = PBXBuildFile; fileRef = 792784F129E7A056002C8936 /* DropListViewData.dat */; };
 		793BAB7229B0556B000EF92B /* QPAboutMeListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BAB7129B0556B000EF92B /* QPAboutMeListViewAdapter.m */; };
 		793BAB7829B0563B000EF92B /* QPAboutMePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BAB7729B0563B000EF92B /* QPAboutMePresenter.m */; };
 		793BAB7B29B056BD000EF92B /* QPAboutModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 793BAB7A29B056BD000EF92B /* QPAboutModel.m */; };
@@ -281,6 +282,7 @@
 		790F5D9529A45F6100B59422 /* QPBaseCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPBaseCollectionViewCell.m; sourceTree = "<group>"; };
 		7923EA6029BF06EE00B0742A /* QPListViewHeaderFooterAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPListViewHeaderFooterAdapter.h; sourceTree = "<group>"; };
 		7923EA6129BF06EE00B0742A /* QPListViewHeaderFooterAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPListViewHeaderFooterAdapter.m; sourceTree = "<group>"; };
+		792784F129E7A056002C8936 /* DropListViewData.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DropListViewData.dat; sourceTree = "<group>"; };
 		793BAB7029B0556B000EF92B /* QPAboutMeListViewAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPAboutMeListViewAdapter.h; sourceTree = "<group>"; };
 		793BAB7129B0556B000EF92B /* QPAboutMeListViewAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPAboutMeListViewAdapter.m; sourceTree = "<group>"; };
 		793BAB7629B0563B000EF92B /* QPAboutMePresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPAboutMePresenter.h; sourceTree = "<group>"; };
@@ -1045,6 +1047,7 @@
 		79443A8B29B1DC2E004B125A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				792784F129E7A056002C8936 /* DropListViewData.dat */,
 				7951767429C0780D0040B18A /* jsquery_video_src.js */,
 				796695FC29C1996100DC35E4 /* jsquery_video_srcx.js */,
 				79443A8C29B1DC2E004B125A /* QPDropListView.bundle */,
@@ -1329,6 +1332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				141B172025C93B46008C465C /* QPAboutMeTableHeader.xib in Resources */,
+				792784F229E7A056002C8936 /* DropListViewData.dat in Resources */,
 				141B171E25C93B46008C465C /* QPAboutMeViewController.xib in Resources */,
 				96532C721F5E816000E66A2F /* docroot in Resources */,
 				79443A9529B1DC42004B125A /* QPDropListView.xib in Resources */,

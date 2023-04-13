@@ -57,7 +57,7 @@
     [vc addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.delegate = self;
         textField.placeholder = @"请输入或拷贝新的播放URL";
-        textField.borderStyle = UITextBorderStyleBezel;
+        textField.borderStyle = UITextBorderStyleNone;
         textField.keyboardType = UIKeyboardTypeDefault;
         textField.returnKeyType = UIReturnKeyDone;
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -85,16 +85,21 @@
 - (void)updateURL:(NSString *)url atIndexPath:(NSIndexPath *)indexPath
 {
     if (url == nil || [url isEqualToString:@""]) {
+        [_dropListView refreshUI];
         return;
     }
     UITableView *tableView = _dropListView.m_tableView;
+    
     QPDropListViewCell *cell = (QPDropListViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     cell.m_detailLabel.text = url;
+    
     QPDropListModel *model = QPDropListModel.alloc.init;
     model.m_title = cell.m_titleLabel.text;
     model.m_content = url;
     [self updateModel:model withTableView:tableView atIndexPath:indexPath];
-    [_dropListView.__presenter updateValue:url atIndex:indexPath.item];
+    
+    [_dropListView.presenter updateValue:url atIndex:indexPath.row];
+    [_dropListView refreshUI];
 }
 
 @end

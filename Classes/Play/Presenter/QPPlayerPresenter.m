@@ -108,7 +108,6 @@
 
 - (void)getCoverImageWithURL:(NSURL *)aURL
 {
-    /*
     @weakify(self)
     [self yf_takeThumbnailWithURL:aURL forTime:3 completionHandler:^(UIImage *image) {
         @strongify(self)
@@ -116,8 +115,6 @@
             [self configureControlView:image];
         });
     }];
-    */
-    [self configureControlView:nil];
 }
 
 - (void)configureControlView:(UIImage *)coverImage
@@ -239,9 +236,7 @@
     };
     self.player.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         QPLog(@":: asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
-        });
+        //[weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
     };
     self.player.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval bufferTime) {
         QPLog(@":: asset=%@, bufferTime=%.2f", asset, bufferTime);
@@ -255,8 +250,10 @@
 - (void)takeThumbnailImageOfSpecifiedTime:(NSTimeInterval)currentTime
 {
     if (currentTime >= 3 && currentTime < 5) {
-        UIImage *thumbnailImage = [self.player.currentPlayerManager thumbnailImageAtCurrentTime];
-        [self configureControlView:thumbnailImage];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImage *thumbnailImage = [self.player.currentPlayerManager thumbnailImageAtCurrentTime];
+            [self configureControlView:thumbnailImage];
+        });
     }
 }
 

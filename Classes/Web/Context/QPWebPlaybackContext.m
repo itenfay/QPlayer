@@ -21,6 +21,7 @@
     if (self = [super init]) {
         self.adapter = adapter;
         self.controller = viewController;
+        self.playerType = QPPlayerTypeIJKPlayer;
     }
     return  self;
 }
@@ -155,7 +156,7 @@
                         NSString *videoUrl = [tempUrl componentsSeparatedByString:@"?"].firstObject;
                         videoUrl = [NSString stringWithFormat:@"%@://%@%@", aURL.scheme, aURL.host, videoUrl];
                         QPLog(@":: videoUrl=%@", videoUrl);
-                        [self playVideoWithTitle:title urlString:videoUrl playerType:QPPlayerTypeIJKPlayer];
+                        [self playVideoWithTitle:title urlString:videoUrl playerType:self.playerType];
                     }
                     break;
                 }
@@ -173,17 +174,18 @@
     QPLog(@":: videoTitle=%@", title);
     QPLog(@":: videoUrl=%@", url);
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
-        [self playVideoWithTitle:title urlString:url playerType:QPPlayerTypeIJKPlayer];
+        [self playVideoWithTitle:title urlString:url playerType:_playerType];
     } else {
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];
         }];
+        [QPHudUtils showWarnMessage:@"未检测到播放地址，不能播放！"];
     }
 }
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString
 {
-    [self playVideoWithTitle:title urlString:urlString playerType:QPPlayerTypeZFPlayer];
+    [self playVideoWithTitle:title urlString:urlString playerType:_playerType];
 }
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type

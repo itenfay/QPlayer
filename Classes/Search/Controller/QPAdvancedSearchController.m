@@ -68,6 +68,12 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)setupPlayerType
+{
+    QPAdvancedSearchPresenter *pt = (QPAdvancedSearchPresenter *)self.presenter;
+    pt.playbackContext.playerType = QPPlayerTypeZFPlayer;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -77,6 +83,10 @@
     self.presenter = presenter;
     self.adapter.scrollViewDelegate = presenter;
     self.adapter.delegate = presenter;
+    @QPWeakify(self)
+    [(QPAdvancedSearchPresenter *)self.presenter loadDidFinish:^(BOOL finished) {
+        [weak_self setupPlayerType];
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -121,7 +131,7 @@
         if (QPPlayerCanSupportAVFormat(tempStr)) {
             self.titleView.text = url = text;
             QPAdvancedSearchPresenter *presenter = (QPAdvancedSearchPresenter *)self.presenter;
-            [presenter.playbackContext playVideoWithTitle:text urlString:url playerType:QPPlayerTypeIJKPlayer];
+            [presenter.playbackContext playVideoWithTitle:text urlString:url playerType:QPPlayerTypeZFPlayer];
         } else if ([tempStr hasPrefix:@"https"] || [tempStr hasPrefix:@"http"]) {
             url = text;
         } else if ([tempStr hasPrefix:@"www."] || [tempStr hasPrefix:@"m."]   ||

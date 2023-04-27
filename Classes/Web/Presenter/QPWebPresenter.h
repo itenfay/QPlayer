@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches cachePath:(NSString *)cachePath;
 
+- (void)loadDidFinish:(void (^)(BOOL))completionHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END

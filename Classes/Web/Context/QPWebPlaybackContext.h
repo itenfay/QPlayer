@@ -14,6 +14,7 @@
 @interface QPWebPlaybackContext : QPBaseContext
 @property (nonatomic, weak) QPWKWebViewAdapter *adapter;
 @property (nonatomic, weak) QPBaseViewController *controller;
+@property (nonatomic, assign) QPPlayerType playerType;
 
 - (instancetype)initWithAdapter:(QPWKWebViewAdapter *)adapter viewController:(QPBaseViewController *)viewController;
 

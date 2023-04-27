@@ -9,8 +9,10 @@
 #import "QPWebPresenter.h"
 #import "QPWebController.h"
 
-@interface QPWebPresenter () <PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
+typedef void (^LoadDidFinishBlock)(BOOL);
 
+@interface QPWebPresenter () <PYSearchViewControllerDelegate, PYSearchViewControllerDataSource>
+@property (nonatomic, copy) LoadDidFinishBlock finishBlock;
 @end
 
 @implementation QPWebPresenter
@@ -196,6 +198,7 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 - (void)adapter:(QPWKWebViewAdapter *)adapter didFinishNavigation:(WKNavigation *)navigation
 {
     QPLog(@"::");
+    !_finishBlock ?: _finishBlock(YES);
     [_playbackContext queryVideoUrlByCustomJavaScript];
 }
 
@@ -204,6 +207,11 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
     QPLog(@"::");
     //[_playbackContext canAllowNavigation:adapter.webView.URL];
     decisionHandler(WKNavigationActionPolicyAllow);
+}
+
+- (void)loadDidFinish:(void (^)(BOOL))completionHandler
+{
+    _finishBlock = completionHandler;
 }
 
 @end

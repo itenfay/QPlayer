@@ -26,25 +26,26 @@
 - 本地视频
 
 <div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/local_videos.png" width="80%" />
+&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/local_videos.png" width="60%" />
 </div>
 
 - 直播和电视
 
 <div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/live_tv.png" width="80%" />
+&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/live_tv.png" width="60%" />
 </div>
 
 - 网页视频
 
 <div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/web_videos.png" width="80%" />
+&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/web_videos.png" width="60%" />
 </div>
 
 - 应用介绍
 
 <div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/app_intro.png" width="80%" />
+&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/app_settings.png" width="40%" />
+&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/app_aboutme.png" width="40%" />
 </div>
 
 

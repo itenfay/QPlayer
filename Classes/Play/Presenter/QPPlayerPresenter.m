@@ -247,6 +247,7 @@
     if (vc.model.seekToTime > 0) {
         [self seekToTime:vc.model.seekToTime];
     }
+    [QPAppDelegate.pipContext instantiateAVPlayerFor3rdPlayer];
 }
 
 - (void)takeThumbnailImageOfSpecifiedTime:(NSTimeInterval)currentTime

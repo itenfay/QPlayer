@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)configPlayerModel:(QPPlayerModel *)model;
 
+- (void)instantiateAVPlayerFor3rdPlayer;
+
 - (BOOL)isPictureInPictureValid;
 - (BOOL)isPictureInPicturePossible;
 - (BOOL)isPictureInPictureActive;

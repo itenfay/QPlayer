@@ -71,7 +71,7 @@
     }
     // 设备是否支持画中画
     if (![AVPictureInPictureController isPictureInPictureSupported]) {
-        [QPHudUtils showInfoMessage:@"当前设备不否支持画中画功能！"];
+        [QPHudUtils showInfoMessage:@"当前设备不支持小窗播放功能！"];
         return;
     }
     if (!_presenter || _pipVC) { return; }
@@ -84,6 +84,7 @@
               , error.domain
               , error.code
               , error.localizedDescription);
+        [QPHudUtils showErrorMessage:@"AudioSession出错啦~，不能小窗播放！"];
         return;
     }
     
@@ -277,7 +278,6 @@
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController failedToStartPictureInPictureWithError:(NSError *)error
 {
     QPLog(":: 开启画中画功能失败. error=%@.", error);
-    NSString *message = [NSString stringWithFormat:@"开启画中画失败(code=%zi)", error.code];
     [QPHudUtils showErrorMessage:@"出错啦~，不能小窗播放！"];
     [self reset];
 }

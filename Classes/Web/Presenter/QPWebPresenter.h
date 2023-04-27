@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QPWebPresenter : QPBasePresenter <QPPresenterDelegate, QPScrollViewAdapterDelegate, QPWKWebViewAdapterDelegate>
 @property (nonatomic, weak) UIView *view;
-@property (nonatomic, weak) QPBaseViewController *viewController;
+@property (nonatomic, weak) QPBaseWebViewController *viewController;
 
 @property (nonatomic, strong) QPWebPlaybackContext *playbackContext;
 

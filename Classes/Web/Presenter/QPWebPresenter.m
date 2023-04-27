@@ -17,50 +17,49 @@ typedef void (^LoadDidFinishBlock)(BOOL);
 
 @implementation QPWebPresenter
 
-- (void)setViewController:(QPBaseViewController *)viewController
+- (void)setViewController:(QPBaseWebViewController *)viewController
 {
     _viewController = viewController;
-    QPBaseWebViewController *webVC = (QPBaseWebViewController *)_viewController;
-    _playbackContext = [[QPWebPlaybackContext alloc] initWithAdapter:webVC.adapter viewController:_viewController];
+    _playbackContext = [[QPWebPlaybackContext alloc] initWithAdapter:_viewController.adapter viewController:_viewController];
 }
 
-//searchViewController.hotSearches = @[@"https://www.baidu.com/",
-//                                     @"https://wap.sogou.com/",
-//                                     @"https://m.so.com/",
-//                                     @"https://m.sm.cn/",
-//
-//                                     @"https://m.v.qq.com/",
-//                                     @"https://m.mgtv.com/",
-//                                     @"https://m.iqiyi.com/",
-//                                     @"https://www.youku.com/",
-//                                     @"https://m.tv.sohu.com/",
-//                                     @"https://m.pptv.com/",
-//                                     @"https://m.le.com/",
-//                                     @"https://m.mtime.cn/",
-//
-//                                     @"https://m.ixigua.com/",
-//                                     @"https://v.ifeng.com/",
-//                                     @"https://haokan.baidu.com/",
-//                                     @"https://www.pearvideo.com/?from=intro",
-//                                     @"http://ten.budejie.com/video/",
-//                                     @"https://m.ku6.com/index",
-//
-//                                     @"https://www.y80s.net/",
-//
-//                                     @"https://xw.qq.com/m/sports/index.htm",
-//                                     @"https://m.live.qq.com/",
-//                                     @"https://sports.sina.cn/?from=wap",
-//                                     @"https://m.sohu.com/z/",
-//
-//                                     @"https://translate.google.cn/",
-//                                     @"https://fanyi.baidu.com/",
-//                                     @"https://fanyi.youdao.com/",
-//
-//                                     @"https://m.imooc.com/",
-//                                     @"https://m.study.163.com/",
-//                                     @"https://www.jikexueyuan.com/"];
 - (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches cachePath:(NSString *)cachePath
 {
+    //searchViewController.hotSearches = @[@"https://www.baidu.com/",
+    //                                     @"https://wap.sogou.com/",
+    //                                     @"https://m.so.com/",
+    //                                     @"https://m.sm.cn/",
+    //
+    //                                     @"https://m.v.qq.com/",
+    //                                     @"https://m.mgtv.com/",
+    //                                     @"https://m.iqiyi.com/",
+    //                                     @"https://www.youku.com/",
+    //                                     @"https://m.tv.sohu.com/",
+    //                                     @"https://m.pptv.com/",
+    //                                     @"https://m.le.com/",
+    //                                     @"https://m.mtime.cn/",
+    //
+    //                                     @"https://m.ixigua.com/",
+    //                                     @"https://v.ifeng.com/",
+    //                                     @"https://haokan.baidu.com/",
+    //                                     @"https://www.pearvideo.com/?from=intro",
+    //                                     @"http://ten.budejie.com/video/",
+    //                                     @"https://m.ku6.com/index",
+    //
+    //                                     @"https://www.y80s.net/",
+    //
+    //                                     @"https://xw.qq.com/m/sports/index.htm",
+    //                                     @"https://m.live.qq.com/",
+    //                                     @"https://sports.sina.cn/?from=wap",
+    //                                     @"https://m.sohu.com/z/",
+    //
+    //                                     @"https://translate.google.cn/",
+    //                                     @"https://fanyi.baidu.com/",
+    //                                     @"https://fanyi.youdao.com/",
+    //
+    //                                     @"https://m.imooc.com/",
+    //                                     @"https://m.study.163.com/",
+    //                                     @"https://www.jikexueyuan.com/"];
     PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:@[] searchBarPlaceholder:@"请输入要搜索的内容或网址"];
     searchViewController.delegate    = self;
     searchViewController.dataSource  = self;

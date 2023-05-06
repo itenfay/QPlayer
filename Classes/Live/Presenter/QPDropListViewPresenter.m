@@ -66,7 +66,7 @@ NSString *const kDropListDataFile = @"DropListViewData.dat";
     QPLog(@":: filePath=%@", filePath);
     
     /// 设置访问权限
-    NSFileManager *fileManager = NSFileManager.defaultManager;
+    //NSFileManager *fileManager = NSFileManager.defaultManager;
     //NSDictionary *attributes = @{NSFilePosixPermissions : @(666)};
     //NSError *permissionsError = nil;
     //[fileManager setAttributes:attributes ofItemAtPath:filePath error:&permissionsError];

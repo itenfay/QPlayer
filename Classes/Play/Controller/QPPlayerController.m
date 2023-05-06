@@ -12,6 +12,7 @@
 @interface QPPlayerController ()
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 @property (nonatomic, strong) UIImageView *containerView;
+@property (nonatomic, strong) UILabel *overlayLabel;
 @property (nonatomic, assign) BOOL showNext;
 @end
 
@@ -142,6 +143,7 @@
 {
     [super loadView];
     [self addContainerView];
+    [self addOverlayLayer];
     [self addWebView];
     [self addWebToolBar];
 }
@@ -221,7 +223,7 @@
     CGFloat cW = self.view.width;
     CGFloat cH = cW*9/16;
     self.containerView.frame = CGRectMake(cX, cY, cW, cH);
-    
+    self.overlayLabel.frame = CGRectMake(cX, cY, cW, cH);
     self.webView.x      = self.containerView.x;
     self.webView.y      = self.containerView.bottom;
     self.webView.width  = self.view.width;
@@ -270,9 +272,38 @@
     return (UIImageView *)[self.view viewWithTag:888];
 }
 
-- (void)loadBottomContents {
+- (void)loadBottomContents
+{
     NSString *aUrl = QPInfoDictionary[@"MyGithubUrl"];
     [self loadRequestWithUrl:aUrl];
+}
+
+- (void)addOverlayLayer
+{
+    [self.view addSubview:_overlayLabel];
+}
+
+- (UILabel *)overlayLabel
+{
+    if (!_overlayLabel) {
+        _overlayLabel = UILabel.alloc.init;
+        _overlayLabel.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.95];
+        _overlayLabel.text = @"正在使用小窗播放";
+        _overlayLabel.textColor = UIColor.whiteColor;
+        _overlayLabel.textAlignment = NSTextAlignmentCenter;
+        _overlayLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
+        _overlayLabel.hidden = YES;
+    }
+    return _overlayLabel;
+}
+
+- (void)showOverlayLayer
+{
+    _overlayLabel.hidden = NO;
+}
+
+- (void)hideOverlayLayer {
+    _overlayLabel.hidden = YES;
 }
 
 @end

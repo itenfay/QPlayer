@@ -19,4 +19,7 @@
 - (UIImageView *)containerView;
 - (ZFPlayerControlView *)controlView;
 
+- (void)showOverlayLayer;
+- (void)hideOverlayLayer;
+
 @end

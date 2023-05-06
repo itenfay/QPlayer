@@ -34,7 +34,7 @@
             [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_DEBUG];
             #else
             [IJKFFMoviePlayerController setLogReport:NO];
-            [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_INFO];
+            [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_FATAL];
             #endif
             NSURL *url = [NSURL URLWithString:vc.model.videoUrl];
             NSString *scheme = [url.scheme lowercaseString];
@@ -247,7 +247,6 @@
     if (vc.model.seekToTime > 0) {
         [self seekToTime:vc.model.seekToTime];
     }
-    [QPAppDelegate.pipContext instantiateAVPlayerFor3rdPlayer];
 }
 
 - (void)takeThumbnailImageOfSpecifiedTime:(NSTimeInterval)currentTime

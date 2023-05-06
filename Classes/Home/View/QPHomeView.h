@@ -12,6 +12,13 @@
 
 typedef void(^HomeReloadDataBlock)(void);
 
+@protocol QPHomeViewDelegate <QPBaseDelegate>
+
+@optional
+- (void)reloadUI;
+
+@end
+
 @interface QPHomeView : QPBaseView <QPHomeViewDelegate>
 
 @property (nonatomic, strong) QPHomeListViewAdapter *adapter;

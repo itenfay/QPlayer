@@ -14,10 +14,3 @@
 - (void)present;
 - (void)presentWithModel:(id)model viewController:(UIViewController *)viewController;
 @end
-
-@protocol QPHomeViewDelegate <QPBaseDelegate>
-
-@optional
-- (void)reloadUI;
-
-@end

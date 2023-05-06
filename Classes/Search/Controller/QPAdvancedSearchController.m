@@ -83,10 +83,6 @@
     self.presenter = presenter;
     self.adapter.scrollViewDelegate = presenter;
     self.adapter.delegate = presenter;
-    @QPWeakify(self)
-    [(QPAdvancedSearchPresenter *)self.presenter loadDidFinish:^(BOOL finished) {
-        [weak_self setupPlayerType];
-    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated

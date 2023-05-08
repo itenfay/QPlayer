@@ -89,6 +89,7 @@
     // _playerModel.isZFPlayerPlayback or others.
     if (_playerModel.isIJKPlayerPlayback ||
         _playerModel.isMediaPlayerPlayback) {
+        _avRetryCountToPlay = 3;
         [self instantiateAVPlayerFor3rdPlayer];
     } else {
         QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
@@ -97,11 +98,11 @@
         AVPlayerLayer *avPlayerLayer = manager.avPlayerLayer;
         AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:avPlayerLayer];
         self.pipVC = pipVC;
-        [self startPipAfterDelay];
+        [self delayToStartPip];
     }
 }
 
-- (QPPlayerController *)qpPlayer {
+- (QPPlayerController *)qpPlayerVC {
     if (_presenter) {
         QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
         return (QPPlayerController *)pt.viewController;
@@ -109,11 +110,11 @@
     return nil;
 }
 
-- (void)startPipAfterDelay
+- (void)delayToStartPip
 {
-    [self.qpPlayer showOverlayLayer];
     self.pipVC.delegate = self;
     [self delayToScheduleTask:2.0 completion:^{
+        [self.qpPlayerVC showOverlayLayer];
         [self.pipVC startPictureInPicture];
     }];
 }
@@ -130,16 +131,15 @@
 {
     if (!_avPlayer) { return; }
     if (_avRetryCountToPlay <= 0) {
+        _avRetryCountToPlay = 3;
         [QPHudUtils showErrorMessage:@"出错啦~，不能小窗播放！"];
         [self reset];
-        _avRetryCountToPlay = 3;
         return;
     }
     [self reset];
     _avRetryCountToPlay--;
-    [self instantiateAVPlayerFor3rdPlayer];
-    [self delayToScheduleTask:1.0 completion:^{
-        [self avRetryToPlay];
+    [self delayToScheduleTask:0.5 completion:^{
+        [self instantiateAVPlayerFor3rdPlayer];
     }];
 }
 
@@ -149,7 +149,10 @@
 {
     QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
     // 全屏不创建avplayer
-    if (pt.player.orientationObserver.isFullScreen) { return; }
+    if (pt.player.orientationObserver.isFullScreen) {
+        [QPHudUtils showErrorMessage:@"全屏不能小窗播放啦！"];
+        return;
+    }
     
     UIView *containerView = pt.player.containerView;
     UIView *superView = nil;
@@ -174,15 +177,20 @@
     _avPlayerLayer.frame = _avPlayerLayerContainerView.bounds;
     _avPlayerLayerContainerView.hidden = YES;
     
-    // 只有ijkplayer or third player进入，才会有avplayer
     [_avPlayer addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     [_avPlayer addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionNew context:nil];
+    
+    if (manager.isPlaying) {
+        [manager pause];
+    }
+    _playerModel.seekToTime = manager.currentTime;
 }
 
 #pragma mark - reset
 
 - (void)reset
 {
+    [self.qpPlayerVC hideOverlayLayer];
     if (self.avPlayer) {
         [self.avPlayer removeObserver:self forKeyPath:@"status"];
         [self.avPlayer removeObserver:self forKeyPath:@"timeControlStatus"];
@@ -195,7 +203,6 @@
         self.pipAlreadyStarted = NO;
     }
     self.pipVC = nil;
-    [self.qpPlayer hideOverlayLayer];
 }
 
 #pragma mark - Recover playback of original player
@@ -366,7 +373,7 @@
     AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.avPlayerLayer];
     self.pipVC = pipVC;
     // 要有延迟，否则可能开启不成功
-    [self startPipAfterDelay];
+    [self delayToStartPip];
 }
 
 @end

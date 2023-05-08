@@ -224,6 +224,7 @@
     CGFloat cH = cW*9/16;
     self.containerView.frame = CGRectMake(cX, cY, cW, cH);
     self.overlayLabel.frame = CGRectMake(cX, cY, cW, cH);
+    
     self.webView.x      = self.containerView.x;
     self.webView.y      = self.containerView.bottom;
     self.webView.width  = self.view.width;

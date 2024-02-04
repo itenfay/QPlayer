@@ -82,7 +82,7 @@
     presenter.viewController = self;
     self.presenter = presenter;
     self.adapter.scrollViewDelegate = presenter;
-    self.adapter.delegate = presenter;
+    ((QPWKWebViewAdapter *)self.adapter).delegate = presenter;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -99,13 +99,12 @@
 
 - (void)configureWebViewAdapter
 {
-    self.adapter = [[QPAdvancedSearchWebViewAdapter alloc] init];
-    self.adapter.webView = self.webView;
-    self.adapter.navigationBar = self.navigationBar;
-    self.adapter.toolBar = self.webToolBar;
-    [self.adapter addProgressViewToWebView];
-    @QPWeakify(self)
-    [self.adapter observeUrlLink:^(NSURL *url) {
+    self.adapter = [[QPWKWebViewAdapter alloc] init];
+    [(QPWKWebViewAdapter *)self.adapter setupNavigationBar:self.navigationBar];
+    [(QPWKWebViewAdapter *)self.adapter setupToolBar:self.webToolBar];
+    [(QPWKWebViewAdapter *)self.adapter addProgressViewToWebView];
+    @QPWeakify(self);
+    [(QPWKWebViewAdapter *)self.adapter observeUrlLink:^(NSURL *url) {
         weak_self.titleView.text = url.absoluteString;
     }];
 }
@@ -171,13 +170,13 @@
 
 //- (void)enterFullScreen:(NSNotification *)noti
 //{
-//    QPLog("::");
+//    QPLog("");
 //    if (@available(iOS 9.0, *)) {}
 //}
 
 //- (void)exitFullScreen:(NSNotification *)noti
 //{
-//    QPLog("::");
+//    QPLog("");
 //    if (@available(iOS 9.0, *)) {}
 //}
 

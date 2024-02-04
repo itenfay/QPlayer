@@ -5,9 +5,23 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseWebViewController.h"
+#import "BaseWebViewController.h"
+#import "QPWKWebViewAdapter.h"
 
-@interface QPWebController : QPBaseWebViewController <UITextFieldDelegate>
+@interface QPWebController : BaseWebViewController <UITextFieldDelegate>
+
+- (instancetype)initWithAdapter:(QPWKWebViewAdapter *)adapter;
+
+- (void)setupAdapter:(QPWKWebViewAdapter *)adapter;
+
+/// Builds a tool bar.
+//- (UIImageView *)buildToolBar;
+/// Builds a tool bar with a selector.
+- (UIImageView *)buildToolBar:(SEL)selector;
+/// Builds a vertical tool bar.
+- (UIImageView *)buildVerticalToolBar;
+/// Builds a vertical tool bar with a selector.
+- (UIImageView *)buildVerticalToolBar:(SEL)selector;
 
 /// Override
 - (void)loadDefaultRequest;

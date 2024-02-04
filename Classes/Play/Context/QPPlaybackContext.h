@@ -6,7 +6,7 @@
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPBaseContext.h"
+#import "BaseContext.h"
 
 typedef NS_ENUM(NSUInteger, QPPlayerType) {
     QPPlayerTypeZFPlayer,
@@ -16,7 +16,7 @@ typedef NS_ENUM(NSUInteger, QPPlayerType) {
 
 @class QPPlayerModel;
 
-@interface QPPlaybackContext : QPBaseContext
+@interface QPPlaybackContext : BaseContext
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString;
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type;

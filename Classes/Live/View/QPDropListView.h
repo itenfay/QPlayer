@@ -5,11 +5,11 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseView.h"
+#import "BaseView.h"
 #import "QPDropListViewPresenter.h"
 #import "QPDropListViewAdapter.h"
 
-@interface QPDropListView : QPBaseView
+@interface QPDropListView : BaseView
 
 // It provides a simple abstraction over complex visual effects.
 @property (weak, nonatomic) IBOutlet UIVisualEffectView *m_visualEffectView;

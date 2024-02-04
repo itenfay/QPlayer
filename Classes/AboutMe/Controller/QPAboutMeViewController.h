@@ -5,10 +5,10 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseViewController.h"
+#import "BaseViewController.h"
 #import "QPAboutMeListViewAdapter.h"
 
-@interface QPAboutMeViewController : QPBaseViewController
+@interface QPAboutMeViewController : BaseViewController
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *m_tableViewBottom;
 @property (strong, nonatomic) QPAboutMeListViewAdapter *adapter;

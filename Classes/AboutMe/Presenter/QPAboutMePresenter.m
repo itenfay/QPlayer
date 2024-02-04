@@ -91,7 +91,7 @@
     CGFloat footerH  = self.view.height - header.height - count*cellH - 10;
     footer.height    = footerH <= 160.f ? 160.f : footerH;
     _view.tableFooterView = footer;
-    @QPWeakify(self)
+    @QPWeakify(self);
     [footer onAct:^(AMFooterActionType type) {
         if (type == AMFooterActionTypeJianShu) {
             NSString *url = [QPInfoDictionary objectForKey:@"MyJianShuUrl"];
@@ -124,12 +124,12 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    [[self aboutMeController].adapter bindModelTo:cell atIndexPath:indexPath inTableView:_view withViewController:_viewController];
+    [[self aboutMeController].adapter bindModelTo:cell atIndexPath:indexPath withViewController:_viewController];
     
     return cell;
 }
 
-- (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
+- (void)selectCell:(BaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
     if (indexPath.row == 1) {
         NSString *str = QPInfoDictionary[@"QPlayerGithubUrl"];

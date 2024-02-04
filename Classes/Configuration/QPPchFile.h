@@ -12,7 +12,7 @@
 
 #import "AppDelegate.h"
 #import "AppHelper.h"
-#import "QPBaseViewController.h"
+#import "BaseViewController.h"
 #import "QPMacros.h"
 #import "QPGlobalDef.h"
 #import "QPTitleView.h"

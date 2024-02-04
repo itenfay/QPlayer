@@ -9,7 +9,7 @@
 #import "QPAppConst.h"
 #import "QPHudUtils.h"
 #import "DYFNetworkSniffer.h"
-#import "QPBaseModel.h"
+#import "BaseModel.h"
 
 #ifndef QPGlobalDef_h
 #define QPGlobalDef_h
@@ -91,7 +91,7 @@ QP_STATIC_INLINE void QPPlayerSavePlaying(BOOL value)
     QPStoreValue(kQPPlayerIsPlaying, [NSNumber numberWithBool:value]);
 }
 
-QP_STATIC_INLINE BOOL QPPlayerIsPlaying()
+QP_STATIC_INLINE BOOL QPPlayerIsPlaying(void)
 {
     return [QPExtractValue(kQPPlayerIsPlaying) boolValue];
 }
@@ -101,7 +101,7 @@ QP_STATIC_INLINE void QPSetCarrierNetworkAllowed(BOOL value)
     QPStoreValue(kCarrierNetworkAllowed, [NSNumber numberWithBool:value]);
 }
 
-QP_STATIC_INLINE BOOL QPCarrierNetworkAllowed()
+QP_STATIC_INLINE BOOL QPCarrierNetworkAllowed(void)
 {
     return [QPExtractValue(kCarrierNetworkAllowed) boolValue];
 }
@@ -111,7 +111,7 @@ QP_STATIC_INLINE void QPPlayerSetPictureInPictureEnabled(BOOL value)
     QPStoreValue(kPlayerPictureInPictureEnabled, [NSNumber numberWithBool:value]);
 }
 
-QP_STATIC_INLINE BOOL QPPlayerPictureInPictureEnabled()
+QP_STATIC_INLINE BOOL QPPlayerPictureInPictureEnabled(void)
 {
     return [QPExtractValue(kPlayerPictureInPictureEnabled) boolValue];
 }
@@ -121,7 +121,7 @@ QP_STATIC_INLINE void QPPlayerSetPictureInPictureEnabledWhenBackgound(BOOL value
     QPStoreValue(kPlayerPictureInPictureEnabledWhenBackgound, [NSNumber numberWithBool:value]);
 }
 
-QP_STATIC_INLINE BOOL QPPlayerPictureInPictureEnabledWhenBackgound()
+QP_STATIC_INLINE BOOL QPPlayerPictureInPictureEnabledWhenBackgound(void)
 {
     return [QPExtractValue(kPlayerPictureInPictureEnabledWhenBackgound) boolValue];
 }
@@ -131,7 +131,7 @@ QP_STATIC_INLINE void QPPlayerSetHardDecoding(int value)
     QPStoreValue(kPlayerHardDecoding, [NSNumber numberWithInt:value]);
 }
 
-QP_STATIC_INLINE int QPPlayerHardDecoding()
+QP_STATIC_INLINE int QPPlayerHardDecoding(void)
 {
     return [QPExtractValue(kPlayerHardDecoding) intValue];
 }
@@ -204,7 +204,7 @@ QP_STATIC_INLINE BOOL QPPlayerCanSupportAVFormat(NSString *url)
     return canSupport;
 }
 
-QP_STATIC_INLINE BOOL QPDetermineWhetherToPlay()
+QP_STATIC_INLINE BOOL QPDetermineWhetherToPlay(void)
 {
     if ([DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
         return YES;
@@ -221,7 +221,7 @@ QP_STATIC_INLINE BOOL QPDetermineWhetherToPlay()
 }
 
 /// Transforms two objects's title to pinying and sorts them.
-QP_STATIC_INLINE NSInteger QPSortObjects(QPBaseModel *m1, QPBaseModel *m2, void *context)
+QP_STATIC_INLINE NSInteger QPSortObjects(BaseModel *m1, BaseModel *m2, void *context)
 {
     NSMutableString *str1 = [[NSMutableString alloc] initWithString:m1.sortName];
     if (CFStringTransform((__bridge CFMutableStringRef)str1,

@@ -1,5 +1,5 @@
 //
-//  QPBaseContext.h
+//  BaseContext.h
 //  QPlayer
 //
 //  Created by chenxing on 2023/3/9.
@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "QPBaseDelegate.h"
+#import "BaseDelegate.h"
 
-@interface QPBaseContext : NSObject <QPBaseDelegate>
+@interface BaseContext : NSObject <BaseDelegate>
 
 @end
 

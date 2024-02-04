@@ -38,7 +38,7 @@
             #endif
             NSURL *url = [NSURL URLWithString:vc.model.videoUrl];
             NSString *scheme = [url.scheme lowercaseString];
-            QPLog(@":: urlScheme=%@", scheme);
+            QPLog(@"urlScheme=%@", scheme);
             ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
             int hardDecoding = QPPlayerHardDecoding();
             // 开启硬解码（硬件解码CPU消耗低，软解更稳定）
@@ -111,9 +111,9 @@
     // For KSYMediaPlayer.
     //UIImage *thumbnail = self.yf_videoThumbnailImage(aURL, 3, 107, 60);
     
-    //@QPWeakify(self)
+    //@QPWeakify(self);
     //[self yf_takeThumbnailWithURL:aURL forTime:3 completionHandler:^(UIImage *image) {
-    //    @QPStrongify(self)
+    //    @QPStrongify(self);
     //    dispatch_async(dispatch_get_main_queue(), ^{
     //        [strong_self configureControlView:image];
     //    });
@@ -201,11 +201,11 @@
     //[self.player rotateToOrientation:UIInterfaceOrientationLandscapeLeft animated:NO completion:NULL];
     
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        QPLog(@":: isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
+        QPLog(@"isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
         QPAppDelegate.allowOrentitaionRotation = isFullScreen;
     };
     self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        QPLog(@":: isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
+        QPLog(@"isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
         @zf_strongify(self)
         NSArray<UIWindow *> *windows = [self yf_activeWindows];
         QPPlayerController *vc = [self playViewController];
@@ -231,17 +231,17 @@
         //[vc needsUpdateOfSupportedInterfaceOrientations];
     };
     self.player.playerDidToEnd = ^(id<ZFPlayerMediaPlayback> _Nonnull asset) {
-        QPLog(@":: asset=%@", asset);
+        QPLog(@"asset=%@", asset);
     };
     self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, id _Nonnull error) {
-        QPLog(@":: asset=%@, error=%@", asset, error);
+        QPLog(@"asset=%@, error=%@", asset, error);
     };
     self.player.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
-        QPLog(@":: asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
+        QPLog(@"asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
         [weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
     };
     self.player.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval bufferTime) {
-        QPLog(@":: asset=%@, bufferTime=%.2f", asset, bufferTime);
+        QPLog(@"asset=%@, bufferTime=%.2f", asset, bufferTime);
     };
     
     if (vc.model.seekToTime > 0) {

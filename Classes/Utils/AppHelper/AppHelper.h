@@ -10,8 +10,6 @@
 #import <AVKit/AVKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface AppHelper : NSObject
 
 /// Return a string that uses to show the duration of a video.
@@ -30,5 +28,3 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)urlDecode:(NSString *)string;
 
 @end
-
-NS_ASSUME_NONNULL_END

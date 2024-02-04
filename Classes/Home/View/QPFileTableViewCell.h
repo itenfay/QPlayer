@@ -5,10 +5,10 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseListViewCell.h"
+#import "BaseListViewCell.h"
 #import "QPFileModelPresenter.h"
 
-@interface QPFileTableViewCell : QPBaseListViewCell
+@interface QPFileTableViewCell : BaseListViewCell
 /// Display thumbnail image.
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImgView;
 

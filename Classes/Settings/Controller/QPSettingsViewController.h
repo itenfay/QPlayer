@@ -5,10 +5,10 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseViewController.h"
-#import "QPListViewHeaderFooterAdapter.h"
+#import "BaseViewController.h"
+#import "QPListViewAdapter.h"
 
-@interface QPSettingsViewController : QPBaseViewController
+@interface QPSettingsViewController : BaseViewController
 
 @property (nonatomic, strong) QPListViewAdapter *adapter;
 

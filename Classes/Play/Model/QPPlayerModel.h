@@ -6,11 +6,9 @@
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPBaseModel.h"
+#import "BaseModel.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface QPPlayerModel : QPBaseModel
+@interface QPPlayerModel : BaseModel
 
 /// Whether play the local video.
 @property (nonatomic, assign) BOOL isLocalVideo;
@@ -37,5 +35,3 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSTimeInterval seekToTime;
 
 @end
-
-NS_ASSUME_NONNULL_END

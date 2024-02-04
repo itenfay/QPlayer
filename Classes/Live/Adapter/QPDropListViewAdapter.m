@@ -17,9 +17,9 @@
 
 @implementation QPDropListViewAdapter
 
-- (void)bindModelTo:(QPDropListViewCell *)cell atIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView withView:(UIView *)view
+- (void)bindModelTo:(QPDropListViewCell *)cell atIndexPath:(NSIndexPath *)indexPath withView:(UIView *)view
 {
-    QPDropListModel *model = (QPDropListModel *)[self modelWithTableView:tableView atIndexPath:indexPath];
+    QPDropListModel *model = (QPDropListModel *)[self modelAtIndexPath:indexPath];
     QPDropListView *dropListView = (QPDropListView *)view;
     _dropListView = dropListView;
     cell.m_titleLabel.text = model.m_title;
@@ -42,7 +42,7 @@
 
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    @QPWeakify(self)
+    @QPWeakify(self);
     UIContextualAction *editAciton = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"编辑" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         [weak_self showEditAlertWithIndexPath:indexPath];
     }];
@@ -63,12 +63,12 @@
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        QPLog(@":: Action.title=%@", action.title);
+        QPLog(@"Action.title=%@", action.title);
     }];
     [vc addAction:cancelAction];
     
     UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        QPLog(@":: Action.title=%@", action.title);
+        QPLog(@"Action.title=%@", action.title);
         [self updateURL:vc.textFields.firstObject.text atIndexPath:indexPath];
     }];
     [vc addAction:confirmAction];
@@ -96,7 +96,7 @@
     QPDropListModel *model = QPDropListModel.alloc.init;
     model.m_title = cell.m_titleLabel.text;
     model.m_content = url;
-    [self updateModel:model withTableView:tableView atIndexPath:indexPath];
+    [self updateModel:model atIndexPath:indexPath];
     
     [_dropListView.presenter updateValue:url atIndex:indexPath.row];
     [_dropListView refreshUI];

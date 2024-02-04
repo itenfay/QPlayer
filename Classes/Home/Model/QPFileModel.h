@@ -5,9 +5,9 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseModel.h"
+#import "BaseModel.h"
 
-@interface QPFileModel : QPBaseModel
+@interface QPFileModel : BaseModel
 
 /// The size of file.
 @property (nonatomic, assign) double fileSize;

@@ -6,7 +6,7 @@
 //
 
 #import "QPTabBarController.h"
-#import "QPBaseNavigationController.h"
+#import "BaseNavigationController.h"
 #import "QPHomeViewController.h"
 #import "QPSearchViewController.h"
 #import "QPSettingsViewController.h"
@@ -83,7 +83,7 @@
     homeVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"本地资源"
                                                       image:htbItemImage
                                               selectedImage:htbItemSelectedImage];
-    QPBaseNavigationController *hnc = [self supplyNavigationController:homeVC];
+    BaseNavigationController *hnc = [self supplyNavigationController:homeVC];
     
     UIImage *stbItemImage = QPImageNamed(@"tabbar_item_browser_00");
     UIImage *stbItemSelectedImage = self.yf_originalImage(QPImageNamed(@"tabbar_item_browser_01"));
@@ -92,7 +92,7 @@
     searchVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"打开网址"
                                                         image:stbItemImage
                                                 selectedImage:stbItemSelectedImage];
-    QPBaseNavigationController *snc = [self supplyNavigationController:searchVC];
+    BaseNavigationController *snc = [self supplyNavigationController:searchVC];
     
     UIImage *settbItemImage = QPImageNamed(@"tabbar_item_setting_00");
     UIImage *settbItemSelectedImage = self.yf_originalImage(QPImageNamed(@"tabbar_item_setting_01"));
@@ -101,15 +101,15 @@
     settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"设置"
                                                           image:settbItemImage
                                                   selectedImage:settbItemSelectedImage];
-    QPBaseNavigationController *setnc = [self supplyNavigationController:settingsVC];
+    BaseNavigationController *setnc = [self supplyNavigationController:settingsVC];
     
     self.viewControllers = @[hnc, snc, setnc];
     self.selectedIndex   = 0;
 }
 
-- (QPBaseNavigationController *)supplyNavigationController:(UIViewController *)viewController
+- (BaseNavigationController *)supplyNavigationController:(UIViewController *)viewController
 {
-    return [[QPBaseNavigationController alloc] initWithRootViewController:viewController];
+    return [[BaseNavigationController alloc] initWithRootViewController:viewController];
 }
 
 - (void)adaptTabBarAppearance:(BOOL)isDark
@@ -225,7 +225,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    QPLog(@"::");
+    QPLog(@"");
 }
 
 @end

@@ -6,15 +6,13 @@
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPBasePresenter.h"
-#import "QPBaseAdapter.h"
+#import "BasePresenter.h"
+#import "BaseAdapter.h"
 #import "QPWebPlaybackContext.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface QPWebPresenter : QPBasePresenter <QPPresenterDelegate, QPScrollViewAdapterDelegate, QPWKWebViewAdapterDelegate>
+@interface QPWebPresenter : BasePresenter <QPPresenterDelegate, ScrollViewAdapterDelegate, WKWebViewAdapterDelegate>
 @property (nonatomic, weak) UIView *view;
-@property (nonatomic, weak) QPBaseWebViewController *viewController;
+@property (nonatomic, weak) BaseWebViewController *viewController;
 
 @property (nonatomic, strong) QPWebPlaybackContext *playbackContext;
 
@@ -23,5 +21,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadDidFinish:(void (^)(BOOL))completionHandler;
 
 @end
-
-NS_ASSUME_NONNULL_END

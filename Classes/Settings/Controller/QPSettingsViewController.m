@@ -60,7 +60,7 @@
     presenter.mPort = 52013;
     self.presenter = presenter;
     
-    self.adapter = [QPListViewHeaderFooterAdapter new];
+    self.adapter = [QPListViewAdapter new];
     self.adapter.listViewDelegate = presenter;
     [self setupTableView];
     

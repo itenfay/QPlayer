@@ -6,11 +6,11 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseWebViewController.h"
+#import "QPWebController.h"
 #import "QPPlayerModel.h"
 #import "QPPlayerPresenter.h"
 
-@interface QPPlayerController : QPBaseWebViewController
+@interface QPPlayerController : QPWebController
 
 @property (nonatomic, strong) QPPlayerModel *model;
 

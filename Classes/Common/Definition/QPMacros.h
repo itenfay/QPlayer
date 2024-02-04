@@ -190,7 +190,7 @@
 #endif
 
 #ifndef QPRespondsToSelector
-#define QPRespondsToSelector(target, selector) [(target) respondsToSelector:selector]
+#define QPRespondsToSelector(target, selector) ((target) && [(target) respondsToSelector:selector])
 #endif
 
 #ifndef QPSuppressPerformSelectorLeakWarning
@@ -207,15 +207,15 @@ _Pragma("clang diagnostic pop")                                     \
 #ifndef QPWeakify
 #if DEBUG
 #if __has_feature(objc_arc)
-#define QPWeakify(o) autoreleasepool{} __weak __typeof__(o) weak##_##o = o;
+#define QPWeakify(o) autoreleasepool{} __weak __typeof__(o) weak##_##o = o
 #else
-#define QPWeakify(o) autoreleasepool{} __block __typeof__(o) weak##_##o = o;
+#define QPWeakify(o) autoreleasepool{} __block __typeof__(o) weak##_##o = o
 #endif
 #else
 #if __has_feature(objc_arc)
-#define QPWeakify(o) try{} @finally{} __weak __typeof__(o) weak##_##o = o;
+#define QPWeakify(o) try{} @finally{} __weak __typeof__(o) weak##_##o = o
 #else
-#define QPWeakify(o) try{} @finally{} __block __typeof__(o) weak##_##o = o;
+#define QPWeakify(o) try{} @finally{} __block __typeof__(o) weak##_##o = o
 #endif
 #endif
 #endif
@@ -224,15 +224,15 @@ _Pragma("clang diagnostic pop")                                     \
 #ifndef QPStrongify
 #if DEBUG
 #if __has_feature(objc_arc)
-#define QPStrongify(o) autoreleasepool{} __strong __typeof__(o) strong##_##o = weak##_##o;
+#define QPStrongify(o) autoreleasepool{} __strong __typeof__(o) strong##_##o = weak##_##o
 #else
-#define QPStrongify(o) autoreleasepool{} __typeof__(o) strong##_##o = weak##_##o;
+#define QPStrongify(o) autoreleasepool{} __typeof__(o) strong##_##o = weak##_##o
 #endif
 #else
 #if __has_feature(objc_arc)
-#define QPStrongify(o) try{} @finally{} __strong __typeof__(o) strong##_##o = weak##_##o;
+#define QPStrongify(o) try{} @finally{} __strong __typeof__(o) strong##_##o = weak##_##o
 #else
-#define QPStrongify(o) try{} @finally{} __typeof__(o) strong##_##o = weak##_##o;
+#define QPStrongify(o) try{} @finally{} __typeof__(o) strong##_##o = weak##_##o
 #endif
 #endif
 #endif

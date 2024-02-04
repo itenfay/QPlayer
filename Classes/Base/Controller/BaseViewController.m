@@ -1,17 +1,17 @@
 //
-//  QPBaseViewController.m
+//  BaseViewController.m
 //
 //  Created by chenxing on 2017/6/28. ( https://github.com/chenxing640/QPlayer )
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseViewController.h"
+#import "BaseViewController.h"
 
-@interface QPBaseViewController ()
+@interface BaseViewController ()
 
 @end
 
-@implementation QPBaseViewController
+@implementation BaseViewController
 
 - (BOOL)prefersStatusBarHidden
 {
@@ -62,12 +62,27 @@
     }
 }
 
+- (void)makeUI {
+    
+}
+
+- (void)makeLayout {
+    
+}
+
+- (void)makeAction {
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self needsStatusBarAppearanceUpdate];
     [self needsUpdateOfSupportedInterfaceOrientations];
     [self addThemeStyleChangedObserver];
+    [self makeUI];
+    [self makeLayout];
+    [self makeAction];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -189,7 +204,7 @@
 
 - (void)configureNavigationBar
 {
-    QPLog("::");
+    QPLog("");
 }
 
 - (void)configNavigaitonBar:(UIImage *)backgroundImage titleTextAttributes:(NSDictionary<NSAttributedStringKey, id> *)titleTextAttributes
@@ -274,13 +289,13 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    QPLog(@"::");
+    QPLog(@"");
 }
 
 - (void)dealloc
 {
-    QPLog(@"::");
     [self removeThemeStyleChangedObserver];
+    QPLog(@"");
 }
 
 @end

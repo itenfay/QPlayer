@@ -176,7 +176,7 @@
     if (@available(iOS 16.0, *)) {
         [generator generateCGImageAsynchronouslyForTime:requestedTime completionHandler:^(CGImageRef _Nullable cgImage, CMTime actualTime, NSError * _Nullable error) {
             if (error) {
-                QPLog(":: error=%zi, %@", error.code, error.localizedDescription);
+                QPLog("error=%zi, %@", error.code, error.localizedDescription);
             }
             if (completionHandler) {
                 completionHandler(cgImage ? [UIImage imageWithCGImage:cgImage] : nil);
@@ -186,7 +186,7 @@
         NSError *error = nil;
         CGImageRef cgImage = [generator copyCGImageAtTime:requestedTime actualTime:nil error:&error];
         if (error) {
-            QPLog(":: error=%zi, %@", error.code, error.localizedDescription);
+            QPLog("error=%zi, %@", error.code, error.localizedDescription);
         }
         if (completionHandler) {
             completionHandler(error ? nil : [UIImage imageWithCGImage:cgImage]);

@@ -6,16 +6,14 @@
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPBasePresenter.h"
+#import "BasePresenter.h"
 #import "QPPlayerModel.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@class BaseViewController, ZFPlayerController;
 
-@class QPBaseViewController, ZFPlayerController;
-
-@interface QPPlayerPresenter : QPBasePresenter <QPPresenterDelegate>
+@interface QPPlayerPresenter : BasePresenter <QPPresenterDelegate>
 @property (nonatomic, weak) UIView *view;
-@property (nonatomic, weak) QPBaseViewController *viewController;
+@property (nonatomic, weak) BaseViewController *viewController;
 
 - (ZFPlayerController *)player;
 
@@ -27,5 +25,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)enterPortraitFullScreen;
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -6,13 +6,9 @@
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPBaseModel.h"
+#import "BaseModel.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface QPAboutModel : QPBaseModel
+@interface QPAboutModel : BaseModel
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *rValue;
 @end
-
-NS_ASSUME_NONNULL_END

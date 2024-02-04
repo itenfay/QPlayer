@@ -5,7 +5,7 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseView.h"
+#import "BaseView.h"
 
 typedef NS_ENUM(NSUInteger, AMFooterActionType)
 {
@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, AMFooterActionType)
 
 typedef void (^AMFooterActionHandler)(AMFooterActionType type);
 
-@interface QPAboutMeTableFooter : QPBaseView
+@interface QPAboutMeTableFooter : BaseView
 @property (weak, nonatomic) IBOutlet UIButton *jshuButton;
 @property (weak, nonatomic) IBOutlet UIButton *blogButton;
 @property (weak, nonatomic) IBOutlet UILabel  *disclaimerLabel;

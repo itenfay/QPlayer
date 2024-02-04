@@ -5,9 +5,9 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseDelegate.h"
+#import "BaseDelegate.h"
 
-@protocol QPPresenterDelegate <QPBaseDelegate>
+@protocol QPPresenterDelegate <BaseDelegate>
 - (void)setView:(NSObject *)view;
 - (void)setViewController:(UIViewController *)viewController;
 @optional

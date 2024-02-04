@@ -18,7 +18,7 @@
     return self;
 }
 
-- (void)presentWithModel:(QPFileModel *)model viewController:(QPBaseViewController *)viewController
+- (void)presentWithModel:(QPFileModel *)model viewController:(BaseViewController *)viewController
 {
     self.model = model;
     self.viewController = viewController;

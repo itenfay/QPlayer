@@ -8,10 +8,6 @@
 
 #import "QPListViewAdapter.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface QPDropListViewAdapter : QPListViewAdapter <QPListViewDataBindingProcotol>
+@interface QPDropListViewAdapter : QPListViewAdapter <ListViewDataBindingProcotol>
 
 @end
-
-NS_ASSUME_NONNULL_END

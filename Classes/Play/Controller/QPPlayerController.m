@@ -7,7 +7,6 @@
 //
 
 #import "QPPlayerController.h"
-#import "QPPlayerWebViewAdapter.h"
 
 @interface QPPlayerController ()
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
@@ -51,7 +50,6 @@
 {
     if (self = [super init]) {
         self.model = model;
-        self.parsingRequired = NO;
         self.hidesBottomBarWhenPushed = YES;
     }
     return self;
@@ -144,15 +142,13 @@
     [super loadView];
     [self addContainerView];
     [self addOverlayLayer];
-    [self addWebView];
-    [self addWebToolBar];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    QPLog(@":: videoTitle: %@", self.model.videoTitle);
-    QPLog(@":: videoUrl: %@", self.model.videoUrl);
-    QPLog(@":: videoDecoding: %d", QPPlayerHardDecoding());
+    QPLog(@"videoTitle: %@", self.model.videoTitle);
+    QPLog(@"videoUrl: %@", self.model.videoUrl);
+    QPLog(@"videoDecoding: %d", QPPlayerHardDecoding());
     [self configureNavigationBar];
     
     QPPlayerPresenter *presenter = [[QPPlayerPresenter alloc] init];
@@ -160,15 +156,13 @@
     presenter.viewController = self;
     self.presenter = presenter;
     
-    QPPlayerWebViewAdapter *adater = [[QPPlayerWebViewAdapter alloc]
-                                      initWithWebView:self.webView
-                                      navigationBar:self.navigationBar
-                                      toolBar:[self webToolBar]];
-    self.adapter = adater;
-    [self.adapter addProgressViewToWebView];
-    [self setWebViewDelegate];
+    QPWKWebViewAdapter *adapter = [[QPWKWebViewAdapter alloc]
+                                   initWithNavigationBar:self.navigationBar
+                                   toolBar:[self webToolBar]];
+    [self setupAdapter:adapter];
+    [adapter addProgressViewToWebView];
     [self delayToScheduleTask:2 completion:^{
-        [self.adapter inspectToolBarAlpha];
+        [(QPWKWebViewAdapter *)self.adapter inspectToolBarAlpha];
     }];
     
     [self loadBottomContents];
@@ -240,37 +234,6 @@
 - (void)addContainerView
 {
     [self.view addSubview:self.containerView];
-}
-
-- (void)addWebView
-{
-    CGRect frame = CGRectMake(0, 0, 0, 0);
-    [self initWebViewWithFrame:frame];
-    
-    self.webView.backgroundColor = QPColorFromRGB(243, 243, 243);
-    self.webView.opaque          = NO;
-    [self.webView autoresizing];
-    [self.view addSubview:self.webView];
-}
-
-- (void)setWebViewDelegate
-{
-    self.webView.navigationDelegate  = self.adapter;
-    self.webView.UIDelegate          = self.adapter;
-    self.webView.scrollView.delegate = self.adapter;
-}
-
-- (void)addWebToolBar
-{
-    UIImageView *toolBar = [self buildToolBar];
-    toolBar.tag = 888;
-    toolBar.alpha = 0.f;
-    [self.view addSubview:toolBar];
-}
-
-- (UIImageView *)webToolBar
-{
-    return (UIImageView *)[self.view viewWithTag:888];
 }
 
 - (void)loadBottomContents

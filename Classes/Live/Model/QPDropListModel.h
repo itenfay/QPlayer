@@ -5,9 +5,9 @@
 //  Copyright © chenxing dyf. All rights reserved.
 //
 
-#import "QPBaseModel.h"
+#import "BaseModel.h"
 
-@interface QPDropListModel : QPBaseModel
+@interface QPDropListModel : BaseModel
 
 // Returns a title string.
 @property (nonatomic, copy) NSString *m_title;

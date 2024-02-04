@@ -17,7 +17,7 @@ typedef void (^LoadDidFinishBlock)(BOOL);
 
 @implementation QPWebPresenter
 
-- (void)setViewController:(QPBaseWebViewController *)viewController
+- (void)setViewController:(BaseWebViewController *)viewController
 {
     _viewController = viewController;
     _playbackContext = [[QPWebPlaybackContext alloc] initWithAdapter:_viewController.adapter viewController:_viewController];
@@ -134,7 +134,7 @@ typedef void (^LoadDidFinishBlock)(BOOL);
       didSearchWithSearchBar:(UISearchBar *)searchBar
                   searchText:(NSString *)searchText
 {
-    QPLog(@":: searchText=%@", searchText);
+    QPLog(@"searchText=%@", searchText);
     [self loadData:searchText searchViewController:searchViewController];
 }
 
@@ -143,7 +143,7 @@ typedef void (^LoadDidFinishBlock)(BOOL);
    didSelectHotSearchAtIndex:(NSInteger)index
                   searchText:(NSString *)searchText
 {
-    QPLog(@":: searchText=%@", searchText);
+    QPLog(@"searchText=%@", searchText);
     [self loadData:searchText searchViewController:searchViewController];
 }
 
@@ -152,7 +152,7 @@ typedef void (^LoadDidFinishBlock)(BOOL);
 didSelectSearchHistoryAtIndex:(NSInteger)index
                   searchText:(NSString *)searchText
 {
-    QPLog(@":: searchText=%@", searchText);
+    QPLog(@"searchText=%@", searchText);
     [self loadData:searchText searchViewController:searchViewController];
 }
 
@@ -161,7 +161,7 @@ didSelectSearchHistoryAtIndex:(NSInteger)index
 didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
                    searchBar:(UISearchBar *)searchBar
 {
-    QPLog(@":: searchIndex=%zi", indexPath.row);
+    QPLog(@"searchIndex=%zi", indexPath.row);
 }
 
 /// Called when search text did change, you can reload data of suggestion view thought this method
@@ -169,7 +169,7 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
          searchTextDidChange:(UISearchBar *)searchBar
                   searchText:(NSString *)searchText
 {
-    QPLog(@":: searchText=%@", searchText);
+    QPLog(@"searchText=%@", searchText);
 }
 
 /// Called when cancel item did press, default execute `[self dismissViewControllerAnimated:YES completion:nil]`
@@ -180,30 +180,30 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)searchSuggestionsWithSearchText:(NSString *)searchText
 {
-    QPLog(@":: searchText=%@", searchText);
+    QPLog(@"searchText=%@", searchText);
     //Send request to get a search suggestions
     //NSMutableArray *searchSuggestions = [NSMutableArray array];
     // Refresh and display the search suggustions
     //self.searchSuggestions = searchSuggestions;
 }
 
-#pragma mark - QPWKWebViewAdapterDelegate
+#pragma mark - WKWebViewAdapterDelegate
 
 - (void)adapter:(QPWKWebViewAdapter *)adapter didStartProvisionalNavigation:(WKNavigation *)navigation
 {
-    QPLog(@"::");
+    QPLog(@"");
 }
 
 - (void)adapter:(QPWKWebViewAdapter *)adapter didFinishNavigation:(WKNavigation *)navigation
 {
-    QPLog(@"::");
+    QPLog(@"");
     !_finishBlock ?: _finishBlock(YES);
     [_playbackContext queryVideoUrlByCustomJavaScript];
 }
 
 - (void)adapter:(QPWKWebViewAdapter *)adapter decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    QPLog(@"::");
+    QPLog(@"");
     //[_playbackContext canAllowNavigation:adapter.webView.URL];
     decisionHandler(WKNavigationActionPolicyAllow);
 }

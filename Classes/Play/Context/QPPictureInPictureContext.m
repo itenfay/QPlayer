@@ -78,7 +78,7 @@
     [AVAudioSession.sharedInstance setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error];
     [AVAudioSession.sharedInstance setActive:YES error:&error];
     if (error) {
-        QPLog(":: [AVAudioSession] 请求权限失败的原因 error=%@, %zi, %@"
+        QPLog("[AVAudioSession] 请求权限失败的原因 error=%@, %zi, %@"
               , error.domain
               , error.code
               , error.localizedDescription);
@@ -245,28 +245,28 @@
 
 - (void)pictureInPictureControllerWillStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
-    QPLog(":: 即将开启画中画功能.");
+    QPLog("即将开启画中画功能.");
 }
 
 - (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
-    QPLog(":: 已经开启画中画功能.");
+    QPLog("已经开启画中画功能.");
 }
 
 - (void)pictureInPictureControllerWillStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
-    QPLog(":: 即将停止画中画功能.");
+    QPLog("即将停止画中画功能.");
     [self recoverPlay];
 }
 
 - (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
-    QPLog(":: 已经停止画中画功能.");
+    QPLog("已经停止画中画功能.");
 }
 
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController failedToStartPictureInPictureWithError:(NSError *)error
 {
-    QPLog(":: 开启画中画功能失败. error=%@.", error);
+    QPLog("开启画中画功能失败. error=%@.", error);
     [QPHudUtils showErrorMessage:@"出错啦~，不能小窗播放！"];
     [self reset];
 }
@@ -275,7 +275,7 @@
 {
     // 点击右上角，将画中画恢复成原生播放。
     Float64 seconds = CMTimeGetSeconds(_avPlayer.currentTime);
-    QPLog(":: 画中画功能恢复成原生播放，currentTime: %.2f", seconds);
+    QPLog("画中画功能恢复成原生播放，currentTime: %.2f", seconds);
     if (!_presenter) {
         [self reset];
         if (seconds > 0) {
@@ -306,12 +306,12 @@
 {
     switch (_avPlayer.status) {
         case AVPlayerStatusUnknown: {
-            QPLog(@":: 未知状态，此时不能播放");
+            QPLog(@"未知状态，此时不能播放");
             [self avRetryToPlay];
             break;
         }
         case AVPlayerStatusReadyToPlay: {
-            QPLog(@":: 准备完毕，可以播放");
+            QPLog(@"准备完毕，可以播放");
             //_avPlayer.volume = 0.0;
             //_avPlayer.muted = YES;
             [_avPlayer play];
@@ -319,7 +319,7 @@
         }
         case AVPlayerStatusFailed: {
             AVPlayerItem *item = (AVPlayerItem *)object;
-            QPLog(@":: 加载失败 error=%@", item.error);
+            QPLog(@"加载失败 error=%@", item.error);
             [self avRetryToPlay];
             break;
         }
@@ -361,7 +361,7 @@
             // 将播放器的播放时间与原始player的播放时间进行同步
             [_avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
         } @catch (NSException *exception) {
-            QPLog(@":: exception=%@", exception);
+            QPLog(@"exception=%@", exception);
             return NO;
         }
     }

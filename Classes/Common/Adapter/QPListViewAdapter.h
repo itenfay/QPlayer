@@ -5,17 +5,19 @@
 //  Copyright (c) 2015 chenxing. All rights reserved.
 //
 
-#import "QPBaseAdapter.h"
-#import "QPBaseModel.h"
-#import "QPBaseAdapter.h"
+#import "BaseAdapter.h"
+#import "BaseModel.h"
+#import "BaseAdapter.h"
 
-@interface QPListViewAdapter : QPBaseListViewAdapter <UITableViewDelegate, UITableViewDataSource>
+@interface QPListViewAdapter : BaseListViewAdapter <UITableViewDelegate, UITableViewDataSource>
 
 /// The data source.
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
-- (QPBaseModel *)modelWithTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
-- (void)updateModel:(QPBaseModel *)model withTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
+- (UITableView *)tableView;
+
+- (BaseModel *)modelAtIndexPath:(NSIndexPath *)indexPath;
+- (void)updateModel:(BaseModel *)model atIndexPath:(NSIndexPath *)indexPath;
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
 - (UIView *)viewForHeaderInSection:(NSInteger)section;

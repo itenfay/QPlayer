@@ -32,7 +32,7 @@
 {
     NSURL *url = [NSURL fileURLWithPath:filePath];
     //UIImage *thumbnail = self.yf_videoThumbnailImage(url, 3, 107, 60);
-    @QPWeakify(self)
+    @QPWeakify(self);
     [self yf_takeThumbnailWithURL:url forTime:3 completionHandler:^(UIImage *thumbnail) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weak_self.thumbnailImgView setBackgroundColor:QPColorFromRGB(36, 39, 46)];

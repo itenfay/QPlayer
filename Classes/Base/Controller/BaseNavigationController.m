@@ -1,17 +1,17 @@
 //
-//  QPBaseNavigationController.m
+//  BaseNavigationController.m
 //
 //  Created by chenxing on 2017/6/27. ( https://github.com/chenxing640/QPlayer )
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseNavigationController.h"
+#import "BaseNavigationController.h"
 
-@interface QPBaseNavigationController ()
+@interface BaseNavigationController ()
 
 @end
 
-@implementation QPBaseNavigationController
+@implementation BaseNavigationController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

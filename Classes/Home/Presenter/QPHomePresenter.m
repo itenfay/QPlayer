@@ -10,7 +10,7 @@
 #import "QPFileTableViewCell.h"
 #import "QPPlayerController.h"
 
-@interface QPHomePresenter () <QPListViewAdapterDelegate>
+@interface QPHomePresenter () <ListViewAdapterDelegate>
 @property (nonatomic, strong) NSMutableArray *localFileList;
 @property (nonatomic, strong) NSMutableArray *syncFileList;
 @end
@@ -22,7 +22,7 @@
     return [self initWithViewController:nil];
 }
 
-- (instancetype)initWithViewController:(QPBaseViewController *)viewController
+- (instancetype)initWithViewController:(BaseViewController *)viewController
 {
     self = [super init];
     if (self) {
@@ -80,7 +80,7 @@
 {
     [self setupFileResourceDelegate];
     self.view.adapter.listViewDelegate = self;
-    @QPWeakify(self)
+    @QPWeakify(self);
     [self.view reloadData:^{
         [weak_self refreshData];
     }];
@@ -112,21 +112,21 @@
 // number of the files.
 - (NSInteger)numberOfFiles
 {
-    QPLog("::");
+    QPLog("");
     return [self.syncFileList count];
 }
 
 // the file name by the index.
 - (NSString *)fileNameAtIndex:(NSInteger)index
 {
-    QPLog(":: index=%zi", index);
+    QPLog("index=%zi", index);
     return [self.syncFileList objectAtIndex:index];
 }
 
 // provide full file path by given file name.
 - (NSString *)filePathForFileName:(NSString *)filename
 {
-    QPLog(":: filename=%@", filename);
+    QPLog("filename=%@", filename);
     return QPAppendingPathComponent([QPFileHelper cachePath], filename);
 }
 
@@ -135,13 +135,13 @@
 // it to proper location and update the file list.
 - (void)newFileDidUpload:(NSString *)name inTempPath:(NSString *)tmpPath
 {
-    QPLog(":: filename=%@, tmpPath=%@", name, tmpPath);
+    QPLog("filename=%@, tmpPath=%@", name, tmpPath);
     if (name == nil || tmpPath == nil) return;
     
     NSString *path = QPAppendingPathComponent([QPFileHelper cachePath], name);
     NSError *error = nil;
     if (![QPFileMgr moveItemAtPath:tmpPath toPath:path error:&error]) {
-        QPLog(@":: can not move %@ to %@ because: %@", tmpPath, path, error);
+        QPLog(@"can not move %@ to %@ because: %@", tmpPath, path, error);
     }
     
     [self loadSyncFileList];
@@ -152,12 +152,12 @@
 // implement this method to delete requested file and update the file list.
 - (void)fileShouldDelete:(NSString *)fileName
 {
-    QPLog(":: filename=%@", fileName);
+    QPLog("filename=%@", fileName);
     
     NSString *path = [self filePathForFileName:fileName];
     NSError *error = nil;
     if(![QPFileMgr removeItemAtPath:path error:&error]) {
-        QPLog(@":: %@ can not be removed because: %@", path, error);
+        QPLog(@"%@ can not be removed because: %@", path, error);
     }
     
     [self loadSyncFileList];
@@ -165,7 +165,7 @@
     [self updateDataSource];
 }
 
-#pragma mark - QPListViewAdapterDelegate
+#pragma mark - ListViewAdapterDelegate
 
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
@@ -178,12 +178,12 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     QPHomeListViewAdapter *_adapter = (QPHomeListViewAdapter *)adapter;
-    [_adapter bindModelTo:cell atIndexPath:indexPath inTableView:_view.tableView withViewController:_viewController];
+    [_adapter bindModelTo:cell atIndexPath:indexPath withViewController:_viewController];
     
     return cell;
 }
 
-- (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
+- (void)selectCell:(BaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
     QPFileModel *_model = (QPFileModel *)model;
     if (!QPPlayerIsPlaying()) {
@@ -198,7 +198,7 @@
     }
 }
 
-- (BOOL)deleteCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
+- (BOOL)deleteCell:(BaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
     QPFileModel *fileModel = (QPFileModel *)model;
     if ([QPFileHelper removeLocalFile:fileModel.name]) {

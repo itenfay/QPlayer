@@ -7,23 +7,24 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
-#import "QPBaseAdapter.h"
+#import "BaseAdapter.h"
 #import "DYFWebProgressView.h"
 
 typedef void(^ObserveUrlLinkBlock)(NSURL *url);
 
-@interface QPWKWebViewAdapter : QPBaseWebAdapter <WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler, UIScrollViewDelegate>
-@property (nonatomic, assign) BOOL isDarkMode;
-@property (nonatomic, weak) WKWebView *webView;
-@property (nonatomic, weak) UINavigationBar *navigationBar;
-@property (nonatomic, weak) UIView *toolBar;
+@interface QPWKWebViewAdapter : BaseWebAdapter <WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler, UIScrollViewDelegate>
+@property (nonatomic, weak, readonly) WKWebView *webView;
+@property (nonatomic, weak, readonly) UINavigationBar *navigationBar;
+@property (nonatomic, weak, readonly) UIView *toolBar;
 @property (nonatomic, copy, readonly) NSURL *requestURL;
 
-@property (nonatomic, weak) id<QPWKWebViewAdapterDelegate> delegate;
+@property (nonatomic, weak) id<WKWebViewAdapterDelegate> delegate;
 
-- (instancetype)initWithWebView:(WKWebView *)webView;
-- (instancetype)initWithWebView:(WKWebView *)webView navigationBar:(UINavigationBar *)navigationBar;
-- (instancetype)initWithWebView:(WKWebView *)webView navigationBar:(UINavigationBar *)navigationBar toolBar:(UIView *)toolBar;
+- (instancetype)initWithNavigationBar:(UINavigationBar *)navigationBar;
+- (instancetype)initWithNavigationBar:(UINavigationBar *)navigationBar toolBar:(UIView *)toolBar;
+
+- (void)setupNavigationBar:(UINavigationBar *)navigationBar;
+- (void)setupToolBar:(UIView *)toolBar;
 
 /// Inspects the alpha of tool bar.
 - (void)inspectToolBarAlpha;

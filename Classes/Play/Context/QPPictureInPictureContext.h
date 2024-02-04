@@ -6,14 +6,12 @@
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPBaseContext.h"
+#import "BaseContext.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@class BasePresenter, QPPlayerModel;
 
-@class QPBasePresenter, QPPlayerModel;
-
-@interface QPPictureInPictureContext : QPBaseContext
-@property (nonatomic, weak) QPBasePresenter *presenter;
+@interface QPPictureInPictureContext : BaseContext
+@property (nonatomic, weak) BasePresenter *presenter;
 @property (nonatomic, strong, readonly) QPPlayerModel *playerModel;
 
 - (void)configPlayerModel:(QPPlayerModel *)model;
@@ -27,5 +25,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)stopPictureInPicture;
 
 @end
-
-NS_ASSUME_NONNULL_END

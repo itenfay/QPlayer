@@ -9,7 +9,6 @@
 #import "QPPlayerController.h"
 #import "QPDropListView.h"
 #import "QPLivePresenter.h"
-#import "QPLiveWebViewAdapter.h"
 
 @interface QPLiveViewController ()
 
@@ -21,7 +20,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [self setParsingRequired:NO];
+        
     }
     return self;
 }
@@ -88,18 +87,18 @@
     presenter.viewController = self;
     self.presenter = presenter;
     self.adapter.scrollViewDelegate = presenter;
-    self.adapter.delegate = presenter;
+    ((QPWKWebViewAdapter *)self.adapter).delegate = presenter;
 }
 
 - (void)configureWebViewAdapter
 {
-    self.adapter = [[QPLiveWebViewAdapter alloc] init];
-    self.adapter.webView = self.webView;
-    self.adapter.navigationBar = self.navigationBar;
-    self.adapter.toolBar = self.webToolBar;
-    [self.adapter addProgressViewToWebView];
-    @QPWeakify(self)
-    [self.adapter observeUrlLink:^(NSURL *url) {
+    QPWKWebViewAdapter *webAdapter = [[QPWKWebViewAdapter alloc] init];
+    [self setupAdapter:webAdapter];
+    [webAdapter setupNavigationBar:self.navigationBar];
+    [webAdapter setupToolBar:self.webToolBar];
+    [webAdapter addProgressViewToWebView];
+    @QPWeakify(self);
+    [webAdapter observeUrlLink:^(NSURL *url) {
         weak_self.titleView.text = url.absoluteString;
     }];
 }
@@ -236,9 +235,9 @@
         dropListView.transform = CGAffineTransformIdentity;
     }];
     
-    @QPWeakify(self)
+    @QPWeakify(self);
     [dropListView onSelectRow:^(NSInteger selectedRow, NSString *title, NSString *content) {
-        @QPStrongify(self)
+        @QPStrongify(self);
         NSString *urlString = [content copy];
         strong_self.playButton.enabled = YES;
         strong_self.titleView.text = urlString;
@@ -255,7 +254,7 @@
 {
     QPDropListViewPresenter *pt = QPDropListViewPresenter.alloc.init;
     NSString *filePath = [pt customTVFilePath];
-    QPLog(@":: filePath=%@", filePath);
+    QPLog(@"filePath=%@", filePath);
     
     NSMutableArray *list = [NSMutableArray arrayWithContentsOfFile:filePath];
     for (NSDictionary *dict in list) {

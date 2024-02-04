@@ -17,14 +17,14 @@
 - (void)loadView
 {
     [super loadView];
-    QPLog(@"::");
+    QPLog(@"");
     [self prepareToRenderScreen];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    QPLog(@"::");
+    QPLog(@"");
     self.view.backgroundColor = QPColorFromRGB(243, 243, 243);
 }
 

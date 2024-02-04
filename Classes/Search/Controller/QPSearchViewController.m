@@ -14,15 +14,6 @@
 
 @implementation QPSearchViewController
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        [self setParsingRequired:NO];
-    }
-    return self;
-}
-
 - (void)configureNavigationBar {
     UIView *tfLeftView         = [[UIView alloc] init];
     tfLeftView.frame           = CGRectMake(0, 0, 26, 26);

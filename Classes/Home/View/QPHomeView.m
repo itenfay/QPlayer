@@ -50,7 +50,7 @@
 
 - (void)setupRefreshHeader
 {
-    @QPWeakify(self)
+    @QPWeakify(self);
     [self.tableView setupRefreshHeader:^{
         [weak_self loadNewData];
     }];

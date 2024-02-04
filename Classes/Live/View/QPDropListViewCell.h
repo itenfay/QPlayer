@@ -5,9 +5,9 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseListViewCell.h"
+#import "BaseListViewCell.h"
 
-@interface QPDropListViewCell : QPBaseListViewCell
+@interface QPDropListViewCell : BaseListViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *m_titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *verticalLine;

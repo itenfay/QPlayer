@@ -6,17 +6,17 @@
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPBaseContext.h"
+#import "BaseContext.h"
 #import "QPPlaybackContext.h"
 #import "QPWKWebViewAdapter.h"
 #import "QPPlayerController.h"
 
-@interface QPWebPlaybackContext : QPBaseContext
+@interface QPWebPlaybackContext : BaseContext
 @property (nonatomic, weak) QPWKWebViewAdapter *adapter;
-@property (nonatomic, weak) QPBaseViewController *controller;
+@property (nonatomic, weak) BaseViewController *controller;
 @property (nonatomic, assign) QPPlayerType playerType;
 
-- (instancetype)initWithAdapter:(QPWKWebViewAdapter *)adapter viewController:(QPBaseViewController *)viewController;
+- (instancetype)initWithAdapter:(QPWKWebViewAdapter *)adapter viewController:(BaseViewController *)viewController;
 
 - (BOOL)canAllowNavigation:(NSURL *)URL;
 

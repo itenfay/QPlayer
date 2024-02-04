@@ -13,18 +13,11 @@
 
 @implementation QPWebController
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        [self setParsingRequired:NO];
+- (instancetype)initWithAdapter:(QPWKWebViewAdapter *)adapter {
+    if (self = [super init]) {
+        [self setupAdapter:adapter];
     }
     return self;
-}
-
-- (UITextField *)titleView
-{
-    return (UITextField *)self.navigationItem.titleView;
 }
 
 - (void)loadView
@@ -40,36 +33,42 @@
     [super viewDidLoad];
     [self configureWebViewAdapter];
     [self injectLocalUserScript];
-    [self setWebViewDelegate];
     [self loadDefaultRequest];
     [self delayToScheduleTask:2 completion:^{
-        [self.adapter inspectToolBarAlpha];
+        [(QPWKWebViewAdapter *)self.adapter inspectToolBarAlpha];
     }];
+}
+
+#pragma mark - public methods
+
+- (void)makeUI {
+    
+}
+
+- (void)makeLayout {
+    
+}
+
+- (void)makeAction {
+    
+}
+
+- (void)setupAdapter:(QPWKWebViewAdapter *)adapter {
+    self.adapter = adapter;
+    self.webView.UIDelegate = adapter;
+    self.webView.navigationDelegate = adapter;
+    self.webView.scrollView.delegate = adapter;
 }
 
 - (void)configureWebViewAdapter
 {
-    self.adapter = [[QPWKWebViewAdapter alloc] initWithWebView:self.webView navigationBar:self.navigationBar];
-    self.adapter.toolBar = [self webToolBar];
-    [self.adapter addProgressViewToWebView];
-    @QPWeakify(self)
-    [self.adapter observeUrlLink:^(NSURL *url) {
+    QPWKWebViewAdapter *webAdapter = [[QPWKWebViewAdapter alloc] initWithNavigationBar:self.navigationBar toolBar:[self webToolBar]];
+    [self setupAdapter:webAdapter];
+    [webAdapter addProgressViewToWebView];
+    @QPWeakify(self);
+    [webAdapter observeUrlLink:^(NSURL *url) {
         weak_self.titleView.text = url.absoluteString;
     }];
-}
-
-- (void)adaptTitleViewStyle:(BOOL)isDark
-{
-    self.titleView.backgroundColor = isDark ? UIColor.blackColor : UIColor.whiteColor;
-    self.titleView.textColor = isDark ? UIColor.whiteColor : UIColor.blackColor;
-    self.titleView.font = [UIFont systemFontOfSize:15.f];
-    NSString *title = @"请输入要搜索的内容或网址";
-    UIFont *font = [UIFont systemFontOfSize:15.f];
-    if (isDark) {
-        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor whiteColor]}];
-    } else {
-        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor grayColor]}];
-    }
 }
 
 - (void)adaptThemeStyle
@@ -83,65 +82,6 @@
     NSString *url = @"https://www.baidu.com";
     self.titleView.text = url;
     [self loadRequestWithUrl:url];
-}
-
-- (void)addWebView {
-    CGFloat kH   = self.view.height - QPTabBarHeight;
-    CGRect frame = CGRectMake(0, 0, QPScreenWidth, kH);
-    [self initWebViewWithFrame:frame];
-    
-    self.webView.backgroundColor = UIColor.clearColor; //QPColorFromRGB(243, 243, 243);
-    self.webView.opaque          = NO;
-    self.webView.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    [self.webView autoresizing];
-    
-    [self.view addSubview:self.webView];
-}
-
-- (void)setWebViewDelegate
-{
-    self.webView.navigationDelegate  = self.adapter;
-    self.webView.UIDelegate          = self.adapter;
-    self.webView.scrollView.delegate = self.adapter;
-}
-
-- (void)injectLocalUserScript
-{
-    //NSString *jsPath = [NSBundle.mainBundle pathForResource:@"jsquery_video_src" ofType:@"js"];
-    //NSData *jsData = [NSData dataWithContentsOfFile:jsPath];
-    //NSString *jsString = [NSString.alloc initWithData:jsData encoding:NSUTF8StringEncoding];
-    //QPLog(@":: jsString=%@", jsString);
-    //WKUserScript *userScript = [WKUserScript.alloc initWithSource:jsString injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
-    //[self.userContentController addUserScript:userScript];
-}
-
-- (void)addWebToolBar {
-    UIImageView *toolBar = [self buildToolBar];
-    toolBar.tag = 9999;
-    toolBar.alpha = 0.f;
-    [self.view addSubview:toolBar];
-}
-
-- (UIImageView *)webToolBar {
-    return (UIImageView *)[self.view viewWithTag:9999];
-}
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    return YES;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    if (textField.returnKeyType == UIReturnKeyGo) {
-        [self loadWebContents];
-    }
-    return [textField resignFirstResponder];
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [self.view endEditing:YES];
 }
 
 - (void)loadWebContents
@@ -163,6 +103,173 @@
         self.titleView.text = url;
         [self loadRequestWithUrl:[AppHelper urlEncode:url]];
     }
+}
+
+- (UIImageView *)buildToolBar
+{
+    return [self buildToolBar:@selector(tbItemClicked:)];
+}
+
+- (UIImageView *)buildToolBar:(SEL)selector
+{
+    return [self buildAndLayoutToolBar:selector isVertical:NO];
+}
+
+- (UIImageView *)buildVerticalToolBar
+{
+    return [self buildVerticalToolBar:@selector(tbItemClicked:)];
+}
+
+- (UIImageView *)buildVerticalToolBar:(SEL)selector
+{
+    return [self buildAndLayoutToolBar:selector isVertical:YES];
+}
+
+- (UIImageView *)buildAndLayoutToolBar:(SEL)selector isVertical:(BOOL)isVertical
+{
+    NSMutableArray *items = @[@"web_reward_13x21", @"web_forward_13x21",
+                              @"web_refresh_24x21", @"web_stop_21x21"].mutableCopy;
+    BOOL bVal = !self.hidesBottomBarWhenPushed;
+    
+    NSUInteger count = items.count;
+    CGFloat hSpace   = 10.f;
+    CGFloat vSpace   = isVertical ? 5.f : 8.f;
+    CGFloat btnW     = 30.f;
+    CGFloat btnH     = 30.f;
+    CGFloat offset   = bVal ? QPTabBarHeight : (QPIsPhoneXAll ? 4 : 2)*vSpace;
+    CGFloat tlbW     = btnW + 2*hSpace;
+    CGFloat tlbH     = count*btnH + (count+1)*vSpace + 4*vSpace;
+    CGFloat tlbX     = QPScreenWidth - tlbW - hSpace;
+    CGFloat tlbY     = self.view.height - offset - tlbH - 2*vSpace;
+    CGRect  tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
+    
+    if (!isVertical) {
+        tlbX = 1.5*hSpace;
+        tlbW = self.view.width - 2*tlbX;
+        tlbH = btnH + 3*vSpace;
+        tlbY = self.view.height - offset - tlbH - (bVal ? 2*vSpace : 0) + 5.f;
+        tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
+        btnW = (tlbW - (count+1)*hSpace)/count;
+    }
+    
+    UIImageView *toolBar    = [[UIImageView alloc] initWithFrame:tlbFrame];
+    toolBar.backgroundColor = [UIColor clearColor];
+    toolBar.image           = [self colorImage:toolBar.bounds
+                                  cornerRadius:15.f
+                                backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
+                                   borderWidth:0.f
+                                   borderColor:nil];
+    for (NSUInteger i = 0; i < count; i++) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        if (isVertical) {
+            button.frame = CGRectMake(hSpace, (i+1)*vSpace+i*btnH, btnW, btnH);
+        } else {
+            button.frame = CGRectMake((i+1)*vSpace+i*btnW, 1.5*vSpace, btnW, btnH);
+        }
+        button.tag = 100 + i;
+        button.showsTouchWhenHighlighted = YES;
+        [button setImage:QPImageNamed(items[i]) forState:UIControlStateNormal];
+        [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+        [toolBar addSubview:button];
+    }
+    toolBar.userInteractionEnabled = YES;
+    [toolBar autoresizing];
+    
+    return toolBar;
+}
+
+#pragma mark - 系统控件的Protocol
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField.returnKeyType == UIReturnKeyGo) {
+        [self loadWebContents];
+    }
+    return [textField resignFirstResponder];
+}
+
+#pragma mark - 自定义控件的Protocol
+
+#pragma mark - Event response
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
+
+#pragma mark - private method
+
+- (void)addWebView {
+    CGFloat kH   = self.view.height - QPTabBarHeight;
+    CGRect frame = CGRectMake(0, 0, QPScreenWidth, kH);
+    self.webView.frame = frame;
+    
+    self.webView.backgroundColor = UIColor.clearColor; //QPColorFromRGB(243, 243, 243);
+    self.webView.opaque          = NO;
+    self.webView.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    [self.webView autoresizing];
+    
+    [self.view addSubview:self.webView];
+}
+
+- (void)addWebToolBar {
+    UIImageView *toolBar = [self buildToolBar];
+    toolBar.tag = 9999;
+    toolBar.alpha = 0.f;
+    [self.view addSubview:toolBar];
+}
+
+- (void)injectLocalUserScript
+{
+    //NSString *jsPath = [NSBundle.mainBundle pathForResource:@"jsquery_video_src" ofType:@"js"];
+    //NSData *jsData = [NSData dataWithContentsOfFile:jsPath];
+    //NSString *jsString = [NSString.alloc initWithData:jsData encoding:NSUTF8StringEncoding];
+    //QPLog(@"jsString=%@", jsString);
+    //WKUserScript *userScript = [WKUserScript.alloc initWithSource:jsString injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+    //[self.userContentController addUserScript:userScript];
+}
+
+- (void)adaptTitleViewStyle:(BOOL)isDark
+{
+    self.titleView.backgroundColor = isDark ? UIColor.blackColor : UIColor.whiteColor;
+    self.titleView.textColor = isDark ? UIColor.whiteColor : UIColor.blackColor;
+    self.titleView.font = [UIFont systemFontOfSize:15.f];
+    NSString *title = @"请输入要搜索的内容或网址";
+    UIFont *font = [UIFont systemFontOfSize:15.f];
+    if (isDark) {
+        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    } else {
+        self.titleView.attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor grayColor]}];
+    }
+}
+
+- (void)tbItemClicked:(UIButton *)sender
+{
+    NSUInteger index = sender.tag - 100;
+    switch (index) {
+        case 0: [self onGoBack]; break;
+        case 1: [self onGoForward]; break;
+        case 2: [self onReload]; break;
+        case 3: [self onStopLoading]; break;
+        case 4: QPLog(""); break;
+        default: break;
+    }
+}
+
+#pragma mark - Lazy
+#pragma mark - getters and setters
+
+- (UITextField *)titleView {
+    return (UITextField *)self.navigationItem.titleView;
+}
+
+- (UIImageView *)webToolBar {
+    return (UIImageView *)[self.view viewWithTag:9999];
 }
 
 @end

@@ -5,9 +5,9 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseView.h"
+#import "BaseView.h"
 
-@interface QPAboutMeTableHeader : QPBaseView
+@interface QPAboutMeTableHeader : BaseView
 // UI Widget.
 @property (weak, nonatomic) IBOutlet UIImageView *logoBgImgView;
 @property (weak, nonatomic) IBOutlet UILabel *briefIntroLabel;

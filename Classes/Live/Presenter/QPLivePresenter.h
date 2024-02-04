@@ -8,10 +8,6 @@
 
 #import "QPWebPresenter.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface QPLivePresenter : QPWebPresenter
 
 @end
-
-NS_ASSUME_NONNULL_END

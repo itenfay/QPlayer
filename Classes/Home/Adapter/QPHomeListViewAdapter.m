@@ -13,10 +13,11 @@
 
 @implementation QPHomeListViewAdapter
 
-- (void)bindModelTo:(QPFileTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView withViewController:(QPBaseViewController *)viewController
+- (void)bindModelTo:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath withViewController:(BaseViewController *)viewController
 {
-    QPFileModel *model = (QPFileModel *)[self modelWithTableView:tableView atIndexPath:indexPath];
-    [cell.presenter presentWithModel:model viewController:viewController];
+    QPFileTableViewCell *_cell = (QPFileTableViewCell *)cell;
+    QPFileModel *model = (QPFileModel *)[self modelAtIndexPath:indexPath];
+    [_cell.presenter presentWithModel:model viewController:viewController];
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
@@ -28,7 +29,7 @@
 
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    @QPWeakify(self)
+    @QPWeakify(self);
     UIContextualAction *deleteAciton = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"删除" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         [weak_self deleteRowWithTableView:tableView atIndexPath:indexPath];
     }];
@@ -39,7 +40,7 @@
 
 //- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 //{
-//    @QPWeakify(self)
+//    @QPWeakify(self);
 //    UITableViewRowAction *deleteRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
 //        [weak_self deleteRowWithTableView:tableView atIndexPath:indexPath];
 //    }];
@@ -56,7 +57,7 @@
 - (void)deleteRowWithTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     if (QPRespondsToSelector(self.listViewDelegate, @selector(deleteCell:atIndexPath:forAdapter:))) {
-        QPBaseModel *model = [self modelWithTableView:tableView atIndexPath:indexPath];
+        BaseModel *model = [self modelAtIndexPath:indexPath];
         if ([self.listViewDelegate deleteCell:model atIndexPath:indexPath forAdapter:self]) {
             NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
             [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];

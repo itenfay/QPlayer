@@ -6,24 +6,20 @@
 //  Copyright © 2023 chenxing. All rights reserved.
 //
 
-#import "QPBasePresenter.h"
+#import "BasePresenter.h"
 #import "QPModularDelegate.h"
 #import "QPAboutMeListViewAdapter.h"
 #if __has_include(<SafariServices/SafariServices.h>)
 #import <SafariServices/SafariServices.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface QPAboutMePresenter : QPBasePresenter <QPPresenterDelegate, QPListViewAdapterDelegate, SFSafariViewControllerDelegate>
+@interface QPAboutMePresenter : BasePresenter <QPPresenterDelegate, ListViewAdapterDelegate, SFSafariViewControllerDelegate>
 #else
-@interface QPAboutMePresenter : QPBasePresenter <QPPresenterDelegate, QPListViewAdapterDelegate>
+@interface QPAboutMePresenter : BasePresenter <QPPresenterDelegate, ListViewAdapterDelegate>
 #endif
 @property (nonatomic, weak) UITableView *view;
-@property (nonatomic, weak) QPBaseViewController *viewController;
+@property (nonatomic, weak) BaseViewController *viewController;
 
 - (void)loadData;
 - (void)configTableViewHeaderFooter;
 
 @end
-
-NS_ASSUME_NONNULL_END

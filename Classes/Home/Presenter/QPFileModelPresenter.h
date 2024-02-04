@@ -10,8 +10,6 @@
 #import "QPModularDelegate.h"
 #import "QPFileModel.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @protocol QPFileModelDelegate <NSObject>
 
 - (void)setCellBackgroundColor:(UIColor *)color;
@@ -29,14 +27,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QPFileModelPresenter : NSObject <QPPresenterDelegate>
 @property (nonatomic, weak) NSObject<QPFileModelDelegate> *view;
-@property (nonatomic, weak) QPBaseViewController *viewController;
+@property (nonatomic, weak) BaseViewController *viewController;
 @property (nonatomic, strong) QPFileModel *model;
 
 - (instancetype)initWithView:(NSObject<QPFileModelDelegate> *)view;
 
-- (void)presentWithModel:(QPFileModel *)model viewController:(QPBaseViewController *)viewController;
+- (void)presentWithModel:(QPFileModel *)model viewController:(BaseViewController *)viewController;
 - (void)present;
 
 @end
-
-NS_ASSUME_NONNULL_END

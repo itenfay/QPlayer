@@ -5,11 +5,11 @@
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import "QPBaseViewController.h"
+#import "BaseViewController.h"
 #import "QPHomeView.h"
 #import "QPListViewAdapter.h"
 #import "QPHomePresenter.h"
 
-@interface QPHomeViewController : QPBaseViewController
+@interface QPHomeViewController : BaseViewController
 
 @end

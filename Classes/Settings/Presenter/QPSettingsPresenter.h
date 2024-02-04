@@ -6,19 +6,15 @@
 //  Copyright © 2023 dyf. All rights reserved.
 //
 
-#import "QPBasePresenter.h"
+#import "BasePresenter.h"
 #import "QPModularDelegate.h"
-#import "QPBaseAdapter.h"
+#import "BaseAdapter.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface QPSettingsPresenter : QPBasePresenter <QPPresenterDelegate, QPListViewAdapterDelegate>
+@interface QPSettingsPresenter : BasePresenter <QPPresenterDelegate, ListViewAdapterDelegate>
 @property (nonatomic, assign) UInt16 mPort;
 @property (nonatomic, weak) UITableView *view;
-@property (nonatomic, weak) QPBaseViewController *viewController;
+@property (nonatomic, weak) BaseViewController *viewController;
 
 - (void)loadData;
 
 @end
-
-NS_ASSUME_NONNULL_END

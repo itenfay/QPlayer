@@ -1,5 +1,5 @@
 //
-//  QPBaseWebViewController.h
+//  BaseWebViewController.h
 //
 //  Created by chenxing on 2017/6/28. ( https://github.com/chenxing640/QPlayer )
 //  Copyright © 2017 chenxing. All rights reserved.
@@ -7,12 +7,12 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
-#import "QPBaseViewController.h"
-#import "QPWKWebViewAdapter.h"
+#import "BaseViewController.h"
+#import "BaseAdapter.h"
 
-@interface QPBaseWebViewController : QPBaseViewController
+@interface BaseWebViewController : BaseViewController
 
-@property (nonatomic, strong) QPWKWebViewAdapter *adapter;
+@property (nonatomic, strong) BaseWebAdapter *adapter;
 
 /// Returns a web view.
 - (WKWebView *)webView;
@@ -25,11 +25,10 @@
 - (WKUserContentController *)userContentController;
 
 /// Initializes a web view with a specified frame.
-- (void)initWebViewWithFrame:(CGRect)frame;
+//- (void)initWebViewWithFrame:(CGRect)frame;
 /// Initializes a web view with a specified frame and configuration.
-- (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration;
+//- (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration;
 /// Initializes a web view with a specified frame, configuration and adapter.
-- (void)initWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration adapter:(QPWKWebViewAdapter *)adapter;
 
 /// Navigates to the back item in the back-forward list.
 - (void)onGoBack;
@@ -44,14 +43,5 @@
 - (void)loadRequestWithUrl:(NSString *)urlString;
 /// Loads web with url request.
 - (void)loadRequest:(NSURLRequest *)urlRequest;
-
-/// Builds a tool bar.
-- (UIImageView *)buildToolBar;
-/// Builds a tool bar with a selector.
-- (UIImageView *)buildToolBar:(SEL)selector;
-/// Builds a vertical tool bar.
-- (UIImageView *)buildVerticalToolBar;
-/// Builds a vertical tool bar with a selector.
-- (UIImageView *)buildVerticalToolBar:(SEL)selector;
 
 @end

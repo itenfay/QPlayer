@@ -1,12 +1,12 @@
 //
-//  QPBaseNavigationController.h
+//  BaseDelegate.h
 //
 //  Created by chenxing on 2017/6/27. ( https://github.com/chenxing640/QPlayer )
 //  Copyright © 2017 chenxing. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-@interface QPBaseNavigationController : UINavigationController
+@protocol BaseDelegate <NSObject>
 
 @end

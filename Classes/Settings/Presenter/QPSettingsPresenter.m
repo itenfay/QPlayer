@@ -184,7 +184,7 @@
     cell.backgroundColor = _viewController.isDarkMode ? QPColorFromRGB(40, 40, 40) : [UIColor whiteColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    QPSettingsModel *model = (QPSettingsModel *)[adapter modelWithTableView:_view atIndexPath:indexPath];
+    QPSettingsModel *model = (QPSettingsModel *)[adapter modelAtIndexPath:indexPath];
     if (indexPath.section == 4) {
         cell.detailTextLabel.text = model.title;
     } else {
@@ -309,7 +309,7 @@
             [[QPWifiManager shared] operateServer:NO];
         }
         BOOL status = [QPWifiManager shared].serverStatus;
-        QPLog(@":: [Server] status: %d, %@", status, status ?
+        QPLog(@"[Server] status: %d, %@", status, status ?
               [NSString stringWithFormat:@"http://%@:%d",
                [QPWifiManager shared].httpServer.hostName,
                [QPWifiManager shared].httpServer.port] : @"The server didn't open.");
@@ -317,7 +317,7 @@
     [self.view reloadData];
 }
 
-- (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
+- (void)selectCell:(BaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
     [_view deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 4) {

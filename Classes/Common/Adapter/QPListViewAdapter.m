@@ -8,7 +8,7 @@
 #import "QPListViewAdapter.h"
 
 @interface QPListViewAdapter ()
-
+@property (nonatomic, weak) UITableView *innerTableView;
 @end
 
 @implementation QPListViewAdapter
@@ -21,10 +21,15 @@
     return _dataSource;
 }
 
-- (QPBaseModel *)modelWithTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
-{
-    QPBaseModel *model = nil;
-    if (tableView.numberOfSections > 1 && indexPath.section < self.dataSource.count) {
+- (UITableView *)tableView {
+    return self.innerTableView;
+}
+
+- (BaseModel *)modelAtIndexPath:(NSIndexPath *)indexPath {
+    BaseModel *model = nil;
+    if (!_innerTableView)
+        return model;
+    if (_innerTableView.numberOfSections > 1 && indexPath.section < self.dataSource.count) {
         id obj = self.dataSource[indexPath.section];
         if ([obj isKindOfClass:NSArray.class]) {
             NSArray *array = (NSArray *)obj;
@@ -42,9 +47,11 @@
     return model;
 }
 
-- (void)updateModel:(QPBaseModel *)model withTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
+- (void)updateModel:(BaseModel *)model atIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView.numberOfSections > 1 && indexPath.section < self.dataSource.count) {
+    if (!_innerTableView)
+        return;
+    if (_innerTableView.numberOfSections > 1 && indexPath.section < self.dataSource.count) {
         id obj = self.dataSource[indexPath.section];
         if ([obj isKindOfClass:NSArray.class]) {
             NSMutableArray *mArray = ((NSArray *)obj).mutableCopy;
@@ -127,10 +134,33 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!_innerTableView) {
+        self.innerTableView = tableView;
+    }
     if (QPRespondsToSelector(self.listViewDelegate, @selector(cellForRowAtIndexPath:forAdapter:))) {
         return [self.listViewDelegate cellForRowAtIndexPath:indexPath forAdapter:self];
     }
     return [[UITableViewCell alloc] init];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return [self heightForHeaderInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [self viewForHeaderInSection:section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return [self heightForFooterInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return [self viewForFooterInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -150,7 +180,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //[tableView deselectRowAtIndexPath:indexPath animated:YES];
-    QPBaseModel *model = [self modelWithTableView:tableView atIndexPath:indexPath];
+    BaseModel *model = [self modelAtIndexPath:indexPath];
     if (QPRespondsToSelector(self.listViewDelegate, @selector(selectCell:atIndexPath:forAdapter:))) {
         [self.listViewDelegate selectCell:model atIndexPath:indexPath forAdapter:self];
     }
@@ -158,7 +188,7 @@
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    QPBaseModel *model = [self modelWithTableView:tableView atIndexPath:indexPath];
+    BaseModel *model = [self modelAtIndexPath:indexPath];
     if (QPRespondsToSelector(self.listViewDelegate, @selector(deselectCell:atIndexPath:forAdapter:))) {
         [self.listViewDelegate deselectCell:model atIndexPath:indexPath forAdapter:self];
     }
@@ -228,6 +258,11 @@
     if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewDidScrollToTop:forAdapter:))) {
         [self.scrollViewDelegate scrollViewDidScrollToTop:scrollView forAdapter:self];
     }
+}
+
+- (void)dealloc
+{
+    QPLog(@"[%@ dealloc]", NSStringFromClass(self.class));
 }
 
 @end

@@ -6,12 +6,8 @@
 //  Copyright © 2023 dyf. All rights reserved.
 //
 
-#import "QPBaseModel.h"
+#import "BaseModel.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface QPSettingsModel : QPBaseModel
+@interface QPSettingsModel : BaseModel
 @property (nonatomic, copy) NSString *title;
 @end
-
-NS_ASSUME_NONNULL_END

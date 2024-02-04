@@ -1,5 +1,5 @@
 //
-//  QPBaseCollectionViewCell.h
+//  BaseCollectionViewCell.h
 //  QPlayer
 //
 //  Created by chenxing on 2023/2/21.
@@ -8,13 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface QPBaseCollectionViewCell : UICollectionViewCell
+@interface BaseCollectionViewCell : UICollectionViewCell
 
 - (void)setup;
 - (void)layoutUI;
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -49,12 +49,12 @@ NSString *const kDropListDataFile = @"DropListViewData.dat";
         NSError *error = nil;
         ret = [tvList writeToURL:[NSURL fileURLWithPath:filePath] error:&error];
         if (error) {
-            QPLog(@":: [writeToURL] error=%zi, %@", error.code, error.localizedDescription);
+            QPLog(@"[writeToURL] error=%zi, %@", error.code, error.localizedDescription);
         }
     } else {
         ret = [tvList writeToFile:filePath atomically:YES];
         if (!ret) {
-            QPLog(@":: [writeToFile] ret=%d", ret);
+            QPLog(@"[writeToFile] ret=%d", ret);
         }
     }
     return ret;
@@ -63,7 +63,7 @@ NSString *const kDropListDataFile = @"DropListViewData.dat";
 - (void)updateValue:(NSString *)value atIndex:(NSInteger)index
 {
     NSString *filePath = [self customTVFilePath];
-    QPLog(@":: filePath=%@", filePath);
+    QPLog(@"filePath=%@", filePath);
     
     /// 设置访问权限
     //NSFileManager *fileManager = NSFileManager.defaultManager;
@@ -71,7 +71,7 @@ NSString *const kDropListDataFile = @"DropListViewData.dat";
     //NSError *permissionsError = nil;
     //[fileManager setAttributes:attributes ofItemAtPath:filePath error:&permissionsError];
     //if (permissionsError) {
-    //    QPLog(@":: [setAttributes] error=%zi, %@", permissionsError.code, permissionsError.localizedDescription);
+    //    QPLog(@"[setAttributes] error=%zi, %@", permissionsError.code, permissionsError.localizedDescription);
     //}
     
     NSMutableArray *tvList = [NSMutableArray arrayWithContentsOfFile:filePath];
@@ -84,12 +84,12 @@ NSString *const kDropListDataFile = @"DropListViewData.dat";
             NSError *error = nil;
             ret = [tvList writeToURL:[NSURL fileURLWithPath:filePath] error:&error];
             if (error) {
-                QPLog(@":: [writeToURL] error=%zi, %@", error.code, error.localizedDescription);
+                QPLog(@"[writeToURL] error=%zi, %@", error.code, error.localizedDescription);
             }
         } else {
             ret = [tvList writeToFile:filePath atomically:YES];
             if (!ret) {
-                QPLog(@":: [writeToFile] ret=%d", ret);
+                QPLog(@"[writeToFile] ret=%d", ret);
             }
         }
     }
@@ -110,7 +110,7 @@ NSString *const kDropListDataFile = @"DropListViewData.dat";
     [[self dropListView].adapter.dataSource removeAllObjects];
     
     NSString *filePath = [self customTVFilePath];
-    QPLog(@":: filePath=%@", filePath);
+    QPLog(@"filePath=%@", filePath);
     
     NSArray *tvList;
     if (@available(macOS 10.13, iOS 11.0, watchOS 4.0, tvOS 11.0, *)) {
@@ -146,16 +146,15 @@ NSString *const kDropListDataFile = @"DropListViewData.dat";
     
     [[self dropListView].adapter bindModelTo:cell
                                  atIndexPath:indexPath
-                                 inTableView:dropListView.m_tableView
                                     withView:_view];
     
     return cell;
 }
 
-- (void)selectCell:(QPBaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
+- (void)selectCell:(BaseModel *)model atIndexPath:(NSIndexPath *)indexPath forAdapter:(QPListViewAdapter *)adapter
 {
     QPDropListModel *_model = (QPDropListModel *)model;
-    QPLog(@":: title=%@, content=%@", _model.m_title, _model.m_content);
+    QPLog(@"title=%@, content=%@", _model.m_title, _model.m_content);
     !self.onSelectRowHandler ?:
     self.onSelectRowHandler(indexPath.row, _model.m_title, _model.m_content);
 }

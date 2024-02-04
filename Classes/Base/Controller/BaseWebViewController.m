@@ -69,7 +69,7 @@
 - (void)adaptThemeStyle
 {
     [super adaptThemeStyle];
-    [self.adapter setIsDarkMode:self.isDarkMode];
+    [self.adapter onUpdateDarkMode:self.isDarkMode];
 }
 
 #pragma mark - Lazy

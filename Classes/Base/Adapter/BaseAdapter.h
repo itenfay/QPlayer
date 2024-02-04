@@ -113,5 +113,6 @@
 @property (nonatomic, weak) id<ScrollViewAdapterDelegate> scrollViewDelegate;
 
 - (void)onHandleImmediately;
+- (void)onUpdateDarkMode:(BOOL)isDarkMode;
 
 @end

@@ -90,19 +90,6 @@
     ((QPWKWebViewAdapter *)self.adapter).delegate = presenter;
 }
 
-- (void)configureWebViewAdapter
-{
-    QPWKWebViewAdapter *webAdapter = [[QPWKWebViewAdapter alloc] init];
-    [self setupAdapter:webAdapter];
-    [webAdapter setupNavigationBar:self.navigationBar];
-    [webAdapter setupToolBar:self.webToolBar];
-    [webAdapter addProgressViewToWebView];
-    @QPWeakify(self);
-    [webAdapter observeUrlLink:^(NSURL *url) {
-        weak_self.titleView.text = url.absoluteString;
-    }];
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];

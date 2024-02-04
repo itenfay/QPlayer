@@ -156,15 +156,6 @@
     presenter.viewController = self;
     self.presenter = presenter;
     
-    QPWKWebViewAdapter *adapter = [[QPWKWebViewAdapter alloc]
-                                   initWithNavigationBar:self.navigationBar
-                                   toolBar:[self webToolBar]];
-    [self setupAdapter:adapter];
-    [adapter addProgressViewToWebView];
-    [self delayToScheduleTask:2 completion:^{
-        [(QPWKWebViewAdapter *)self.adapter inspectToolBarAlpha];
-    }];
-    
     [self loadBottomContents];
     [presenter prepareToPlay];
 }

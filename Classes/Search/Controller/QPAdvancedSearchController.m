@@ -97,18 +97,6 @@
     [self enableInteractivePopGesture:YES];
 }
 
-- (void)configureWebViewAdapter
-{
-    self.adapter = [[QPWKWebViewAdapter alloc] init];
-    [(QPWKWebViewAdapter *)self.adapter setupNavigationBar:self.navigationBar];
-    [(QPWKWebViewAdapter *)self.adapter setupToolBar:self.webToolBar];
-    [(QPWKWebViewAdapter *)self.adapter addProgressViewToWebView];
-    @QPWeakify(self);
-    [(QPWKWebViewAdapter *)self.adapter observeUrlLink:^(NSURL *url) {
-        weak_self.titleView.text = url.absoluteString;
-    }];
-}
-
 - (void)loadDefaultRequest
 {
     NSString *url = [QPInfoDictionary objectForKey:@"TecentVideoUrl"];

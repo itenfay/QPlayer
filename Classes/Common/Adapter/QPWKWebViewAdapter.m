@@ -40,7 +40,7 @@
     self->_toolBar = toolBar;
 }
 
-- (void)setIsDarkMode:(BOOL)isDarkMode
+- (void)onUpdateDarkMode:(BOOL)isDarkMode
 {
     self.isDarkMode = isDarkMode;
     [self updateToolBarAppearance];

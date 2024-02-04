@@ -17,6 +17,10 @@
     
 }
 
+- (void)onUpdateDarkMode:(BOOL)isDarkMode {
+    
+}
+
 @end
 
 @implementation BaseListViewAdapter

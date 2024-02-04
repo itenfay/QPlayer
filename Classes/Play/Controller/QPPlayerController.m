@@ -37,15 +37,6 @@
     return NO;
 }
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        
-    }
-    return self;
-}
-
 - (instancetype)initWithModel:(QPPlayerModel *)model
 {
     if (self = [super init]) {
@@ -149,7 +140,6 @@
     QPLog(@"videoTitle: %@", self.model.videoTitle);
     QPLog(@"videoUrl: %@", self.model.videoUrl);
     QPLog(@"videoDecoding: %d", QPPlayerHardDecoding());
-    [self configureNavigationBar];
     
     QPPlayerPresenter *presenter = [[QPPlayerPresenter alloc] init];
     presenter.view = self.view;

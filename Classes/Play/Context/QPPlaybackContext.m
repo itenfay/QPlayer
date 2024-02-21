@@ -57,7 +57,10 @@
                 model.seekToTime = time;
             }
             QPPlayerController *qpc = [[QPPlayerController alloc] initWithModel:model];
-            [self.yf_currentViewController.navigationController pushViewController:qpc animated:YES];
+            UINavigationController *nc = self.yf_currentViewController.navigationController;
+            if (nc) {
+                [nc pushViewController:qpc animated:YES];
+            }
         }];
     } else {
         [self delayToScheduleTask:1.0 completion:^{
@@ -86,8 +89,10 @@
             playerModel.isMediaPlayerPlayback = model.isMediaPlayerPlayback;
             playerModel.seekToTime = model.seekToTime;
             QPPlayerController *playerVC = [[QPPlayerController alloc] initWithModel:playerModel];
-            playerVC.hidesBottomBarWhenPushed = YES;
-            [self.yf_currentNavigationController pushViewController:playerVC animated:YES];
+            UINavigationController *nc = self.yf_currentNavigationController;
+            if (nc) {
+                [nc pushViewController:playerVC animated:YES];
+            }
         }];
     } else {
         [self delayToScheduleTask:1.0 completion:^{

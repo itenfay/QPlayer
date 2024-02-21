@@ -24,7 +24,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleDefault;
+    return UIStatusBarStyleLightContent;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
@@ -66,7 +66,7 @@
         _containerView = [UIImageView new];
         _containerView.backgroundColor = QPColorFromRGB(36, 39, 46);
         _containerView.image = QPImageNamed(@"default_thumbnail");
-        _containerView.contentMode = UIViewContentModeCenter;
+        _containerView.contentMode = UIViewContentModeScaleToFill;
     }
     return _containerView;
 }

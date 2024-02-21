@@ -106,7 +106,7 @@
     return _player;
 }
 
-- (void)getCoverImageWithURL:(NSURL *)aURL
+- (void)takeCoverImageWithURL:(NSURL *)aURL
 {
     // For KSYMediaPlayer.
     //UIImage *thumbnail = self.yf_videoThumbnailImage(aURL, 3, 107, 60);
@@ -118,6 +118,7 @@
     //        [strong_self configureControlView:image];
     //    });
     //}];
+    
     [self configureControlView:nil];
 }
 
@@ -153,7 +154,7 @@
     NSURL *aURL = vc.model.isLocalVideo
                 ? [NSURL fileURLWithPath:videoUrl]
                 : [NSURL URLWithString:videoUrl];
-    [self getCoverImageWithURL:aURL];
+    [self takeCoverImageWithURL:aURL];
     
     [QPAppDelegate.pipContext setPresenter:self];
     [QPAppDelegate.pipContext configPlayerModel:vc.model];
@@ -238,7 +239,7 @@
     };
     self.player.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         QPLog(@"asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
-        [weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
+        //[weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
     };
     self.player.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval bufferTime) {
         QPLog(@"asset=%@, bufferTime=%.2f", asset, bufferTime);
@@ -251,7 +252,7 @@
 
 - (void)takeThumbnailImageOfSpecifiedTime:(NSTimeInterval)currentTime
 {
-    if (currentTime >= 3 && currentTime < 6) {
+    if (currentTime > .5 && currentTime < 2) {
         dispatch_async(dispatch_get_main_queue(), ^{
             UIImage *thumbnailImage = [self.player.currentPlayerManager thumbnailImageAtCurrentTime];
             [self configureControlView:thumbnailImage];

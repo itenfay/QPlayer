@@ -23,5 +23,9 @@ FOUNDATION_EXPORT NSString *const kCarrierNetworkAllowed;
 FOUNDATION_EXPORT NSString *const kPlayerPictureInPictureEnabled;
 /// The key for picture in picture when app enters background.
 FOUNDATION_EXPORT NSString *const kPlayerPictureInPictureEnabledWhenBackgound;
-/// The key for hard decoding
+/// The key for hard decoding.
 FOUNDATION_EXPORT NSString *const kPlayerHardDecoding;
+/// The key for unparsing web video.
+FOUNDATION_EXPORT NSString *const kPlayerParsingWebVideo;
+/// The key for using default player.
+FOUNDATION_EXPORT NSString *const kPlayerUseDefaultPlayer;

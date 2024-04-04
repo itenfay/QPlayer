@@ -38,6 +38,9 @@
 #import "DYFProgressView.h"
 #import "DYFWebProgressView.h"
 
+/// Masonry
+#import <Masonry/Masonry.h>
+
 /// ZFPlayer
 #import <ZFPlayer/ZFPlayer.h>
 #import <ZFPlayer/ZFLandscapeRotationManager.h>

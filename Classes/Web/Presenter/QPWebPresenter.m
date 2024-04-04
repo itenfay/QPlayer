@@ -20,7 +20,8 @@ typedef void (^LoadDidFinishBlock)(BOOL);
 - (void)setViewController:(BaseWebViewController *)viewController
 {
     _viewController = viewController;
-    _playbackContext = [[QPWebPlaybackContext alloc] initWithAdapter:_viewController.adapter viewController:_viewController];
+    QPWKWebViewAdapter *webAdapter = (QPWKWebViewAdapter *)_viewController.adapter;
+    _playbackContext = [[QPWebPlaybackContext alloc] initWithAdapter:webAdapter viewController:_viewController];
 }
 
 - (void)presentSearchViewController:(NSArray<NSString *> *)hotSearches cachePath:(NSString *)cachePath
@@ -198,6 +199,7 @@ didSelectSearchSuggestionAtIndexPath:(NSIndexPath *)indexPath
 {
     QPLog(@"");
     !_finishBlock ?: _finishBlock(YES);
+    if (!QPPlayerParsingWebVideo()) return;
     [_playbackContext queryVideoUrlByCustomJavaScript];
 }
 

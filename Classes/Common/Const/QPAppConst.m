@@ -24,3 +24,7 @@ NSString *const kPlayerPictureInPictureEnabled = @"kPlayerPictureInPictureEnable
 NSString *const kPlayerPictureInPictureEnabledWhenBackgound = @"kPlayerPictureInPictureEnabledWhenBackgound";
 
 NSString *const kPlayerHardDecoding = @"kPlayerHardDecoding";
+
+NSString *const kPlayerParsingWebVideo = @"kPlayerParsingWebVideo";
+
+NSString *const kPlayerUseDefaultPlayer = @"kPlayerUseDefaultPlayer";

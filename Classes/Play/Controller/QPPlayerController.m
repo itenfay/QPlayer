@@ -112,6 +112,7 @@
     [pipButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.f]];
     [pipButton addTarget:self action:@selector(pipBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addRightNavigationBarButton:pipButton];
+    //pipButton.hidden = self.model.isZFPlayerPlayback; //内部已处理
     
     //[self setNavigationBarTitle:QPInfoDictionary[@"CFBundleName"]];
     [self setNavigationBarTitle:@""];

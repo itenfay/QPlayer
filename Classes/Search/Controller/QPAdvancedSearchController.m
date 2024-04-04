@@ -68,6 +68,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+/// 未使用
 - (void)setupPlayerType
 {
     QPAdvancedSearchPresenter *pt = (QPAdvancedSearchPresenter *)self.presenter;

@@ -136,6 +136,26 @@ QP_STATIC_INLINE int QPPlayerHardDecoding(void)
     return [QPExtractValue(kPlayerHardDecoding) intValue];
 }
 
+QP_STATIC_INLINE void QPPlayerSetUsingDefaultPlayer(BOOL value)
+{
+    QPStoreValue(kPlayerUseDefaultPlayer, [NSNumber numberWithBool:value]);
+}
+
+QP_STATIC_INLINE BOOL QPPlayerUseDefaultPlayer(void)
+{
+    return [QPExtractValue(kPlayerUseDefaultPlayer) boolValue];
+}
+
+QP_STATIC_INLINE void QPPlayerSetParingWebVideo(BOOL value)
+{
+    QPStoreValue(kPlayerParsingWebVideo, [NSNumber numberWithBool:value]);
+}
+
+QP_STATIC_INLINE BOOL QPPlayerParsingWebVideo(void)
+{
+    return [QPExtractValue(kPlayerParsingWebVideo) boolValue];
+}
+
 QP_STATIC_INLINE NSString *QPMatchingIconName(NSString *ext)
 {
     NSString *iconName = nil;

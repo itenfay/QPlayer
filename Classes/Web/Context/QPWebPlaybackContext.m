@@ -83,7 +83,6 @@
             [self attemptToPlayVideo:videoUrl];
             return YES;
         }
-        return NO;
     }
     return NO;
 }
@@ -124,7 +123,7 @@
 
 - (BOOL)parse80sHtmlWithURL:(NSURL *)URL
 {
-    [QPHudUtils showActivityMessageInView:@"正在加载..."];
+    [QPHudUtils showActivityMessageInView:@"加载中，请稍等"];
     BOOL shouldPlay = NO;
     NSURL *aURL = [URL copy];
     NSString *htmlString = [NSString stringWithContentsOfURL:aURL encoding:NSUTF8StringEncoding error:NULL];
@@ -169,12 +168,12 @@
 
 - (void)attemptToPlayVideo:(NSString *)url
 {
-    [QPHudUtils showActivityMessageInView:@"正在加载..."];
+    [QPHudUtils showActivityMessageInView:@"加载中，请稍等"];
     NSString *title = self.adapter.webView.title;
     QPLog(@"videoTitle=%@", title);
     QPLog(@"videoUrl=%@", url);
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
-        [self playVideoWithTitle:title urlString:url playerType:_playerType];
+        [self playVideoWithTitle:title urlString:url playerType:QPPlayerUseDefaultPlayer() ? QPPlayerTypeZFPlayer : _playerType];
     } else {
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];

@@ -63,13 +63,13 @@
     [self.view addSubview:settingBtn];
     settingBtn.titleLabel.font = [UIFont systemFontOfSize:15.f];
     [settingBtn setBackgroundColor:QPColorFromRGBAlp(20, 20, 20, 0.5)];
-    [settingBtn setTitle:@"   ⚙︎" forState:UIControlStateNormal];
+    [settingBtn setTitle:@"    ⚙︎" forState:UIControlStateNormal];
     [settingBtn setTitleColor:QPColorFromRGB(252, 252, 252) forState:UIControlStateNormal];
-    settingBtn.layer.cornerRadius = 20;
+    settingBtn.layer.cornerRadius = 25;
     [settingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@40);
+        make.width.height.equalTo(@50);
         make.centerY.equalTo(self.view).offset(-QPStatusBarAndNavigationBarHeight/2);
-        make.left.equalTo(@0).offset(-20);
+        make.left.equalTo(@0).offset(-25);
     }];
     [settingBtn addTarget:self action:@selector(onSettingAction) forControlEvents:UIControlEventTouchUpInside];
 }

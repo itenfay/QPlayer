@@ -11,6 +11,7 @@ target 'QPlayer' do
   pod 'AFNetworking'
   pod 'SDWebImage'
   pod 'MJRefresh'
+  pod 'Masonry'
   
   pod 'ZFPlayer'
   pod 'ZFPlayer/ControlView'

@@ -97,7 +97,7 @@ NSString *const kDropListDataFile = @"DropListViewData.dat";
 
 - (void)loadData
 {
-    [QPHudUtils showActivityMessageInWindow:@"加载中，请稍等..."];
+    [QPHudUtils showActivityMessageInWindow:@"加载中，请稍等"];
     [self fetchDataSource];
     [self delayToScheduleTask:0.3 completion:^{
         [QPHudUtils hideHUD];

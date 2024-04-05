@@ -41,12 +41,12 @@
 - (void)configure
 {
     QPPlayerSavePlaying(NO);
-    QPPlayerSetParingWebVideo(YES);
-    QPPlayerSetUsingDefaultPlayer(NO);
     BOOL result = [QPExtractValue(kWriteThemeStyleFlagOnceOnly) boolValue];
     if (!result) {
         QPStoreValue(kThemeStyleOnOff, [NSNumber numberWithBool:YES]);
         QPStoreValue(kWriteThemeStyleFlagOnceOnly, [NSNumber numberWithBool:YES]);
+        QPPlayerSetParingWebVideo(YES);
+        QPPlayerSetUsingDefaultPlayer(NO);
     }
 }
 

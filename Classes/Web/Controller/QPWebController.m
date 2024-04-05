@@ -41,7 +41,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self hideSettingPanel];
+    [self hideSettingPanel:NO];
 }
 
 #pragma mark - public methods
@@ -197,19 +197,28 @@
     }
 }
 
-- (void)hideSettingPanel {
-    [self removeSettingPanel];
+- (void)hideSettingPanel:(BOOL)animated {
+    if (_settingPanel) {
+        if (!animated) {
+            [self removeSettingPanel];
+            return;
+        }
+        self.settingPanel.transform = CGAffineTransformMakeScale(1.0, 1.0);
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.settingPanel.transform = CGAffineTransformMakeScale(0.0, 0.0);
+        } completion:^(BOOL finished) {
+            [self removeSettingPanel];
+        }];
+    }
 }
 
 - (void)onClosePanel:(UIButton *)sender {
-    [self hideSettingPanel];
+    [self hideSettingPanel:YES];
 }
 
 - (void)removeSettingPanel {
-    if (_settingPanel) {
-        [self.settingPanel removeFromSuperview];
-        self.settingPanel = nil;
-    }
+    [self.settingPanel removeFromSuperview];
+    self.settingPanel = nil;
 }
 
 - (void)onSWAction:(UISwitch *)sw {

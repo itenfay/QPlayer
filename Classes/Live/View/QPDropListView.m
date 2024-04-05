@@ -85,7 +85,7 @@
 - (IBAction)onClose:(id)sender
 {
     self.alpha = 1.f;
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         self.alpha = 0.f;
     } completion:^(BOOL finished) {
         if (finished) { [self removeFromSuperview]; }

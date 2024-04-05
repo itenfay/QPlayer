@@ -215,9 +215,10 @@
     [self.view bringSubviewToFront:dropListView];
     
     //dropListView.alpha = 0.f;
-    [UIView animateWithDuration:0.5 animations:^{
+    dropListView.transform = CGAffineTransformMakeScale(0.0, 0.0);
+    [UIView animateWithDuration:0.3 animations:^{
         //dropListView.alpha = 1.f;
-        dropListView.transform = CGAffineTransformMakeScale(1.05, 1.05);
+        dropListView.transform = CGAffineTransformMakeScale(1.0, 1.0);
     } completion:^(BOOL finished) {
         dropListView.transform = CGAffineTransformIdentity;
     }];

@@ -173,33 +173,35 @@
 
 - (void)yf_takeThumbnailWithURL:(NSURL *)aURL completionHandler:(void (^)(UIImage *))completionHandler
 {
-    [self yf_takeThumbnailWithURL:aURL forTime:1 completionHandler:completionHandler];
+    [self yf_takeThumbnailWithURL:aURL forTime:0.3 completionHandler:completionHandler];
 }
 
 - (void)yf_takeThumbnailWithURL:(NSURL *)aURL forTime:(Float64)time completionHandler:(void (^)(UIImage *))completionHandler
 {
-    AVURLAsset *asset = [AVURLAsset assetWithURL:aURL];
+    NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+    AVURLAsset *asset = [AVURLAsset.alloc initWithURL:aURL options:opts];
+    NSParameterAssert(asset); // 断言
     AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-    //generator.appliesPreferredTrackTransform = YES;
-    //generator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
+    generator.appliesPreferredTrackTransform = YES;
+    generator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
     CMTime requestedTime = CMTimeMakeWithSeconds(time, 1);
     if (@available(iOS 16.0, *)) {
-        [generator generateCGImageAsynchronouslyForTime:requestedTime completionHandler:^(CGImageRef _Nullable cgImage, CMTime actualTime, NSError * _Nullable error) {
+        [generator generateCGImageAsynchronouslyForTime:requestedTime completionHandler:^(CGImageRef _Nullable imageRef, CMTime actualTime, NSError * _Nullable error) {
             if (error) {
-                QPLog("error=%zi, %@", error.code, error.localizedDescription);
+                QPLog("[Error] err=%zi, %@", error.code, error.localizedDescription);
             }
             if (completionHandler) {
-                completionHandler(cgImage ? [UIImage imageWithCGImage:cgImage] : nil);
+                completionHandler(imageRef ? [UIImage.alloc initWithCGImage:imageRef] : nil);
             }
         }];
     } else {
         NSError *error = nil;
-        CGImageRef cgImage = [generator copyCGImageAtTime:requestedTime actualTime:nil error:&error];
+        CGImageRef imageRef = [generator copyCGImageAtTime:requestedTime actualTime:NULL error:&error];
         if (error) {
-            QPLog("error=%zi, %@", error.code, error.localizedDescription);
+            QPLog("[Error] err=%zi, %@", error.code, error.localizedDescription);
         }
         if (completionHandler) {
-            completionHandler(error ? nil : [UIImage imageWithCGImage:cgImage]);
+            completionHandler(imageRef ? [UIImage.alloc initWithCGImage:imageRef] : nil);
         }
     }
 }

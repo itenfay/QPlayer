@@ -133,7 +133,6 @@
 {
     [super loadView];
     [self addContainerView];
-    [self addOverlayLayer];
 }
 
 - (void)viewDidLoad {
@@ -149,6 +148,7 @@
     
     [self loadBottomContents];
     [presenter prepareToPlay];
+    [self addOverlayLayer];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -226,30 +226,32 @@
 
 - (void)addOverlayLayer
 {
-    [self.view addSubview:_overlayLabel];
+    [self.view addSubview:self.overlayLabel];
+    [self.view bringSubviewToFront:self.overlayLabel];
 }
 
 - (UILabel *)overlayLabel
 {
     if (!_overlayLabel) {
         _overlayLabel = UILabel.alloc.init;
-        _overlayLabel.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.95];
+        _overlayLabel.backgroundColor = QPColorFromRGBAlp(20, 20, 20, .9f);
         _overlayLabel.text = @"正在使用小窗播放";
         _overlayLabel.textColor = UIColor.whiteColor;
         _overlayLabel.textAlignment = NSTextAlignmentCenter;
-        _overlayLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
+        _overlayLabel.font = [UIFont systemFontOfSize:20 weight:UIFontWeightBold];
         _overlayLabel.hidden = YES;
+        _overlayLabel.userInteractionEnabled = NO;
     }
     return _overlayLabel;
 }
 
 - (void)showOverlayLayer
 {
-    _overlayLabel.hidden = NO;
+    self.overlayLabel.hidden = NO;
 }
 
 - (void)hideOverlayLayer {
-    _overlayLabel.hidden = YES;
+    self.overlayLabel.hidden = YES;
 }
 
 @end

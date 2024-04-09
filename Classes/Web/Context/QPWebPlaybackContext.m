@@ -173,7 +173,7 @@
     QPLog(@"videoTitle=%@", title);
     QPLog(@"videoUrl=%@", url);
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
-        [self playVideoWithTitle:title urlString:url playerType:QPPlayerUseIJKPlayer() ? _playerType : QPPlayerTypeZFPlayer];
+        [self playVideoWithTitle:title urlString:url playerType:QPPlayerUseIJKPlayer() ? QPPlayerTypeIJKPlayer : _playerType];
     } else {
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];

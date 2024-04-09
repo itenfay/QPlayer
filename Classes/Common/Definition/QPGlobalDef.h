@@ -136,14 +136,14 @@ QP_STATIC_INLINE int QPPlayerHardDecoding(void)
     return [QPExtractValue(kPlayerHardDecoding) intValue];
 }
 
-QP_STATIC_INLINE void QPPlayerSetUsingDefaultPlayer(BOOL value)
+QP_STATIC_INLINE void QPPlayerSetUsingIJKPlayer(BOOL value)
 {
-    QPStoreValue(kPlayerUseDefaultPlayer, [NSNumber numberWithBool:value]);
+    QPStoreValue(kPlayerUseIJKPlayer, [NSNumber numberWithBool:value]);
 }
 
-QP_STATIC_INLINE BOOL QPPlayerUseDefaultPlayer(void)
+QP_STATIC_INLINE BOOL QPPlayerUseIJKPlayer(void)
 {
-    return [QPExtractValue(kPlayerUseDefaultPlayer) boolValue];
+    return [QPExtractValue(kPlayerUseIJKPlayer) boolValue];
 }
 
 QP_STATIC_INLINE void QPPlayerSetParingWebVideo(BOOL value)

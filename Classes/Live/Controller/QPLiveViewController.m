@@ -230,7 +230,7 @@
         strong_self.playButton.enabled = YES;
         strong_self.titleView.text = urlString;
         QPLivePresenter *presenter = (QPLivePresenter *)strong_self.presenter;
-        [presenter.playbackContext playVideoWithTitle:title urlString:urlString playerType:QPPlayerUseDefaultPlayer() ? QPPlayerTypeZFPlayer : QPPlayerTypeIJKPlayer];
+        [presenter.playbackContext playVideoWithTitle:title urlString:urlString playerType:QPPlayerUseIJKPlayer() ? QPPlayerTypeIJKPlayer : QPPlayerTypeZFPlayer];
     }];
     
     [dropListView onCloseAction:^{

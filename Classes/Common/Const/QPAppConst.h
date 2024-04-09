@@ -28,4 +28,4 @@ FOUNDATION_EXPORT NSString *const kPlayerHardDecoding;
 /// The key for unparsing web video.
 FOUNDATION_EXPORT NSString *const kPlayerParsingWebVideo;
 /// The key for using default player.
-FOUNDATION_EXPORT NSString *const kPlayerUseDefaultPlayer;
+FOUNDATION_EXPORT NSString *const kPlayerUseIJKPlayer;

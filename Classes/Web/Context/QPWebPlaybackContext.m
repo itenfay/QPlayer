@@ -21,7 +21,7 @@
     if (self = [super init]) {
         self.adapter = adapter;
         self.controller = viewController;
-        self.playerType = QPPlayerTypeIJKPlayer;
+        self.playerType = QPPlayerTypeZFPlayer;
     }
     return  self;
 }
@@ -173,7 +173,7 @@
     QPLog(@"videoTitle=%@", title);
     QPLog(@"videoUrl=%@", url);
     if (url && url.length > 0 && [url hasPrefix:@"http"]) {
-        [self playVideoWithTitle:title urlString:url playerType:QPPlayerUseDefaultPlayer() ? QPPlayerTypeZFPlayer : _playerType];
+        [self playVideoWithTitle:title urlString:url playerType:QPPlayerUseIJKPlayer() ? _playerType : QPPlayerTypeZFPlayer];
     } else {
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];

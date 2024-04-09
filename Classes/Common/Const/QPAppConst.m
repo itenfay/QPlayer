@@ -27,4 +27,4 @@ NSString *const kPlayerHardDecoding = @"kPlayerHardDecoding";
 
 NSString *const kPlayerParsingWebVideo = @"kPlayerParsingWebVideo";
 
-NSString *const kPlayerUseDefaultPlayer = @"kPlayerUseDefaultPlayer";
+NSString *const kPlayerUseIJKPlayer = @"kPlayerUseIJKPlayer";

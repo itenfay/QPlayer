@@ -7,16 +7,15 @@
 //
 
 #import "QPPictureInPictureContext.h"
-#import "QPPlayerController.h"
-#import "QPPlaybackContext.h"
 #import <AVKit/AVKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "QPPlayerController.h"
+#import "QPPlaybackContext.h"
+#import "EasyPlayer.h"
 
-@interface QPPictureInPictureContext () <AVPictureInPictureControllerDelegate>
+@interface QPPictureInPictureContext () <AVPictureInPictureControllerDelegate, EasyPlayerDelegate>
 @property (nonatomic, strong) AVPictureInPictureController *pipVC;
-@property (nonatomic, strong) AVPlayer *avPlayer;
-@property (nonatomic, strong) AVPlayerLayer *avPlayerLayer;
-@property (nonatomic, strong) UIView *avPlayerLayerContainerView;
+@property (nonatomic, strong) EasyPlayer *player;
 @property (nonatomic, assign) BOOL pipAlreadyStarted;
 @property (nonatomic, assign) NSInteger avRetryCountToPlay;
 @end
@@ -73,24 +72,14 @@
         return;
     }
     if (!_presenter || _pipVC) { return; }
-    
-    NSError *error = nil;
-    [AVAudioSession.sharedInstance setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error];
-    [AVAudioSession.sharedInstance setActive:YES error:&error];
-    if (error) {
-        QPLog("[AVAudioSession] 请求权限失败的原因 error=%@, %zi, %@"
-              , error.domain
-              , error.code
-              , error.localizedDescription);
+    if (!QPActiveAudioSession(YES)) {
         [QPHudUtils showErrorMessage:@"AudioSession出错啦~，不能小窗播放！"];
-        return;
     }
-    
     // _playerModel.isZFPlayerPlayback or others.
     if (_playerModel.isIJKPlayerPlayback ||
         _playerModel.isMediaPlayerPlayback) {
         _avRetryCountToPlay = 3;
-        [self instantiateAVPlayerFor3rdPlayer];
+        [self instantiateAVPlayer];
     } else {
         QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
         ZFAVPlayerManager *manager = (ZFAVPlayerManager *)pt.player.currentPlayerManager;
@@ -102,7 +91,7 @@
     }
 }
 
-- (QPPlayerController *)qpPlayerVC {
+- (QPPlayerController *)playerVC {
     if (_presenter) {
         QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
         return (QPPlayerController *)pt.viewController;
@@ -112,11 +101,10 @@
 
 - (void)delayToStartPip
 {
-    self.pipVC.delegate = self;
-    [self delayToScheduleTask:2.0 completion:^{
-        [self.qpPlayerVC showOverlayLayer];
+    QP_After_Dispatch(2.0, ^{
+        [self.playerVC showOverlayLayer];
         [self.pipVC startPictureInPicture];
-    }];
+    });
 }
 
 - (void)stopPictureInPicture
@@ -127,9 +115,8 @@
     [_pipVC stopPictureInPicture];
 }
 
-- (void)avRetryToPlay
+- (void)retryToPlay
 {
-    if (!_avPlayer) { return; }
     if (_avRetryCountToPlay <= 0) {
         _avRetryCountToPlay = 3;
         [QPHudUtils showErrorMessage:@"出错啦~，不能小窗播放！"];
@@ -138,14 +125,14 @@
     }
     [self reset];
     _avRetryCountToPlay--;
-    [self delayToScheduleTask:0.5 completion:^{
-        [self instantiateAVPlayerFor3rdPlayer];
-    }];
+    QP_After_Dispatch(0.5, ^{
+        [self instantiateAVPlayer];
+    });
 }
 
 #pragma mark - ijkplayer & KSYMediaPlayer
 
-- (void)instantiateAVPlayerFor3rdPlayer
+- (void)instantiateAVPlayer
 {
     QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
     // 全屏不创建avplayer
@@ -166,19 +153,11 @@
     CGRect playerFrame = [superView convertRect:containerView.frame toView:superView];
     // 创建一个隐藏的AvPlayer
     id<ZFPlayerMediaPlayback> manager = pt.player.currentPlayerManager;
-    _avPlayer = [[AVPlayer alloc] initWithURL:manager.assetURL];
-    _avPlayerLayer = [AVPlayerLayer playerLayerWithPlayer:_avPlayer];
     
-    // 将创建的player添加到window上
-    _avPlayerLayerContainerView = [[UIView alloc] init];
-    _avPlayerLayerContainerView.frame = playerFrame;
-    [superView addSubview:_avPlayerLayerContainerView];
-    [_avPlayerLayerContainerView.layer addSublayer:_avPlayerLayer];
-    _avPlayerLayer.frame = _avPlayerLayerContainerView.bounds;
-    _avPlayerLayerContainerView.hidden = YES;
-    
-    [_avPlayer addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
-    [_avPlayer addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionNew context:nil];
+    self.player = [EasyPlayer playerWithURL:manager.assetURL];
+    self.player.delegate = self;
+    [self.player showInView:superView withFrame:playerFrame];
+    [self.player hidePlayerFrame:YES];
     
     if (manager.isPlaying) {
         [manager pause];
@@ -190,22 +169,13 @@
 
 - (void)reset
 {
-    [self.qpPlayerVC hideOverlayLayer];
-    if (self.avPlayer) {
-        [self.avPlayer removeObserver:self forKeyPath:@"status"];
-        [self.avPlayer removeObserver:self forKeyPath:@"timeControlStatus"];
-        [self.avPlayer pause];
-        [self.avPlayerLayer removeFromSuperlayer];
-        [self.avPlayerLayerContainerView removeFromSuperview];
-        self.avPlayerLayerContainerView = nil;
-        self.avPlayer = nil;
-        self.avPlayerLayer = nil;
-        self.pipAlreadyStarted = NO;
-    }
+    [self.playerVC hideOverlayLayer];
+    self.player = nil;
+    self.pipAlreadyStarted = NO;
     self.pipVC = nil;
 }
 
-#pragma mark - Recover playback of original player
+#pragma mark - Recover playback
 
 - (void)recoverPlay
 {
@@ -213,12 +183,13 @@
         [self reset];
         return;
     }
-    if (_avPlayer != nil) { // ijkplayer进入才需要恢复之前的播放时间
-        NSTimeInterval currentPlayTime = CMTimeGetSeconds(_avPlayer.currentTime);
-        _playerModel.seekToTime = currentPlayTime;
-        if (currentPlayTime > 0) {
+    if (self.player != nil) {
+        // ijkplayer进入才需要恢复之前的播放时间
+        NSTimeInterval currentTime = CMTimeGetSeconds(self.player.player.currentTime);
+        _playerModel.seekToTime = currentTime;
+        if (currentTime > 0) {
             QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
-            [pt seekToTime:currentPlayTime completionHandler:^(BOOL finished) {
+            [pt seekToTime:currentTime completionHandler:^(BOOL finished) {
                 [self handleControlStatus];
                 [self reset];
             }];
@@ -226,16 +197,17 @@
             [self handleControlStatus];
             [self reset];
         }
-    } else { // 如果是ZFPlayer的avplayer，则不做处理进度和状态。
+    } else {
+        // 如果是ZFPlayer的avplayer，则不做处理进度和状态。
         [self reset];
     }
 }
 
 - (void)handleControlStatus {
     QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
-    if (self.avPlayer.timeControlStatus == AVPlayerTimeControlStatusPlaying) {
+    if (self.player.player.timeControlStatus == AVPlayerTimeControlStatusPlaying) {
         [pt.player.currentPlayerManager play];
-    } else if (self.avPlayer.timeControlStatus == AVPlayerTimeControlStatusPaused) {
+    } else if (self.player.player.timeControlStatus == AVPlayerTimeControlStatusPaused) {
         [pt.player.currentPlayerManager play];
         [pt.player.currentPlayerManager pause];
     }
@@ -274,7 +246,7 @@
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
     // 点击右上角，将画中画恢复成原生播放。
-    Float64 seconds = CMTimeGetSeconds(_avPlayer.currentTime);
+    Float64 seconds = CMTimeGetSeconds(self.player.player.currentTime);
     QPLog("画中画功能恢复成原生播放，currentTime: %.2f", seconds);
     if (!_presenter) {
         [self reset];
@@ -289,77 +261,47 @@
     completionHandler(YES);
 }
 
-#pragma mark - KVO
+#pragma mark - EasyPlayerDelegate
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:@"status"]) {
-        [self observeAVPlayerStatusChangeChange:change ofObject:object];
-    } else if ([keyPath isEqualToString:@"timeControlStatus"]) {
-        [self observeAVPlayerTimeStatusChange:change ofObject:object];
-    }
+- (void)playerReadyToPlay:(EasyPlayer *)player {
+    //self.player.volume = 0;
+    //self.player.muted = YES;
 }
 
-#pragma mark - player status change
-
-- (void)observeAVPlayerStatusChangeChange:(NSDictionary<NSString *,id> *)change ofObject:(id)object
-{
-    switch (_avPlayer.status) {
-        case AVPlayerStatusUnknown: {
-            QPLog(@"未知状态，此时不能播放");
-            [self avRetryToPlay];
-            break;
-        }
-        case AVPlayerStatusReadyToPlay: {
-            QPLog(@"准备完毕，可以播放");
-            //_avPlayer.volume = 0.0;
-            //_avPlayer.muted = YES;
-            [_avPlayer play];
-            break;
-        }
-        case AVPlayerStatusFailed: {
-            AVPlayerItem *item = (AVPlayerItem *)object;
-            QPLog(@"加载失败 error=%@", item.error);
-            [self avRetryToPlay];
-            break;
-        }
-        default: break;
-    }
+- (void)player:(EasyPlayer *)player didFailWithError:(NSError *)error {
+    QPLog(@"加载失败 error=%@", error);
+    [self retryToPlay];
 }
 
-- (void)observeAVPlayerTimeStatusChange:(NSDictionary<NSString *,id> *)change ofObject:(id)object
-{
-    if (@available(iOS 10.0, *)) {} else {
-        [self reset];
-        return;
-    }
-    if (_avPlayer.timeControlStatus == AVPlayerTimeControlStatusPlaying) {
-        // 多次回调，加个判断，防止多次调用[self setupPip]
-        if (!_pipAlreadyStarted) {
-            // 同步原始播放器播放时间, 使播放更准确
-            BOOL success = [self syncPlayTimeOfOriginalPlayer];
-            if (success) {
-                _pipAlreadyStarted = YES;
-                [self setupPip];
-            }
+- (void)player:(EasyPlayer *)player currentSeconds:(float)currentSeconds totalSeconds:(float)totalSeconds {
+    QPLog(@"[Progress] currentSeconds=%.2f, totalSeconds=%.2f", currentSeconds, totalSeconds);
+    // 多次回调，加个判断，防止多次调用[self setupPipController]
+    if (!_pipAlreadyStarted) {
+        // 同步原始播放器播放时间, 使播放更准确
+        BOOL success = [self syncPlayTime];
+        // 多调用一次，减少同步播放时间失败率
+        if (success) {
+            _pipAlreadyStarted = YES;
+            [self setupPipController];
         }
     }
 }
 
-- (BOOL)syncPlayTimeOfOriginalPlayer
-{
+- (void)player:(EasyPlayer *)player loadedBuffer:(float)buffer duration:(float)duration {
+    QPLog(@"[Load] loadedBuffer=%.2f, duration=%.2f", buffer, duration);
+    QPLog(@"[Load] current=%@, total=%@", [player formatMediaTime:buffer], [player formatMediaTime:duration]);
+}
+
+- (BOOL)syncPlayTime {
     NSTimeInterval currentTime = _presenter ? ({
         QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
         pt.player.currentTime;
     }) : _playerModel.seekToTime;
     Float64 seekTo = currentTime;
     if (seekTo > 0) {
-        //[_avPlayer.currentItem cancelPendingSeeks];
-        int32_t timeScale = _avPlayer.currentItem.asset.duration.timescale;
-        CMTime time = CMTimeMakeWithSeconds(seekTo, timeScale);
         @try {
             // 将播放器的播放时间与原始player的播放时间进行同步
-            [_avPlayer seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+            [self.player seekToTime:seekTo];
         } @catch (NSException *exception) {
             QPLog(@"exception=%@", exception);
             return NO;
@@ -368,10 +310,10 @@
     return YES;
 }
 
-- (void)setupPip
-{
-    AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.avPlayerLayer];
+- (void)setupPipController {
+    AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.player.playerLayer];
     self.pipVC = pipVC;
+    self.pipVC.delegate = self;
     // 要有延迟，否则可能开启不成功
     [self delayToStartPip];
 }

@@ -465,7 +465,7 @@
     } else if (sw.tag == 91) {
         QPSetCarrierNetworkAllowed(sw.isOn);
     }
-    [QPHudUtils showTipMessageInWindow:sw.isOn ? @"已开启" : @"已关闭"];
+    [QPHudUtils showTipMessageInWindow:sw.isOn ? @"已开启" : @"已关闭" duration:1.0];
 }
 
 #pragma mark - Setting Panel End

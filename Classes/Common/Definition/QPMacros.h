@@ -244,4 +244,9 @@ _Pragma("clang diagnostic pop")                                     \
 #define QPLog(...)      while(0){}
 #endif
 
+// GCD
+#define QP_Run_OnMainThread(block) dispatch_async(dispatch_get_main_queue(), block)
+#define QP_Global_Async_Dispatch(block) dispatch_async(dispatch_get_global_queue(0, 0), block)
+#define QP_After_Dispatch(delayInSecs, block) dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((delayInSecs) * NSEC_PER_SEC)), dispatch_get_main_queue(), block)
+
 #endif /* QPMacros_h */

@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import "QPAppConst.h"
 #import "QPHudUtils.h"
 #import "DYFNetworkSniffer.h"
@@ -254,6 +255,21 @@ QP_STATIC_INLINE NSInteger QPSortObjects(BaseModel *m1, BaseModel *m2, void *con
                           kCFStringTransformMandarinLatin, NO)) {
     }
     return [str1 localizedCompare:str2];
+}
+
+/// Actives audio session.
+QP_STATIC_INLINE BOOL QPActiveAudioSession(BOOL actived) {
+    NSError *error = nil;
+    [AVAudioSession.sharedInstance setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error];
+    [AVAudioSession.sharedInstance setActive:actived error:&error];
+    if (error) {
+        QPLog("[AVAudioSession] 请求权限失败的原因 error=%@, %zi, %@"
+              , error.domain
+              , error.code
+              , error.localizedDescription);
+        return NO;
+    }
+    return YES;
 }
 
 #endif /* QPGlobalDef_h */

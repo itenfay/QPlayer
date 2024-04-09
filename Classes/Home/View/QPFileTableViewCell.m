@@ -76,7 +76,7 @@
 {
     NSURL *aURL = [NSURL fileURLWithPath:filePath];
     int duration = self.yf_videoDuration(aURL);
-    NSString *displayTime = [AppHelper formatVideoDuration:duration];
+    NSString *timeString = [AppHelper formatVideoDuration:duration];
     
     double ret = fileSize / 1000.0;
     NSString *sizeStr;
@@ -86,7 +86,12 @@
         sizeStr = [NSString stringWithFormat:@"%0.1f GB", ret];
     }
     
-    NSString *info = [NSString stringWithFormat:@"%@ | %@", displayTime, sizeStr];
+    NSString *info = @"";
+    if ([timeString isEqualToString:@"--:--"]) {
+        info = [NSString stringWithFormat:@"%@", sizeStr];
+    } else {
+        info = [NSString stringWithFormat:@"%@ | %@", timeString, sizeStr];
+    }
     [_infolabel setText:info];
 }
 

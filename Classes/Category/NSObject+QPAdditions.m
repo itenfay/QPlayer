@@ -45,14 +45,14 @@
 {
     void (^taskBlock)(id target, SEL selector, id object, NSTimeInterval timeInterval)
     = ^(id target, SEL selector, id object, NSTimeInterval timeInterval) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         if (timeInterval > 0) {
             [target performSelector:selector withObject:object afterDelay:timeInterval];
         } else {
             [target performSelector:selector withObject:object];
         }
-#pragma clang diagnostic pop
+        #pragma clang diagnostic pop
     };
     return taskBlock;
 }
@@ -122,13 +122,13 @@
 {
     UIImage *(^ThumbnailBlock)(NSURL *url, NSTimeInterval seekTime, int width, int height)
     = ^UIImage *(NSURL *url, NSTimeInterval seekTime, int width, int height) {
-#if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
+        #if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
         KSYMediaInfoProber *prober = [[KSYMediaInfoProber alloc] initWithContentURL:url];
         UIImage *img = [prober getVideoThumbnailImageAtTime:seekTime width:width height:height];
         return img ?: QPImageNamed(@"default_thumbnail");
-#else
+        #else
         return nil;
-#endif
+        #endif
     };
     return ThumbnailBlock;
 }
@@ -137,28 +137,38 @@
 {
     UIImage *(^ThumbnailBlock)(NSURL *url, NSTimeInterval seekTime, int width, int height, BOOL accurate)
     = ^UIImage *(NSURL *url, NSTimeInterval seekTime, int width, int height, BOOL accurate) {
-#if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
+        #if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
         KSYMediaInfoProber *prober = [[KSYMediaInfoProber alloc] initWithContentURL:url];
         UIImage *img = [prober getVideoThumbnailImageAtTime:seekTime width:width height:height accurate:accurate];
         return img ?: QPImageNamed(@"default_thumbnail");
-#else
+        #else
         return nil;
-#endif
+        #endif
     };
     return ThumbnailBlock;
 }
 
 - (int (^)(NSURL *url))yf_videoDuration
 {
-    int (^VideoDurationBlock)(NSURL *url) = ^int (NSURL *url) {
-#if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
+    // int (^VideoDurationBlock)(NSURL *url) = ...;
+    // return VideoDurationBlock;
+    return ^int (NSURL *aURL) {
+        #if __has_include(<KSYMediaPlayer/KSYMediaPlayer.h>)
         KSYMediaInfoProber *prober = [[KSYMediaInfoProber alloc] initWithContentURL:url];
         return (int)prober.ksyMediaInfo.duration;
-#else
-        return 0;
-#endif
+        #else
+        // 计算视频长度（秒）
+        // 网络地址
+        //NSURL *sourceURL = [NSURL URLWithString:urlString];
+        // 本地文件
+        //NSURL *sourceURL = [NSURL fileURLWithPath:filePath];
+        NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
+        AVURLAsset *asset = [AVURLAsset URLAssetWithURL:aURL options:opts];
+        CMTime time = [asset duration];
+        int seconds = ceil(time.value/time.timescale);
+        return seconds;
+        #endif
     };
-    return VideoDurationBlock;
 }
 
 - (void)yf_takeThumbnailWithURL:(NSURL *)aURL completionHandler:(void (^)(UIImage *))completionHandler

@@ -12,7 +12,7 @@ FOUNDATION_EXPORT NSString *const kQPPlayerIsPlaying;
 /// The key for record info.
 FOUNDATION_EXPORT NSString *const kRecordKeyInfo;
 /// The key for theme style flag written only once.
-FOUNDATION_EXPORT NSString *const kWriteThemeStyleFlagOnceOnly;
+FOUNDATION_EXPORT NSString *const kExecAppConfigOnlyOnce;
 /// The key for theme style on or off.
 FOUNDATION_EXPORT NSString *const kThemeStyleOnOff;
 /// The key for theme style change notification.

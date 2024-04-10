@@ -11,7 +11,7 @@ NSString *const kQPPlayerIsPlaying = @"kQPPlayerIsPlaying";
 
 NSString *const kRecordKeyInfo = @"kRecordKeyInfo";
 
-NSString *const kWriteThemeStyleFlagOnceOnly = @"kWriteThemeStyleFlagOnceOnly";
+NSString *const kExecAppConfigOnlyOnce = @"kExecAppConfigOnlyOnce";
 
 NSString *const kThemeStyleOnOff = @"kThemeStyleOnOff";
 

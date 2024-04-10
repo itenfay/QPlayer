@@ -52,7 +52,7 @@
     [subArray addObject:model3];
     
     QPSettingsModel *model3a = [QPSettingsModel new];
-    model3a.title = @"允许退出应用继续小窗播放";
+    model3a.title = @"允许应用后台继续小窗播放";
     [subArray addObject:model3a];
     
     QPSettingsModel *model4 = [QPSettingsModel new];
@@ -225,7 +225,7 @@
             [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:sw];
         } else if (indexPath.item == 2) {
-            //@"允许退出应用继续小窗播放";
+            //@"允许应用后台继续小窗播放";
             sw.on  = QPPlayerPictureInPictureEnabledWhenBackgound();
             sw.tag = 8;
             [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];

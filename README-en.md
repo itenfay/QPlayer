@@ -1,79 +1,60 @@
-## QPlayer
-
-`QPlayer` is a video player that you can't miss, supports `M4V、WMV、MP4、MOV、AVI、MKV、FLV、RM、RMVB` format. you can transfer files via wifi and watch local videos anytime and anywhere, also enter any `HTTP, RTSP, RTMP, HLS` address play network streaming or live. 
-
-[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
-
-
-## Group (ID:15535338)
-
-<div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
-</div>
-
-
-## Disclaimer
-
-The relevant technologies and resources used in this article are only for learning and communication. Please do not use them for any other commercial purposes, or you will be responsible for the consequences!!!
-
-Some of the resources and content come from the Internet. If there are copyright and laws & regulations, please send the issue or email to contact me. After verification and confirmation, I will delete it.
-
-
-## Preview
-
-- Local Videos
-
-<div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/local_videos.png" width="60%" />
-</div>
-
-- Lives And TV
-
-<div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/live_tv.png" width="60%" />
-</div>
-
-- Web Videos
-
-<div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/web_videos.png" width="60%" />
-</div>
-
-- App Introduction
-
-<div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/app_settings.png" width="40%" />
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/app_aboutme.png" width="40%" />
-</div>
-
-
-## Requirements
-
-iOS 11.0+, iPhone and iPad, Xcode14+.
-
-
-## File Transfer
-
-Turn on the `WiFi` file transfer switch in the app settings to enjoy the `WiFi` file transfer service. Input in the computer browser, for example, "[http://192.168.6.6:8888](http://192.168.6.6:8888)", After open the web page, select the file, and click `Upload`. When uploading media files, make sure the computer and mobile phone are in the same `WiFi` environment and do not close the app or lock the screen.
-
-`PS: PC browser is recommended (Safari [MAC], Microsoft edge [win10], Google Chrome [MAC win10])`
-
-
-## Blog
-
-- [How to customize your own live, audio and video player (QPlayer) for iOS?](https://www.jianshu.com/p/df5af1d079d6)
-
-
-## Open Source Components
-
-- [View Open Source Components](OpenSourceComponents.md)
-
-
-## Clone
-
-If you need to build a custom video player, you can input the command (`git clone https://github.com/chenxing640/QPlayer.git`) on the terminal to clone the project.
-
-
-## Feedback is welcome
-
-If you notice any issue, got stuck to create an issue. I will be happy to help you.
+[中文版](README.md) | **English Version**
+ 
+ ## QPlayer
+ 
+ The purpose of writing this player is to synchronize downloaded movies, TV dramas, anime and other videos to this app for viewing, saving mobile data traffic and avoiding other restrictions. This project has been restructured using the MVP design pattern to improve app performance, adapt to light and dark modes of the app, and enhance the browsing experience.
+ 
+ [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
+ 
+ ## Feature
+ 
+ - Supports mainstream media formats such as `M4V, WMV, MP4, MOV, AVI, MKV, FLV, RM, RMVB`, etc.
+ - Supports streaming media playback such as `HTTP, RTMP, RTSP, HLS`, etc.
+ - Supports WiFi transfer, allowing users to enjoy WiFi file transfer services and watch videos locally.
+ - Support playing videos using ijkplayer and zfplayer.
+ - Support dynamic webpage parsing of videos, native player playback.
+ - Supports automatic system settings for dark and light modes.
+ - Support picture in picture video playback.
+ 
+ ## Preview
+ 
+ <div align=left>
+ &emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/IMG_1739.gif" width="50%" />
+ </div>
+ 
+ ## Group (ID:15535338)
+ 
+ <div align=left>
+ &emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
+ </div>
+ 
+ ## Disclaimer
+ 
+ - The relevant technologies and resources used in this article are only for learning and communication. Please do not use them for any other commercial purposes, or you will be responsible for the consequences!!!
+ - Some of the resources and content come from the Internet. If there are copyright and laws & regulations, please send the issue or email to contact me. After verification and confirmation, I will delete it.
+ 
+ ## Requirements
+ 
+ iOS 11.0+, iPhone and iPad, Xcode14+.
+ 
+ ## File Transfer
+ 
+ Turn on the `WiFi` file transfer switch in the app settings to enjoy the `WiFi` file transfer service. Input in the computer browser, for example, "[http://192.168.6.6:8888](http://192.168.6.6:8888)", After open the web page, select the file, and click `Upload`. When uploading media files, make sure the computer and mobile phone are in the same `WiFi` environment and do not close the app or lock the screen.
+ 
+ `PS: PC browser is recommended (Safari [MAC], Microsoft edge [win10], Google Chrome [MAC win10])`
+ 
+ ## Blog
+ 
+ - [QPlayer, a useful video player for iOS](https://www.jianshu.com/p/df5af1d079d6)
+ 
+ ## Open Source Components
+ 
+ - [View Open Source Components](OpenSourceComponents.md)
+ 
+ ## Clone
+ 
+ You can enter the command `git clone 'on the terminal https://github.com/chenxing640/QPlayer.git` Clone this project to build your own video player.
+ 
+ ## Feedback is welcome
+ 
+ If you notice any issue, got stuck to create an issue. I will be happy to help you.

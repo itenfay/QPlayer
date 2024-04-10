@@ -2,7 +2,7 @@
  
  ## QPlayer
  
- The purpose of writing this player is to synchronize downloaded movies, TV dramas, anime and other videos to this app for viewing, saving mobile data traffic and avoiding other restrictions. This project has been restructured using the MVP design pattern to improve app performance, adapt to light and dark modes of the app, and enhance the browsing experience.
+ The purpose of writing this player is to synchronize downloaded movies, TV dramas, anime and other videos to this app for viewing, saving mobile data traffic and avoiding other restrictions. This project has been restructured using the MVP design pattern to improve app performance, adapt to light and dark modes of the app, and enhance the browsing experience. If you think it's okay, please give it to `star`.
  
  [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
  

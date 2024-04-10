@@ -17,7 +17,8 @@
 @property (nonatomic, strong) AVPictureInPictureController *pipVC;
 @property (nonatomic, strong) EasyPlayer *player;
 @property (nonatomic, assign) BOOL pipAlreadyStarted;
-@property (nonatomic, assign) NSInteger avRetryCountToPlay;
+@property (nonatomic, assign) BOOL isPipStarting;
+@property (nonatomic, assign) NSInteger retryCountToPlay;
 @end
 
 @implementation QPPictureInPictureContext
@@ -63,22 +64,26 @@
 - (void)startPictureInPicture
 {
     if (!QPPlayerPictureInPictureEnabled()) {
-        [QPHudUtils showInfoMessage:@"请在设置中开启小窗播放功能！"];
+        [QPHudUtils showInfoMessage:@"请在设置中开启小窗播放！"];
         return;
     }
     // 设备是否支持画中画
     if (![AVPictureInPictureController isPictureInPictureSupported]) {
-        [QPHudUtils showInfoMessage:@"当前设备不支持小窗播放功能！"];
+        [QPHudUtils showInfoMessage:@"当前设备不支持小窗播放！"];
         return;
     }
     if (!_presenter || _pipVC) { return; }
     if (!QPActiveAudioSession(YES)) {
         [QPHudUtils showErrorMessage:@"AudioSession出错啦~，不能小窗播放！"];
     }
+    if (self.isPipStarting) {
+        return;
+    }
+    self.isPipStarting = YES;
     // _playerModel.isZFPlayerPlayback or others.
     if (_playerModel.isIJKPlayerPlayback ||
         _playerModel.isMediaPlayerPlayback) {
-        _avRetryCountToPlay = 3;
+        _retryCountToPlay = 3;
         [self instantiateAVPlayer];
     } else {
         QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
@@ -101,8 +106,12 @@
 
 - (void)delayToStartPip
 {
+    self.pipVC.delegate = self;
     QP_After_Dispatch(2.0, ^{
-        [self.playerVC showOverlayLayer];
+        if (!self.playerModel.isZFPlayerPlayback) {
+            [self.playerVC showOverlayLayer];
+        }
+        self.isPipStarting = NO;
         [self.pipVC startPictureInPicture];
     });
 }
@@ -117,15 +126,16 @@
 
 - (void)retryToPlay
 {
-    if (_avRetryCountToPlay <= 0) {
-        _avRetryCountToPlay = 3;
+    if (_retryCountToPlay <= 0) {
+        _retryCountToPlay = 3;
+        _isPipStarting = NO;
         [QPHudUtils showErrorMessage:@"出错啦~，不能小窗播放！"];
         [self reset];
         return;
     }
     [self reset];
-    _avRetryCountToPlay--;
-    QP_After_Dispatch(0.5, ^{
+    _retryCountToPlay--;
+    QP_After_Dispatch(0.2, ^{
         [self instantiateAVPlayer];
     });
 }
@@ -151,9 +161,9 @@
     
     // 将ijkplayer的frame转换为window的坐标体系
     CGRect playerFrame = [superView convertRect:containerView.frame toView:superView];
-    // 创建一个隐藏的AvPlayer
     id<ZFPlayerMediaPlayback> manager = pt.player.currentPlayerManager;
     
+    // 创建一个隐藏的AvPlayer
     self.player = [EasyPlayer playerWithURL:manager.assetURL];
     self.player.delegate = self;
     [self.player showInView:superView withFrame:playerFrame];
@@ -162,7 +172,7 @@
     if (manager.isPlaying) {
         [manager pause];
     }
-    _playerModel.seekToTime = manager.currentTime;
+    self.playerModel.seekToTime = manager.currentTime;
 }
 
 #pragma mark - reset
@@ -170,8 +180,12 @@
 - (void)reset
 {
     [self.playerVC hideOverlayLayer];
-    self.player = nil;
-    self.pipAlreadyStarted = NO;
+    if (self.player) {
+        [self.player pause];
+        self.player = nil;
+        self.pipAlreadyStarted = NO;
+    }
+    self.isPipStarting = NO;
     self.pipVC = nil;
 }
 
@@ -180,13 +194,12 @@
 - (void)recoverPlay
 {
     if (!_presenter) {
-        [self reset];
         return;
     }
-    if (self.player != nil) {
+    if (self.player) {
         // ijkplayer进入才需要恢复之前的播放时间
         NSTimeInterval currentTime = CMTimeGetSeconds(self.player.player.currentTime);
-        _playerModel.seekToTime = currentTime;
+        self.playerModel.seekToTime = currentTime;
         if (currentTime > 0) {
             QPPlayerPresenter *pt = (QPPlayerPresenter *)_presenter;
             [pt seekToTime:currentTime completionHandler:^(BOOL finished) {
@@ -198,8 +211,8 @@
             [self reset];
         }
     } else {
-        // 如果是ZFPlayer的avplayer，则不做处理进度和状态。
-        [self reset];
+        // 如果是ZFPlayer的avplayer
+        //[self reset];
     }
 }
 
@@ -245,16 +258,22 @@
 
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
+    QPLog("画中画功能恢复成原生播放");
     // 点击右上角，将画中画恢复成原生播放。
-    Float64 seconds = CMTimeGetSeconds(self.player.player.currentTime);
-    QPLog("画中画功能恢复成原生播放，currentTime: %.2f", seconds);
     if (!_presenter) {
         [self reset];
-        if (seconds > 0) {
-            _playerModel.seekToTime = seconds;
+        Float64 seconds = 0;
+        if (self.playerModel.isZFPlayerPlayback) {
+            seconds = self.zfplayerCurrentTime;
+        } else {
+            seconds = CMTimeGetSeconds(self.player.player.currentTime);
         }
+        if (seconds > 0) {
+            self.playerModel.seekToTime = seconds;
+        }
+        self.zfplayerCurrentTime = 0;
         QPPlaybackContext *context = QPPlaybackContext.alloc.init;
-        [context playVideoWithModel:_playerModel];
+        [context playVideoWithModel:self.playerModel];
     } else {
         [self recoverPlay];
     }
@@ -313,7 +332,6 @@
 - (void)setupPipController {
     AVPictureInPictureController *pipVC = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.player.playerLayer];
     self.pipVC = pipVC;
-    self.pipVC.delegate = self;
     // 要有延迟，否则可能开启不成功
     [self delayToStartPip];
 }

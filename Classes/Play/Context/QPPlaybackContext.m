@@ -33,7 +33,7 @@
             [ctx stopPictureInPicture];
         }
         QPPlayerSavePlaying(YES);
-        [self delayToScheduleTask:1.0 completion:^{
+        QP_After_Dispatch(1.0, ^{
             [QPHudUtils hideHUD];
             QPPlayerModel *model = [[QPPlayerModel alloc] init];
             model.isLocalVideo   = NO;
@@ -60,12 +60,12 @@
             UINavigationController *nc = self.yf_currentViewController.navigationController;
             if (nc) {
                 [nc pushViewController:qpc animated:YES];
-            }
-        }];
+            };
+        });
     } else {
-        [self delayToScheduleTask:1.0 completion:^{
+        QP_After_Dispatch(1.0, ^{
             [QPHudUtils hideHUD];
-        }];
+        });
     }
 }
 
@@ -77,7 +77,7 @@
             [ctx stopPictureInPicture];
         }
         QPPlayerSavePlaying(YES);
-        [self delayToScheduleTask:1.0 completion:^{
+        QP_After_Dispatch(1.0, ^{
             [QPHudUtils hideHUD];
             QPPlayerModel *playerModel = [[QPPlayerModel alloc] init];
             playerModel.isLocalVideo = model.isLocalVideo;
@@ -93,11 +93,11 @@
             if (nc) {
                 [nc pushViewController:playerVC animated:YES];
             }
-        }];
+        });
     } else {
-        [self delayToScheduleTask:1.0 completion:^{
+        QP_After_Dispatch(1.0, ^{
             [QPHudUtils hideHUD];
-        }];
+        });
     }
 }
 

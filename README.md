@@ -2,7 +2,7 @@
 
 ## QPlayer
 
-编写这款播放器的目的是将下载好的电影、电视剧和动漫等视频同步到这款APP里观看，节省运营商流量和避开其他限制。重构了此项目，采用MVP设计模式，提高APP性能，适配APP深浅模式等，使浏览体验更好。如果你觉得还行呢，麻烦顺手给个`star`。
+编写这款播放器的目的是将下载好的电影、电视剧和动漫等视频同步到这款APP里观看，节省移动数据流量和避开其他限制。重构了此项目，采用MVP设计模式，提高APP性能，适配APP深浅模式等，使浏览体验更好。如果你觉得还行呢，麻烦顺手给个`star`。
 
  [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
 

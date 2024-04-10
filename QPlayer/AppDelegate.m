@@ -41,10 +41,10 @@
 - (void)configure
 {
     QPPlayerSavePlaying(NO);
-    BOOL result = [QPExtractValue(kWriteThemeStyleFlagOnceOnly) boolValue];
+    BOOL result = [QPExtractValue(kExecAppConfigOnlyOnce) boolValue];
     if (!result) {
+        QPStoreValue(kExecAppConfigOnlyOnce, [NSNumber numberWithBool:YES]);
         QPStoreValue(kThemeStyleOnOff, [NSNumber numberWithBool:YES]);
-        QPStoreValue(kWriteThemeStyleFlagOnceOnly, [NSNumber numberWithBool:YES]);
         QPPlayerSetParingWebVideo(YES);
         QPPlayerSetUsingIJKPlayer(NO);
     }
@@ -100,9 +100,9 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     if (!QPPlayerPictureInPictureEnabledWhenBackgound()) {
-        if ([_pipContext isPictureInPictureValid]) {
-            [_pipContext stopPictureInPicture];
-        }
+        //if ([_pipContext isPictureInPictureValid]) {
+        //    [_pipContext stopPictureInPicture];
+        //}
     }
 }
 
@@ -113,16 +113,16 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [self applyForMoreTimeFromSystem];
     [self stopSniffingNetworkStatus];
     if (QPPlayerPictureInPictureEnabledWhenBackgound()) {
-        if (![_pipContext isPictureInPictureValid]) {
-            [_pipContext startPictureInPicture];
-        }
+        [self applyForMoreTimeFromSystem];
+        /*if (![self.pipContext isPictureInPictureValid]) {
+         [self.pipContext startPictureInPicture];
+         }*/
     } else {
-        if ([_pipContext isPictureInPictureValid]) {
-            [_pipContext stopPictureInPicture];
-        }
+        /*if ([self.pipContext isPictureInPictureValid]) {
+         [self.pipContext stopPictureInPicture];
+         }*/
     }
 }
 

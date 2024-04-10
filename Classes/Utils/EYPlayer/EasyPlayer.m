@@ -103,10 +103,10 @@
     // 监控缓冲加载情况属性
     [self.player.currentItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
     
-    //[self.player addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-    
     // 监控播放完成通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackFinished:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
+    
+    [self.player addObserver:self forKeyPath:@"timeControlStatus" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
     
     // 监控时间进度
     // If you pass NULL, the system uses the main queue.
@@ -127,6 +127,7 @@
     [self.player.currentItem removeObserver:self  forKeyPath:@"status"];
     [self.player.currentItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
+    [self.player removeObserver:self forKeyPath:@"timeControlStatus"];
     [self.player removeTimeObserver:self.timeObserver];
 }
 
@@ -193,9 +194,7 @@
             [self.delegate player:self changePlayerItem:playerItem];
         }
     } else if ([keyPath isEqualToString:@"timeControlStatus"]) {
-        if (self.player.timeControlStatus == AVPlayerTimeControlStatusPlaying) {
-            
-        }
+        self.isPlaying = self.player.timeControlStatus == AVPlayerTimeControlStatusPlaying;
     }
 }
 

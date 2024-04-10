@@ -239,6 +239,7 @@
     };
     self.player.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         QPLog(@"asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
+        QPAppDelegate.pipContext.zfplayerCurrentTime = currentTime;
         //[weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
     };
     self.player.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval bufferTime) {

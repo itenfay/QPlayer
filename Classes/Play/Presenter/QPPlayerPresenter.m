@@ -34,29 +34,27 @@
             [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_DEBUG];
             #else
             [IJKFFMoviePlayerController setLogReport:NO];
-            [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_FATAL];
+            [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_ERROR];
             #endif
             NSURL *url = [NSURL URLWithString:vc.model.videoUrl];
-            NSString *scheme = [url.scheme lowercaseString];
-            QPLog(@"urlScheme=%@", scheme);
             ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
             int hardDecoding = QPPlayerHardDecoding();
             // 开启硬解码（硬件解码CPU消耗低，软解更稳定）
             [playerManager.options setOptionIntValue:hardDecoding forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryPlayer];
-            // 支持H265硬解 1：开启 0：关闭
+            // 支持H265硬解 1：开启 0：关闭 (Android)
             //[playerManager.options setOptionIntValue:0 forKey:@"mediacodec-hevc" ofCategory:kIJKFFOptionCategoryPlayer];
-            // 支持硬解 1：开启 0：关闭
+            // 支持硬解 1：开启 0：关闭 (Android)
             //[playerManager.options setOptionIntValue:0 forKey:@"mediacodec" ofCategory:kIJKFFOptionCategoryPlayer];
-            // 处理分辨率变化
-            [playerManager.options setOptionIntValue:0 forKey:@"mediacodec-handle-resolution-change" ofCategory:kIJKFFOptionCategoryPlayer];
-            // 自动旋屏开关
-            [playerManager.options setOptionIntValue:0 forKey:@"mediacodec-auto-rotate" ofCategory:kIJKFFOptionCategoryPlayer];
+            // 处理分辨率变化 (Android)
+            //[playerManager.options setOptionIntValue:0 forKey:@"mediacodec-handle-resolution-change" ofCategory:kIJKFFOptionCategoryPlayer];
+            // 自动旋屏开关 (Android)
+            //[playerManager.options setOptionIntValue:0 forKey:@"mediacodec-auto-rotate" ofCategory:kIJKFFOptionCategoryPlayer];
             // 开启环路过滤: 0开启，画面质量高，解码开销大，48关闭，画面质量差，解码开销小
             [playerManager.options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter" ofCategory:kIJKFFOptionCategoryCodec];
             // 跳过帧
             [playerManager.options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame" ofCategory:kIJKFFOptionCategoryCodec];
-            // 清空DNS
-            [playerManager.options setOptionIntValue:1 forKey:@"dns_cache_clear" ofCategory:kIJKFFOptionCategoryFormat];
+            NSString *scheme = [url.scheme lowercaseString];
+            QPLog(@"[URL] scheme=%@", scheme);
             // 延时优化
             if ([scheme hasPrefix:@"rtmp"] || [scheme hasPrefix:@"rtsp"]) {
                 // 视频帧率
@@ -97,6 +95,8 @@
                 [playerManager.options setOptionIntValue:0 forKey:@"infbuf" ofCategory:kIJKFFOptionCategoryPlayer];
                 [playerManager.options setOptionIntValue:1 forKey:@"packet-buffering" ofCategory:kIJKFFOptionCategoryPlayer];
             }
+            // 清空DNS
+            [playerManager.options setOptionIntValue:1 forKey:@"dns_cache_clear" ofCategory:kIJKFFOptionCategoryFormat];
             _player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
         } else {
             ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
@@ -188,7 +188,7 @@
     self.player.playerApperaPercent      = 0.0;
     self.player.playerDisapperaPercent   = 1.0;
     self.player.allowOrentitaionRotation = NO; // 是否允许自动全屏，NO不允许
-    self.player.pauseWhenAppResignActive = NO; // 设置退到后台继续播放
+    self.player.pauseWhenAppResignActive = YES; // 设置退到后台继续播放
     //self.player.resumePlayRecord = YES; // 是否内存缓存播放
     
     @zf_weakify(self)

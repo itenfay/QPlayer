@@ -49,7 +49,7 @@ iOS 11.0+, iPhone and iPad, Xcode14+.
 
 ## 博客
 
-- [谈谈一款好用的iOS视频播放器(QPlayer)](https://www.jianshu.com/p/df5af1d079d6)
+- [谈谈一款好用的iOS视频播放器[QPlayer]](https://www.jianshu.com/p/df5af1d079d6)
 
 ## 开源组件
 

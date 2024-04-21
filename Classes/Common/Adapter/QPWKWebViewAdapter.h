@@ -15,19 +15,18 @@ typedef void(^ObserveUrlLinkBlock)(NSURL *url);
 @interface QPWKWebViewAdapter : BaseWebAdapter <WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler, UIScrollViewDelegate>
 @property (nonatomic, weak, readonly) WKWebView *webView;
 @property (nonatomic, weak, readonly) UINavigationBar *navigationBar;
-@property (nonatomic, weak, readonly) UIView *toolBar;
+//@property (nonatomic, weak, readonly) UIView *toolBar;
 @property (nonatomic, copy, readonly) NSURL *requestURL;
 
 @property (nonatomic, weak) id<WKWebViewAdapterDelegate> delegate;
 
+@property (nonatomic, copy) void (^onScrollViewDidScrollBlock)(BaseAdapter *adapter);
+@property (nonatomic, copy) void (^onScrollViewDidEndDragging)(BaseAdapter *adapter, BOOL willDecelerate);
+@property (nonatomic, copy) void (^onScrollViewDidEndDecelerating)(BaseAdapter *adapter);
+
 - (instancetype)initWithNavigationBar:(UINavigationBar *)navigationBar;
-- (instancetype)initWithNavigationBar:(UINavigationBar *)navigationBar toolBar:(UIView *)toolBar;
 
 - (void)setupNavigationBar:(UINavigationBar *)navigationBar;
-- (void)setupToolBar:(UIView *)toolBar;
-
-/// Inspects the alpha of tool bar.
-- (void)inspectToolBarAlpha;
 
 /// Returns Wether a progress bar is added to the navigation bar.
 - (BOOL)isAddedToNavBar;

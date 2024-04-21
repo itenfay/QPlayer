@@ -11,61 +11,32 @@
 @property (nonatomic, strong) DYFProgressView *progressView;
 @property (nonatomic, assign, readonly) BOOL mIsAddedToNavBar;
 @property (nonatomic, copy) ObserveUrlLinkBlock linkBlock;
-@property (nonatomic, assign) BOOL didScroll;
 @end
 
 @implementation QPWKWebViewAdapter
 
-- (instancetype)init {
+- (instancetype)init
+{
     return [self initWithNavigationBar:nil];
 }
 
-- (instancetype)initWithNavigationBar:(UINavigationBar *)navigationBar {
-    return [self initWithNavigationBar:navigationBar toolBar:nil];
-}
-
-- (instancetype)initWithNavigationBar:(UINavigationBar *)navigationBar toolBar:(UIView *)toolBar {
+- (instancetype)initWithNavigationBar:(UINavigationBar *)navigationBar
+{
     if (self = [super init]) {
         self->_navigationBar = navigationBar;
-        self->_toolBar = toolBar;
     }
     return self;
 }
 
-- (void)setupNavigationBar:(UINavigationBar *)navigationBar {
+- (void)setupNavigationBar:(UINavigationBar *)navigationBar
+{
     self->_navigationBar = navigationBar;
-}
-
-- (void)setupToolBar:(UIView *)toolBar {
-    self->_toolBar = toolBar;
 }
 
 - (void)onUpdateDarkMode:(BOOL)isDarkMode
 {
     self.isDarkMode = isDarkMode;
-    [self updateToolBarAppearance];
     [self adaptThemeForWebView];
-}
-
-- (void)updateToolBarAppearance
-{
-    UIColor *customDarkColor = [UIColor colorWithWhite:0.1 alpha:0.8];
-    UIColor *customLightColor = [UIColor colorWithWhite:0.1 alpha:0.6];
-    BOOL ret = [QPExtractValue(kThemeStyleOnOff) boolValue];
-    UIColor *bgColor = ret
-    ? (self.isDarkMode ? customDarkColor : customLightColor)
-    : customLightColor;
-    if ([_toolBar isKindOfClass:UIImageView.class]) {
-        UIImageView *tb = (UIImageView *)_toolBar;
-        tb.image        = [self colorImage:tb.bounds
-                              cornerRadius:15.f
-                            backgroudColor:bgColor
-                               borderWidth:0.f borderColor:nil];
-    } else {
-        _toolBar.backgroundColor = bgColor;
-        _toolBar.layer.cornerRadius = 15.f;
-        _toolBar.layer.masksToBounds = YES;
-    }
 }
 
 - (BOOL)isAddedToNavBar
@@ -387,7 +358,9 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [self showToolBar];
+    if (self.onScrollViewDidScrollBlock) {
+        self.onScrollViewDidScrollBlock(self);
+    }
     if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewDidScroll:forAdapter:))) {
         [self.scrollViewDelegate scrollViewDidScroll:scrollView forAdapter:self];
     }
@@ -409,8 +382,8 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (!decelerate) {
-        [self hideToolBarAfterDelay];
+    if (self.onScrollViewDidEndDragging) {
+        self.onScrollViewDidEndDragging(self, decelerate);
     }
     if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewDidEndDragging:willDecelerate:forAdapter:))) {
         [self.scrollViewDelegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate forAdapter:self];
@@ -426,7 +399,9 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self hideToolBarAfterDelay];
+    if (self.onScrollViewDidEndDecelerating) {
+        self.onScrollViewDidEndDecelerating(self);
+    }
     if (QPRespondsToSelector(self.scrollViewDelegate, @selector(scrollViewDidEndDecelerating:forAdapter:))) {
         [self.scrollViewDelegate scrollViewDidEndDecelerating:scrollView forAdapter:self];
     }
@@ -454,56 +429,20 @@
     }
 }
 
-- (void)hideToolBarAfterDelay
-{
-    self.scheduleTask(self, @selector(hideToolBar), nil, 6);
-}
-
-- (void)showToolBar
-{
-    _didScroll = YES;
-    [self cancelHidingToolBar];
-    [UIView animateWithDuration:0.5 animations:^{
-        self.toolBar.alpha = 1.f;
-    }];
-}
-
-- (void)hideToolBar
-{
-    _didScroll = NO;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.toolBar.alpha = 0.f;
-    }];
-}
-
-- (void)cancelHidingToolBar
-{
-    self.cancelPerformingSelector(self, @selector(hideToolBar), nil);
-}
-
-- (void)inspectToolBarAlpha
-{
-    if (_didScroll) { return; }
-    if (self.toolBar.alpha > 0) {
-        self.toolBar.alpha = 0.f;
-        [self cancelHidingToolBar];
-    }
-}
-
 - (DYFProgressView *)progressView
 {
     if (!_progressView) {
-        CGRect frame         = CGRectZero;
-        frame.origin.x       = 0.f;
-        frame.size.height    = 2.f;
+        CGRect frame = CGRectZero;
+        frame.origin.x = 0.f;
+        frame.size.height = 2.f;
         if (self.isAddedToNavBar) {
-            frame.origin.y   = self.navigationBar.height - frame.size.height;
+            frame.origin.y = self.navigationBar.height - frame.size.height;
             frame.size.width = self.navigationBar.width;
         } else {
-            frame.origin.y   = 0;
+            frame.origin.y = 0;
             frame.size.width = self.webView.width;
         }
-        _progressView   = [[DYFProgressView alloc] initWithFrame:frame];
+        _progressView = [[DYFProgressView alloc] initWithFrame:frame];
     }
     return _progressView;
 }

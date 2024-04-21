@@ -80,6 +80,7 @@
 		14E023D82471BBEB00435DC8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E023D72471BBEA00435DC8 /* SystemConfiguration.framework */; };
 		14F521C1232A28EF00C866D1 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F521BD232A270800C866D1 /* libc++.tbd */; };
 		14F52216232BF1D400C866D1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F52215232BF1D400C866D1 /* libxml2.tbd */; };
+		497B36622BD44A5900733FE8 /* QPPlaybackSettingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 497B36612BD44A5900733FE8 /* QPPlaybackSettingPanel.m */; };
 		4986260B2BC53FCC000F6FF0 /* EasyPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4986260A2BC53FCC000F6FF0 /* EasyPlayer.m */; };
 		7904DED629AF3C280030A748 /* QPHomeListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7904DED429AF3C280030A748 /* QPHomeListViewAdapter.m */; };
 		7904DED929AF540E0030A748 /* QPFileModelPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7904DED829AF540E0030A748 /* QPFileModelPresenter.m */; };
@@ -270,6 +271,8 @@
 		14F521BD232A270800C866D1 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		14F521BF232A274300C866D1 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		14F52215232BF1D400C866D1 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		497B36602BD44A5900733FE8 /* QPPlaybackSettingPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPPlaybackSettingPanel.h; sourceTree = "<group>"; };
+		497B36612BD44A5900733FE8 /* QPPlaybackSettingPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPPlaybackSettingPanel.m; sourceTree = "<group>"; };
 		498626092BC53FCC000F6FF0 /* EasyPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EasyPlayer.h; sourceTree = "<group>"; };
 		4986260A2BC53FCC000F6FF0 /* EasyPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EasyPlayer.m; sourceTree = "<group>"; };
 		60680FC631705B531937CD6E /* libPods-QPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -958,6 +961,15 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		497B365F2BD44A2700733FE8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				497B36602BD44A5900733FE8 /* QPPlaybackSettingPanel.h */,
+				497B36612BD44A5900733FE8 /* QPPlaybackSettingPanel.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		498626082BC53FA4000F6FF0 /* EYPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1071,6 +1083,7 @@
 				79A466D429B9D283009417EB /* Context */,
 				799A919629B7099E007735F0 /* Controller */,
 				799A919529B7099E007735F0 /* Presenter */,
+				497B365F2BD44A2700733FE8 /* View */,
 			);
 			path = Web;
 			sourceTree = "<group>";
@@ -1459,6 +1472,7 @@
 				790F5D9629A45F6100B59422 /* BaseCollectionViewCell.m in Sources */,
 				79443A9729B1DC42004B125A /* QPDropListView.m in Sources */,
 				96532C621F5E814E00E66A2F /* AsyncSocket.m in Sources */,
+				497B36622BD44A5900733FE8 /* QPPlaybackSettingPanel.m in Sources */,
 				965E09E31F04A85F009BBBD9 /* main.mm in Sources */,
 				797F386529BAF9DD00DCCBCB /* QPDropListViewPresenter.m in Sources */,
 				79443A9B29B1E0EB004B125A /* QPAdvancedSearchController.m in Sources */,
@@ -1610,7 +1624,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0410;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = S96K5NZ7N7;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1619,7 +1633,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.7.2;
+				MARKETING_VERSION = 3.8.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1651,7 +1665,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0410;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = S96K5NZ7N7;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1660,7 +1674,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.7.2;
+				MARKETING_VERSION = 3.8.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

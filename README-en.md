@@ -24,7 +24,7 @@
  &emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/IMG_1739.gif" width="50%" />
  </div>
  
-> If you think it's okay, please give it to `star`.
+> PS: If you think it's okay, please give it to `star`.
 
  ## Group (ID:15535338)
  

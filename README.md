@@ -24,7 +24,7 @@
 &emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/IMG_1739.gif" width="50%" />
 </div>
 
-> 如果你觉得还行呢，麻烦顺手给个`star`。
+> PS：如果你觉得还行呢，麻烦顺手给个`star`。
 
 ## 免责声明
 
@@ -49,7 +49,7 @@ iOS 11.0+, iPhone and iPad, Xcode14+.
 
 ## 博客
 
-- [推荐一款好用的iOS视频播放器QPlayer](https://www.jianshu.com/p/df5af1d079d6)
+- [谈谈一款好用的iOS视频播放器(QPlayer)](https://www.jianshu.com/p/df5af1d079d6)
 
 ## 开源组件
 

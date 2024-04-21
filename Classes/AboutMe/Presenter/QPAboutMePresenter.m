@@ -27,13 +27,13 @@
     QPAboutMeViewController *vc = [self aboutMeController];
     [vc.adapter.dataSource removeAllObjects];
     
-    NSString *vString = [NSString stringWithFormat:@"%@(%@)", QPAppVersion, QPBuildVersion];
+    NSString *vString = [NSString stringWithFormat:@" V%@(%@) ", QPAppVersion, QPBuildVersion];
     QPAboutModel *vModel = [QPAboutModel new];
-    vModel.title = @"版本";
+    vModel.title = @"Version";
     vModel.rValue = vString;
     [vc.adapter.dataSource addObject:vModel];
     
-    NSString *gString = [NSString stringWithFormat:@" ★ "];
+    NSString *gString = [NSString stringWithFormat:@" ★★★ "];
     QPAboutModel *gModel = [QPAboutModel new];
     gModel.title = @"Star";
     gModel.rValue = gString;

@@ -10,14 +10,30 @@
 
 @implementation BaseCollectionViewCell
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self setup];
+        [self layoutUI];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setup];
+        [self layoutUI];
+    }
+    return self;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
+    [self setup];
     [self layoutUI];
 }
 

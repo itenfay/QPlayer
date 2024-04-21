@@ -2,7 +2,7 @@
 
 ## QPlayer
 
-编写这款播放器的目的是将下载好的电影、电视剧和动漫等视频同步到这款APP里观看，节省移动数据流量和避开其他限制。重构了此项目，采用MVP设计模式，提高APP性能，适配APP深浅模式等，使浏览体验更好。如果你觉得还行呢，麻烦顺手给个`star`。
+编写这款播放器的目的是将下载好的电影、电视剧和动漫等视频同步到这款APP里观看，节省移动数据流量和避开其他限制。重构了此项目，采用MVP设计模式，提高APP性能，适配APP深浅模式等，使浏览体验更好。
 
  [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)&nbsp;
 
@@ -18,9 +18,13 @@
 
 ## 预览
 
+**说明**：录屏经过剪辑，删除了一些帧，然后生成gif动画图片，画面有些不流畅。
+
 <div align=left>
 &emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/IMG_1739.gif" width="50%" />
 </div>
+
+> 如果你觉得还行呢，麻烦顺手给个`star`。
 
 ## 免责声明
 
@@ -45,7 +49,7 @@ iOS 11.0+, iPhone and iPad, Xcode14+.
 
 ## 博客
 
-- [iOS 一款好用的视频播放器 QPlayer](https://www.jianshu.com/p/df5af1d079d6)
+- [推荐一款好用的iOS视频播放器QPlayer](https://www.jianshu.com/p/df5af1d079d6)
 
 ## 开源组件
 

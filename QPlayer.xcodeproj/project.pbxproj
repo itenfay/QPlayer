@@ -271,6 +271,10 @@
 		14F521BD232A270800C866D1 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		14F521BF232A274300C866D1 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		14F52215232BF1D400C866D1 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		49785A1E2BD5126000E367F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		49785A1F2BD5126000E367F0 /* OpenSourceComponents.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = OpenSourceComponents.md; sourceTree = SOURCE_ROOT; };
+		49785A202BD5126000E367F0 /* README-en.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "README-en.md"; sourceTree = SOURCE_ROOT; };
+		49785A212BD5126000E367F0 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
 		497B36602BD44A5900733FE8 /* QPPlaybackSettingPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPPlaybackSettingPanel.h; sourceTree = "<group>"; };
 		497B36612BD44A5900733FE8 /* QPPlaybackSettingPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPPlaybackSettingPanel.m; sourceTree = "<group>"; };
 		498626092BC53FCC000F6FF0 /* EasyPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EasyPlayer.h; sourceTree = "<group>"; };
@@ -961,6 +965,17 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		49785A1D2BD5124000E367F0 /* Docs Meta */ = {
+			isa = PBXGroup;
+			children = (
+				49785A212BD5126000E367F0 /* LICENSE */,
+				49785A1F2BD5126000E367F0 /* OpenSourceComponents.md */,
+				49785A202BD5126000E367F0 /* README-en.md */,
+				49785A1E2BD5126000E367F0 /* README.md */,
+			);
+			path = "Docs Meta";
+			sourceTree = "<group>";
+		};
 		497B365F2BD44A2700733FE8 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1188,6 +1203,7 @@
 		965E09D51F04A85F009BBBD9 = {
 			isa = PBXGroup;
 			children = (
+				49785A1D2BD5124000E367F0 /* Docs Meta */,
 				1481C1A9210F018A00F431BB /* Classes */,
 				F64D47BF8EF197EFA3197BA4 /* Frameworks */,
 				1430B8AB234C3FBB00189025 /* KSYMediaPlayer_vod */,

@@ -96,6 +96,7 @@
     self.tableView.estimatedSectionHeaderHeight = 30.f;
     self.tableView.estimatedSectionFooterHeight = 50.f;
     self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    self.tableView.contentInset = UIEdgeInsetsMake(10, 0, 10, 0);
     [self.tableView autoresizing];
     [self.view addSubview:self.tableView];
 }

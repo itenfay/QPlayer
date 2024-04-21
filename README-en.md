@@ -49,7 +49,7 @@
  
  ## Blog
  
- - [QPlayer, a useful video player for iOS](https://www.jianshu.com/p/df5af1d079d6)
+ - [Talking about a useful iOS video player [QPlayer]](https://www.jianshu.com/p/df5af1d079d6)
  
  ## Open Source Components
  

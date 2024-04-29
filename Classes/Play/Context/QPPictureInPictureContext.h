@@ -22,6 +22,7 @@
 - (BOOL)isPictureInPictureActive;
 - (BOOL)isPictureInPictureSuspended;
 
+- (void)check;
 - (void)startPictureInPicture;
 - (void)stopPictureInPicture;
 

@@ -60,6 +60,13 @@
     return [self.pipVC isPictureInPictureSuspended];
 }
 
+- (void)check
+{
+    if (self.player && !self.pipVC) {
+        [self reset];
+    }
+}
+
 - (void)startPictureInPicture
 {
     if (!QPPlayerPictureInPictureEnabled()) {

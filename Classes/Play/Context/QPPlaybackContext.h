@@ -9,9 +9,9 @@
 #import "BaseContext.h"
 
 typedef NS_ENUM(NSUInteger, QPPlayerType) {
-    QPPlayerTypeZFPlayer,
-    QPPlayerTypeIJKPlayer,
-    QPPlayerTypeKSYMediaPlayer,
+    QPPlayerTypeZFPlayer, // zfplayer
+    QPPlayerTypeIJKPlayer, // ijkplayer
+    QPPlayerTypeKSYMediaPlayer, // ksymediaplayer
 };
 
 @class QPPlayerModel;

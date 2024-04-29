@@ -36,9 +36,7 @@
     [self configureWebViewAdapter];
     [self injectLocalUserScript];
     [self loadDefaultRequest];
-    [self delayToScheduleTask:0.5 completion:^{
-        [self inspectToolViewsAlpha];
-    }];
+    [self inspectToolViewsAlpha];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

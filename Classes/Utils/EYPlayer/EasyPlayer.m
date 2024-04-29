@@ -45,17 +45,13 @@
 }
 
 - (void)play {
-    if (!self.isPlaying) {
-        [self.player play];
-        self.isPlaying = YES;
-    }
+    [self.player play];
+    self.isPlaying = YES;
 }
 
 - (void)pause {
-    if (self.isPlaying) {
-        [self.player pause];
-        self.isPlaying = NO;
-    }
+    [self.player pause];
+    self.isPlaying = NO;
 }
 
 - (void)seekToTime:(Float64)seconds {

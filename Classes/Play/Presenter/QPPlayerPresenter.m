@@ -22,11 +22,9 @@
         if ((vc.model.isLocalVideo && vc.model.isMediaPlayerPlayback) || vc.model.isMediaPlayerPlayback) {
             //KSYMediaPlayerManager *playerManager = [[KSYMediaPlayerManager alloc] init];
             // 默认是硬解码
-            if (QPPlayerHardDecoding() == 1) {
-                //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Hardware;
-            } else {
-                //playerManager.player.videoDecoderMode = MPMovieVideoDecoderMode_Software;
-            }
+            //playerManager.player.videoDecoderMode = QPPlayerHardDecoding() == 1
+            //? MPMovieVideoDecoderMode_Hardware
+            //: MPMovieVideoDecoderMode_Software;
             //_player = [ZFPlayerController playerWithPlayerManager:playerManager containerView:vc.containerView];
         } else if ((vc.model.isLocalVideo && vc.model.isIJKPlayerPlayback) || vc.model.isIJKPlayerPlayback) {
             #if DEBUG
@@ -41,13 +39,13 @@
             int hardDecoding = QPPlayerHardDecoding();
             // 开启硬解码（硬件解码CPU消耗低，软解更稳定）
             [playerManager.options setOptionIntValue:hardDecoding forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryPlayer];
-            // 支持H265硬解 1：开启 0：关闭 (Android)
+            // 支持H265硬解 1：开启 0：关闭
             //[playerManager.options setOptionIntValue:0 forKey:@"mediacodec-hevc" ofCategory:kIJKFFOptionCategoryPlayer];
-            // 支持硬解 1：开启 0：关闭 (Android)
+            // 支持硬解 1：开启 0：关闭
             //[playerManager.options setOptionIntValue:0 forKey:@"mediacodec" ofCategory:kIJKFFOptionCategoryPlayer];
-            // 处理分辨率变化 (Android)
+            // 处理分辨率变化
             //[playerManager.options setOptionIntValue:0 forKey:@"mediacodec-handle-resolution-change" ofCategory:kIJKFFOptionCategoryPlayer];
-            // 自动旋屏开关 (Android)
+            // 自动旋屏开关
             //[playerManager.options setOptionIntValue:0 forKey:@"mediacodec-auto-rotate" ofCategory:kIJKFFOptionCategoryPlayer];
             // 开启环路过滤: 0开启，画面质量高，解码开销大，48关闭，画面质量差，解码开销小
             [playerManager.options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter" ofCategory:kIJKFFOptionCategoryCodec];
@@ -66,7 +64,7 @@
                 // 是否有视频
                 [playerManager.options setOptionIntValue:1 forKey:@"vn" ofCategory:kIJKFFOptionCategoryPlayer];
                 // 丢帧阈值，视频帧处理不过来的时候丢弃一些帧达到同步的效果
-                [playerManager.options setOptionIntValue:5 forKey:@"framedrop" ofCategory:kIJKFFOptionCategoryPlayer];
+                [playerManager.options setOptionIntValue:1 forKey:@"framedrop" ofCategory:kIJKFFOptionCategoryPlayer];
                 // 设置最小解码帧数
                 [playerManager.options setOptionIntValue:3 forKey:@"min-frames" ofCategory:kIJKFFOptionCategoryPlayer];
                 // 是否开启预缓冲，一般直播项目会开启，达到秒开的效果，不过带来播放丢帧卡顿的体验
@@ -78,7 +76,8 @@
                 // 缩短播放的rtmp视频延迟在1s内
                 [playerManager.options setOptionValue:@"nobuffer" forKey:@"fflags" ofCategory:kIJKFFOptionCategoryFormat];
                 // 设置分析流时长，播放前的探测时间
-                [playerManager.options setOptionIntValue:100 forKey:@"analyzeduration" ofCategory:kIJKFFOptionCategoryFormat];
+                [playerManager.options setOptionIntValue:100 forKey:@"analyzemaxduration" ofCategory:kIJKFFOptionCategoryFormat];
+                //[playerManager.options setOptionIntValue:100 forKey:@"analyzeduration" ofCategory:kIJKFFOptionCategoryFormat];
                 // 设置最大缓存数量
                 [playerManager.options setOptionIntValue:1024 forKey:@"max-buffer-size" ofCategory:kIJKFFOptionCategoryFormat];
                 // 设置播放前的探测包数量
@@ -152,10 +151,11 @@
     NSString *videoUrl = vc.model.videoUrl;
     
     NSURL *aURL = vc.model.isLocalVideo
-                ? [NSURL fileURLWithPath:videoUrl]
-                : [NSURL URLWithString:videoUrl];
+    ? [NSURL fileURLWithPath:videoUrl]
+    : [NSURL URLWithString:videoUrl];
     [self takeCoverImageWithURL:aURL];
     
+    [QPAppDelegate.pipContext check];
     [QPAppDelegate.pipContext setPresenter:self];
     [QPAppDelegate.pipContext configPlayerModel:vc.model];
     
@@ -191,20 +191,29 @@
     self.player.pauseWhenAppResignActive = YES; // 设置退到后台继续播放
     //self.player.resumePlayRecord = YES; // 是否内存缓存播放
     
+    //Force the user interface orientation to rotate landscape left.
+    //self.player.orientationObserver.supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
+    //[self.player rotateToOrientation:UIInterfaceOrientationLandscapeLeft animated:NO completion:NULL];
     @zf_weakify(self)
     vc.controlView.backBtnClickCallback = ^{
         @zf_strongify(self)
         [self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:YES completion:NULL];
     };
     
-    // Force the user interface orientation to rotate landscape left.
-    //self.player.orientationObserver.supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
-    //[self.player rotateToOrientation:UIInterfaceOrientationLandscapeLeft animated:NO completion:NULL];
+    [self onListenPlaybackCallback];
     
+    if (vc.model.seekToTime > 0) {
+        [self seekToTime:vc.model.seekToTime];
+    }
+}
+
+- (void)onListenPlaybackCallback {
+    @zf_weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         QPLog(@"isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
         QPAppDelegate.allowOrentitaionRotation = isFullScreen;
     };
+    
     self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         QPLog(@"isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
         @zf_strongify(self)
@@ -231,30 +240,30 @@
         [vc needsStatusBarAppearanceUpdate];
         //[vc needsUpdateOfSupportedInterfaceOrientations];
     };
+    
     self.player.playerDidToEnd = ^(id<ZFPlayerMediaPlayback> _Nonnull asset) {
         QPLog(@"asset=%@", asset);
     };
+    
     self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, id _Nonnull error) {
         QPLog(@"asset=%@, error=%@", asset, error);
     };
+    
     self.player.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
         QPLog(@"asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
-        QPAppDelegate.pipContext.zfplayerCurrentTime = currentTime;
+        QPAppDelegate.pipContext.playerCurrentTime = currentTime;
         //[weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
     };
+    
     self.player.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval bufferTime) {
         QPLog(@"asset=%@, bufferTime=%.2f", asset, bufferTime);
     };
-    
-    if (vc.model.seekToTime > 0) {
-        [self seekToTime:vc.model.seekToTime];
-    }
 }
 
 - (void)takeThumbnailImageOfSpecifiedTime:(NSTimeInterval)currentTime
 {
     if (currentTime > .5 && currentTime < 2) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        QP_Run_OnMainThread(^{
             UIImage *thumbnailImage = [self.player.currentPlayerManager thumbnailImageAtCurrentTime];
             [self configureControlView:thumbnailImage];
         });

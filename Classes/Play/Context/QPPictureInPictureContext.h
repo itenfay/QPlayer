@@ -13,7 +13,7 @@
 @interface QPPictureInPictureContext : BaseContext
 @property (nonatomic, weak) BasePresenter *presenter;
 @property (nonatomic, strong, readonly) QPPlayerModel *playerModel;
-@property (nonatomic, assign) NSTimeInterval zfplayerCurrentTime;
+@property (nonatomic, assign) NSTimeInterval playerCurrentTime;
 
 - (void)configPlayerModel:(QPPlayerModel *)model;
 

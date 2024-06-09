@@ -1,8 +1,8 @@
 //
 //  QPHudUtils.h
 //
-//  Created by chenxing on 2017/9/1.
-//  Copyright © 2017 chenxing. All rights reserved.
+//  Created by Tenfay on 2017/9/1.
+//  Copyright © 2017 Tenfay. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

@@ -1,8 +1,8 @@
 //
 //  DYFHttpClient.m
 //
-//  Created by chenxing on 16/6/30. ( https://github.com/chenxing640/QPlayer )
-//  Copyright © 2016 chenxing. All rights reserved.
+//  Created by Tenfay on 16/6/30. ( https://github.com/itenfay/QPlayer )
+//  Copyright © 2016 Tenfay. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal

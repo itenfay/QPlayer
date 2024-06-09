@@ -21,7 +21,7 @@
  **Explanation**: After screen recording and editing, some frames were deleted, and then a GIF animated image was generated, resulting in some unsmooth images.
  
  <div align=left>
- &emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/IMG_1739.gif" width="50%" />
+ &emsp; <img src="https://github.com/itenfay/QPlayer/raw/master/images/IMG_1739.gif" width="50%" />
  </div>
  
 > PS: If you think it's okay, please give it to `star`.
@@ -29,7 +29,7 @@
  ## Group (ID:15535338)
  
  <div align=left>
- &emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
+ &emsp; <img src="https://github.com/itenfay/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
  </div>
  
  ## Disclaimer
@@ -57,7 +57,7 @@
  
  ## Clone
  
- You can enter the command `git clone 'on the terminal https://github.com/chenxing640/QPlayer.git` Clone this project to build your own video player.
+ You can enter the command `git clone 'on the terminal https://github.com/itenfay/QPlayer.git` Clone this project to build your own video player.
  
  ## Feedback is welcome
  

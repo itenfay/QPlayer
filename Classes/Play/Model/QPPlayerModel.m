@@ -2,8 +2,8 @@
 //  QPPlayerModel.m
 //  QPlayer
 //
-//  Created by chenxing on 2023/3/3.
-//  Copyright © 2023 chenxing. All rights reserved.
+//  Created by Tenfay on 2023/3/3.
+//  Copyright © 2023 Tenfay. All rights reserved.
 //
 
 #import "QPPlayerModel.h"

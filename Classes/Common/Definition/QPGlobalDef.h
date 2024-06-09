@@ -1,8 +1,8 @@
 //
 //  QPGlobalDef.h
 //
-//  Created by chenxing on 2017/6/27. ( https://github.com/chenxing640/QPlayer )
-//  Copyright © 2017 chenxing. All rights reserved.
+//  Created by Tenfay on 2017/6/27. ( https://github.com/itenfay/QPlayer )
+//  Copyright © 2017 Tenfay. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

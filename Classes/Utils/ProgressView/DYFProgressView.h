@@ -1,8 +1,8 @@
 //
 //  DYFProgressView.h
 //
-//  Created by chenxing on 17/5/27.
-//  Copyright © 2017 chenxing. All rights reserved.
+//  Created by Tenfay on 17/5/27.
+//  Copyright © 2017 Tenfay. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal

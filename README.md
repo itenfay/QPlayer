@@ -21,7 +21,7 @@
 **说明**：录屏经过剪辑，删除了一些帧，然后生成gif动画图片，画面有些不流畅。
 
 <div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/IMG_1739.gif" width="50%" />
+&emsp; <img src="https://github.com/itenfay/QPlayer/raw/master/images/IMG_1739.gif" width="50%" />
 </div>
 
 > PS：如果你觉得还行呢，麻烦顺手给个`star`。
@@ -34,7 +34,7 @@
 ## QQ群 (ID:15535338)
 
 <div align=left>
-&emsp; <img src="https://github.com/chenxing640/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
+&emsp; <img src="https://github.com/itenfay/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
 </div>
 
 ## 要求
@@ -57,7 +57,7 @@ iOS 11.0+, iPhone and iPad, Xcode14+.
 
 ## 克隆
 
-你可以在终端输入命令`git clone https://github.com/chenxing640/QPlayer.git`克隆此工程，来构建自己的视频播放器。
+你可以在终端输入命令`git clone https://github.com/itenfay/QPlayer.git`克隆此工程，来构建自己的视频播放器。
 
 ## 欢迎反馈
 

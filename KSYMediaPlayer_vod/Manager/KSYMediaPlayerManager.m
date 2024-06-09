@@ -3,7 +3,7 @@
 //  ZFPlayer
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
-// Update by chenxing on 2017/8/28.
+// Update by Tenfay on 2017/8/28.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal

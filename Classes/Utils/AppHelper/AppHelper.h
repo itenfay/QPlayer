@@ -2,8 +2,8 @@
 //  ApplicationHelper.h
 //  QPlayer
 //
-//  Created by chenxing on 2023/2/27.
-//  Copyright © 2023 chenxing. All rights reserved.
+//  Created by Tenfay on 2023/2/27.
+//  Copyright © 2023 Tenfay. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

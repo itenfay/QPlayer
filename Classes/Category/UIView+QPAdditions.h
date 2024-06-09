@@ -1,8 +1,8 @@
 //
 //  UIView+QPAdditions.h
 //
-//  Created by chenxing on 2016/8/9. ( https://github.com/chenxing640/QPlayer )
-//  Copyright © 2016 chenxing. All rights reserved.
+//  Created by Tenfay on 2016/8/9. ( https://github.com/itenfay/QPlayer )
+//  Copyright © 2016 Tenfay. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

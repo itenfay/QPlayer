@@ -250,7 +250,8 @@
     self.overlayLabel.hidden = NO;
 }
 
-- (void)hideOverlayLayer {
+- (void)hideOverlayLayer 
+{
     self.overlayLabel.hidden = YES;
 }
 

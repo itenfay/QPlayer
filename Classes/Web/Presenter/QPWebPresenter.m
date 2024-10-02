@@ -109,7 +109,7 @@ typedef void (^LoadDidFinishBlock)(BOOL);
 
 - (void)changeSearchControllerCancelButtonWidth
 {
-    UIViewController *vc = [self yf_currentViewController];
+    UIViewController *vc = [self tf_currentViewController];
     vc = vc.parentViewController;
     if ([vc isKindOfClass:PYSearchViewController.class]) {
         PYSearchViewController *searchVC = (PYSearchViewController *)vc;

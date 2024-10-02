@@ -41,7 +41,7 @@
  @param height 缩略图的高度
  @return 返回UIImage对象的Block，执行即可得到缩略图
  */
-- (UIImage *(^)(NSURL *url, NSTimeInterval seekTime, int width, int height))yf_videoThumbnailImage;
+- (UIImage *(^)(NSURL *url, NSTimeInterval seekTime, int width, int height))tf_videoThumbnailImage;
 
 /**
  精准获取视频缩略图
@@ -52,38 +52,38 @@
  @param accurate 指定是否使用精准获取缩略图
  @return 返回UIImage对象的Block，执行即可得到缩略图
  */
-- (UIImage *(^)(NSURL *url, NSTimeInterval seekTime, int width, int height, BOOL accurate))yf_videoThumbnailImageX;
+- (UIImage *(^)(NSURL *url, NSTimeInterval seekTime, int width, int height, BOOL accurate))tf_videoThumbnailImageX;
 
 /**
  获取视频总时长，单位是秒
  @param url 待探测格式的文件地址，该地址可以是本地地址或者服务器地址
  @return 返回int的Block，执行即可得到视频总时长
  */
-- (int (^)(NSURL *url))yf_videoDuration;
+- (int (^)(NSURL *url))tf_videoDuration;
 
-- (void)yf_takeThumbnailWithURL:(NSURL *)aURL completionHandler:(void(^)(UIImage *))completionHandler;
-- (void)yf_takeThumbnailWithURL:(NSURL *)aURL forTime:(Float64)time completionHandler:(void(^)(UIImage *))completionHandler;
+- (void)tf_takeThumbnailWithURL:(NSURL *)aURL completionHandler:(void(^)(UIImage *))completionHandler;
+- (void)tf_takeThumbnailWithURL:(NSURL *)aURL forTime:(Float64)time completionHandler:(void(^)(UIImage *))completionHandler;
 
 /// Returns a new version of the image that uses always template mode.
-- (UIImage *)yf_imageRenderingAlwaysTemplate:(NSString *)name;
-- (UIImage *(^)(UIImage *image))yf_originalImage;
+- (UIImage *)tf_imageRenderingAlwaysTemplate:(NSString *)name;
+- (UIImage *(^)(UIImage *image))tf_originalImage;
 
-- (UIImage *)yf_imageWithColor:(UIColor *)color;
-- (UIImage *)yf_imageWithColor:(UIColor *)color rect:(CGRect)rect;
-- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect;
-- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect atPoint:(CGPoint)point;
+- (UIImage *)tf_imageWithColor:(UIColor *)color;
+- (UIImage *)tf_imageWithColor:(UIColor *)color rect:(CGRect)rect;
+- (UIImage *)tf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect;
+- (UIImage *)tf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect atPoint:(CGPoint)point;
 
-- (NSArray<UIWindow *> *)yf_activeWindows;
+- (NSArray<UIWindow *> *)tf_activeWindows;
 /// Returns a main window.
-- (UIWindow *)yf_mainWindow;
+- (UIWindow *)tf_mainWindow;
 
 /// Returns the current navigation controller.
-- (UINavigationController *)yf_currentNavigationController;
+- (UINavigationController *)tf_currentNavigationController;
 
 /// Returns the current view controller.
-- (UIViewController *)yf_currentViewController;
+- (UIViewController *)tf_currentViewController;
 
 /// Queries and returns the current view controller from the specified view controller.
-- (UIViewController *)yf_queryCurrentViewControllerFrom:(UIViewController *)viewController;
+- (UIViewController *)tf_queryCurrentViewControllerFrom:(UIViewController *)viewController;
 
 @end

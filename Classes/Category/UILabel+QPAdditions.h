@@ -10,15 +10,15 @@
 @interface UILabel (QPAdditions)
 
 // Return a fit height with a text, limited width and font.
-- (CGFloat)yf_heightWithText:(NSString *)text limitedWidth:(CGFloat)limitedWidth font:(UIFont *)font;
+- (CGFloat)tf_heightWithText:(NSString *)text limitedWidth:(CGFloat)limitedWidth font:(UIFont *)font;
 
 // Return a block with a text, limited width and font, it returns a fit height.
-- (CGFloat (^)(NSString *text, CGFloat limitedWidth, UIFont *font))yf_heightToFit;
+- (CGFloat (^)(NSString *text, CGFloat limitedWidth, UIFont *font))tf_heightToFit;
 
 // Return a fit height with a attributed text, limited width and font.
-- (CGFloat)yf_heightWithAttributedText:(NSAttributedString *)attributedText limitedWidth:(CGFloat)limitedWidth font:(UIFont *)font;
+- (CGFloat)tf_heightWithAttributedText:(NSAttributedString *)attributedText limitedWidth:(CGFloat)limitedWidth font:(UIFont *)font;
 
 // Return a block with a attributed text, limited width and font, it returns a fit height.
-- (CGFloat (^)(NSAttributedString *attributedText, CGFloat limitedWidth, UIFont *font))yf_attributedTextHeightToFit;
+- (CGFloat (^)(NSAttributedString *attributedText, CGFloat limitedWidth, UIFont *font))tf_attributedTextHeightToFit;
 
 @end

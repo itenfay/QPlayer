@@ -31,9 +31,9 @@
 - (void)setThumbnail:(NSString *)filePath
 {
     NSURL *url = [NSURL fileURLWithPath:filePath];
-    //UIImage *thumbnail = self.yf_videoThumbnailImage(url, 3, 107, 60);
+    //UIImage *thumbnail = self.tf_videoThumbnailImage(url, 3, 107, 60);
     @QPWeakify(self);
-    [self yf_takeThumbnailWithURL:url forTime:3 completionHandler:^(UIImage *thumbnail) {
+    [self tf_takeThumbnailWithURL:url forTime:3 completionHandler:^(UIImage *thumbnail) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [weak_self.thumbnailImgView setBackgroundColor:QPColorFromRGB(36, 39, 46)];
             [weak_self.thumbnailImgView setImage:thumbnail];
@@ -75,7 +75,7 @@
 - (void)setText:(NSString *)filePath fileSize:(double)fileSize
 {
     NSURL *aURL = [NSURL fileURLWithPath:filePath];
-    int duration = self.yf_videoDuration(aURL);
+    int duration = self.tf_videoDuration(aURL);
     NSString *timeString = [AppHelper formatVideoDuration:duration];
     
     double ret = fileSize / 1000.0;

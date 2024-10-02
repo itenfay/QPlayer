@@ -77,7 +77,7 @@
 - (void)setup
 {
     UIImage *htbItemImage = QPImageNamed(@"tabbar_item_home_00");
-    UIImage *htbItemSelectedImage = self.yf_originalImage(QPImageNamed(@"tabbar_item_home_01"));
+    UIImage *htbItemSelectedImage = self.tf_originalImage(QPImageNamed(@"tabbar_item_home_01"));
     
     QPHomeViewController *homeVC = [[QPHomeViewController alloc] init];
     homeVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"本地资源"
@@ -86,7 +86,7 @@
     BaseNavigationController *hnc = [self supplyNavigationController:homeVC];
     
     UIImage *stbItemImage = QPImageNamed(@"tabbar_item_browser_00");
-    UIImage *stbItemSelectedImage = self.yf_originalImage(QPImageNamed(@"tabbar_item_browser_01"));
+    UIImage *stbItemSelectedImage = self.tf_originalImage(QPImageNamed(@"tabbar_item_browser_01"));
     
     QPSearchViewController *searchVC = [[QPSearchViewController alloc] init];
     searchVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"打开网址"
@@ -95,7 +95,7 @@
     BaseNavigationController *snc = [self supplyNavigationController:searchVC];
     
     UIImage *settbItemImage = QPImageNamed(@"tabbar_item_setting_00");
-    UIImage *settbItemSelectedImage = self.yf_originalImage(QPImageNamed(@"tabbar_item_setting_01"));
+    UIImage *settbItemSelectedImage = self.tf_originalImage(QPImageNamed(@"tabbar_item_setting_01"));
     
     QPSettingsViewController *settingsVC = [[QPSettingsViewController alloc] init];
     settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"设置"
@@ -128,8 +128,8 @@
             self.tabBar.scrollEdgeAppearance = appearance;
         }
     } else {
-        [self.tabBar setBackgroundImage:[self yf_imageWithColor:backgroundColor]];
-        [self.tabBar setShadowImage:[self yf_imageWithColor:UIColor.clearColor]];
+        [self.tabBar setBackgroundImage:[self tf_imageWithColor:backgroundColor]];
+        [self.tabBar setShadowImage:[self tf_imageWithColor:UIColor.clearColor]];
     }
 }
 
@@ -162,11 +162,11 @@
     //if (_isDarkMode) { //selectedColor = QPColorFromRGB(39, 220, 203); }
     UIImage *bgImage;
     if (_isDarkMode) {
-        bgImage = [self yf_imageWithColor:QPColorFromRGB(88, 88, 88)];
+        bgImage = [self tf_imageWithColor:QPColorFromRGB(88, 88, 88)];
     } else {
-        bgImage = [self yf_imageWithColor:QPColorFromRGB(188, 188, 188)];
+        bgImage = [self tf_imageWithColor:QPColorFromRGB(188, 188, 188)];
     }
-    UIImage *shadowImage = [self yf_imageWithColor:UIColor.clearColor];
+    UIImage *shadowImage = [self tf_imageWithColor:UIColor.clearColor];
     
     UIFont *font = [UIFont boldSystemFontOfSize:13.f];
     UITabBarItem *tabBarItem = [UITabBarItem appearance];
@@ -195,8 +195,8 @@
             [appearance configureWithTransparentBackground];
             self.tabBar.standardAppearance = appearance;
         } else {
-            [self.tabBar setBackgroundImage:[self yf_imageWithColor:QPColorFromRGB(188, 188, 188)]];
-            [self.tabBar setShadowImage:[self yf_imageWithColor:UIColor.clearColor]];
+            [self.tabBar setBackgroundImage:[self tf_imageWithColor:QPColorFromRGB(188, 188, 188)]];
+            [self.tabBar setShadowImage:[self tf_imageWithColor:UIColor.clearColor]];
         }
     } else {
         if (@available(iOS 10.0, *)) {

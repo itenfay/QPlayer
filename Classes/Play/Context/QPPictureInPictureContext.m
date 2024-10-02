@@ -309,6 +309,7 @@
     } else {
         [self recoverPlayer];
     }
+    
     completionHandler(YES);
 }
 
@@ -339,7 +340,6 @@
 }
 
 - (void)player:(EasyPlayer *)player loadedBuffer:(float)buffer duration:(float)duration {
-    QPLog(@"[I] [Load] loadedBuffer=%.2f, duration=%.2f", buffer, duration);
     QPLog(@"[I] [Load] current=%@, total=%@", [player formatMediaTime:buffer], [player formatMediaTime:duration]);
 }
 

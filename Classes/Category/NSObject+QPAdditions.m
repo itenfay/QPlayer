@@ -118,7 +118,7 @@
     return [self colorImage:rect cornerRadius:cornerRadius backgroudColor:bgColor borderWidth:borderWidth borderColor:borderColor];
 }
 
-- (UIImage *(^)(NSURL *url, NSTimeInterval seekTime, int width, int height))yf_videoThumbnailImage
+- (UIImage *(^)(NSURL *url, NSTimeInterval seekTime, int width, int height))tf_videoThumbnailImage
 {
     UIImage *(^ThumbnailBlock)(NSURL *url, NSTimeInterval seekTime, int width, int height)
     = ^UIImage *(NSURL *url, NSTimeInterval seekTime, int width, int height) {
@@ -133,7 +133,7 @@
     return ThumbnailBlock;
 }
 
-- (UIImage *(^)(NSURL *url, NSTimeInterval seekTime, int width, int height, BOOL accurate))yf_videoThumbnailImageX
+- (UIImage *(^)(NSURL *url, NSTimeInterval seekTime, int width, int height, BOOL accurate))tf_videoThumbnailImageX
 {
     UIImage *(^ThumbnailBlock)(NSURL *url, NSTimeInterval seekTime, int width, int height, BOOL accurate)
     = ^UIImage *(NSURL *url, NSTimeInterval seekTime, int width, int height, BOOL accurate) {
@@ -148,7 +148,7 @@
     return ThumbnailBlock;
 }
 
-- (int (^)(NSURL *url))yf_videoDuration
+- (int (^)(NSURL *url))tf_videoDuration
 {
     // int (^VideoDurationBlock)(NSURL *url) = ...;
     // return VideoDurationBlock;
@@ -171,12 +171,12 @@
     };
 }
 
-- (void)yf_takeThumbnailWithURL:(NSURL *)aURL completionHandler:(void (^)(UIImage *))completionHandler
+- (void)tf_takeThumbnailWithURL:(NSURL *)aURL completionHandler:(void (^)(UIImage *))completionHandler
 {
-    [self yf_takeThumbnailWithURL:aURL forTime:0.3 completionHandler:completionHandler];
+    [self tf_takeThumbnailWithURL:aURL forTime:0.3 completionHandler:completionHandler];
 }
 
-- (void)yf_takeThumbnailWithURL:(NSURL *)aURL forTime:(Float64)time completionHandler:(void (^)(UIImage *))completionHandler
+- (void)tf_takeThumbnailWithURL:(NSURL *)aURL forTime:(Float64)time completionHandler:(void (^)(UIImage *))completionHandler
 {
     NSDictionary *opts = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
     AVURLAsset *asset = [AVURLAsset.alloc initWithURL:aURL options:opts];
@@ -206,13 +206,13 @@
     }
 }
 
-- (UIImage *)yf_imageRenderingAlwaysTemplate:(NSString *)name
+- (UIImage *)tf_imageRenderingAlwaysTemplate:(NSString *)name
 {
     UIImage *image = QPImageNamed(name);
     return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
-- (UIImage *(^)(UIImage *image))yf_originalImage
+- (UIImage *(^)(UIImage *image))tf_originalImage
 {
     UIImage *(^block)(UIImage *image) = ^UIImage *(UIImage *image) {
         UIImageRenderingMode imgRenderingMode = UIImageRenderingModeAlwaysOriginal;
@@ -221,13 +221,13 @@
     return block;
 }
 
-- (UIImage *)yf_imageWithColor:(UIColor *)color
+- (UIImage *)tf_imageWithColor:(UIColor *)color
 {
     CGRect rect = CGRectMake(0, 0, 1, 1);
-    return [self yf_imageWithColor:color rect:rect];
+    return [self tf_imageWithColor:color rect:rect];
 }
 
-- (UIImage *)yf_imageWithColor:(UIColor *)color rect:(CGRect)rect
+- (UIImage *)tf_imageWithColor:(UIColor *)color rect:(CGRect)rect
 {
     UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
     [color setFill];
@@ -237,7 +237,7 @@
     return image;
 }
 
-- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect
+- (UIImage *)tf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect
 {
     [backgroundImage drawInRect:rect];
     CGFloat fgw = foregroundImage.size.width;
@@ -250,7 +250,7 @@
     return image;
 }
 
-- (UIImage *)yf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect atPoint:(CGPoint)point
+- (UIImage *)tf_drawImage:(UIImage *)foregroundImage inBackgroundImage:(UIImage *)backgroundImage withRect:(CGRect)rect atPoint:(CGPoint)point
 {
     [backgroundImage drawInRect:rect];
     CGFloat fgw = foregroundImage.size.width;
@@ -261,7 +261,7 @@
     return image;
 }
 
-- (NSArray<UIWindow *> *)yf_activeWindows
+- (NSArray<UIWindow *> *)tf_activeWindows
 {
     UIApplication *sharedApp = UIApplication.sharedApplication;
     if (@available(iOS 13.0, *)) {
@@ -279,11 +279,11 @@
     }
 }
 
-- (UIWindow *)yf_mainWindow
+- (UIWindow *)tf_mainWindow
 {
     UIWindow *window;
     NSMutableArray<UIWindow *> *mWindows = [NSMutableArray arrayWithCapacity:0];
-    NSArray<UIWindow *> *tWindows = [self yf_activeWindows];
+    NSArray<UIWindow *> *tWindows = [self tf_activeWindows];
     for (UIWindow *w in tWindows) {
         if (w.isKeyWindow) { [mWindows addObject:w]; }
     }
@@ -291,18 +291,18 @@
     return window;
 }
 
-- (UINavigationController *)yf_currentNavigationController
+- (UINavigationController *)tf_currentNavigationController
 {
-    return self.yf_currentViewController.navigationController;
+    return self.tf_currentViewController.navigationController;
 }
 
-- (UIViewController *)yf_currentViewController
+- (UIViewController *)tf_currentViewController
 {
-    UIWindow *window = [self yf_mainWindow];
-    return [self yf_queryCurrentViewControllerFrom:window.rootViewController];
+    UIWindow *window = [self tf_mainWindow];
+    return [self tf_queryCurrentViewControllerFrom:window.rootViewController];
 }
 
-- (UIViewController *)yf_queryCurrentViewControllerFrom:(UIViewController *)viewController
+- (UIViewController *)tf_queryCurrentViewControllerFrom:(UIViewController *)viewController
 {
     UIViewController *vc = viewController;
     while (1) {

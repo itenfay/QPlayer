@@ -9,7 +9,7 @@
 
 @implementation UILabel (QPAdditions)
 
-- (CGFloat)yf_heightWithText:(NSString *)text limitedWidth:(CGFloat)limitedWidth font:(UIFont *)font
+- (CGFloat)tf_heightWithText:(NSString *)text limitedWidth:(CGFloat)limitedWidth font:(UIFont *)font
 {
     self.text          = text;
     self.font          = font;
@@ -18,7 +18,7 @@
     return size.height;
 }
 
-- (CGFloat (^)(NSString *, CGFloat, UIFont *))yf_heightToFit
+- (CGFloat (^)(NSString *, CGFloat, UIFont *))tf_heightToFit
 {
     __weak typeof(self) weakSelf = self;
     CGFloat (^block)(NSString *, CGFloat, UIFont *) = ^CGFloat (NSString *text, CGFloat limitedWidth, UIFont *font) {
@@ -31,7 +31,7 @@
     return block;
 }
 
-- (CGFloat)yf_heightWithAttributedText:(NSAttributedString *)attributedText limitedWidth:(CGFloat)limitedWidth font:(UIFont *)font
+- (CGFloat)tf_heightWithAttributedText:(NSAttributedString *)attributedText limitedWidth:(CGFloat)limitedWidth font:(UIFont *)font
 {
     self.attributedText = attributedText;
     self.font           = font;
@@ -40,7 +40,7 @@
     return size.height;
 }
 
-- (CGFloat (^)(NSAttributedString *, CGFloat, UIFont *))yf_attributedTextHeightToFit
+- (CGFloat (^)(NSAttributedString *, CGFloat, UIFont *))tf_attributedTextHeightToFit
 {
     __weak typeof(self) weakSelf = self;
     CGFloat (^block)(NSAttributedString *, CGFloat, UIFont *) = ^CGFloat (NSAttributedString *attributedText, CGFloat limitedWidth, UIFont *font) {

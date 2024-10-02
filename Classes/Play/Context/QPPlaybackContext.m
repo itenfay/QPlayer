@@ -15,22 +15,28 @@
 
 @implementation QPPlaybackContext
 
-- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString
+- (void)playVideoWithTitle:(NSString *)title 
+                 urlString:(NSString *)urlString
 {
     [self playVideoWithTitle:title urlString:urlString playerType:QPPlayerTypeZFPlayer];
 }
 
-- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type
+- (void)playVideoWithTitle:(NSString *)title 
+                 urlString:(NSString *)urlString
+                playerType:(QPPlayerType)type
 {
     [self playVideoWithTitle:title urlString:urlString playerType:type seekToTime:0];
 }
 
-- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type seekToTime:(NSTimeInterval)time
+- (void)playVideoWithTitle:(NSString *)title 
+                 urlString:(NSString *)urlString
+                playerType:(QPPlayerType)type
+                seekToTime:(NSTimeInterval)time
 {
     if (!QPPlayerIsPlaying() && QPDetermineWhetherToPlay()) {
         QPPictureInPictureContext *ctx = QPAppDelegate.pipContext;
         if ([ctx isPictureInPictureValid]) {
-            [ctx stopPictureInPicture];
+            [ctx reset];
         }
         QPPlayerSavePlaying(YES);
         QP_After_Dispatch(1.0, ^{
@@ -57,10 +63,8 @@
                 model.seekToTime = time;
             }
             QPPlayerController *qpc = [[QPPlayerController alloc] initWithModel:model];
-            UINavigationController *nc = self.yf_currentViewController.navigationController;
-            if (nc) {
-                [nc pushViewController:qpc animated:YES];
-            };
+            UINavigationController *nc = self.tf_currentViewController.navigationController;
+            if (nc) { [nc pushViewController:qpc animated:YES]; };
         });
     } else {
         QP_After_Dispatch(1.0, ^{
@@ -74,7 +78,7 @@
     if (!QPPlayerIsPlaying() && QPDetermineWhetherToPlay()) {
         QPPictureInPictureContext *ctx = QPAppDelegate.pipContext;
         if ([ctx isPictureInPictureValid]) {
-            [ctx stopPictureInPicture];
+            [ctx reset];
         }
         QPPlayerSavePlaying(YES);
         QP_After_Dispatch(1.0, ^{
@@ -89,10 +93,8 @@
             playerModel.isMediaPlayerPlayback = model.isMediaPlayerPlayback;
             playerModel.seekToTime = model.seekToTime;
             QPPlayerController *playerVC = [[QPPlayerController alloc] initWithModel:playerModel];
-            UINavigationController *nc = self.yf_currentNavigationController;
-            if (nc) {
-                [nc pushViewController:playerVC animated:YES];
-            }
+            UINavigationController *nc = self.tf_currentNavigationController;
+            if (nc) { [nc pushViewController:playerVC animated:YES]; }
         });
     } else {
         QP_After_Dispatch(1.0, ^{

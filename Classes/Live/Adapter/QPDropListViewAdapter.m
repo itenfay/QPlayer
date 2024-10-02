@@ -73,7 +73,7 @@
     }];
     [vc addAction:confirmAction];
     
-    [self.yf_currentViewController presentViewController:vc animated:YES completion:^{}];
+    [self.tf_currentViewController presentViewController:vc animated:YES completion:^{}];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

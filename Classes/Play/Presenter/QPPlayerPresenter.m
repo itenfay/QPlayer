@@ -31,8 +31,8 @@
             [IJKFFMoviePlayerController setLogReport:YES];
             [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_DEBUG];
             #else
-            [IJKFFMoviePlayerController setLogReport:NO];
-            [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_ERROR];
+            //[IJKFFMoviePlayerController setLogReport:NO];
+            //[IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_ERROR];
             #endif
             NSURL *url = [NSURL URLWithString:vc.model.videoUrl];
             ZFIJKPlayerManager *playerManager = [[ZFIJKPlayerManager alloc] init];
@@ -52,7 +52,7 @@
             // 跳过帧
             [playerManager.options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame" ofCategory:kIJKFFOptionCategoryCodec];
             NSString *scheme = [url.scheme lowercaseString];
-            QPLog(@"[URL] scheme=%@", scheme);
+            QPLog(@"[I] url.scheme=%@", scheme);
             // 延时优化
             if ([scheme hasPrefix:@"rtmp"] || [scheme hasPrefix:@"rtsp"]) {
                 // 视频帧率
@@ -108,10 +108,10 @@
 - (void)takeCoverImageWithURL:(NSURL *)aURL
 {
     // For KSYMediaPlayer.
-    //UIImage *thumbnail = self.yf_videoThumbnailImage(aURL, 3, 107, 60);
+    //UIImage *thumbnail = self.tf_videoThumbnailImage(aURL, 3, 107, 60);
     
     //@QPWeakify(self);
-    //[self yf_takeThumbnailWithURL:aURL forTime:3 completionHandler:^(UIImage *image) {
+    //[self tf_takeThumbnailWithURL:aURL forTime:3 completionHandler:^(UIImage *image) {
     //    @QPStrongify(self);
     //    dispatch_async(dispatch_get_main_queue(), ^{
     //        [strong_self configureControlView:image];
@@ -187,10 +187,18 @@
     
     self.player.playerApperaPercent      = 0.0;
     self.player.playerDisapperaPercent   = 1.0;
-    self.player.allowOrentitaionRotation = NO; // 是否允许自动全屏，NO不允许
-    self.player.pauseWhenAppResignActive = YES; // 设置退到后台继续播放
+    self.player.allowOrentitaionRotation = YES; // 是否允许自动全屏，NO不允许
+    self.player.pauseWhenAppResignActive = NO;  // 设置退到后台继续播放
     //self.player.resumePlayRecord = YES; // 是否内存缓存播放
     
+    [self onListenPlayerCallback:vc];
+    
+    if (vc.model.seekToTime > 0) {
+        [self seekToTime:vc.model.seekToTime];
+    }
+}
+
+- (void)onListenPlayerCallback:(QPPlayerController *)vc {
     //Force the user interface orientation to rotate landscape left.
     //self.player.orientationObserver.supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
     //[self.player rotateToOrientation:UIInterfaceOrientationLandscapeLeft animated:NO completion:NULL];
@@ -199,25 +207,14 @@
         @zf_strongify(self)
         [self.player rotateToOrientation:UIInterfaceOrientationPortrait animated:YES completion:NULL];
     };
-    
-    [self onListenPlaybackCallback];
-    
-    if (vc.model.seekToTime > 0) {
-        [self seekToTime:vc.model.seekToTime];
-    }
-}
-
-- (void)onListenPlaybackCallback {
-    @zf_weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        QPLog(@"isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
+        QPLog(@"[I] isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
         QPAppDelegate.allowOrentitaionRotation = isFullScreen;
     };
-    
     self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        QPLog(@"isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
+        QPLog(@"[I] isFullScreen=%@", isFullScreen ? @"YES" : @"NO");
         @zf_strongify(self)
-        NSArray<UIWindow *> *windows = [self yf_activeWindows];
+        NSArray<UIWindow *> *windows = [self tf_activeWindows];
         QPPlayerController *vc = [self playViewController];
         // 使用YYTextView转屏失败
         for (UIWindow *window in windows) {
@@ -240,32 +237,44 @@
         [vc needsStatusBarAppearanceUpdate];
         //[vc needsUpdateOfSupportedInterfaceOrientations];
     };
-    
+    self.player.playerLoadStateChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, ZFPlayerLoadState loadState) {
+        QPLog(@"[I] loadState=%zi", loadState);
+        @zf_strongify(self)
+        [self handleLoadState:loadState];
+    };
+    self.player.playerPlayStateChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, ZFPlayerPlaybackState playState) {
+        QPLog(@"[I] playState=%zi", playState);
+    };
     self.player.playerDidToEnd = ^(id<ZFPlayerMediaPlayback> _Nonnull asset) {
-        QPLog(@"asset=%@", asset);
+        QPLog(@"[I] asset=%@", asset);
     };
-    
     self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, id _Nonnull error) {
-        QPLog(@"asset=%@, error=%@", asset, error);
+        QPLog(@"[I] asset=%@, error=%@", asset, error);
     };
-    
     self.player.playerPlayTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval currentTime, NSTimeInterval duration) {
-        QPLog(@"asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
-        //[weak_self takeThumbnailImageOfSpecifiedTime:currentTime];
+        QPLog(@"[I] asset=%@, currentTime=%.2f, duration=%.2f", asset, currentTime, duration);
+        //[weak_self takeThumbnailImageAtSpecifiedTime:currentTime];
     };
-    
     self.player.playerBufferTimeChanged = ^(id<ZFPlayerMediaPlayback> _Nonnull asset, NSTimeInterval bufferTime) {
-        QPLog(@"asset=%@, bufferTime=%.2f", asset, bufferTime);
+        QPLog(@"[I] asset=%@, bufferTime=%.2f", asset, bufferTime);
     };
 }
 
-- (void)takeThumbnailImageOfSpecifiedTime:(NSTimeInterval)currentTime
+- (void)takeThumbnailImageAtSpecifiedTime:(NSTimeInterval)currentTime
 {
     if (currentTime > .5 && currentTime < 2) {
         QP_Run_OnMainThread(^{
             UIImage *thumbnailImage = [self.player.currentPlayerManager thumbnailImageAtCurrentTime];
             [self configureControlView:thumbnailImage];
         });
+    }
+}
+
+- (void)handleLoadState:(ZFPlayerLoadState)loadState 
+{
+    // Playback will be automatically paused in this state, if started.
+    if (loadState == ZFPlayerLoadStateStalled) {
+        [self.player.currentPlayerManager play];
     }
 }
 

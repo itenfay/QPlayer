@@ -25,4 +25,6 @@
 - (void)startPictureInPicture;
 - (void)stopPictureInPicture;
 
+- (void)reset;
+
 @end

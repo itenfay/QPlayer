@@ -315,7 +315,7 @@
         completionHandler(NO);
     }];
     [alertController addAction:cancelAction];
-    [self.yf_currentViewController presentViewController:alertController animated:true completion:NULL];
+    [self.tf_currentViewController presentViewController:alertController animated:true completion:NULL];
 }
 
 - (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler

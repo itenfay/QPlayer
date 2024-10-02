@@ -9,8 +9,8 @@
 #import "BaseContext.h"
 
 typedef NS_ENUM(NSUInteger, QPPlayerType) {
-    QPPlayerTypeZFPlayer, // zfplayer
-    QPPlayerTypeIJKPlayer, // ijkplayer
+    QPPlayerTypeZFPlayer,       // zfplayer
+    QPPlayerTypeIJKPlayer,      // ijkplayer
     QPPlayerTypeKSYMediaPlayer, // ksymediaplayer
 };
 
@@ -18,9 +18,18 @@ typedef NS_ENUM(NSUInteger, QPPlayerType) {
 
 @interface QPPlaybackContext : BaseContext
 
-- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString;
-- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type;
-- (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString playerType:(QPPlayerType)type seekToTime:(NSTimeInterval)time;
+- (void)playVideoWithTitle:(NSString *)title
+                 urlString:(NSString *)urlString;
+
+- (void)playVideoWithTitle:(NSString *)title
+                 urlString:(NSString *)urlString
+                playerType:(QPPlayerType)type;
+
+- (void)playVideoWithTitle:(NSString *)title
+                 urlString:(NSString *)urlString
+                playerType:(QPPlayerType)type
+                seekToTime:(NSTimeInterval)time;
+
 - (void)playVideoWithModel:(QPPlayerModel *)model;
 
 @end

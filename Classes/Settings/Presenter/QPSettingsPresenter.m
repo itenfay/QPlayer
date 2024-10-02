@@ -119,7 +119,7 @@
     
     CGFloat tX = 2*BaseLeftMargin;
     CGFloat tW = headerView.width - 2*tX;
-    CGFloat tH = titleLabel.yf_heightToFit(titleLabel.text, tW, titleLabel.font);
+    CGFloat tH = titleLabel.tf_heightToFit(titleLabel.text, tW, titleLabel.font);
     CGFloat tY = 1.5*BaseTopMargin;
     titleLabel.left = tX;
     titleLabel.top = tY;
@@ -154,7 +154,7 @@
     CGFloat tX = 2*BaseLeftMargin;
     CGFloat tY = BaseTopMargin;
     CGFloat tW = footerView.width - 2*tX;
-    CGFloat tH = titleLabel.yf_heightToFit(titleLabel.text, tW, titleLabel.font);
+    CGFloat tH = titleLabel.tf_heightToFit(titleLabel.text, tW, titleLabel.font);
     titleLabel.left = tX;
     titleLabel.top = tY;
     titleLabel.width = tW;

@@ -82,6 +82,7 @@
 		14F52216232BF1D400C866D1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F52215232BF1D400C866D1 /* libxml2.tbd */; };
 		497B36622BD44A5900733FE8 /* QPPlaybackSettingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 497B36612BD44A5900733FE8 /* QPPlaybackSettingPanel.m */; };
 		4986260B2BC53FCC000F6FF0 /* EasyPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4986260A2BC53FCC000F6FF0 /* EasyPlayer.m */; };
+		498BECFC2CB16B2F002A4392 /* QPWebCustomToolBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498BECFB2CB16B2F002A4392 /* QPWebCustomToolBarView.m */; };
 		7904DED629AF3C280030A748 /* QPHomeListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7904DED429AF3C280030A748 /* QPHomeListViewAdapter.m */; };
 		7904DED929AF540E0030A748 /* QPFileModelPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7904DED829AF540E0030A748 /* QPFileModelPresenter.m */; };
 		790F5D9629A45F6100B59422 /* BaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 790F5D9529A45F6100B59422 /* BaseCollectionViewCell.m */; };
@@ -279,6 +280,8 @@
 		497B36612BD44A5900733FE8 /* QPPlaybackSettingPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPPlaybackSettingPanel.m; sourceTree = "<group>"; };
 		498626092BC53FCC000F6FF0 /* EasyPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EasyPlayer.h; sourceTree = "<group>"; };
 		4986260A2BC53FCC000F6FF0 /* EasyPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EasyPlayer.m; sourceTree = "<group>"; };
+		498BECFA2CB16B2F002A4392 /* QPWebCustomToolBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPWebCustomToolBarView.h; sourceTree = "<group>"; };
+		498BECFB2CB16B2F002A4392 /* QPWebCustomToolBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPWebCustomToolBarView.m; sourceTree = "<group>"; };
 		60680FC631705B531937CD6E /* libPods-QPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7904DED429AF3C280030A748 /* QPHomeListViewAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPHomeListViewAdapter.m; sourceTree = "<group>"; };
 		7904DED529AF3C280030A748 /* QPHomeListViewAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPHomeListViewAdapter.h; sourceTree = "<group>"; };
@@ -981,6 +984,8 @@
 			children = (
 				497B36602BD44A5900733FE8 /* QPPlaybackSettingPanel.h */,
 				497B36612BD44A5900733FE8 /* QPPlaybackSettingPanel.m */,
+				498BECFA2CB16B2F002A4392 /* QPWebCustomToolBarView.h */,
+				498BECFB2CB16B2F002A4392 /* QPWebCustomToolBarView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1411,6 +1416,7 @@
 				79A1249029AC76EE00667B3C /* AppHelper.m in Sources */,
 				793BAB8129B07EC6000EF92B /* QPSettingsModel.m in Sources */,
 				799A919C29B709F4007735F0 /* QPWebController.m in Sources */,
+				498BECFC2CB16B2F002A4392 /* QPWebCustomToolBarView.m in Sources */,
 				141B170D25C93B46008C465C /* string_piece.c in Sources */,
 				96532C681F5E814E00E66A2F /* HTTPConnection.m in Sources */,
 				141B171F25C93B46008C465C /* QPAboutMeViewController.m in Sources */,
@@ -1640,7 +1646,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = S96K5NZ7N7;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1649,12 +1655,11 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.8.2;
+				MARKETING_VERSION = 3.9.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-licucore",
-					"-l\"FDFullscreenPopGesture\"",
 					"-l\"MJRefresh\"",
 					"-l\"SVBlurView\"",
 					"-framework",
@@ -1681,7 +1686,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = S96K5NZ7N7;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1690,12 +1695,11 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.8.2;
+				MARKETING_VERSION = 3.9.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-licucore",
-					"-l\"FDFullscreenPopGesture\"",
 					"-l\"MJRefresh\"",
 					"-l\"SVBlurView\"",
 					"-framework",

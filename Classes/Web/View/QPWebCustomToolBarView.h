@@ -9,5 +9,12 @@
 #import "BaseView.h"
 
 @interface QPWebCustomToolBarView : BaseView
+@property (nonatomic, copy) void (^onItemClick)(NSInteger index);
+
+- (instancetype)initWithFrame:(CGRect)frame
+                 cornerRadius:(CGFloat)cornerRadius
+                 needSettings:(BOOL)needSettings;
+
+- (void)updateAppearance:(BOOL)isDark;
 
 @end

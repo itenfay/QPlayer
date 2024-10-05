@@ -9,83 +9,93 @@
 #import "QPWebCustomToolBarView.h"
 
 @interface QPWebCustomToolBarView ()
-@property (nonatomic, strong) UIColor *imageBgColor;
 @property (nonatomic, assign) CGFloat cornerRadius;
+@property (nonatomic, assign) BOOL needSettings;
 @end
 
 @implementation QPWebCustomToolBarView
 
 - (instancetype)initWithFrame:(CGRect)frame
-                 imageBgColor:(UIColor *)imageBgColor
                  cornerRadius:(CGFloat)cornerRadius
+                 needSettings:(BOOL)needSettings;
 {
     if (self = [super initWithFrame:frame]) {
         self.frame = frame;
-        self.imageBgColor = imageBgColor;
         self.cornerRadius = cornerRadius;
-        [self buildAndLayoutToolBar:@selector(tbItemClicked:)];
+        self.needSettings = needSettings;
+        [self buildSubviews:@selector(tbItemClicked:)];
     }
     return self;
 }
 
-- (UIImageView *)buildAndLayoutToolBar:(SEL)selector
-{
-    NSArray *items = @[
-        @"web_reward_13x21",
-        @"web_forward_13x21",
-        @"web_refresh_24x21",
-        @"web_stop_21x21"
-    ];
-    NSUInteger count = items.count;
-    CGFloat hSpace   = 10.f;
-    CGFloat vSpace   = isVertical ? 5.f : 8.f;
-    CGFloat btnW     = 30.f;
-    CGFloat btnH     = 30.f;
-    CGFloat offset   = bVal ? QPTabBarHeight : (QPIsPhoneXAll ? 4 : 2)*vSpace;
-    CGFloat tlbW     = btnW + 2*hSpace;
-    CGFloat tlbH     = count*btnH + (count+1)*vSpace + 4*vSpace;
-    CGFloat tlbX     = QPScreenWidth - tlbW - hSpace;
-    CGFloat tlbY     = self.height - offset - tlbH - 2*vSpace;
-    CGRect  tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
-    
-    if (!isVertical) {
-        tlbX = 1.5*hSpace;
-        tlbW = self.view.width - 2*tlbX;
-        tlbH = btnH + 3*vSpace;
-        tlbY = self.view.height - offset - tlbH - (bVal ? 2*vSpace : 0) + 5.f;
-        tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
-        btnW = (tlbW - (count+1)*hSpace)/count;
+- (NSArray *)items {
+    NSMutableArray *itemArray = @[@"web_reward_13x21",
+                                  @"web_forward_13x21",
+                                  @"web_refresh_24x21",
+                                  @"web_stop_21x21",
+                                  @"⚙︎"
+    ].mutableCopy;
+    if (!self.needSettings) {
+        [itemArray removeLastObject];
     }
+    return itemArray.copy;
+}
+
+- (void)buildSubviews:(SEL)selector
+{
+    NSUInteger count = self.items.count;
+    CGFloat btnW = 24.f;
+    CGFloat btnH = 24.f;
+    CGFloat space = (QPScreenWidth - count * btnW) / (count + 1);
     
-    UIImageView *toolBar    = [[UIImageView alloc] initWithFrame:tlbFrame];
-    toolBar.backgroundColor = [UIColor clearColor];
-    toolBar.image           = [self colorImage:toolBar.bounds
-                                  cornerRadius:15.f
-                                backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
-                                   borderWidth:0.f
-                                   borderColor:nil];
+    UIImageView *imageBgView = [[UIImageView alloc] initWithFrame:self.bounds];
+    imageBgView.backgroundColor = [UIColor clearColor];
+    imageBgView.tag = 99;
+    
+    [self addSubview:imageBgView];
     for (NSUInteger i = 0; i < count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        if (isVertical) {
-            button.frame = CGRectMake(hSpace, (i+1)*vSpace+i*btnH, btnW, btnH);
-        } else {
-            button.frame = CGRectMake((i+1)*vSpace+i*btnW, 1.5*vSpace, btnW, btnH);
-        }
+        button.frame = CGRectMake((i+1)*space+i*btnW, (CGRectGetHeight(self.bounds) - btnH)/2, btnW, btnH);
         button.tag = 100 + i;
         button.showsTouchWhenHighlighted = YES;
-        [button setImage:QPImageNamed(items[i]) forState:UIControlStateNormal];
         [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
-        [toolBar addSubview:button];
+        [imageBgView addSubview:button];
     }
-    toolBar.userInteractionEnabled = YES;
-    [toolBar autoresizing];
+    imageBgView.userInteractionEnabled = YES;
+    [imageBgView autoresizing];
     
-    return toolBar;
+    [self updateAppearance:NO];
+}
+
+- (void)updateAppearance:(BOOL)isDark {
+    UIColor *backgroundColor = isDark ? QPColorFromRGB(20, 20, 20) : UIColor.whiteColor;
+    UIImageView *imageBgView = [self viewWithTag:99];
+    imageBgView.image = [self colorImage:imageBgView.bounds
+                            cornerRadius:self.cornerRadius
+                          backgroudColor: backgroundColor
+                             borderWidth:0.f
+                             borderColor:nil];
+    for (NSUInteger i = 0; i < self.items.count; i++) {
+        UIColor *itemColor = isDark ? UIColor.whiteColor : QPColorFromRGB(20, 20, 20);
+        UIButton *button = [imageBgView viewWithTag:100 + i];
+        if (i == self.items.count - 1 && self.needSettings) {
+            [button setTitle:self.items[i] forState:UIControlStateNormal];
+            [button setTitleColor:itemColor forState:UIControlStateNormal];
+            button.layer.cornerRadius = 12.f;
+            button.layer.borderWidth = 1.f;
+            button.layer.borderColor = itemColor.CGColor;
+        } else {
+            UIImage *image = [QPImageNamed(self.items[i]) imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [button setImage:image forState:UIControlStateNormal];
+            button.tintColor = itemColor;
+        }
+    }
 }
 
 - (void)tbItemClicked:(UIButton *)sender
 {
     NSUInteger index = sender.tag - 100;
+    !self.onItemClick ?: self.onItemClick(index);
 }
 
 @end

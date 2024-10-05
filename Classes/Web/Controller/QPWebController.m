@@ -10,6 +10,7 @@
 
 @interface QPWebController ()
 @property (nonatomic, strong) QPPlaybackSettingPanel *settingPanel;
+@property (nonatomic, strong) QPWebCustomToolBarView *webToolBar;
 @property (nonatomic, assign) BOOL didScroll;
 @end
 
@@ -39,8 +40,14 @@
     [self inspectToolViewsAlpha];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self enableInteractivePopGesture:NO];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [self enableInteractivePopGesture:YES];
     if (self.settingPanel) {
         [self.settingPanel hidePanel:NO];
     }
@@ -49,7 +56,7 @@
 #pragma mark - public methods
 
 - (void)makeUI {
-    [self makeInnerSettingView];
+    //[self makeInnerSettingView];
 }
 
 - (void)makeLayout {
@@ -57,7 +64,17 @@
 }
 
 - (void)makeAction {
-    
+    @QPWeakify(self);
+    self.webToolBar.onItemClick = ^(NSInteger index) {
+        switch (index) {
+            case 0: [weak_self onGoBack]; break;
+            case 1: [weak_self onGoForward]; break;
+            case 2: [weak_self onReload]; break;
+            case 3: [weak_self onStopLoading]; break;
+            case 4: [weak_self onSettingAction]; break;
+            default: break;
+        }
+    };
 }
 
 - (void)setupAdapter:(QPWKWebViewAdapter *)adapter {
@@ -128,44 +145,46 @@
 
 - (void)updateToolBarAppearance
 {
-    BOOL ret = [QPExtractValue(kThemeStyleOnOff) boolValue];
-    
-    UIColor *customDarkColor = [UIColor colorWithWhite:0.1 alpha:0.8];
-    UIColor *customLightColor = [UIColor colorWithWhite:0.1 alpha:0.6];
-    UIColor *bgColor = ret ? (self.isDarkMode ? customDarkColor : customLightColor) : customLightColor;
-    UIView *toolBar = [self webToolBar];
-    
-    if ([toolBar isKindOfClass:UIImageView.class]) {
-        UIImageView *tb = (UIImageView *)toolBar;
-        tb.image = [self colorImage:tb.bounds cornerRadius:15.f backgroudColor:bgColor borderWidth:0.f borderColor:nil];
-    } else {
-        toolBar.backgroundColor = bgColor;
-        toolBar.layer.cornerRadius = 15.f;
-        toolBar.layer.masksToBounds = YES;
-    }
+    /*
+     BOOL ret = [QPExtractValue(kThemeStyleOnOff) boolValue];
+     
+     UIColor *customDarkColor = [UIColor colorWithWhite:0.1 alpha:0.8];
+     UIColor *customLightColor = [UIColor colorWithWhite:0.1 alpha:0.6];
+     UIColor *bgColor = ret ? (self.isDarkMode ? customDarkColor : customLightColor) : customLightColor;
+     UIView *toolBar = [self webToolBar];
+     
+     if ([toolBar isKindOfClass:UIImageView.class]) {
+     UIImageView *tb = (UIImageView *)toolBar;
+     tb.image = [self colorImage:tb.bounds cornerRadius:15.f backgroudColor:bgColor borderWidth:0.f borderColor:nil];
+     } else {
+     toolBar.backgroundColor = bgColor;
+     toolBar.layer.cornerRadius = 15.f;
+     toolBar.layer.masksToBounds = YES;
+     }*/
+    [self.webToolBar updateAppearance:self.isDarkMode];
 }
 
 - (void)showToolViews
 {
     self.didScroll = YES;
     [self cancelHidingToolViews];
-    UIImageView *iv = [self webToolBar];
-    UIView *sv = [self getInnerSettingView];
-    [UIView animateWithDuration:0.3 animations:^{
-        iv.alpha = 1.f;
-        sv.alpha = 1.f;
-    }];
+    //UIImageView *iv = [self webToolBar];
+    //UIView *sv = [self getInnerSettingView];
+    //[UIView animateWithDuration:0.3 animations:^{
+    //iv.alpha = 1.f;
+    //sv.alpha = 1.f;
+    //}];
 }
 
 - (void)hideToolViews
 {
     self.didScroll = NO;
-    UIImageView *iv = [self webToolBar];
-    UIView *sv = [self getInnerSettingView];
-    [UIView animateWithDuration:0.3 animations:^{
-        iv.alpha = 0.f;
-        sv.alpha = 0.f;
-    }];
+    //UIImageView *iv = [self webToolBar];
+    //UIView *sv = [self getInnerSettingView];
+    //[UIView animateWithDuration:0.3 animations:^{
+    //iv.alpha = 0.f;
+    //sv.alpha = 0.f;
+    //}];
 }
 
 - (void)hideToolViewAfterDelay
@@ -185,17 +204,19 @@
         return;
     }
     
-    UIImageView *iv = [self webToolBar];
-    if (iv.alpha > 0) {
-        iv.alpha = 0.f;
-        [self cancelHidingToolViews];
-    }
+    /*
+     UIImageView *iv = [self webToolBar];
+     if (iv.alpha > 0) {
+     iv.alpha = 0.f;
+     [self cancelHidingToolViews];
+     }
+     */
     
-    UIView *sv = [self getInnerSettingView];
-    if (sv.alpha > 0) {
-        sv.alpha = 0.f;
-        [self cancelHidingToolViews];
-    }
+    //UIView *sv = [self getInnerSettingView];
+    //if (sv.alpha > 0) {
+    //    sv.alpha = 0.f;
+    //    [self cancelHidingToolViews];
+    //}
 }
 
 #pragma mark - 系统控件的Protocol
@@ -225,7 +246,7 @@
 #pragma mark - private method
 
 - (void)addWebView {
-    CGFloat kH   = self.view.height - QPTabBarHeight;
+    CGFloat kH   = self.view.height - self.webToolBar.height - QPTabBarHeight;
     CGRect frame = CGRectMake(0, 0, QPScreenWidth, kH);
     self.webView.frame = frame;
     
@@ -238,10 +259,11 @@
 }
 
 - (void)addWebToolBar {
-    UIImageView *toolBar = [self buildToolBar];
-    toolBar.tag = 9999;
-    toolBar.alpha = 0.f;
-    [self.view addSubview:toolBar];
+    //UIImageView *toolBar = [self buildToolBar];
+    //toolBar.tag = 9999;
+    //toolBar.alpha = 0.f;
+    //[self.view addSubview:toolBar];
+    [self.view addSubview:self.webToolBar];
 }
 
 - (void)injectLocalUserScript
@@ -268,7 +290,7 @@
     }
 }
 
-#pragma mark - Setting Panel
+#pragma mark - Setting Panel(Deprecated)
 
 - (UIView *)getInnerSettingView {
     return [self.view viewWithTag:8689];
@@ -327,95 +349,92 @@
     };
 }
 
-#pragma mark - Setting Panel End
+#pragma mark - 构建工具条(Deprecated)
 
-#pragma mark - 构建工具条
-
-- (UIImageView *)buildToolBar
-{
-    return [self buildToolBar:@selector(tbItemClicked:)];
-}
-
-- (UIImageView *)buildToolBar:(SEL)selector
-{
-    return [self buildAndLayoutToolBar:selector isVertical:NO];
-}
-
-- (UIImageView *)buildVerticalToolBar
-{
-    return [self buildVerticalToolBar:@selector(tbItemClicked:)];
-}
-
-- (UIImageView *)buildVerticalToolBar:(SEL)selector
-{
-    return [self buildAndLayoutToolBar:selector isVertical:YES];
-}
-
-- (UIImageView *)buildAndLayoutToolBar:(SEL)selector isVertical:(BOOL)isVertical
-{
-    NSMutableArray *items = @[@"web_reward_13x21", @"web_forward_13x21",
-                              @"web_refresh_24x21", @"web_stop_21x21"].mutableCopy;
-    BOOL bVal = !self.hidesBottomBarWhenPushed;
-    
-    NSUInteger count = items.count;
-    CGFloat hSpace   = 10.f;
-    CGFloat vSpace   = isVertical ? 5.f : 8.f;
-    CGFloat btnW     = 30.f;
-    CGFloat btnH     = 30.f;
-    CGFloat offset   = bVal ? QPTabBarHeight : (QPIsPhoneXAll ? 4 : 2)*vSpace;
-    CGFloat tlbW     = btnW + 2*hSpace;
-    CGFloat tlbH     = count*btnH + (count+1)*vSpace + 4*vSpace;
-    CGFloat tlbX     = QPScreenWidth - tlbW - hSpace;
-    CGFloat tlbY     = self.view.height - offset - tlbH - 2*vSpace;
-    CGRect  tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
-    
-    if (!isVertical) {
-        tlbX = 1.5*hSpace;
-        tlbW = self.view.width - 2*tlbX;
-        tlbH = btnH + 3*vSpace;
-        tlbY = self.view.height - offset - tlbH - (bVal ? 2*vSpace : 0) + 5.f;
-        tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
-        btnW = (tlbW - (count+1)*hSpace)/count;
-    }
-    
-    UIImageView *toolBar    = [[UIImageView alloc] initWithFrame:tlbFrame];
-    toolBar.backgroundColor = [UIColor clearColor];
-    toolBar.image           = [self colorImage:toolBar.bounds
-                                  cornerRadius:15.f
-                                backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
-                                   borderWidth:0.f
-                                   borderColor:nil];
-    for (NSUInteger i = 0; i < count; i++) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        if (isVertical) {
-            button.frame = CGRectMake(hSpace, (i+1)*vSpace+i*btnH, btnW, btnH);
-        } else {
-            button.frame = CGRectMake((i+1)*vSpace+i*btnW, 1.5*vSpace, btnW, btnH);
-        }
-        button.tag = 100 + i;
-        button.showsTouchWhenHighlighted = YES;
-        [button setImage:QPImageNamed(items[i]) forState:UIControlStateNormal];
-        [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
-        [toolBar addSubview:button];
-    }
-    toolBar.userInteractionEnabled = YES;
-    [toolBar autoresizing];
-    
-    return toolBar;
-}
-
-- (void)tbItemClicked:(UIButton *)sender
-{
-    NSUInteger index = sender.tag - 100;
-    switch (index) {
-        case 0: [self onGoBack]; break;
-        case 1: [self onGoForward]; break;
-        case 2: [self onReload]; break;
-        case 3: [self onStopLoading]; break;
-        case 4: QPLog("None Action!"); break;
-        default: break;
-    }
-}
+//- (UIImageView *)buildToolBar
+//{
+//    return [self buildToolBar:@selector(tbItemClicked:)];
+//}
+//
+//- (UIImageView *)buildToolBar:(SEL)selector
+//{
+//    return [self buildAndLayoutToolBar:selector isVertical:NO];
+//}
+//
+//- (UIImageView *)buildVerticalToolBar
+//{
+//    return [self buildVerticalToolBar:@selector(tbItemClicked:)];
+//}
+//
+//- (UIImageView *)buildVerticalToolBar:(SEL)selector
+//{
+//    return [self buildAndLayoutToolBar:selector isVertical:YES];
+//}
+//
+//- (UIImageView *)buildAndLayoutToolBar:(SEL)selector isVertical:(BOOL)isVertical
+//{
+//    NSMutableArray *items = @[@"web_reward_13x21", @"web_forward_13x21",
+//                              @"web_refresh_24x21", @"web_stop_21x21"].mutableCopy;
+//    BOOL bVal = !self.hidesBottomBarWhenPushed;
+//
+//    NSUInteger count = items.count;
+//    CGFloat hSpace   = 10.f;
+//    CGFloat vSpace   = isVertical ? 5.f : 8.f;
+//    CGFloat btnW     = 30.f;
+//    CGFloat btnH     = 30.f;
+//    CGFloat offset   = bVal ? QPTabBarHeight : (QPIsPhoneXAll ? 4 : 2)*vSpace;
+//    CGFloat tlbW     = btnW + 2*hSpace;
+//    CGFloat tlbH     = count*btnH + (count+1)*vSpace + 4*vSpace;
+//    CGFloat tlbX     = QPScreenWidth - tlbW - hSpace;
+//    CGFloat tlbY     = self.view.height - offset - tlbH - 2*vSpace;
+//    CGRect  tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
+//
+//    if (!isVertical) {
+//        tlbX = 1.5*hSpace;
+//        tlbW = self.view.width - 2*tlbX;
+//        tlbH = btnH + 3*vSpace;
+//        tlbY = self.view.height - offset - tlbH - (bVal ? 2*vSpace : 0) + 5.f;
+//        tlbFrame = CGRectMake(tlbX, tlbY, tlbW, tlbH);
+//        btnW = (tlbW - (count+1)*hSpace)/count;
+//    }
+//
+//    UIImageView *toolBar    = [[UIImageView alloc] initWithFrame:tlbFrame];
+//    toolBar.backgroundColor = [UIColor clearColor];
+//    toolBar.image           = [self colorImage:toolBar.bounds
+//                                  cornerRadius:15.f
+//                                backgroudColor:[UIColor colorWithWhite:0.1 alpha:0.75]
+//                                   borderWidth:0.f
+//                                   borderColor:nil];
+//    for (NSUInteger i = 0; i < count; i++) {
+//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//        if (isVertical) {
+//            button.frame = CGRectMake(hSpace, (i+1)*vSpace+i*btnH, btnW, btnH);
+//        } else {
+//            button.frame = CGRectMake((i+1)*vSpace+i*btnW, 1.5*vSpace, btnW, btnH);
+//        }
+//        button.tag = 100 + i;
+//        button.showsTouchWhenHighlighted = YES;
+//        [button setImage:QPImageNamed(items[i]) forState:UIControlStateNormal];
+//        [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+//        [toolBar addSubview:button];
+//    }
+//    toolBar.userInteractionEnabled = YES;
+//    [toolBar autoresizing];
+//
+//    return toolBar;
+//}
+//
+//- (void)tbItemClicked:(UIButton *)sender
+//{
+//    NSUInteger index = sender.tag - 100;
+//    switch (index) {
+//        case 0: [self onGoBack]; break;
+//        case 1: [self onGoForward]; break;
+//        case 2: [self onReload]; break;
+//        case 3: [self onStopLoading]; break;
+//        default: break;
+//    }
+//}
 
 #pragma mark - Lazy
 #pragma mark - getters and setters
@@ -424,8 +443,20 @@
     return (UITextField *)self.navigationItem.titleView;
 }
 
-- (UIImageView *)webToolBar {
-    return (UIImageView *)[self.view viewWithTag:9999];
+- (QPWebCustomToolBarView *)webToolBar {
+    if (!_webToolBar) {
+        CGFloat tbH = 50.f;
+        CGFloat y = self.view.height - tbH;
+        y -= self.hidesBottomBarWhenPushed ? QPStatusBarAndNavigationBarHeight : (QPStatusBarAndNavigationBarHeight + QPTabBarHeight);
+        CGRect tbFrame = CGRectMake(0, y, QPScreenWidth, tbH);
+        BOOL needSettings = YES;
+        Class cls = NSClassFromString(@"QPPlayerController");
+        if (cls && cls == self.class) {
+            needSettings = NO;
+        }
+        _webToolBar = [[QPWebCustomToolBarView alloc] initWithFrame:tbFrame cornerRadius:0 needSettings:needSettings];
+    }
+    return _webToolBar;
 }
 
 @end

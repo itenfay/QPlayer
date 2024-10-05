@@ -160,7 +160,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self enableInteractivePopGesture:NO];
     QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
     if (![pt.player.currentPlayerManager isPlaying]) {
         [pt.player.currentPlayerManager play];
@@ -170,7 +169,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self enableInteractivePopGesture:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -204,7 +202,7 @@
     self.webView.x      = self.containerView.x;
     self.webView.y      = self.containerView.bottom;
     self.webView.width  = self.view.width;
-    self.webView.height = self.view.height - self.containerView.height;
+    self.webView.height = self.view.height - self.containerView.height - self.webToolBar.height;
 }
 
 - (void)onPortraitFullScreen:(UIButton *)sender

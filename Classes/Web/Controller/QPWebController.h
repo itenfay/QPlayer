@@ -7,6 +7,7 @@
 
 #import "BaseWebViewController.h"
 #import "QPWKWebViewAdapter.h"
+#import "QPWebCustomToolBarView.h"
 
 @interface QPWebController : BaseWebViewController <UITextFieldDelegate>
 
@@ -14,14 +15,15 @@
 
 - (void)setupAdapter:(QPWKWebViewAdapter *)adapter;
 
+/// Deprecated
 /// Builds a tool bar.
 //- (UIImageView *)buildToolBar;
 /// Builds a tool bar with a selector.
-- (UIImageView *)buildToolBar:(SEL)selector;
+//- (UIImageView *)buildToolBar:(SEL)selector;
 /// Builds a vertical tool bar.
-- (UIImageView *)buildVerticalToolBar;
+//- (UIImageView *)buildVerticalToolBar;
 /// Builds a vertical tool bar with a selector.
-- (UIImageView *)buildVerticalToolBar:(SEL)selector;
+//- (UIImageView *)buildVerticalToolBar:(SEL)selector;
 
 /// Override
 - (void)loadDefaultRequest;
@@ -30,7 +32,7 @@
 - (UITextField *)titleView;
 
 /// Override
-- (UIImageView *)webToolBar;
+- (QPWebCustomToolBarView *)webToolBar;
 
 /// Override
 - (void)configureWebViewAdapter;

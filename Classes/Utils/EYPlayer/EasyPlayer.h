@@ -2,8 +2,8 @@
 //  EasyPlayer.h
 //  QPlayer
 //
-//  Created by dengyf on 2024/4/9.
-//  Copyright © 2024 dyf. All rights reserved.
+//  Created by Tenfay on 2024/4/9.
+//  Copyright © 2024 Tenfay. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

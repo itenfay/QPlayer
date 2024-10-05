@@ -2,7 +2,7 @@
 //  QPDropListModel.h
 //
 //  Created by Tenfay on 2017/6/28.
-//  Copyright © Tenfay dyf. All rights reserved.
+//  Copyright © Tenfay. All rights reserved.
 //
 
 #import "BaseModel.h"

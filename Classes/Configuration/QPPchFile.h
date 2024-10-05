@@ -31,7 +31,7 @@
 #import "HTTPServer.h"
 #import "SVBlurView.h"
 #import "MBProgressHUD+JDragon.h"
-#import "UINavigationController+FDFullscreenPopGesture.h"
+//#import "UINavigationController+FDFullscreenPopGesture.h"
 /// PYSearch
 #import "PYSearch.h"
 /// DYFProgressView

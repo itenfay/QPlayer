@@ -26,7 +26,7 @@ target 'QPlayer' do
   pod 'MBProgressHUD+JDragon', '~> 0.0.5'
   pod 'PYSearch'
   pod 'SVBlurView', '~> 0.0.1'
-  pod 'FDFullscreenPopGesture', '~> 1.1'
+  #pod 'FDFullscreenPopGesture', '~> 1.1'
   
 end
 

@@ -29,11 +29,12 @@
 }
 
 - (NSArray *)items {
-    NSMutableArray *itemArray = @[@"web_reward_13x21",
-                                  @"web_forward_13x21",
-                                  @"web_refresh_24x21",
-                                  @"web_stop_21x21",
-                                  @"⚙︎"
+    NSMutableArray *itemArray = @[
+        @"web_reward_13x21",
+        @"web_forward_13x21",
+        @"web_refresh_24x21",
+        @"web_stop_21x21",
+        @"⚙︎"
     ].mutableCopy;
     if (!self.needSettings) {
         [itemArray removeLastObject];

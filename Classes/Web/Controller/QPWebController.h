@@ -15,7 +15,7 @@
 
 - (void)setupAdapter:(QPWKWebViewAdapter *)adapter;
 
-/// Deprecated
+/// ** Deprecated **
 /// Builds a tool bar.
 //- (UIImageView *)buildToolBar;
 /// Builds a tool bar with a selector.

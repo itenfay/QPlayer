@@ -16,7 +16,8 @@
 
 @implementation QPWebController
 
-- (instancetype)initWithAdapter:(QPWKWebViewAdapter *)adapter {
+- (instancetype)initWithAdapter:(QPWKWebViewAdapter *)adapter
+{
     if (self = [super init]) {
         [self setupAdapter:adapter];
     }
@@ -40,12 +41,14 @@
     [self inspectToolViewsAlpha];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [self enableInteractivePopGesture:NO];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     [self enableInteractivePopGesture:YES];
     if (self.settingPanel) {
@@ -55,15 +58,18 @@
 
 #pragma mark - public methods
 
-- (void)makeUI {
+- (void)makeUI
+{
     //[self makeInnerSettingView];
 }
 
-- (void)makeLayout {
+- (void)makeLayout
+{
     
 }
 
-- (void)makeAction {
+- (void)makeAction
+{
     @QPWeakify(self);
     self.webToolBar.onItemClick = ^(NSInteger index) {
         switch (index) {
@@ -77,7 +83,8 @@
     };
 }
 
-- (void)setupAdapter:(QPWKWebViewAdapter *)adapter {
+- (void)setupAdapter:(QPWKWebViewAdapter *)adapter
+{
     self.adapter = adapter;
     self.webView.UIDelegate = adapter;
     self.webView.navigationDelegate = adapter;
@@ -160,7 +167,8 @@
      toolBar.backgroundColor = bgColor;
      toolBar.layer.cornerRadius = 15.f;
      toolBar.layer.masksToBounds = YES;
-     }*/
+     }
+     */
     [self.webToolBar updateAppearance:self.isDarkMode];
 }
 
@@ -245,13 +253,19 @@
 
 #pragma mark - private method
 
+- (BOOL)hasPushed
+{
+    return self.hidesBottomBarWhenPushed || self.navigationController.viewControllers.count > 1;
+}
+
 - (void)addWebView {
-    CGFloat kH   = self.view.height - self.webToolBar.height - QPTabBarHeight;
-    CGRect frame = CGRectMake(0, 0, QPScreenWidth, kH);
+    CGFloat barHeight = [self hasPushed] ? 0.f : QPTabBarHeight;
+    CGFloat webViewHeight = self.view.height - barHeight - self.webToolBar.height;
+    CGRect frame = CGRectMake(0, 0, QPScreenWidth, webViewHeight);
     self.webView.frame = frame;
     
     self.webView.backgroundColor = UIColor.clearColor; //QPColorFromRGB(243, 243, 243);
-    self.webView.opaque          = NO;
+    self.webView.opaque = NO;
     self.webView.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.webView autoresizing];
     
@@ -355,22 +369,22 @@
 //{
 //    return [self buildToolBar:@selector(tbItemClicked:)];
 //}
-//
+
 //- (UIImageView *)buildToolBar:(SEL)selector
 //{
 //    return [self buildAndLayoutToolBar:selector isVertical:NO];
 //}
-//
+
 //- (UIImageView *)buildVerticalToolBar
 //{
 //    return [self buildVerticalToolBar:@selector(tbItemClicked:)];
 //}
-//
+
 //- (UIImageView *)buildVerticalToolBar:(SEL)selector
 //{
 //    return [self buildAndLayoutToolBar:selector isVertical:YES];
 //}
-//
+
 //- (UIImageView *)buildAndLayoutToolBar:(SEL)selector isVertical:(BOOL)isVertical
 //{
 //    NSMutableArray *items = @[@"web_reward_13x21", @"web_forward_13x21",
@@ -423,7 +437,7 @@
 //
 //    return toolBar;
 //}
-//
+
 //- (void)tbItemClicked:(UIButton *)sender
 //{
 //    NSUInteger index = sender.tag - 100;
@@ -439,16 +453,17 @@
 #pragma mark - Lazy
 #pragma mark - getters and setters
 
-- (UITextField *)titleView {
+- (UITextField *)titleView
+{
     return (UITextField *)self.navigationItem.titleView;
 }
 
 - (QPWebCustomToolBarView *)webToolBar {
     if (!_webToolBar) {
-        CGFloat tbH = 50.f;
-        CGFloat y = self.view.height - tbH;
-        y -= self.hidesBottomBarWhenPushed ? QPStatusBarAndNavigationBarHeight : (QPStatusBarAndNavigationBarHeight + QPTabBarHeight);
-        CGRect tbFrame = CGRectMake(0, y, QPScreenWidth, tbH);
+        CGFloat tbHeight = 48.f;
+        CGFloat y = self.view.height - tbHeight;
+        y -= self.hasPushed ? QPStatusBarAndNavigationBarHeight : (QPStatusBarAndNavigationBarHeight + QPTabBarHeight);
+        CGRect tbFrame = CGRectMake(0, y, QPScreenWidth, tbHeight);
         BOOL needSettings = YES;
         Class cls = NSClassFromString(@"QPPlayerController");
         if (cls && cls == self.class) {

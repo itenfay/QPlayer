@@ -14,7 +14,8 @@
 
 @implementation QPSearchViewController
 
-- (void)configureNavigationBar {
+- (void)configureNavigationBar 
+{
     UIView *tfLeftView         = [[UIView alloc] init];
     tfLeftView.frame           = CGRectMake(0, 0, 26, 26);
     UIImageView *searchImgView = [[UIImageView alloc] init];
@@ -43,7 +44,8 @@
     [self addRightNavigationBarButton:rightBtn];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
     QPSearchPresenter *presenter = [[QPSearchPresenter alloc] init];
     presenter.view = self.view;

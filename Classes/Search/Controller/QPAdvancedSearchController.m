@@ -17,7 +17,6 @@
 - (void)loadView
 {
     [super loadView];
-    self.webView.height = self.view.height;
 }
 
 - (void)configureNavigationBar

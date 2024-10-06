@@ -29,7 +29,6 @@
 {
     [super loadView];
     [self addTVButton];
-    self.webView.height = self.view.height;
 }
 
 - (void)configureNavigationBar

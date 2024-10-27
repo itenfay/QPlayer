@@ -8,23 +8,14 @@
 #import "QPAppConst.h"
 
 NSString *const kQPPlayerIsPlaying = @"kQPPlayerIsPlaying";
-
 NSString *const kRecordKeyInfo = @"kRecordKeyInfo";
-
 NSString *const kExecAppConfigOnlyOnce = @"kExecAppConfigOnlyOnce";
-
 NSString *const kThemeStyleOnOff = @"kThemeStyleOnOff";
-
 NSString *const kThemeStyleDidChangeNotification = @"kThemeStyleDidChangeNotification";
-
 NSString *const kCarrierNetworkAllowed = @"kCarrierNetworkAllowed";
-
+NSString *const kAutomaticallySkipTitles = @"kAutomaticallySkipTitles";
 NSString *const kPlayerPictureInPictureEnabled = @"kPlayerPictureInPictureEnabled";
-
 NSString *const kPlayerPictureInPictureEnabledWhenBackgound = @"kPlayerPictureInPictureEnabledWhenBackgound";
-
 NSString *const kPlayerHardDecoding = @"kPlayerHardDecoding";
-
 NSString *const kPlayerParsingWebVideo = @"kPlayerParsingWebVideo";
-
 NSString *const kPlayerUseIJKPlayer = @"kPlayerUseIJKPlayer";

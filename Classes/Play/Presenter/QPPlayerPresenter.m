@@ -151,8 +151,8 @@
     NSString *videoUrl = vc.model.videoUrl;
     
     NSURL *aURL = vc.model.isLocalVideo
-    ? [NSURL fileURLWithPath:videoUrl]
-    : [NSURL URLWithString:videoUrl];
+        ? [NSURL fileURLWithPath:videoUrl]
+        : [NSURL URLWithString:videoUrl];
     [self takeCoverImageWithURL:aURL];
     
     [QPAppDelegate.pipContext check];
@@ -194,7 +194,12 @@
     [self onListenPlayerCallback:vc];
     
     if (vc.model.seekToTime > 0) {
-        [self seekToTime:vc.model.seekToTime];
+        [self seekToTime:vc.model.seekToTime completionHandler:NULL];
+    } else {
+        if (QPAutomaticallySkipTitles()) {
+            //2min 10sec
+            [self seekToTime:130 completionHandler:NULL];
+        }
     }
 }
 

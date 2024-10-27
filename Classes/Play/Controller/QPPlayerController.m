@@ -51,11 +51,15 @@
     if (!_controlView) {
         _controlView = [ZFPlayerControlView new];
         _controlView.fastViewAnimated = YES;
-        _controlView.autoHiddenTimeInterval = 3;
-        _controlView.autoFadeTimeInterval = 0.5;
+        _controlView.autoHiddenTimeInterval = 2.5;
+        _controlView.autoFadeTimeInterval = 0.25;
         _controlView.prepareShowLoading = YES;
         _controlView.prepareShowControlView = NO;
         _controlView.showCustomStatusBar = YES;
+        _controlView.horizontalPanShowControlView = NO;
+        _controlView.effectViewShow = YES;
+        _controlView.fastViewAnimated = YES;
+        _controlView.seekToPlay = YES;
     }
     return _controlView;
 }
@@ -182,7 +186,6 @@
     }
     if (_showNext) {
         _showNext = NO;
-        QPPlayerPresenter *pt = (QPPlayerPresenter *)self.presenter;
         if ([pt.player.currentPlayerManager isPlaying]) {
             [pt.player.currentPlayerManager pause];
         }
@@ -248,7 +251,7 @@
     self.overlayLabel.hidden = NO;
 }
 
-- (void)hideOverlayLayer 
+- (void)hideOverlayLayer
 {
     self.overlayLabel.hidden = YES;
 }

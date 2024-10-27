@@ -21,7 +21,7 @@
 + (instancetype)shared;
 
 // Uses the default port 8080.
-- (void)using8080Port;
+- (void)usingPort8080;
 
 // Changes a port with a `unsigned int` number.
 - (void)changePort:(UInt16)port;

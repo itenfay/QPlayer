@@ -25,14 +25,14 @@
 {
     if (!_settingPanel) {
         _settingPanel = [[UIView alloc] init];
-        _settingPanel.backgroundColor = QPColorFromRGBAlp(20, 20, 20, 0.8);
+        _settingPanel.backgroundColor = QPColorFromRGBAlp(20, 20, 20, 0.7);
         _settingPanel.layer.cornerRadius = 15;
         [self addSubview:_settingPanel];
         [self.settingPanel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(self).offset(-QPStatusBarAndNavigationBarHeight/2);
             make.left.equalTo(@50);
             make.right.equalTo(@-50);
-            make.height.equalTo(@230);
+            make.height.equalTo(@270);
         }];
         
         UIImage *closeImg = [QPImageNamed(@"droplistview_close") imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -130,6 +130,27 @@
             make.centerY.equalTo(label4);
             make.height.equalTo(@30);
         }];
+        
+        UILabel *label5 = [[UILabel alloc] init];
+        label5.text = @"自动跳过片头";
+        label5.textColor = UIColor.whiteColor;
+        label5.font = [UIFont boldSystemFontOfSize:14];
+        [self.settingPanel addSubview:label5];
+        [label5 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(@15);
+            make.top.equalTo(label4.mas_bottom).offset(15);
+            make.height.equalTo(@30);
+        }];
+        UISwitch *sw5 = [[UISwitch alloc] init];
+        sw5.tag= 92;
+        [self.settingPanel addSubview:sw5];
+        sw5.on = QPCarrierNetworkAllowed();
+        [sw5 addTarget:self action:@selector(onSWAction:) forControlEvents:UIControlEventValueChanged];
+        [sw5 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(sw4.mas_right);
+            make.centerY.equalTo(label5);
+            make.height.equalTo(@30);
+        }];
     }
 }
 
@@ -188,6 +209,8 @@
         QPPlayerSetHardDecoding(sw.isOn ? 1 : 0);
     } else if (sw.tag == 91) {
         QPSetCarrierNetworkAllowed(sw.isOn);
+    } else if (sw.tag == 92) {
+        QPSetAutomaticallySkipTitles(sw.isOn);
     }
     [QPHudUtils showTipMessageInWindow:sw.isOn ? @"已开启" : @"已关闭" duration:1.0];
 }

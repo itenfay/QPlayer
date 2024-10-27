@@ -15,20 +15,20 @@
 
 @implementation QPPlaybackContext
 
-- (void)playVideoWithTitle:(NSString *)title 
+- (void)playVideoWithTitle:(NSString *)title
                  urlString:(NSString *)urlString
 {
     [self playVideoWithTitle:title urlString:urlString playerType:QPPlayerTypeZFPlayer];
 }
 
-- (void)playVideoWithTitle:(NSString *)title 
+- (void)playVideoWithTitle:(NSString *)title
                  urlString:(NSString *)urlString
                 playerType:(QPPlayerType)type
 {
     [self playVideoWithTitle:title urlString:urlString playerType:type seekToTime:0];
 }
 
-- (void)playVideoWithTitle:(NSString *)title 
+- (void)playVideoWithTitle:(NSString *)title
                  urlString:(NSString *)urlString
                 playerType:(QPPlayerType)type
                 seekToTime:(NSTimeInterval)time

@@ -107,6 +107,16 @@ QP_STATIC_INLINE BOOL QPCarrierNetworkAllowed(void)
     return [QPExtractValue(kCarrierNetworkAllowed) boolValue];
 }
 
+QP_STATIC_INLINE void QPSetAutomaticallySkipTitles(BOOL value)
+{
+    QPStoreValue(kAutomaticallySkipTitles, [NSNumber numberWithBool:value]);
+}
+
+QP_STATIC_INLINE BOOL QPAutomaticallySkipTitles(void)
+{
+    return [QPExtractValue(kAutomaticallySkipTitles) boolValue];
+}
+
 QP_STATIC_INLINE void QPPlayerSetPictureInPictureEnabled(BOOL value)
 {
     QPStoreValue(kPlayerPictureInPictureEnabled, [NSNumber numberWithBool:value]);

@@ -168,7 +168,7 @@
 
 - (void)attemptToPlayVideo:(NSString *)url
 {
-    [QPHudUtils showActivityMessageInView:@"加载中，请稍等"];
+    [QPHudUtils showActivityMessageInView:@"影片加载中..."];
     NSString *title = self.adapter.webView.title;
     QPLog(@"videoTitle=%@", title);
     QPLog(@"videoUrl=%@", url);
@@ -178,7 +178,7 @@
         [self delayToScheduleTask:1.0 completion:^{
             [QPHudUtils hideHUD];
         }];
-        [QPHudUtils showWarnMessage:@"未检测到播放地址，不能播放！"];
+        [QPHudUtils showWarnMessage:@"未获取到播放地址，不能播放！"];
     }
 }
 

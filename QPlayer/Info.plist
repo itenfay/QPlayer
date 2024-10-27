@@ -64,7 +64,7 @@
 	<key>MyBlogUrl</key>
 	<string>https://itenfay.github.io</string>
 	<key>MyEmail</key>
-	<string>hansen981@126.com</string>
+	<string>itenfay@163.com</string>
 	<key>MyGithubUrl</key>
 	<string>https://github.com/itenfay</string>
 	<key>MyJianShuUrl</key>
@@ -87,7 +87,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>是否允许App访问你的媒体资料库？若不允许，则无法存取照片。</string>
 	<key>QPlayerGithubUrl</key>
-	<string>https://github.com/Tenfay640/QPlayer</string>
+	<string>https://github.com/itenfay/QPlayer</string>
 	<key>QPlyerDesc</key>
 	<string>QPlayer一款不错的视频播放器，支持M4V、WMV、MP4、MOV、AVI、MKV、FLV、RM、RMVB等主流媒体格式，支持 WiFi 文件传输，可以随时随地观看本地视频，同时也支持 HTTP、RTMP、RTSP、HLS 等流媒体播放。</string>
 	<key>TecentVideoUrl</key>

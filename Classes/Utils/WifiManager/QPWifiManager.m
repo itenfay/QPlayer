@@ -34,7 +34,7 @@
     return self;
 }
 
-- (void)using8080Port
+- (void)usingPort8080
 {
     [self changePort:8080];
 }

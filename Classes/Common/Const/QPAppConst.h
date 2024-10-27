@@ -19,6 +19,8 @@ FOUNDATION_EXPORT NSString *const kThemeStyleOnOff;
 FOUNDATION_EXPORT NSString *const kThemeStyleDidChangeNotification;
 /// The key for allowing carrier network.
 FOUNDATION_EXPORT NSString *const kCarrierNetworkAllowed;
+/// The key for skiping titles of the film automatically.
+FOUNDATION_EXPORT NSString *const kAutomaticallySkipTitles;
 /// The key for picture in picture.
 FOUNDATION_EXPORT NSString *const kPlayerPictureInPictureEnabled;
 /// The key for picture in picture when app enters background.

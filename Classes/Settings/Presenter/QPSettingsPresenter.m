@@ -34,39 +34,43 @@
     QPSettingsViewController *vc = [self settingsController];
     [vc.adapter.dataSource removeAllObjects];
     
-    QPSettingsModel *model = [QPSettingsModel new];
-    model.title = @"自动跟随系统设置";
-    [vc.adapter.dataSource addObject:model];
+    QPSettingsModel *sysSettingmodel = [QPSettingsModel new];
+    sysSettingmodel.title = @"自动跟随系统设置";
+    [vc.adapter.dataSource addObject:sysSettingmodel];
     
-    QPSettingsModel *model1 = [QPSettingsModel new];
-    model1.title = @"当前网络连接状态";
-    [vc.adapter.dataSource addObject:model1];
+    QPSettingsModel *netConnectedModel = [QPSettingsModel new];
+    netConnectedModel.title = @"当前网络连接状态";
+    [vc.adapter.dataSource addObject:netConnectedModel];
     
     NSMutableArray *subArray = [NSMutableArray arrayWithCapacity:0];
-    QPSettingsModel *model2 = [QPSettingsModel new];
-    model2.title = @"硬解码播放";
-    [subArray addObject:model2];
+    QPSettingsModel *decodingModel = [QPSettingsModel new];
+    decodingModel.title = @"硬解码播放";
+    [subArray addObject:decodingModel];
     
-    QPSettingsModel *model3 = [QPSettingsModel new];
-    model3.title = @"开启小窗播放";
-    [subArray addObject:model3];
+    QPSettingsModel *smallWinModel = [QPSettingsModel new];
+    smallWinModel.title = @"开启小窗播放";
+    [subArray addObject:smallWinModel];
     
-    QPSettingsModel *model3a = [QPSettingsModel new];
-    model3a.title = @"允许应用后台继续小窗播放";
-    [subArray addObject:model3a];
+    QPSettingsModel *smallWinModelInBackground = [QPSettingsModel new];
+    smallWinModelInBackground.title = @"允许应用后台继续小窗播放";
+    [subArray addObject:smallWinModelInBackground];
     
-    QPSettingsModel *model4 = [QPSettingsModel new];
-    model4.title = @"允许运营商网络播放";
-    [subArray addObject:model4];
+    QPSettingsModel *skiptitlesModel = [QPSettingsModel new];
+    skiptitlesModel.title = @"自动跳过片头";
+    [subArray addObject:skiptitlesModel];
+    
+    QPSettingsModel *carrierModel = [QPSettingsModel new];
+    carrierModel.title = @"允许运营商网络播放";
+    [subArray addObject:carrierModel];
     [vc.adapter.dataSource addObject:subArray];
     
-    QPSettingsModel *model5 = [QPSettingsModel new];
-    model5.title = @"WiFi 文件传输";
-    [vc.adapter.dataSource addObject:model5];
+    QPSettingsModel *transmissionModel = [QPSettingsModel new];
+    transmissionModel.title = @"WiFi 文件传输";
+    [vc.adapter.dataSource addObject:transmissionModel];
     
-    QPSettingsModel *model6 = [QPSettingsModel new];
-    model6.title = @"更改端口";
-    [vc.adapter.dataSource addObject:model6];
+    QPSettingsModel *portModel = [QPSettingsModel new];
+    portModel.title = @"更改端口";
+    [vc.adapter.dataSource addObject:portModel];
     
     [_view reloadData];
 }
@@ -231,6 +235,12 @@
             [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
             [cell.contentView addSubview:sw];
         } else if (indexPath.item == 3) {
+            //@"自动跳过片头";
+            sw.on  = QPAutomaticallySkipTitles();
+            sw.tag = 6;
+            [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
+            [cell.contentView addSubview:sw];
+        } else if (indexPath.item == 4) {
             //@"允许运营商网络播放";
             sw.on  = QPCarrierNetworkAllowed();
             sw.tag = 7;
@@ -242,7 +252,7 @@
         UISwitch *sw = [[UISwitch alloc] init];
         sw.left      = QPScreenWidth - 70.f;
         sw.centerY   = cell.height/2.0;
-        sw.tag       = 6;
+        sw.tag       = 4;
         [sw addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
         if ([DYFNetworkSniffer.sharedSniffer isConnectedViaWiFi]) {
             sw.on = [QPWifiManager shared].serverStatus;
@@ -292,6 +302,13 @@
         }
     } else if (sender.tag == 7) {
         QPSetCarrierNetworkAllowed(sender.isOn);
+        if (sender.isOn) {
+            [QPHudUtils showTipMessageInView:@"已开启"];
+        } else {
+            [QPHudUtils showTipMessageInView:@"已关闭"];
+        }
+    } else if (sender.tag == 6) {
+        QPSetAutomaticallySkipTitles(sender.isOn);
         if (sender.isOn) {
             [QPHudUtils showTipMessageInView:@"已开启"];
         } else {
@@ -349,7 +366,7 @@
 - (void)onConfigurePort:(BOOL)isDefault
 {
     if (isDefault) {
-        [QPWifiManager.shared using8080Port];
+        [QPWifiManager.shared usingPort8080];
     } else {
         [QPWifiManager.shared changePort:self.mPort++];
     }

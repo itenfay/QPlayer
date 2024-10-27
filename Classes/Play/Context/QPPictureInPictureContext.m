@@ -65,7 +65,8 @@
 
 - (void)check
 {
-    if (self.player && !self.pipVC) {
+    //if (self.player && !self.pipVC) {
+    if (self.player) {
         [self reset];
     }
 }

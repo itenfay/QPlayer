@@ -25,7 +25,7 @@
 {
     if (!_settingPanel) {
         _settingPanel = [[UIView alloc] init];
-        _settingPanel.backgroundColor = QPColorFromRGBAlp(20, 20, 20, 0.7);
+        _settingPanel.backgroundColor = QPColorFromRGBAlp(20, 20, 20, 0.8);
         _settingPanel.layer.cornerRadius = 15;
         [self addSubview:_settingPanel];
         [self.settingPanel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -144,7 +144,7 @@
         UISwitch *sw5 = [[UISwitch alloc] init];
         sw5.tag= 92;
         [self.settingPanel addSubview:sw5];
-        sw5.on = QPCarrierNetworkAllowed();
+        sw5.on = QPAutomaticallySkipTitles();
         [sw5 addTarget:self action:@selector(onSWAction:) forControlEvents:UIControlEventValueChanged];
         [sw5 mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(sw4.mas_right);

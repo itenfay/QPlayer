@@ -78,8 +78,8 @@
                              borderColor:nil];
     UIColor *shadowColor = QPColorFromHex(0x999999);
     imageBgView.layer.shadowColor = shadowColor.CGColor;
-    imageBgView.layer.shadowOffset = CGSizeMake(0, -3);
-    imageBgView.layer.shadowOpacity = .5f;
+    imageBgView.layer.shadowOffset = CGSizeMake(0, -2);
+    imageBgView.layer.shadowOpacity = .3f;
     for (NSUInteger i = 0; i < self.items.count; i++) {
         UIColor *itemColor = isDark ? UIColor.whiteColor : QPColorFromRGB(20, 20, 20);
         UIButton *button = [imageBgView viewWithTag:100 + i];

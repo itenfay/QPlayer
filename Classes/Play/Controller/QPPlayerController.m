@@ -221,7 +221,7 @@
 
 - (void)loadBottomContents
 {
-    NSString *aUrl = QPInfoDictionary[@"MyGithubUrl"];
+    NSString *aUrl = QPInfoDictionary[@"MyJianShuUrl"];
     [self loadRequestWithUrl:aUrl];
 }
 

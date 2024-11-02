@@ -45,7 +45,7 @@
     hModel.rValue = hString;
     [vc.adapter.dataSource addObject:hModel];
     
-    NSString *rString = [NSString stringWithFormat:@"Repositories"];
+    NSString *rString = [NSString stringWithFormat:@"Repos"];
     QPAboutModel *rModel = [QPAboutModel new];
     rModel.title = @"GitHub";
     rModel.rValue = rString;

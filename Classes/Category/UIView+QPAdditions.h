@@ -32,4 +32,10 @@
 - (void)autoresizing;
 - (void)autoresizing:(UIViewAutoresizing)mask;
 
+/// Keyboard
+- (void)tf_addKeyboardObserver;
+- (void)tf_addKeyboardObserver:(UIView *)view;
+- (void)tf_removeKeyboardObserver;
+- (CGFloat)tf_viewOffsetY;
+
 @end

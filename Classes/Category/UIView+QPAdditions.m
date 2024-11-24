@@ -194,4 +194,61 @@
     self.autoresizingMask = mask;
 }
 
+- (void)tf_addKeyboardObserver {
+    [self tf_addKeyboardObserver:nil];
+}
+
+- (void)tf_addKeyboardObserver:(UIView *)view {
+    NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
+    [center addObserver:self selector:@selector(_keyboardWillShow:) name:UIKeyboardWillShowNotification object:view];
+    [center addObserver:self selector:@selector(_keyboardWillHide:) name:UIKeyboardWillHideNotification object:view];
+}
+
+- (void)tf_removeKeyboardObserver {
+    NSNotificationCenter *center = NSNotificationCenter.defaultCenter;
+    [center removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [center removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)_keyboardWillShow:(NSNotification *)noti {
+    NSDictionary *userInfo = noti.userInfo;
+    if (!userInfo) return;
+    CGRect keyboardBounds = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSTimeInterval animationDuration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGAffineTransform t = CGAffineTransformIdentity;
+    id obj = noti.object;
+    UIView *view;
+    if (obj && [obj isKindOfClass:UIView.class]) {
+        view = (UIView *)obj;
+    } else {
+        view = self;
+    }
+    CGFloat viewOffsetY = self.tf_viewOffsetY;
+    QPLog(@"viewOffsetY: %.2f", viewOffsetY);
+    CGFloat offsetY = viewOffsetY > 0 ? viewOffsetY : view.frame.size.height;
+    [UIView animateWithDuration:animationDuration animations:^{
+        view.transform = CGAffineTransformTranslate(t, 0, keyboardBounds.origin.y - offsetY);
+    }];
+}
+
+- (void)_keyboardWillHide:(NSNotification *)noti {
+    NSDictionary *userInfo = noti.userInfo;
+    if (!userInfo) return;
+    NSTimeInterval animationDuration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    id obj = noti.object;
+    UIView *view;
+    if (obj && [obj isKindOfClass:UIView.class]) {
+        view = (UIView *)obj;
+    } else {
+        view = self;
+    }
+    [UIView animateWithDuration:animationDuration animations:^{
+        view.transform = CGAffineTransformIdentity;
+    }];
+}
+
+- (CGFloat)tf_viewOffsetY {
+    return 0;
+}
+
 @end

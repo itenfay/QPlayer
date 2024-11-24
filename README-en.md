@@ -12,7 +12,7 @@
  - Supports streaming media playback such as `HTTP, RTMP, RTSP, HLS`, etc.
  - Supports WiFi transfer, allowing users to enjoy WiFi file transfer services and watch videos locally.
  - Support playing videos using ijkplayer and zfplayer.
- - Support dynamic webpage parsing of videos, native player playback.
+ - Support dynamic webpage parsing of videos, custom player playback.
  - Supports automatic system settings for dark and light modes.
  - Support picture in picture video playback.
  
@@ -26,7 +26,7 @@
  
 > PS: If you think it's okay, please give it to `star`.
 
- ## Group (ID:15535338)
+ ## QQ Group (ID:15535338)
  
  <div align=left>
  &emsp; <img src="https://github.com/itenfay/QPlayer/raw/master/images/g614799921.jpg" width="30%" />
@@ -54,10 +54,6 @@
  ## Open Source Components
  
  - [View Open Source Components](OpenSourceComponents.md)
- 
- ## Clone
- 
- You can enter the command `git clone 'on the terminal https://github.com/itenfay/QPlayer.git` Clone this project to build your own video player.
  
  ## Feedback is welcome
  

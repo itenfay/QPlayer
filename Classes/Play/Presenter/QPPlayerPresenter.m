@@ -197,8 +197,8 @@
         [self seekToTime:vc.model.seekToTime completionHandler:NULL];
     } else {
         if (QPAutomaticallySkipTitles()) {
-            //2min 10sec
-            [self seekToTime:130 completionHandler:NULL];
+            //默认2min
+            [self seekToTime:QPGetSkipTitlesSeconds() completionHandler:NULL];
         }
     }
 }

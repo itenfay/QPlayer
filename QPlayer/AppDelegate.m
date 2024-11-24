@@ -47,6 +47,7 @@
         QPStoreValue(kThemeStyleOnOff, [NSNumber numberWithBool:YES]);
         QPPlayerSetParingWebVideo(YES);
         QPPlayerSetUsingIJKPlayer(NO);
+        QPSaveSkipTitlesSeconds(120);
     }
 }
 

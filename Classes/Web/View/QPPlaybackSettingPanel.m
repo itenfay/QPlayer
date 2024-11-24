@@ -8,17 +8,22 @@
 
 #import "QPPlaybackSettingPanel.h"
 
-@interface QPPlaybackSettingPanel ()
+@interface QPPlaybackSettingPanel () <UITextFieldDelegate>
 @property (nonatomic, strong) UIView *settingPanel;
 @end
 
 @implementation QPPlaybackSettingPanel
 
+- (CGFloat)tf_viewOffsetY {
+    return 540.f;
+}
+
 - (void)setup
 {
     self.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapAction:)];
-    [self addGestureRecognizer:tap];
+    //UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapAction:)];
+    //[self addGestureRecognizer:tap];
+    [self tf_addKeyboardObserver];
 }
 
 - (void)layoutUI
@@ -132,13 +137,35 @@
         }];
         
         UILabel *label5 = [[UILabel alloc] init];
-        label5.text = @"自动跳过片头";
+        label5.text = @"自动跳过片头：";
         label5.textColor = UIColor.whiteColor;
         label5.font = [UIFont boldSystemFontOfSize:14];
         [self.settingPanel addSubview:label5];
         [label5 mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(@15);
             make.top.equalTo(label4.mas_bottom).offset(15);
+            make.height.equalTo(@30);
+        }];
+        UITextField *videoTitleTextField = [[UITextField alloc] init];
+        videoTitleTextField.tintColor = UIColor.whiteColor;
+        videoTitleTextField.backgroundColor = UIColor.whiteColor;
+        videoTitleTextField.keyboardType = UIKeyboardTypeNumberPad;
+        videoTitleTextField.borderStyle = UITextBorderStyleRoundedRect;
+        videoTitleTextField.textAlignment = NSTextAlignmentLeft;
+        videoTitleTextField.returnKeyType = UIReturnKeyDone;
+        videoTitleTextField.text = [NSString stringWithFormat:@"%d", QPGetSkipTitlesSeconds()];
+        videoTitleTextField.textColor = QPColorFromHex(0x333333);
+        videoTitleTextField.font = [UIFont systemFontOfSize:13.f];
+        NSString *titlePlaceholder = @"输入秒数";
+        NSMutableAttributedString *attrText = [[NSMutableAttributedString alloc] initWithString:titlePlaceholder];
+        [attrText addAttributes:@{NSForegroundColorAttributeName : QPColorFromHex(0x999999), NSFontAttributeName : [UIFont systemFontOfSize:13.f]} range:NSMakeRange(0, titlePlaceholder.length)];
+        videoTitleTextField.attributedPlaceholder = attrText;
+        videoTitleTextField.delegate = self;
+        [self.settingPanel addSubview:videoTitleTextField];
+        [videoTitleTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(label5.mas_right).offset(5);
+            make.centerY.equalTo(label5);
+            make.width.equalTo(@80);
             make.height.equalTo(@30);
         }];
         UISwitch *sw5 = [[UISwitch alloc] init];
@@ -152,6 +179,28 @@
             make.height.equalTo(@30);
         }];
     }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSCharacterSet *allowedCharacters = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:string];
+    return [allowedCharacters isSupersetOfSet:characterSet];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    int sec = textField.text.intValue;
+    QPLog(@"秒数: %d", sec);
+    [textField resignFirstResponder];
+    if (sec <= 0) {
+        textField.text = [NSString stringWithFormat:@"%d", QPGetSkipTitlesSeconds()];
+        [QPHudUtils showWarnMessage:@"请输入秒数"];
+    } else if (sec > 500) {
+        textField.text = [NSString stringWithFormat:@"%d", QPGetSkipTitlesSeconds()];
+        [QPHudUtils showWarnMessage:@"秒数不能超过300秒"];
+    } else {
+        QPSaveSkipTitlesSeconds(sec);
+    }
+    return true;
 }
 
 - (void)onTapAction:(UITapGestureRecognizer *)gesture {
@@ -213,6 +262,10 @@
         QPSetAutomaticallySkipTitles(sw.isOn);
     }
     [QPHudUtils showTipMessageInWindow:sw.isOn ? @"已开启" : @"已关闭" duration:1.0];
+}
+
+- (void)dealloc {
+    [self tf_removeKeyboardObserver];
 }
 
 @end

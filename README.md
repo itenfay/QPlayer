@@ -12,7 +12,7 @@
 - 支持`HTTP、RTMP、RTSP、HLS`等流媒体播放
 - 支持WiFi传输，可以享用WiFi文件传输服务和本地观看视频
 - 支持使用ijkplayer、zfplayer播放视频
-- 支持网页动态解析视频，原生播放器播放
+- 支持网页动态解析视频，自定义播放器播放
 - 支持深色和浅色模式自动随系统设置
 - 支持画中画播放视频
 
@@ -54,10 +54,6 @@ iOS 11.0+, iPhone and iPad, Xcode14+.
 ## 开源组件
 
 - [查看开源组件](OpenSourceComponents.md)
-
-## 克隆
-
-你可以在终端输入命令`git clone https://github.com/itenfay/QPlayer.git`克隆此工程，来构建自己的视频播放器。
 
 ## 欢迎反馈
 

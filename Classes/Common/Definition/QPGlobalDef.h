@@ -117,6 +117,16 @@ QP_STATIC_INLINE BOOL QPAutomaticallySkipTitles(void)
     return [QPExtractValue(kAutomaticallySkipTitles) boolValue];
 }
 
+QP_STATIC_INLINE void QPSaveSkipTitlesSeconds(int value)
+{
+    QPStoreValue(kSkipVideoTitlesSeconds, [NSNumber numberWithInt:value]);
+}
+
+QP_STATIC_INLINE int QPGetSkipTitlesSeconds(void)
+{
+    return [QPExtractValue(kSkipVideoTitlesSeconds) intValue];
+}
+
 QP_STATIC_INLINE void QPPlayerSetPictureInPictureEnabled(BOOL value)
 {
     QPStoreValue(kPlayerPictureInPictureEnabled, [NSNumber numberWithBool:value]);

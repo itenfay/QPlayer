@@ -45,9 +45,9 @@
 - (void)buildSubviews:(SEL)selector
 {
     NSUInteger count = self.items.count;
-    CGFloat btnW = 24.f;
-    CGFloat btnH = 24.f;
-    CGFloat space = (QPScreenWidth - count * btnW) / (count + 1);
+    CGFloat space = 10.f;
+    CGFloat btnH = 40.f;
+    CGFloat btnW = (QPScreenWidth - (count + 1) * space) / count;
     
     UIImageView *imageBgView = [[UIImageView alloc] initWithFrame:self.bounds];
     imageBgView.backgroundColor = [UIColor clearColor];
@@ -61,6 +61,15 @@
         button.showsTouchWhenHighlighted = YES;
         [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
         [imageBgView addSubview:button];
+        if (i == self.items.count - 1 && self.needSettings) {
+            UILabel *settingLabel = [[UILabel alloc] init];
+            settingLabel.width = 24.f;
+            settingLabel.height = 24.;
+            settingLabel.x = (btnW - settingLabel.width) / 2;
+            settingLabel.y = (btnH - settingLabel.height) / 2;
+            settingLabel.tag = 1000 + i;
+            [button addSubview:settingLabel];
+        }
     }
     imageBgView.userInteractionEnabled = YES;
     [imageBgView autoresizing];
@@ -84,11 +93,14 @@
         UIColor *itemColor = isDark ? UIColor.whiteColor : QPColorFromRGB(20, 20, 20);
         UIButton *button = [imageBgView viewWithTag:100 + i];
         if (i == self.items.count - 1 && self.needSettings) {
-            [button setTitle:self.items[i] forState:UIControlStateNormal];
-            [button setTitleColor:itemColor forState:UIControlStateNormal];
-            button.layer.cornerRadius = 12.f;
-            button.layer.borderWidth = 1.f;
-            button.layer.borderColor = itemColor.CGColor;
+            UILabel *settingLabel = [button viewWithTag: 1000 + i];
+            settingLabel.text = self.items[i];
+            settingLabel.textColor = itemColor;
+            settingLabel.textAlignment = NSTextAlignmentCenter;
+            settingLabel.font = [UIFont systemFontOfSize:14.f];
+            settingLabel.layer.cornerRadius = 12.f;
+            settingLabel.layer.borderWidth = 1.f;
+            settingLabel.layer.borderColor = itemColor.CGColor;
         } else {
             UIImage *image = [QPImageNamed(self.items[i]) imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             [button setImage:image forState:UIControlStateNormal];

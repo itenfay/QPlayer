@@ -33,7 +33,7 @@
     vModel.rValue = vString;
     [vc.adapter.dataSource addObject:vModel];
     
-    NSString *gString = [NSString stringWithFormat:@" ★★★ "];
+    NSString *gString = [NSString stringWithFormat:@" ★ "];
     QPAboutModel *gModel = [QPAboutModel new];
     gModel.title = @"Star";
     gModel.rValue = gString;

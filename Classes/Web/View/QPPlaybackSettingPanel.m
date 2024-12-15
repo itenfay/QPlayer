@@ -182,15 +182,16 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    // 只允许文本输入框输入数字
     NSCharacterSet *allowedCharacters = [NSCharacterSet decimalDigitCharacterSet];
     NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:string];
     return [allowedCharacters isSupersetOfSet:characterSet];
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+/// 文本输入框结束编辑
+- (void)textFieldDidEndEditing:(UITextField *)textField {
     int sec = textField.text.intValue;
     QPLog(@"秒数: %d", sec);
-    [textField resignFirstResponder];
     if (sec <= 0) {
         textField.text = [NSString stringWithFormat:@"%d", QPGetSkipTitlesSeconds()];
         [QPHudUtils showWarnMessage:@"请输入秒数"];
@@ -200,6 +201,10 @@
     } else {
         QPSaveSkipTitlesSeconds(sec);
     }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
     return true;
 }
 

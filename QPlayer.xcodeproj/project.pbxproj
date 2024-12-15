@@ -1307,9 +1307,9 @@
 		965E09D61F04A85F009BBBD9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = DYF;
+				CLASSPREFIX = QP;
 				LastUpgradeCheck = 1420;
-				ORGANIZATIONNAME = dyf;
+				ORGANIZATIONNAME = Tenfay;
 				TargetAttributes = {
 					965E09DD1F04A85F009BBBD9 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -1646,7 +1646,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = WPG8326LY6;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1655,7 +1655,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.9.4;
+				MARKETING_VERSION = 3.9.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1686,7 +1686,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = WPG8326LY6;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1695,7 +1695,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.9.4;
+				MARKETING_VERSION = 3.9.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

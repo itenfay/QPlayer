@@ -80,9 +80,18 @@
 		14E023D82471BBEB00435DC8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E023D72471BBEA00435DC8 /* SystemConfiguration.framework */; };
 		14F521C1232A28EF00C866D1 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F521BD232A270800C866D1 /* libc++.tbd */; };
 		14F52216232BF1D400C866D1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F52215232BF1D400C866D1 /* libxml2.tbd */; };
-		497B36622BD44A5900733FE8 /* QPPlaybackSettingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 497B36612BD44A5900733FE8 /* QPPlaybackSettingPanel.m */; };
+		4948690B2ED617850064DA60 /* QPWebVideoListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 494869092ED617850064DA60 /* QPWebVideoListModel.m */; };
 		4986260B2BC53FCC000F6FF0 /* EasyPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4986260A2BC53FCC000F6FF0 /* EasyPlayer.m */; };
-		498BECFC2CB16B2F002A4392 /* QPWebCustomToolBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498BECFB2CB16B2F002A4392 /* QPWebCustomToolBarView.m */; };
+		4987D5992ED6140E009F125C /* QPWebVideoListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4987D5972ED6140E009F125C /* QPWebVideoListViewAdapter.m */; };
+		49A182E52ED5FF3D00736C06 /* jsquery_video_srcy.js in Resources */ = {isa = PBXBuildFile; fileRef = 49A182E42ED5FF3C00736C06 /* jsquery_video_srcy.js */; };
+		49B658EB2ED61D5A00D59DB6 /* QPPlaybackSettingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B658E22ED61D5900D59DB6 /* QPPlaybackSettingPanel.m */; };
+		49B658EC2ED61D5A00D59DB6 /* QPWebVideoListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B658E52ED61D5900D59DB6 /* QPWebVideoListView.m */; };
+		49B658ED2ED61D5A00D59DB6 /* QPWebVideoListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B658E72ED61D5900D59DB6 /* QPWebVideoListViewCell.m */; };
+		49B658EE2ED61D5A00D59DB6 /* QPWebVideoListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49B658E82ED61D5900D59DB6 /* QPWebVideoListViewCell.xib */; };
+		49B658EF2ED61D5A00D59DB6 /* QPWebVideoListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49B658E92ED61D5A00D59DB6 /* QPWebVideoListView.xib */; };
+		49B658F02ED61D5A00D59DB6 /* QPWebCustomToolBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B658EA2ED61D5A00D59DB6 /* QPWebCustomToolBarView.m */; };
+		49B658F52ED61D6800D59DB6 /* QPWebPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B658F12ED61D6800D59DB6 /* QPWebPresenter.m */; };
+		49B658F62ED61D6800D59DB6 /* QPWebVideoListViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B658F32ED61D6800D59DB6 /* QPWebVideoListViewPresenter.m */; };
 		7904DED629AF3C280030A748 /* QPHomeListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7904DED429AF3C280030A748 /* QPHomeListViewAdapter.m */; };
 		7904DED929AF540E0030A748 /* QPFileModelPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7904DED829AF540E0030A748 /* QPFileModelPresenter.m */; };
 		790F5D9629A45F6100B59422 /* BaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 790F5D9529A45F6100B59422 /* BaseCollectionViewCell.m */; };
@@ -110,7 +119,6 @@
 		7978348829A864FE00496962 /* BaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7978348629A864FE00496962 /* BaseWebViewController.m */; };
 		797F386529BAF9DD00DCCBCB /* QPDropListViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 797F386329BAF9DD00DCCBCB /* QPDropListViewPresenter.m */; };
 		797F386829BAF9EB00DCCBCB /* QPDropListViewAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 797F386629BAF9EA00DCCBCB /* QPDropListViewAdapter.m */; };
-		799A919929B709E9007735F0 /* QPWebPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 799A919829B709E8007735F0 /* QPWebPresenter.m */; };
 		799A919C29B709F4007735F0 /* QPWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = 799A919A29B709F4007735F0 /* QPWebController.m */; };
 		79A1249029AC76EE00667B3C /* AppHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A1248F29AC76EE00667B3C /* AppHelper.m */; };
 		79A466D729B9D2E2009417EB /* QPWebPlaybackContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A466D629B9D2E2009417EB /* QPWebPlaybackContext.m */; };
@@ -272,16 +280,31 @@
 		14F521BD232A270800C866D1 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		14F521BF232A274300C866D1 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		14F52215232BF1D400C866D1 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		494869082ED617850064DA60 /* QPWebVideoListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebVideoListModel.h; sourceTree = "<group>"; };
+		494869092ED617850064DA60 /* QPWebVideoListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebVideoListModel.m; sourceTree = "<group>"; };
 		49785A1E2BD5126000E367F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		49785A1F2BD5126000E367F0 /* OpenSourceComponents.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = OpenSourceComponents.md; sourceTree = SOURCE_ROOT; };
 		49785A202BD5126000E367F0 /* README-en.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "README-en.md"; sourceTree = SOURCE_ROOT; };
 		49785A212BD5126000E367F0 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
-		497B36602BD44A5900733FE8 /* QPPlaybackSettingPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPPlaybackSettingPanel.h; sourceTree = "<group>"; };
-		497B36612BD44A5900733FE8 /* QPPlaybackSettingPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPPlaybackSettingPanel.m; sourceTree = "<group>"; };
 		498626092BC53FCC000F6FF0 /* EasyPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EasyPlayer.h; sourceTree = "<group>"; };
 		4986260A2BC53FCC000F6FF0 /* EasyPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EasyPlayer.m; sourceTree = "<group>"; };
-		498BECFA2CB16B2F002A4392 /* QPWebCustomToolBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QPWebCustomToolBarView.h; sourceTree = "<group>"; };
-		498BECFB2CB16B2F002A4392 /* QPWebCustomToolBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QPWebCustomToolBarView.m; sourceTree = "<group>"; };
+		4987D5962ED6140E009F125C /* QPWebVideoListViewAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebVideoListViewAdapter.h; sourceTree = "<group>"; };
+		4987D5972ED6140E009F125C /* QPWebVideoListViewAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebVideoListViewAdapter.m; sourceTree = "<group>"; };
+		49A182E42ED5FF3C00736C06 /* jsquery_video_srcy.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jsquery_video_srcy.js; sourceTree = "<group>"; };
+		49B658E12ED61D5900D59DB6 /* QPWebCustomToolBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebCustomToolBarView.h; sourceTree = "<group>"; };
+		49B658E22ED61D5900D59DB6 /* QPPlaybackSettingPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPPlaybackSettingPanel.m; sourceTree = "<group>"; };
+		49B658E32ED61D5900D59DB6 /* QPPlaybackSettingPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPPlaybackSettingPanel.h; sourceTree = "<group>"; };
+		49B658E42ED61D5900D59DB6 /* QPWebVideoListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebVideoListView.h; sourceTree = "<group>"; };
+		49B658E52ED61D5900D59DB6 /* QPWebVideoListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebVideoListView.m; sourceTree = "<group>"; };
+		49B658E62ED61D5900D59DB6 /* QPWebVideoListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebVideoListViewCell.h; sourceTree = "<group>"; };
+		49B658E72ED61D5900D59DB6 /* QPWebVideoListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebVideoListViewCell.m; sourceTree = "<group>"; };
+		49B658E82ED61D5900D59DB6 /* QPWebVideoListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QPWebVideoListViewCell.xib; sourceTree = "<group>"; };
+		49B658E92ED61D5A00D59DB6 /* QPWebVideoListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QPWebVideoListView.xib; sourceTree = "<group>"; };
+		49B658EA2ED61D5A00D59DB6 /* QPWebCustomToolBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebCustomToolBarView.m; sourceTree = "<group>"; };
+		49B658F12ED61D6800D59DB6 /* QPWebPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebPresenter.m; sourceTree = "<group>"; };
+		49B658F22ED61D6800D59DB6 /* QPWebVideoListViewPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebVideoListViewPresenter.h; sourceTree = "<group>"; };
+		49B658F32ED61D6800D59DB6 /* QPWebVideoListViewPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebVideoListViewPresenter.m; sourceTree = "<group>"; };
+		49B658F42ED61D6800D59DB6 /* QPWebPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebPresenter.h; sourceTree = "<group>"; };
 		60680FC631705B531937CD6E /* libPods-QPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7904DED429AF3C280030A748 /* QPHomeListViewAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPHomeListViewAdapter.m; sourceTree = "<group>"; };
 		7904DED529AF3C280030A748 /* QPHomeListViewAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPHomeListViewAdapter.h; sourceTree = "<group>"; };
@@ -321,7 +344,6 @@
 		79443A9D29B1ED96004B125A /* QPSearchPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPSearchPresenter.h; sourceTree = "<group>"; };
 		79443AA029B1FBB4004B125A /* QPDropListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPDropListModel.m; sourceTree = "<group>"; };
 		79443AA129B1FBB4004B125A /* QPDropListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPDropListModel.h; sourceTree = "<group>"; };
-		7951767429C0780D0040B18A /* jsquery_video_src.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = jsquery_video_src.js; sourceTree = "<group>"; };
 		796695FC29C1996100DC35E4 /* jsquery_video_srcx.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jsquery_video_srcx.js; sourceTree = "<group>"; };
 		7972B70929DA6FD40086401B /* QPPictureInPictureContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPPictureInPictureContext.h; sourceTree = "<group>"; };
 		7972B70A29DA6FD40086401B /* QPPictureInPictureContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPPictureInPictureContext.m; sourceTree = "<group>"; };
@@ -333,8 +355,6 @@
 		797F386429BAF9DD00DCCBCB /* QPDropListViewPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPDropListViewPresenter.h; sourceTree = "<group>"; };
 		797F386629BAF9EA00DCCBCB /* QPDropListViewAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPDropListViewAdapter.m; sourceTree = "<group>"; };
 		797F386729BAF9EB00DCCBCB /* QPDropListViewAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPDropListViewAdapter.h; sourceTree = "<group>"; };
-		799A919729B709E8007735F0 /* QPWebPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebPresenter.h; sourceTree = "<group>"; };
-		799A919829B709E8007735F0 /* QPWebPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebPresenter.m; sourceTree = "<group>"; };
 		799A919A29B709F4007735F0 /* QPWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPWebController.m; sourceTree = "<group>"; };
 		799A919B29B709F4007735F0 /* QPWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPWebController.h; sourceTree = "<group>"; };
 		79A1248E29AC76EE00667B3C /* AppHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppHelper.h; sourceTree = "<group>"; };
@@ -968,6 +988,15 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		4948690A2ED617850064DA60 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				494869082ED617850064DA60 /* QPWebVideoListModel.h */,
+				494869092ED617850064DA60 /* QPWebVideoListModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		49785A1D2BD5124000E367F0 /* Docs Meta */ = {
 			isa = PBXGroup;
 			children = (
@@ -982,10 +1011,16 @@
 		497B365F2BD44A2700733FE8 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				497B36602BD44A5900733FE8 /* QPPlaybackSettingPanel.h */,
-				497B36612BD44A5900733FE8 /* QPPlaybackSettingPanel.m */,
-				498BECFA2CB16B2F002A4392 /* QPWebCustomToolBarView.h */,
-				498BECFB2CB16B2F002A4392 /* QPWebCustomToolBarView.m */,
+				49B658E32ED61D5900D59DB6 /* QPPlaybackSettingPanel.h */,
+				49B658E22ED61D5900D59DB6 /* QPPlaybackSettingPanel.m */,
+				49B658E12ED61D5900D59DB6 /* QPWebCustomToolBarView.h */,
+				49B658EA2ED61D5A00D59DB6 /* QPWebCustomToolBarView.m */,
+				49B658E42ED61D5900D59DB6 /* QPWebVideoListView.h */,
+				49B658E52ED61D5900D59DB6 /* QPWebVideoListView.m */,
+				49B658E92ED61D5A00D59DB6 /* QPWebVideoListView.xib */,
+				49B658E62ED61D5900D59DB6 /* QPWebVideoListViewCell.h */,
+				49B658E72ED61D5900D59DB6 /* QPWebVideoListViewCell.m */,
+				49B658E82ED61D5900D59DB6 /* QPWebVideoListViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -997,6 +1032,15 @@
 				4986260A2BC53FCC000F6FF0 /* EasyPlayer.m */,
 			);
 			path = EYPlayer;
+			sourceTree = "<group>";
+		};
+		4987D5982ED6140E009F125C /* Adapter */ = {
+			isa = PBXGroup;
+			children = (
+				4987D5962ED6140E009F125C /* QPWebVideoListViewAdapter.h */,
+				4987D5972ED6140E009F125C /* QPWebVideoListViewAdapter.m */,
+			);
+			path = Adapter;
 			sourceTree = "<group>";
 		};
 		63FBA0E1EBD306C3E29D621E /* Pods */ = {
@@ -1056,8 +1100,8 @@
 		79443A8B29B1DC2E004B125A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				49A182E42ED5FF3C00736C06 /* jsquery_video_srcy.js */,
 				792784F129E7A056002C8936 /* DropListViewData.dat */,
-				7951767429C0780D0040B18A /* jsquery_video_src.js */,
 				796695FC29C1996100DC35E4 /* jsquery_video_srcx.js */,
 				79443A8C29B1DC2E004B125A /* QPDropListView.bundle */,
 			);
@@ -1100,6 +1144,8 @@
 		799A919429B7099E007735F0 /* Web */ = {
 			isa = PBXGroup;
 			children = (
+				4948690A2ED617850064DA60 /* Model */,
+				4987D5982ED6140E009F125C /* Adapter */,
 				79A466D429B9D283009417EB /* Context */,
 				799A919629B7099E007735F0 /* Controller */,
 				799A919529B7099E007735F0 /* Presenter */,
@@ -1111,8 +1157,10 @@
 		799A919529B7099E007735F0 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				799A919729B709E8007735F0 /* QPWebPresenter.h */,
-				799A919829B709E8007735F0 /* QPWebPresenter.m */,
+				49B658F42ED61D6800D59DB6 /* QPWebPresenter.h */,
+				49B658F12ED61D6800D59DB6 /* QPWebPresenter.m */,
+				49B658F22ED61D6800D59DB6 /* QPWebVideoListViewPresenter.h */,
+				49B658F32ED61D6800D59DB6 /* QPWebVideoListViewPresenter.m */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -1351,12 +1399,15 @@
 				965E09EE1F04A85F009BBBD9 /* Assets.xcassets in Resources */,
 				141B170325C93B46008C465C /* char_ref.rl in Resources */,
 				141B172125C93B46008C465C /* QPAboutMeTableFooter.xib in Resources */,
+				49A182E52ED5FF3D00736C06 /* jsquery_video_srcy.js in Resources */,
 				965E09EC1F04A85F009BBBD9 /* Main.storyboard in Resources */,
 				796695FD29C1996200DC35E4 /* jsquery_video_srcx.js in Resources */,
 				1438F67725CC5185000CC65D /* QPFileTableViewCell.xib in Resources */,
 				79443A8D29B1DC2E004B125A /* QPDropListView.bundle in Resources */,
 				141B170925C93B46008C465C /* tag.in in Resources */,
 				79443A9829B1DC42004B125A /* QPDropListViewCell.xib in Resources */,
+				49B658EF2ED61D5A00D59DB6 /* QPWebVideoListView.xib in Resources */,
+				49B658EE2ED61D5A00D59DB6 /* QPWebVideoListViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1416,7 +1467,6 @@
 				79A1249029AC76EE00667B3C /* AppHelper.m in Sources */,
 				793BAB8129B07EC6000EF92B /* QPSettingsModel.m in Sources */,
 				799A919C29B709F4007735F0 /* QPWebController.m in Sources */,
-				498BECFC2CB16B2F002A4392 /* QPWebCustomToolBarView.m in Sources */,
 				141B170D25C93B46008C465C /* string_piece.c in Sources */,
 				96532C681F5E814E00E66A2F /* HTTPConnection.m in Sources */,
 				141B171F25C93B46008C465C /* QPAboutMeViewController.m in Sources */,
@@ -1424,9 +1474,11 @@
 				141B170525C93B46008C465C /* attribute.c in Sources */,
 				7904DED629AF3C280030A748 /* QPHomeListViewAdapter.m in Sources */,
 				141B170C25C93B46008C465C /* tokenizer.c in Sources */,
+				4987D5992ED6140E009F125C /* QPWebVideoListViewAdapter.m in Sources */,
 				7978348829A864FE00496962 /* BaseWebViewController.m in Sources */,
 				1438F69425CC5282000CC65D /* BaseListViewCell.m in Sources */,
 				141B170425C93B46008C465C /* vector.c in Sources */,
+				49B658F62ED61D6800D59DB6 /* QPWebVideoListViewPresenter.m in Sources */,
 				1438F69525CC5282000CC65D /* BaseView.m in Sources */,
 				96532C671F5E814E00E66A2F /* HTTPAuthenticationRequest.m in Sources */,
 				1438F69225CC5282000CC65D /* BaseNavigationController.m in Sources */,
@@ -1440,9 +1492,12 @@
 				141B172425C93B46008C465C /* QPPlayerController.m in Sources */,
 				793BAB7229B0556B000EF92B /* QPAboutMeListViewAdapter.m in Sources */,
 				79443A8A29B19BF5004B125A /* QPPlayerModel.m in Sources */,
+				49B658F52ED61D6800D59DB6 /* QPWebPresenter.m in Sources */,
 				141B170225C93B46008C465C /* util.c in Sources */,
 				141B170825C93B46008C465C /* error.c in Sources */,
 				1438F67625CC5185000CC65D /* QPHomeView.m in Sources */,
+				4948690B2ED617850064DA60 /* QPWebVideoListModel.m in Sources */,
+				49B658ED2ED61D5A00D59DB6 /* QPWebVideoListViewCell.m in Sources */,
 				793BAB7E29B07EAC000EF92B /* QPSettingsPresenter.m in Sources */,
 				141B172725C93B46008C465C /* QPSettingsViewController.m in Sources */,
 				141B171125C93B46008C465C /* QPHistoryArchive.m in Sources */,
@@ -1450,11 +1505,11 @@
 				79A466DB29B9D34C009417EB /* BaseContext.m in Sources */,
 				141B173A25C93CC7008C465C /* UILabel+QPAdditions.m in Sources */,
 				1438F69625CC5282000CC65D /* BaseAdapter.m in Sources */,
-				799A919929B709E9007735F0 /* QPWebPresenter.m in Sources */,
 				141B170A25C93B46008C465C /* tag.c in Sources */,
 				793BAB9E29B09C91000EF92B /* QPLivePresenter.m in Sources */,
 				141B170E25C93B46008C465C /* OCGumbo+Query.m in Sources */,
 				1438F69125CC5282000CC65D /* BasePresenter.m in Sources */,
+				49B658EB2ED61D5A00D59DB6 /* QPPlaybackSettingPanel.m in Sources */,
 				96532C651F5E814E00E66A2F /* DDRange.m in Sources */,
 				141B171325C93B46008C465C /* DYFWebProgressView.m in Sources */,
 				96532C6A1F5E814E00E66A2F /* HTTPServer.m in Sources */,
@@ -1494,14 +1549,15 @@
 				790F5D9629A45F6100B59422 /* BaseCollectionViewCell.m in Sources */,
 				79443A9729B1DC42004B125A /* QPDropListView.m in Sources */,
 				96532C621F5E814E00E66A2F /* AsyncSocket.m in Sources */,
-				497B36622BD44A5900733FE8 /* QPPlaybackSettingPanel.m in Sources */,
 				965E09E31F04A85F009BBBD9 /* main.mm in Sources */,
 				797F386529BAF9DD00DCCBCB /* QPDropListViewPresenter.m in Sources */,
 				79443A9B29B1E0EB004B125A /* QPAdvancedSearchController.m in Sources */,
 				79443A9E29B1ED96004B125A /* QPSearchPresenter.m in Sources */,
 				96532C641F5E814E00E66A2F /* DDNumber.m in Sources */,
+				49B658F02ED61D5A00D59DB6 /* QPWebCustomToolBarView.m in Sources */,
 				1438F69325CC5282000CC65D /* BaseViewController.m in Sources */,
 				4986260B2BC53FCC000F6FF0 /* EasyPlayer.m in Sources */,
+				49B658EC2ED61D5A00D59DB6 /* QPWebVideoListView.m in Sources */,
 				141B173C25C93CC7008C465C /* UIScrollView+QPAdditions.m in Sources */,
 				141B172525C93B46008C465C /* QPSearchViewController.m in Sources */,
 				141B173B25C93CC7008C465C /* NSObject+QPAdditions.m in Sources */,
@@ -1646,7 +1702,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = WPG8326LY6;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1655,7 +1711,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.9.5;
+				MARKETING_VERSION = 3.10.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1686,7 +1742,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = WPG8326LY6;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1695,7 +1751,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.9.5;
+				MARKETING_VERSION = 3.10.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

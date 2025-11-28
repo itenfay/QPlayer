@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="QPWebVideoListView">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="400"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOS-Oe-HQB">
+                    <rect key="frame" x="10" y="10" width="394" height="380"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Q2l-dt-jOT">
+                            <rect key="frame" x="0.0" y="0.0" width="394" height="380"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </tableView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="Q2l-dt-jOT" secondAttribute="bottom" id="Qgz-1R-oxb"/>
+                        <constraint firstAttribute="trailing" secondItem="Q2l-dt-jOT" secondAttribute="trailing" id="e89-NB-ENk"/>
+                        <constraint firstItem="Q2l-dt-jOT" firstAttribute="leading" secondItem="GOS-Oe-HQB" secondAttribute="leading" id="vlB-Nh-m9Z"/>
+                        <constraint firstItem="Q2l-dt-jOT" firstAttribute="top" secondItem="GOS-Oe-HQB" secondAttribute="top" id="zMf-ai-ArQ"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QAO-Te-od2">
+                    <rect key="frame" x="388" y="0.0" width="26" height="26"/>
+                    <color key="backgroundColor" red="0.0060324505900000002" green="0.85719519850000003" blue="0.79647988079999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="26" id="HaW-EC-v7I"/>
+                        <constraint firstAttribute="width" constant="26" id="gw7-w7-4CR"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <connections>
+                        <action selector="onClose:" destination="iN0-l3-epB" eventType="touchUpInside" id="833-VC-9Vn"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="QAO-Te-od2" secondAttribute="trailing" id="D3c-Gi-7cb"/>
+                <constraint firstAttribute="trailing" secondItem="GOS-Oe-HQB" secondAttribute="trailing" constant="10" id="dlC-LT-uWM"/>
+                <constraint firstItem="GOS-Oe-HQB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="emB-cv-6Gv"/>
+                <constraint firstItem="GOS-Oe-HQB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="gVb-Td-xcl"/>
+                <constraint firstAttribute="bottom" secondItem="GOS-Oe-HQB" secondAttribute="bottom" constant="10" id="p8T-mQ-ubc"/>
+                <constraint firstItem="QAO-Te-od2" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="vbM-3d-jpO"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="backgroundView" destination="GOS-Oe-HQB" id="w73-Y4-WBs"/>
+                <outlet property="closeButton" destination="QAO-Te-od2" id="V5L-YA-swl"/>
+                <outlet property="tableView" destination="Q2l-dt-jOT" id="5ha-a9-qLb"/>
+            </connections>
+            <point key="canvasLocation" x="57.971014492753625" y="-15.401785714285714"/>
+        </view>
+    </objects>
+</document>

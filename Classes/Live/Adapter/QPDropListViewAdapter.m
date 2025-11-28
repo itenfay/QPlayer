@@ -20,15 +20,15 @@
 - (void)bindModelTo:(QPDropListViewCell *)cell atIndexPath:(NSIndexPath *)indexPath withView:(UIView *)view
 {
     QPDropListModel *model = (QPDropListModel *)[self modelAtIndexPath:indexPath];
-    QPDropListView *dropListView = (QPDropListView *)view;
-    _dropListView = dropListView;
+    self.dropListView = (QPDropListView *)view;
+    
     cell.m_titleLabel.text = model.m_title;
-    cell.m_titleLabel.textColor = dropListView.isDarkMode ? QPColorFromRGB(230, 230, 230) : QPColorFromRGB(50, 50, 50);
+    cell.m_titleLabel.textColor = _dropListView.isDarkMode ? QPColorFromRGB(230, 230, 230) : QPColorFromRGB(50, 50, 50);
     cell.m_titleLabel.font = [UIFont systemFontOfSize:13];
     //cell.m_titleLabel.numberOfLines = 2;
     
     cell.m_detailLabel.text = model.m_content;
-    cell.m_detailLabel.textColor = dropListView.isDarkMode ? QPColorFromRGB(230, 230, 230) : QPColorFromRGB(50, 50, 50);
+    cell.m_detailLabel.textColor = _dropListView.isDarkMode ? QPColorFromRGB(230, 230, 230) : QPColorFromRGB(50, 50, 50);
     cell.m_detailLabel.font = [UIFont systemFontOfSize:13];
     //cell.m_detailLabel.numberOfLines = 2;
 }

@@ -9,6 +9,7 @@
 #import "QPWebPlaybackContext.h"
 #import "OCGumbo.h"
 #import "OCGumbo+Query.h"
+#import "QPWebVideoListView.h"
 
 @interface QPWebPlaybackContext ()
 
@@ -26,43 +27,43 @@
     return  self;
 }
 
-- (void)queryVideoCurrentSrcByJavaScript
-{
-    // currentSrc: 只能返回视频地址，不能设置，并且要等到视频加载好了并且可以播放时才能获取到
-    NSString *js = @"document.querySelector('video').currentSrc";
-    QPLog(@"js=%@", js);
-    @QPWeakify(self);
-    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        if (error) {
-            QPLog(@"error=%zi, %@", error.code, error.localizedDescription);
-        }
-        if ([weak_self handleJSResp:response]) {
-            QPLog(@"js ok(currentSrc).");
-        }
-    }];
-}
+//- (void)queryVideoCurrentSrcByJavaScript
+//{
+//    // currentSrc: 只能返回视频地址，不能设置，并且要等到视频加载好了并且可以播放时才能获取到
+//    NSString *js = @"document.querySelector('video').currentSrc";
+//    QPLog(@"js=%@", js);
+//    @QPWeakify(self);
+//    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+//        if (error) {
+//            QPLog(@"error=%zi, %@", error.code, error.localizedDescription);
+//        }
+//        if ([weak_self handleJSResp:response]) {
+//            QPLog(@"js ok(currentSrc).");
+//        }
+//    }];
+//}
 
-- (void)queryVideoUrlByJavaScript
-{
-    NSString *js = @"document.getElementsByTagName('video')[0].src";
-    QPLog(@"js=%@", js);
-    @QPWeakify(self);
-    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        if(error) {
-            QPLog(@"error=%zi, %@", error.code, error.localizedDescription);
-        }
-        if ([weak_self handleJSResp:response]) {
-            QPLog(@"js ok(src).");
-        }
-    }];
-}
+//- (void)queryVideoUrlByJavaScript
+//{
+//    NSString *js = @"document.getElementsByTagName('video')[0].src";
+//    QPLog(@"js=%@", js);
+//    @QPWeakify(self);
+//    [self.adapter.webView evaluateJavaScript:js completionHandler:^(id _Nullable response, NSError * _Nullable error) {
+//        if(error) {
+//            QPLog(@"error=%zi, %@", error.code, error.localizedDescription);
+//        }
+//        if ([weak_self handleJSResp:response]) {
+//            QPLog(@"js ok(src).");
+//        }
+//    }];
+//}
 
 - (void)queryVideoUrlByCustomJavaScript
 {
-    NSString *jsPath = [NSBundle.mainBundle pathForResource:@"jsquery_video_srcx" ofType:@"js"];
+    NSString *jsPath = [NSBundle.mainBundle pathForResource:@"jsquery_video_srcy" ofType:@"js"];
     NSData *jsData = [NSData dataWithContentsOfFile:jsPath];
     NSString *jsString = [NSString.alloc initWithData:jsData encoding:NSUTF8StringEncoding];
-    QPLog(@"jsString=%@", jsString);
+    //QPLog(@"jsString=%@", jsString);
     @QPWeakify(self);
     [self.adapter.webView evaluateJavaScript:jsString completionHandler:^(id _Nullable response, NSError * _Nullable error) {
         if (error) {
@@ -77,94 +78,131 @@
 - (BOOL)handleJSResp:(id)response
 {
     if(![response isEqual:[NSNull null]] && response != nil) {
-        if ([response isKindOfClass:NSString.class]) {
+        if ([response isKindOfClass:NSArray.class]) {
             // 获取视频地址
-            NSString *videoUrl = (NSString *)response;
-            [self attemptToPlayVideo:videoUrl];
+            NSArray *videoUrls = (NSArray *)response;
+            QPLog(@"[JP] videoUrls: %@", videoUrls);
+            [self showWebVideoListView:videoUrls];
             return YES;
         }
     }
     return NO;
 }
 
-- (BOOL)canAllowNavigation:(NSURL *)URL
+- (void)showWebVideoListView:(NSArray *)urls
 {
-    NSString *url = URL.absoluteString;
-    NSString *host = [URL host];
-    QPLog(@"host=%@", host);
-    if ([host containsString:@"zuida.com"] || [host containsString:@".zuida"] || [host containsString:@"zuida"]) {
-        if ([url containsString:@"?url="]) { // host is zuidajiexi.net
-            NSString *videoUrl = [url componentsSeparatedByString:@"?url="].lastObject;
-            [self attemptToPlayVideo:videoUrl];
-            return NO;
-        } else {
-            if (![self parse80sHtmlWithURL:URL]) {
-                [self delayToScheduleTask:1.0 completion:^{
-                    [QPHudUtils hideHUD];
-                }];
-                return YES;
-            }
-            return NO;
-        }
-    } else if ([host isEqualToString:@"jx.yingdouw.com"]) {
-        NSString *videoUrl = [url componentsSeparatedByString:@"?id="].lastObject;
-        [self attemptToPlayVideo:videoUrl];
-        return NO;
-    } else if ([host isEqualToString:@"www.boqudy.com"]) {
-        if ([url containsString:@"?videourl="]) {
-            NSString *tempStr = [url componentsSeparatedByString:@"?videourl="].lastObject;
-            NSString *videoUrl = [tempStr componentsSeparatedByString:@","].lastObject;
-            [self attemptToPlayVideo:videoUrl];
-            return NO;
-        }
+    if (urls.count == 0) {
+        return;
     }
-    return YES;
+    UINib *nib = [UINib nibWithNibName:NSStringFromClass([QPWebVideoListView class]) bundle:nil];
+    QPWebVideoListView *webVideoListView = [nib instantiateWithOwner:nil options:nil].firstObject;
+    webVideoListView.left   = 43.f;
+    webVideoListView.height = 320.f;
+    webVideoListView.top    = (self.adapter.webView.height - webVideoListView.height) / 2.0;
+    webVideoListView.width  = self.controller.view.width - 2*webVideoListView.left;
+    
+    [webVideoListView autoresizing];
+    [self.controller.view addSubview:webVideoListView];
+    [self.controller.view bringSubviewToFront:webVideoListView];
+    
+    //webVideoListView.alpha = 0.f;
+    webVideoListView.transform = CGAffineTransformMakeScale(0.0, 0.0);
+    [UIView animateWithDuration:0.3 animations:^{
+        //webVideoListView.alpha = 1.f;
+        webVideoListView.transform = CGAffineTransformMakeScale(1.0, 1.0);
+    } completion:^(BOOL finished) {
+        webVideoListView.transform = CGAffineTransformIdentity;
+    }];
+    [webVideoListView.presenter loadData:urls];
+    
+    @QPWeakify(self);
+    [webVideoListView onSelectRow:^(NSInteger selectedRow, NSString *title, NSString *content) {
+        @QPStrongify(self);
+        NSString *videoUrl = [content copy];
+        [strong_self attemptToPlayVideo:videoUrl];
+    }];
+    
+    [webVideoListView onCloseAction:^{}];
 }
 
-- (BOOL)parse80sHtmlWithURL:(NSURL *)URL
-{
-    [QPHudUtils showActivityMessageInView:@"加载中，请稍等"];
-    BOOL shouldPlay = NO;
-    NSURL *aURL = [URL copy];
-    NSString *htmlString = [NSString stringWithContentsOfURL:aURL encoding:NSUTF8StringEncoding error:NULL];
-    //QPLog(@"htmlString=%@", htmlString);
-    
-    OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
-    if (!document) {
-        return shouldPlay;
-    }
-    
-    OCGumboNode *titleElement = document.Query(@"head").find(@"title").first();
-    NSString *title = titleElement.html();
-    QPLog(@"title=%@", title);
-    OCQueryObject *objArray = document.Query(@"body").find(@"script");
-    for (OCGumboNode *e in objArray) {
-        NSString *text = e.html();
-        //QPLog(@"e.text=%@", text);
-        NSString *keywords = @"var main";
-        if (text && text.length > 0 && [text containsString:keywords]) {
-            NSArray *argArray = [text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@";\""]];
-            for (int i = 0; i < argArray.count; i++) {
-                NSString *arg = [argArray objectAtIndex:i];
-                //QPLog(@"arg=%@", arg);
-                if ([arg containsString:keywords]) {
-                    shouldPlay = YES;
-                    int index = (i+1);
-                    if (index < argArray.count) {
-                        NSString *tempUrl  = [argArray objectAtIndex:index];
-                        NSString *videoUrl = [tempUrl componentsSeparatedByString:@"?"].firstObject;
-                        videoUrl = [NSString stringWithFormat:@"%@://%@%@", aURL.scheme, aURL.host, videoUrl];
-                        QPLog(@"videoUrl=%@", videoUrl);
-                        [self playVideoWithTitle:title urlString:videoUrl playerType:self.playerType];
-                    }
-                    break;
-                }
-            }
-        }
-    }
-    
-    return shouldPlay;
-}
+//- (BOOL)canAllowNavigation:(NSURL *)URL
+//{
+//    NSString *url = URL.absoluteString;
+//    NSString *host = [URL host];
+//    QPLog(@"host=%@", host);
+//    if ([host containsString:@"zuida.com"] || [host containsString:@".zuida"] || [host containsString:@"zuida"]) {
+//        if ([url containsString:@"?url="]) { // host is zuidajiexi.net
+//            NSString *videoUrl = [url componentsSeparatedByString:@"?url="].lastObject;
+//            [self attemptToPlayVideo:videoUrl];
+//            return NO;
+//        } else {
+//            if (![self parse80sHtmlWithURL:URL]) {
+//                [self delayToScheduleTask:1.0 completion:^{
+//                    [QPHudUtils hideHUD];
+//                }];
+//                return YES;
+//            }
+//            return NO;
+//        }
+//    } else if ([host isEqualToString:@"jx.yingdouw.com"]) {
+//        NSString *videoUrl = [url componentsSeparatedByString:@"?id="].lastObject;
+//        [self attemptToPlayVideo:videoUrl];
+//        return NO;
+//    } else if ([host isEqualToString:@"www.boqudy.com"]) {
+//        if ([url containsString:@"?videourl="]) {
+//            NSString *tempStr = [url componentsSeparatedByString:@"?videourl="].lastObject;
+//            NSString *videoUrl = [tempStr componentsSeparatedByString:@","].lastObject;
+//            [self attemptToPlayVideo:videoUrl];
+//            return NO;
+//        }
+//    }
+//    return YES;
+//}
+
+//- (BOOL)parse80sHtmlWithURL:(NSURL *)URL
+//{
+//    [QPHudUtils showActivityMessageInView:@"加载中，请稍等"];
+//    BOOL shouldPlay = NO;
+//    NSURL *aURL = [URL copy];
+//    NSString *htmlString = [NSString stringWithContentsOfURL:aURL encoding:NSUTF8StringEncoding error:NULL];
+//    //QPLog(@"htmlString=%@", htmlString);
+//
+//    OCGumboDocument *document = [[OCGumboDocument alloc] initWithHTMLString:htmlString];
+//    if (!document) {
+//        return shouldPlay;
+//    }
+//
+//    OCGumboNode *titleElement = document.Query(@"head").find(@"title").first();
+//    NSString *title = titleElement.html();
+//    QPLog(@"title=%@", title);
+//    OCQueryObject *objArray = document.Query(@"body").find(@"script");
+//    for (OCGumboNode *e in objArray) {
+//        NSString *text = e.html();
+//        //QPLog(@"e.text=%@", text);
+//        NSString *keywords = @"var main";
+//        if (text && text.length > 0 && [text containsString:keywords]) {
+//            NSArray *argArray = [text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@";\""]];
+//            for (int i = 0; i < argArray.count; i++) {
+//                NSString *arg = [argArray objectAtIndex:i];
+//                //QPLog(@"arg=%@", arg);
+//                if ([arg containsString:keywords]) {
+//                    shouldPlay = YES;
+//                    int index = (i+1);
+//                    if (index < argArray.count) {
+//                        NSString *tempUrl  = [argArray objectAtIndex:index];
+//                        NSString *videoUrl = [tempUrl componentsSeparatedByString:@"?"].firstObject;
+//                        videoUrl = [NSString stringWithFormat:@"%@://%@%@", aURL.scheme, aURL.host, videoUrl];
+//                        QPLog(@"videoUrl=%@", videoUrl);
+//                        [self playVideoWithTitle:title urlString:videoUrl playerType:self.playerType];
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//    }
+//
+//    return shouldPlay;
+//}
 
 - (void)attemptToPlayVideo:(NSString *)url
 {

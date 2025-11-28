@@ -18,9 +18,6 @@
 
 - (instancetype)initWithAdapter:(QPWKWebViewAdapter *)adapter viewController:(BaseViewController *)viewController;
 
-- (BOOL)canAllowNavigation:(NSURL *)URL;
-
-- (void)queryVideoUrlByJavaScript;
 - (void)queryVideoUrlByCustomJavaScript;
 
 - (void)playVideoWithTitle:(NSString *)title urlString:(NSString *)urlString;

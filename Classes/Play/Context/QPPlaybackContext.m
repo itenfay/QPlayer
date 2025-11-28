@@ -62,9 +62,9 @@
             if (time > 0) {
                 model.seekToTime = time;
             }
-            QPPlayerController *qpc = [[QPPlayerController alloc] initWithModel:model];
-            UINavigationController *nc = self.tf_currentViewController.navigationController;
-            if (nc) { [nc pushViewController:qpc animated:YES]; };
+            QPPlayerController *playerVC = [[QPPlayerController alloc] initWithModel:model];
+            UINavigationController *navController = self.tf_currentViewController.navigationController;
+            if (navController) { [navController pushViewController:playerVC animated:YES]; };
         });
     } else {
         QP_After_Dispatch(1.0, ^{
@@ -93,8 +93,8 @@
             playerModel.isMediaPlayerPlayback = model.isMediaPlayerPlayback;
             playerModel.seekToTime = model.seekToTime;
             QPPlayerController *playerVC = [[QPPlayerController alloc] initWithModel:playerModel];
-            UINavigationController *nc = self.tf_currentNavigationController;
-            if (nc) { [nc pushViewController:playerVC animated:YES]; }
+            UINavigationController *navController = self.tf_currentNavigationController;
+            if (navController) { [navController pushViewController:playerVC animated:YES]; }
         });
     } else {
         QP_After_Dispatch(1.0, ^{

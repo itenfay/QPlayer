@@ -75,16 +75,35 @@
     }];
 }
 
+- (NSArray *)filterResponseData:(NSArray *)response {
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id obj, NSDictionary *bindings) {
+        if (![obj isKindOfClass:NSString.class]) {
+            return NO;
+        }
+        NSString *url = (NSString *)obj;
+        // 检查是否以 .html 结尾
+        BOOL endsWithHtml = [url.lowercaseString hasSuffix:@".html"];
+        // 检查是否包含 = 符号
+        BOOL containsEqual = [url.lowercaseString containsString:@"="];
+        
+        // 返回既不以 .html 结尾 也不包含 = 的 URL
+        return !endsWithHtml && !containsEqual;
+    }];
+    return [response filteredArrayUsingPredicate:predicate];
+}
+
 - (BOOL)handleJSResp:(id)response
 {
     if(![response isEqual:[NSNull null]] && response != nil) {
-        if ([response isKindOfClass:NSArray.class]) {
-            // 获取视频地址
-            NSArray *videoUrls = (NSArray *)response;
-            QPLog(@"[JP] videoUrls: %@", videoUrls);
-            [self showWebVideoListView:videoUrls];
-            return YES;
+        if (![response isKindOfClass:NSArray.class]) {
+            return NO;
         }
+        NSArray *tempArr = (NSArray *)response;
+        // 获取视频地址
+        NSArray *videoUrls = [self filterResponseData: tempArr];
+        QPLog(@"tempArr: %@, videoUrls: %@", tempArr, videoUrls);
+        [self showWebVideoListView:videoUrls];
+        return YES;
     }
     return NO;
 }

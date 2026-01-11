@@ -14,7 +14,7 @@ function parseWebVideos() {
     const videoSources = new Set();
     const videoElements = [];
     
-    console.log('开始解析网页视频...');
+    //console.log('开始解析网页视频...');
     
     // 工具函数：检查URL是否是视频文件
     function isVideoFile(url) {
@@ -86,7 +86,7 @@ function parseWebVideos() {
     
     // 1. 增强的主文档视频查找
     function findMainDocumentVideos() {
-        console.log('查找主文档中的视频元素...');
+        //console.log('查找主文档中的视频元素...');
         
         // 多种选择器查找video元素
         const selectors = [
@@ -102,7 +102,7 @@ function parseWebVideos() {
         selectors.forEach(selector => {
             try {
                 const elements = document.querySelectorAll(selector);
-                console.log(`选择器 "${selector}" 找到 ${elements.length} 个元素`);
+                //console.log(`选择器 "${selector}" 找到 ${elements.length} 个元素`);
                 
                 elements.forEach(element => {
                     if (element.tagName.toLowerCase() === 'video') {
@@ -111,13 +111,13 @@ function parseWebVideos() {
                         sources.forEach(src => {
                             if (isVideoFile(src)) {
                                 videoSources.add(src);
-                                console.log('找到视频源:', src);
+                                //console.log('找到视频源:', src);
                             }
                         });
                     } else if (element.tagName.toLowerCase() === 'source') {
                         if (element.src && isVideoFile(element.src)) {
                             videoSources.add(element.src);
-                            console.log('找到source视频源:', element.src);
+                            //console.log('找到source视频源:', element.src);
                         }
                     } else {
                         // 检查元素的data属性
@@ -126,19 +126,19 @@ function parseWebVideos() {
                         element.getAttribute('data-url');
                         if (dataSrc && isVideoFile(dataSrc)) {
                             videoSources.add(dataSrc);
-                            console.log('找到data属性视频源:', dataSrc);
+                            //console.log('找到data属性视频源:', dataSrc);
                         }
                     }
                 });
             } catch (e) {
-                console.warn(`选择器 ${selector} 执行错误:`, e);
+                //console.warn(`选择器 ${selector} 执行错误:`, e);
             }
         });
         
         // 额外检查：通过getElementsByTagName
         try {
             const videosByTag = document.getElementsByTagName('video');
-            console.log(`getElementsByTagName找到 ${videosByTag.length} 个video元素`);
+            //console.log(`getElementsByTagName找到 ${videosByTag.length} 个video元素`);
             
             Array.from(videosByTag).forEach(video => {
                 if (!videoElements.includes(video)) {
@@ -146,59 +146,59 @@ function parseWebVideos() {
                     sources.forEach(src => {
                         if (isVideoFile(src)) {
                             videoSources.add(src);
-                            console.log('找到视频源(getElementsByTagName):', src);
+                            //console.log('找到视频源(getElementsByTagName):', src);
                         }
                     });
                 }
             });
         } catch (e) {
-            console.warn('getElementsByTagName错误:', e);
+            //console.warn('getElementsByTagName错误:', e);
         }
     }
     
     // 2. 增强的iframe视频查找
     function findIframeVideos() {
-        console.log('查找iframe中的视频...');
+        //console.log('查找iframe中的视频...');
         
         const iframes = document.querySelectorAll('iframe');
-        console.log(`找到 ${iframes.length} 个iframe`);
+        //console.log(`找到 ${iframes.length} 个iframe`);
         
         iframes.forEach((iframe, index) => {
-            console.log(`检查iframe ${index + 1}:`, iframe.src);
+            //console.log(`检查iframe ${index + 1}:`, iframe.src);
             
             try {
                 // 首先检查iframe的src是否包含视频
                 if (iframe.src && isVideoFile(iframe.src)) {
                     videoSources.add(iframe.src);
-                    console.log('iframe src是视频:', iframe.src);
+                    //console.log('iframe src是视频:', iframe.src);
                 }
                 
                 // 尝试访问iframe内容
                 if (iframe.contentDocument) {
                     const iframeVideos = iframe.contentDocument.querySelectorAll('video');
-                    console.log(`iframe ${index + 1} 中找到 ${iframeVideos.length} 个视频`);
+                    //console.log(`iframe ${index + 1} 中找到 ${iframeVideos.length} 个视频`);
                     
                     iframeVideos.forEach(video => {
                         const sources = extractVideoSources(video);
                         sources.forEach(src => {
                             if (isVideoFile(src)) {
                                 videoSources.add(src);
-                                console.log('找到iframe内视频源:', src);
+                                //console.log('找到iframe内视频源:', src);
                             }
                         });
                     });
                 } else {
-                    console.log(`iframe ${index + 1} 无法访问内容 (可能跨域)`);
+                    //console.log(`iframe ${index + 1} 无法访问内容 (可能跨域)`);
                 }
             } catch (e) {
-                console.warn(`访问iframe ${index + 1} 时出错:`, e);
+                //console.warn(`访问iframe ${index + 1} 时出错:`, e);
             }
         });
     }
     
     // 3. 查找隐藏的视频URL
     function findHiddenVideoUrls() {
-        console.log('查找隐藏的视频URL...');
+        //console.log('查找隐藏的视频URL...');
         
         // 检查script标签中的视频URL
         const scripts = document.querySelectorAll('script');
@@ -211,7 +211,7 @@ function parseWebVideos() {
                 matches.forEach(url => {
                     if (isVideoFile(url)) {
                         videoSources.add(url);
-                        console.log('在script中找到视频URL:', url);
+                        //console.log('在script中找到视频URL:', url);
                     }
                 });
             }
@@ -226,7 +226,7 @@ function parseWebVideos() {
                 const url = match[1];
                 if (url && isVideoFile(url)) {
                     videoSources.add(url);
-                    console.log('在JSON数据中找到视频URL:', url);
+                    //console.log('在JSON数据中找到视频URL:', url);
                 }
             }
         });
@@ -234,7 +234,7 @@ function parseWebVideos() {
     
     // 4. 检查媒体资源
     function checkMediaResources() {
-        console.log('检查媒体资源...');
+        //console.log('检查媒体资源...');
         
         // 检查link标签（可能是视频资源）
         const links = document.querySelectorAll('link[rel="preload"], link[as="video"]');
@@ -242,7 +242,7 @@ function parseWebVideos() {
             const href = link.href;
             if (href && isVideoFile(href)) {
                 videoSources.add(href);
-                console.log('在link标签中找到视频:', href);
+                //console.log('在link标签中找到视频:', href);
             }
         });
         
@@ -252,7 +252,7 @@ function parseWebVideos() {
             const src = obj.src || obj.data;
             if (src && isVideoFile(src)) {
                 videoSources.add(src);
-                console.log('在object/embed中找到视频:', src);
+                //console.log('在object/embed中找到视频:', src);
             }
         });
     }
@@ -264,12 +264,12 @@ function parseWebVideos() {
         findHiddenVideoUrls();
         checkMediaResources();
     } catch (error) {
-        console.error('解析视频时发生错误:', error);
+        //console.error('解析视频时发生错误:', error);
     }
     
     // 最终结果
     const results = Array.from(videoSources).filter(url => url && url.trim() !== '');
-    console.log(`视频解析完成！共找到 ${results.length} 个视频源:`, results);
+    //console.log(`视频解析完成！共找到 ${results.length} 个视频源:`, results);
     
     return results;
 }
